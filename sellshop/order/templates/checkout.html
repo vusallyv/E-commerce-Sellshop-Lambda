@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Chcekout || Sellshop</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+        <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+        <!-- Place favicon.ico in the root directory -->
+		<!-- google fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,900,700,300' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+		<!-- all css here -->
+		<!-- bootstrap v3.3.6 css -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<!-- animate css -->
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+		<!-- pe-icon-7-stroke -->
+		<link rel="stylesheet" href="{% static 'css/materialdesignicons.min.css' %}">
+		<!-- pe-icon-7-stroke -->
+		<link rel="stylesheet" href="{% static 'css/jquery.simpleLens.css' %}">
+		<!-- jquery-ui.min css -->
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+		<!-- meanmenu css -->
+        <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
+		<!-- nivo.slider css -->
+        <link rel="stylesheet" href="{% static 'css/nivo-slider.css' %}">
+		<!-- owl.carousel css -->
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+		<!-- style css -->
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<!-- responsive css -->
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+		<!-- modernizr js -->
+        <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- pages-title-start -->
+		<div class="pages-title section-padding">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="pages-title-text text-center">
+							<h2>Chcekout</h2>
+							<ul class="text-left">
+								<li><a href="index.html">Home </a></li>
+								<li><span> // </span>Chcekout</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- pages-title-end -->
+		<!-- Checkout content section start -->
+		<section class="pages checkout section-padding">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="main-input single-cart-form padding60">
+							<div class="log-title">
+								<h3><strong>billing details</strong></h3>
+							</div>
+							<div class="custom-input">
+								<form action="mail.php" method="post">
+									<input type="text" name="subject" placeholder="Your name" />
+									<input type="text" name="subject" placeholder="Enter your here" />
+									<input type="text" name="subject" placeholder="Phone here" />
+									<input type="text" name="subject" placeholder="Company name here..." />
+									<div class="custom-select">
+										<select class="form-control">
+											<option> Country</option>
+											<option> Bangladesh </option>
+											<option> United States </option>
+											<option> United Kingdom </option>
+											<option> Canada </option>
+											<option> Malaysia </option>
+											<option> United Arab Emirates </option>
+										</select>
+									</div>
+									<div class="custom-select">
+										<select class="form-control">
+											<option> State</option>
+											<option> Aberdeen </option>
+											<option> Bedfordshire </option>
+											<option> Caerphilly </option>
+											<option> Denbighshire </option>
+											<option> East Ayrshire </option>
+											<option> Falkirk </option>
+										</select>
+									</div>
+									<div class="custom-select">
+										<select class="form-control">
+											<option> Town / City</option>
+											<option> Aberdeen </option>
+											<option> Bedfordshire </option>
+											<option> Caerphilly </option>
+											<option> Denbighshire </option>
+											<option> East Ayrshire </option>
+											<option> Falkirk </option>
+										</select>
+									</div>
+									<div class="custom-mess">
+										<textarea rows="2" placeholder="Your address here" name="message"></textarea>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="main-input single-cart-form padding60">
+							<div class="log-title">
+								<h3><strong>ship to different address</strong></h3>
+							</div>
+							<div class="custom-input">
+								<form action="mail.php" method="post">
+									<input type="text" name="subject" placeholder="Your name" />
+									<input type="text" name="subject" placeholder="Enter your here" />
+									<input type="text" name="subject" placeholder="Phone here" />
+									<input type="text" name="subject" placeholder="Company name here..." />
+									<div class="custom-select">
+										<select class="form-control">
+											<option> Country</option>
+											<option> Bangladesh </option>
+											<option> United States </option>
+											<option> United Kingdom </option>
+											<option> Canada </option>
+											<option> Malaysia </option>
+											<option> United Arab Emirates </option>
+										</select>
+									</div>
+									<div class="custom-select">
+										<select class="form-control">
+											<option> State</option>
+											<option> Aberdeen </option>
+											<option> Bedfordshire </option>
+											<option> Caerphilly </option>
+											<option> Denbighshire </option>
+											<option> East Ayrshire </option>
+											<option> Falkirk </option>
+										</select>
+									</div>
+									<div class="custom-select">
+										<select class="form-control">
+											<option> Town / City</option>
+											<option> Aberdeen </option>
+											<option> Bedfordshire </option>
+											<option> Caerphilly </option>
+											<option> Denbighshire </option>
+											<option> East Ayrshire </option>
+											<option> Falkirk </option>
+										</select>
+									</div>
+									<div class="custom-mess">
+										<textarea rows="2" placeholder="Order notes here..." name="message"></textarea>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row margin-top">
+					<div class="col-xs-12 col-sm-6">
+						<div class="padding60">
+							<div class="log-title">
+								<h3><strong>Our order</strong></h3>
+							</div>
+							<div class="cart-form-text pay-details table-responsive">
+								<table>
+									<thead>
+										<tr>
+											<th>Product</th>
+											<td>Total</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>Men’s White Shirt  x 2</th>
+											<td>$86.00</td>
+										</tr>
+										<tr>
+											<th>Men’s Black Shirt  x 1</th>
+											<td>$69.00</td>
+										</tr>
+										<tr>
+											<th>Cart Subtotal</th>
+											<td>$155.00</td>
+										</tr>
+										<tr>
+											<th>Shipping and Handing</th>
+											<td>$15.00</td>
+										</tr>
+										<tr>
+											<th>Vat</th>
+											<td>$00.00</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<th>Order total</th>
+											<td>$325.00</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div class="padding60">
+							<div class="log-title">
+								<h3><strong>Payment method</strong></h3>
+							</div>
+							<div class="categories">
+								<ul id="accordion" class="panel-group clearfix">
+									<li class="panel">
+										<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
+											<div class="medium-a">
+												direct bank transfer
+											</div>
+										</div>
+										<div class="panel-collapse collapse in" id="collapse1">
+											<div class="normal-a">
+												<p>Lorem Ipsum is simply in dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.</p>
+											</div>
+										</div>
+									</li>
+									<li class="panel">
+										<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
+											<div class="medium-a">
+												cheque payment
+											</div>
+										</div>
+										<div class="paypal-dsc panel-collapse collapse" id="collapse2">
+											<div class="normal-a">
+												<p>Lorem Ipsum is simply in dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.</p>
+											</div>
+										</div>
+									</li>
+									<li class="panel">
+										<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
+											<div class="medium-a">
+												paypal
+											</div>
+										</div>
+										<div class="paypal-dsc panel-collapse collapse" id="collapse3">
+											<div class="normal-a">
+												<p>Lorem Ipsum is simply in dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.</p>
+											</div>
+										</div>
+									</li>
+								</ul>
+								<div class="submit-text">
+									<a href="#">place order</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Checkout content section end -->
+        
+		<!-- all js here -->
+		<!-- jquery latest version -->
+        <script src="{% static 'js/vendor/jquery-1.12.3.min.js' %}"></script>
+		<!-- bootstrap js -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<!-- owl.carousel js -->
+        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+		<!-- meanmenu js -->
+        <script src="{% static 'js/jquery.meanmenu.js' %}"></script>
+		<!-- countdown JS -->
+        <script src="{% static 'js/countdown.js' %}"></script>
+		<!-- nivo.slider JS -->
+        <script src="{% static 'js/jquery.nivo.slider.pack.js' %}"></script>
+		<!-- simpleLens JS -->
+        <script src="{% static 'js/jquery.simpleLens.min.js' %}"></script>
+		<!-- jquery-ui js -->
+        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+		<!-- load-more js -->
+        <script src="{% static 'js/load-more.js' %}"></script>
+		<!-- plugins js -->
+        <script src="{% static 'js/plugins.js' %}"></script>
+		<!-- main js -->
+        <script src="{% static 'js/main.js' %}"></script>
+		{% endblock %}
+    </body>
+</html>

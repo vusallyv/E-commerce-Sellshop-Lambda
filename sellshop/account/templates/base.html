@@ -1,0 +1,344 @@
+{% load static %}
+        <!-- header section start -->
+		<header class="header-one header-two header-page">
+			<div class="header-top-two">
+				<div class="container text-center">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="middel-top">
+								<div class="left floatleft">
+									<p><i class="mdi mdi-clock"></i> Mon-Fri : 09:00-19:00</p>
+								</div>
+							</div>
+							<div class="middel-top clearfix">
+								<ul class="clearfix right floatright">
+									<li>
+										<a href="#"><i class="mdi mdi-account"></i></a>
+										<ul>
+											<li><a href="{% url 'login' %}">Login</a></li>
+											<li><a href="{% url 'login' %}">Registar</a></li>
+											<li><a href="{% url 'my_account' %}">My account</a></li>
+										</ul>
+									</li>
+									<li>
+										<a href="#"><i class="mdi mdi-settings"></i></a>
+										<ul>
+											<li><a href="{% url 'my_account' %}">My account</a></li>
+											<li><a href="{% url 'cart' %}">My cart</a></li>
+											<li><a href="{% url 'wishlist' %}">My wishlist</a></li>
+											<li><a href="{% url 'checkout' %}">Check out</a></li>
+										</ul>
+									</li>
+								</ul>
+								<div class="right floatright">
+									<form action="#" method="get">
+										<button type="submit"><i class="mdi mdi-magnify"></i></button>
+										<input type="text" placeholder="Search within these results..." />
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container text-center">
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="logo">
+							<a href="index.html"><img src="{% static 'img/logo2.png' %}" alt="Sellshop" /></a>
+						</div>
+					</div>
+					<div class="col-sm-8">
+						<div class="header-middel">
+							<div class="mainmenu">
+								<nav>
+									<ul>
+										<li><a href="index.html">Home</a>
+											<ul class="dropdown">
+												<li><a href="index.html">Home version one</a></li>
+												<li><a href="index-2.html">Home version two</a></li>
+											</ul>
+										</li>
+										<li><a href="shop.html">Shop</a>
+											<ul class="magamenu">
+												<li class="banner"><a href="shop.html"><img src="{% static 'img/maga1.png' %}" alt="" /></a></li>
+												<li><h5>men’s wear</h5>
+													<ul>
+														<li><a href="#">Shirts & Top</a></li>
+														<li><a href="#">Shoes</a></li>
+														<li><a href="#">Dresses</a></li>
+														<li><a href="#">Shemwear</a></li>
+														<li><a href="#">Jeans</a></li>
+														<li><a href="#">Sweaters</a></li>
+														<li><a href="#">Jacket</a></li>
+														<li><a href="#">Men Watch</a></li>
+													</ul>
+												</li>
+												<li><h5>women’s wear</h5>
+													<ul>
+														<li><a href="#">Shirts & Tops</a></li>
+														<li><a href="#">Shoes</a></li>
+														<li><a href="#">Dresses</a></li>
+														<li><a href="#">Shemwear</a></li>
+														<li><a href="#">Jeans</a></li>
+														<li><a href="#">Sweaters</a></li>
+														<li><a href="#">Jacket</a></li>
+														<li><a href="#">Women Watch</a></li>
+													</ul>
+												</li>
+												<li class="banner"><a href="shop.html"><img src="{% static 'img/maga2.png' %}" alt="" /></a></li>
+											</ul>
+										</li>
+										<li><a href="#">Pages</a>
+											<ul class="dropdown">
+												<li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+												<li><a href="{% url 'checkout' %}">Checkout</a></li>
+												<li><a href="{% url 'cart' %}">Cart</a></li>
+												<li><a href="product-grid.html">Product Grid View</a></li>
+												<li><a href="product-list.html">Product List View</a></li>
+												<li><a href="single-product.html">Single Product</a></li>
+												<li><a href="error-404.html">404 page</a></li>
+											</ul>
+										</li>
+										<li><a href="blog.html">Blog</a>
+											<ul class="dropdown">
+												<li><a href="blog-style-1.html">Blog Style One</a></li>
+												<li><a href="blog-style-2.html">Blog Style Two</a></li>
+												<li><a href="single-blog.html">Single Blog</a></li>
+											</ul>
+										</li>
+										<li><a href="about.html">About</a></li>
+										<li><a href="{% url 'contact' %}">Contact</a></li>
+									</ul>
+								</nav>
+							</div>
+							<!-- mobile menu start -->
+							<div class="mobile-menu-area">
+								<div class="mobile-menu">
+									<nav id="dropdown">
+										<ul>
+											<li><a href="index.html">Home</a>
+												<ul class="dropdown">
+													<li><a href="index.html">Home version one</a></li>
+													<li><a href="index-2.html">Home version two</a></li>
+												</ul>
+											</li>
+											<li><a href="shop.html">Shop</a>
+												<ul>
+													<li><h5>men’s wear</h5>
+														<ul>
+															<li><a href="#">Shirts & Top</a></li>
+															<li><a href="#">Shoes</a></li>
+															<li><a href="#">Dresses</a></li>
+															<li><a href="#">Shemwear</a></li>
+															<li><a href="#">Jeans</a></li>
+															<li><a href="#">Sweaters</a></li>
+															<li><a href="#">Jacket</a></li>
+															<li><a href="#">Men Watch</a></li>
+														</ul>
+													</li>
+													<li><h5>women’s wear</h5>
+														<ul>
+															<li><a href="#">Shirts & Tops</a></li>
+															<li><a href="#">Shoes</a></li>
+															<li><a href="#">Dresses</a></li>
+															<li><a href="#">Shemwear</a></li>
+															<li><a href="#">Jeans</a></li>
+															<li><a href="#">Sweaters</a></li>
+															<li><a href="#">Jacket</a></li>
+															<li><a href="#">Women Watch</a></li>
+														</ul>
+													</li>
+												</ul>
+											</li>
+											<li><a href="#">Pages</a>
+												<ul>
+													<li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+													<li><a href="{% url 'checkout' %}">Checkout</a></li>
+													<li><a href="{% url 'cart' %}">Cart</a></li>
+													<li><a href="product-grid.html">Product Grid View</a></li>
+													<li><a href="product-list.html">Product List View</a></li>
+													<li><a href="single-product.html">Single Product</a></li>
+													<li><a href="error-404.html">404 page</a></li>
+												</ul>
+											</li>
+											<li><a href="blog.html">Blog</a>
+												<ul>
+													<li><a href="blog-style-1.html">Blog Style One</a></li>
+													<li><a href="blog-style-2.html">Blog Style Two</a></li>
+													<li><a href="single-blog.html">Single Blog</a></li>
+												</ul>
+											</li>
+											<li><a href="about.html">About</a></li>
+											<li><a href="{% url 'contact' %}">Contact</a></li>
+										</ul>
+									</nav>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="cart-itmes">
+							<a class="cart-itme-a" href="{% url 'cart' %}">
+								<i class="mdi mdi-cart"></i>
+								02 items :  <strong>$86.00</strong>
+							</a>
+							<div class="cartdrop">
+								<div class="sin-itme clearfix">
+									<i class="mdi mdi-close"></i>
+									<a class="cart-img" href="{% url 'cart' %}"><img src="{% static 'img/cart/1.png' %}" alt="" /></a>
+									<div class="menu-cart-text">
+										<a href="#"><h5>men’s black t-shirt</h5></a>
+										<span>Color :  Black</span>
+										<span>Size :     SL</span>
+										<strong>$122.00</strong>
+									</div>
+								</div>
+								<div class="sin-itme clearfix">
+									<i class="mdi mdi-close"></i>
+									<a class="cart-img" href="{% url 'cart' %}"><img src="{% static 'img/cart/2.png' %}" alt="" /></a>
+									<div class="menu-cart-text">
+										<a href="#"><h5>men’s black t-shirt</h5></a>
+										<span>Color :  Black</span>
+										<span>Size :     SL</span>
+										<strong>$132.00</strong>
+									</div>
+								</div>
+								<div class="total">
+									<span>total <strong>= $306.00</strong></span>
+								</div>
+								<a class="goto" href="{% url 'cart' %}">go to cart</a>
+								<a class="out-menu" href="{% url 'checkout' %}">Check out</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+        <!-- header section end -->
+        <!-- pages-title-start -->
+
+{% block base %}
+
+{% endblock %}
+
+<!-- footer-top area start -->
+<div class="footer-top section-padding">
+    <div class="footer-dsc">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="single-text">
+                        <div class="footer-title">
+                            <h4>Contact us</h4>
+                        </div>
+                        <div class="footer-text">
+                            <ul>
+                                <li>
+                                    <i class="mdi mdi-map-marker"></i>
+                                    <p>Flat no 01, House no 02, Vincent,</p>
+                                    <p>Dhaka-1207, Bangladesh</p>
+                                </li>
+                                <li>
+                                    <i class="mdi mdi-phone"></i>
+                                    <p>(+880) 19453 821758</p>
+                                    <p>(+880) 19453 813758</p>
+                                </li>
+                                <li>
+                                    <i class="mdi mdi-email"></i>
+                                    <p>info@mydomain.com</p>
+                                    <p>username@email.com</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-2 wide-mobile">
+                    <div class="single-text">
+                        <div class="footer-title">
+                            <h4>my account</h4>
+                        </div>
+                        <div class="footer-menu">
+                            <ul>
+                                <li><a href="{% url 'login' %}"><i class="mdi mdi-menu-right"></i>My Account</a></li>
+                                <li><a href="{% url 'wishlist' %}"><i class="mdi mdi-menu-right"></i>My Wishlist</a></li>
+                                <li><a href="{% url 'cart' %}"><i class="mdi mdi-menu-right"></i>My Cart</a></li>
+                                <li><a href="{% url 'login' %}"><i class="mdi mdi-menu-right"></i>Sign In</a></li>
+                                <li><a href="{% url 'checkout' %}"><i class="mdi mdi-menu-right"></i>Check out</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Track My Orde</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 col-md-2 wide-mobile">
+                    <div class="single-text">
+                        <div class="footer-title">
+                            <h4>shipping</h4>
+                        </div>
+                        <div class="footer-menu">
+                            <ul>
+                                <li><a href="{% url 'contact' %}"><i class="mdi mdi-menu-right"></i>New Products</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Top Sellers</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Manufactirers</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Suppliers</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Specials</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Availability</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2 r-margin-top wide-mobile">
+                    <div class="single-text">
+                        <div class="footer-title">
+                            <h4>Information</h4>
+                        </div>
+                        <div class="footer-menu">
+                            <ul>
+                                <li><a href="{% url 'contact' %}"><i class="mdi mdi-menu-right"></i>Return Exchange</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Fast Delivery</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Online Shopping</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Shipping Guide</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Turm Of Use</a></li>
+                                <li><a href="#"><i class="mdi mdi-menu-right"></i>Home Delivery</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 r-margin-top wide-mobile">
+                    <div class="single-text">
+                        <div class="footer-title">
+                            <h4>instagram</h4>
+                        </div>
+                        <div class="clearfix instagram">
+                            <ul>
+                                <li><a href="#"><img src="{% static 'img/footer/in1.png' %}" alt="Instagram" /></a></li>
+                                <li><a href="#"><img src="{% static 'img/footer/in2.png' %}" alt="Instagram" /></a></li>
+                                <li><a href="#"><img src="{% static 'img/footer/in3.png' %}" alt="Instagram" /></a></li>
+                                <li><a href="#"><img src="{% static 'img/footer/in4.png' %}" alt="Instagram" /></a></li>
+                                <li><a href="#"><img src="{% static 'img/footer/in5.png' %}" alt="Instagram" /></a></li>
+                                <li><a href="#"><img src="{% static 'img/footer/in6.png' %}" alt="Instagram" /></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- footer-top area end -->
+<!-- footer-bottom area start -->
+<div class="footer-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <p>&copy; Sellshop 2016. All Rights Reserved.</p>
+            </div>
+            <div class="col-xs-12 col-sm-6 text-right">
+                <a href="#"><img src="{% static 'img/footer/payment.png' %}" alt="" /></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- footer-bottom area end -->
+</footer>
+<!-- footer section end -->

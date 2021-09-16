@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Order Complete || Sellshop</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+
+        <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+        <!-- Place favicon.ico in the root directory -->
+		<!-- google fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,900,700,300' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+		<!-- all css here -->
+		<!-- bootstrap v3.3.6 css -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<!-- animate css -->
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+		<!-- pe-icon-7-stroke -->
+		<link rel="stylesheet" href="{% static 'css/materialdesignicons.min.css' %}">
+		<!-- pe-icon-7-stroke -->
+		<link rel="stylesheet" href="{% static 'css/jquery.simpleLens.css' %}">
+		<!-- jquery-ui.min css -->
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+		<!-- meanmenu css -->
+        <link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
+		<!-- nivo.slider css -->
+        <link rel="stylesheet" href="{% static 'css/nivo-slider.css' %}">
+		<!-- owl.carousel css -->
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+		<!-- style css -->
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<!-- responsive css -->
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+		<!-- modernizr js -->
+        <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- pages-title-start -->
+		<div class="pages-title section-padding">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="pages-title-text text-center">
+							<h2>Order Complete</h2>
+							<ul class="text-left">
+								<li><a href="index.html">Home </a></li>
+								<li><span> // </span>Order Complete</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- pages-title-end -->
+		<!-- order-complete content section start -->
+		<section class="pages checkout order-complete section-padding">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 text-center">
+						<div class="complete-title">
+							<p>Thank you. Your order has been received.</p>
+						</div>
+						<div class="order-no clearfix">
+							<ul>
+								<li>order no <span>m 2653257</span></li>
+								<li>Date<span>jun 15, 2016</span></li>
+								<li>total<span>$ 325.00</span></li>
+								<li>payment method<span>check payment</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-6">
+						<div class="padding60">
+							<div class="log-title">
+								<h3><strong>your order</strong></h3>
+							</div>
+							<div class="cart-form-text pay-details">
+								<table>
+									<thead>
+										<tr>
+											<th>Product</th>
+											<td>Total</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>Men’s White Shirt  x 2</th>
+											<td>$86.00</td>
+										</tr>
+										<tr>
+											<th>Men’s Black Shirt  x 1</th>
+											<td>$69.00</td>
+										</tr>
+										<tr>
+											<th>Cart Subtotal</th>
+											<td>$155.00</td>
+										</tr>
+										<tr>
+											<th>Shipping and Handing</th>
+											<td>$15.00</td>
+										</tr>
+										<tr>
+											<th>Vat</th>
+											<td>$00.00</td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<th>Order total</th>
+											<td>$325.00</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div class="order-address bill padding60">
+							<div class="log-title">
+								<h3><strong>Billing address</strong></h3>
+							</div>
+							<p>Flat no 01, House no 02, Vincent, Dhaka-1207, Bangladesh</p>
+							<p>Phone:  (+880) 19453 821758,</p>
+							<p>Email:  info@companyname.com</p>
+						</div>
+						<div class="order-details padding60">
+							<div class="log-title">
+								<h3><strong>customer details</strong></h3>
+							</div>
+							<div class="por-dse clearfix">
+								<ul>
+									<li><span>Name<strong>:</strong></span> MD: Rakib Hossain</li>
+									<li><span>Email<strong>:</strong></span> info@domainname.com</li>
+									<li><span>Phone<strong>:</strong></span> +880 1905  381858</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- order-complete content section end -->
+        
+		<!-- all js here -->
+		<!-- jquery latest version -->
+        <script src="{% static 'js/vendor/jquery-1.12.3.min.js' %}"></script>
+		<!-- bootstrap js -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<!-- owl.carousel js -->
+        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+		<!-- meanmenu js -->
+        <script src="{% static 'js/jquery.meanmenu.js' %}"></script>
+		<!-- countdown JS -->
+        <script src="{% static 'js/countdown.js' %}"></script>
+		<!-- nivo.slider JS -->
+        <script src="{% static 'js/jquery.nivo.slider.pack.js' %}"></script>
+		<!-- simpleLens JS -->
+        <script src="{% static 'js/jquery.simpleLens.min.js' %}"></script>
+		<!-- jquery-ui js -->
+        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+		<!-- load-more js -->
+        <script src="{% static 'js/load-more.js' %}"></script>
+		<!-- plugins js -->
+        <script src="{% static 'js/plugins.js' %}"></script>
+		<!-- main js -->
+        <script src="{% static 'js/main.js' %}"></script>
+    </body>
+	{% endblock %}
+</html>
