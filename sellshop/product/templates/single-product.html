@@ -90,7 +90,7 @@
 				<div class="row">
 					<div class="col-sm-2">
 						<div class="logo">
-							<a href="index.html"><img src="{% static 'img/logo2.png' %}" alt="Sellshop" /></a>
+							<a href="{% url 'index' %}"><img src="{% static 'img/logo2.png' %}" alt="Sellshop" /></a>
 						</div>
 					</div>
 					<div class="col-sm-8">
@@ -98,9 +98,9 @@
 							<div class="mainmenu">
 								<nav>
 									<ul>
-										<li><a href="index.html">Home</a>
+										<li><a href="{% url 'index' %}">Home</a>
 											<ul class="dropdown">
-												<li><a href="index.html">Home version one</a></li>
+												<li><a href="{% url 'index' %}">Home version one</a></li>
 												<li><a href="index-2.html">Home version two</a></li>
 											</ul>
 										</li>
@@ -142,17 +142,17 @@
 												<li><a href="product-grid.html">Product Grid View</a></li>
 												<li><a href="product-list.html">Product List View</a></li>
 												<li><a href="single-product.html">Single Product</a></li>
-												<li><a href="error-404.html">404 page</a></li>
+												<li><a href="{% url 'error_404' %}">404 page</a></li>
 											</ul>
 										</li>
-										<li><a href="blog.html">Blog</a>
+										<li><a href="{% url 'blog' %}">Blog</a>
 											<ul class="dropdown">
 												<li><a href="blog-style-1.html">Blog Style One</a></li>
 												<li><a href="blog-style-2.html">Blog Style Two</a></li>
 												<li><a href="single-blog.html">Single Blog</a></li>
 											</ul>
 										</li>
-										<li><a href="about.html">About</a></li>
+										<li><a href="{% url 'about' %}">About</a></li>
 										<li><a href="contact.html">Contact</a></li>
 									</ul>
 								</nav>
@@ -162,9 +162,9 @@
 								<div class="mobile-menu">
 									<nav id="dropdown">
 										<ul>
-											<li><a href="index.html">Home</a>
+											<li><a href="{% url 'index' %}">Home</a>
 												<ul class="dropdown">
-													<li><a href="index.html">Home version one</a></li>
+													<li><a href="{% url 'index' %}">Home version one</a></li>
 													<li><a href="index-2.html">Home version two</a></li>
 												</ul>
 											</li>
@@ -204,17 +204,17 @@
 													<li><a href="product-grid.html">Product Grid View</a></li>
 													<li><a href="product-list.html">Product List View</a></li>
 													<li><a href="single-product.html">Single Product</a></li>
-													<li><a href="error-404.html">404 page</a></li>
+													<li><a href="{% url 'error_404' %}">404 page</a></li>
 												</ul>
 											</li>
-											<li><a href="blog.html">Blog</a>
+											<li><a href="{% url 'blog' %}">Blog</a>
 												<ul>
 													<li><a href="blog-style-1.html">Blog Style One</a></li>
 													<li><a href="blog-style-2.html">Blog Style Two</a></li>
 													<li><a href="single-blog.html">Single Blog</a></li>
 												</ul>
 											</li>
-											<li><a href="about.html">About</a></li>
+											<li><a href="{% url 'about' %}">About</a></li>
 											<li><a href="contact.html">Contact</a></li>
 										</ul>
 									</nav>
@@ -269,7 +269,7 @@
 						<div class="pages-title-text text-center">
 							<h2>men’s white t-shirt</h2>
 							<ul class="text-left">
-								<li><a href="index.html">Home </a></li>
+								<li><a href="{% url 'index' %}">Home </a></li>
 								<li><span> // </span><a href="shop.html">shop </a></li>
 								<li><span> // </span>men’s white t-shirt</li>
 							</ul>

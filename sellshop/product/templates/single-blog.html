@@ -140,9 +140,9 @@
 												<li><a href="checkout.html">Checkout</a></li>
 												<li><a href="cart.html">Cart</a></li>
 												<li><a href="product-grid.html">Product Grid View</a></li>
-												<li><a href="product-list.html">Product List View</a></li>
-												<li><a href="single-product.html">Single Product</a></li>
-												<li><a href="error-404.html">404 page</a></li>
+												<li><a href="{% url 'product_list' %}">Product List View</a></li>
+												<li><a href="{% url 'single_product' %}">Single Product</a></li>
+												<li><a href="{% url 'error_404' %}">404 page</a></li>
 											</ul>
 										</li>
 										<li><a href="{% url 'blog' %}">Blog</a>
@@ -202,8 +202,8 @@
 													<li><a href="checkout.html">Checkout</a></li>
 													<li><a href="cart.html">Cart</a></li>
 													<li><a href="product-grid.html">Product Grid View</a></li>
-													<li><a href="product-list.html">Product List View</a></li>
-													<li><a href="single-product.html">Single Product</a></li>
+													<li><a href="{% url 'product_list' %}">Product List View</a></li>
+													<li><a href="{% url 'single_product' %}">Single Product</a></li>
 													<li><a href="{% url 'error_404' %}">404 page</a></li>
 												</ul>
 											</li>
