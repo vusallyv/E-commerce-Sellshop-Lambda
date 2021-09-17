@@ -1,0 +1,162 @@
+
+<!doctype html>
+<html class="no-js" lang="">
+	<head>
+		<meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Contact Us || Sellshop</title>
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+			<!-- pages-title-start -->
+			<div class="pages-title section-padding">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="pages-title-text text-center">
+								<h2>Contact Us</h2>
+								<ul class="text-left">
+								<li><a href="index.html">Home </a></li>
+								<li><span> // </span>Contact Us</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- pages-title-end -->
+		<!-- contact content section start -->
+		<div class="pages contact-page section-padding">
+			<div class="container text-center">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="googleMap-info">
+							<div id="googleMap"></div>
+							<div class="map-info">
+								<p><strong>Sellshop</strong></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-10 col-text-center">
+						<div class="contact-details">
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="single-contact">
+										<i class="mdi mdi-map-marker"></i>
+										<p>No 58 A, East Madison Street,</p>
+										<p>Baltimore, MD, USA 4508</p>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="single-contact">
+										<i class="mdi mdi-phone"></i>
+										<p>(+660) 803 - 080 - 3081</p>
+										<p>(+660)  803 - 080 - 3082</p>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="single-contact">
+										<i class="mdi mdi-email"></i>
+										<p>info@companyname.com</p>
+										<p>support@company.com</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- contact content section end -->
+        <!-- footer section start -->
+		<footer class="footer-two">
+			<!-- brand logo area start -->
+			<div class="brand-logo">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="barnd-bg">
+								<a href="#"><img src="{% static 'img/brand/1.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/2.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/3.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/4.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/5.png' %}" alt="Brand Logo" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- brand logo section end -->
+			<!-- social media section start -->
+			<div class="social-media section-padding">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="newsletter newsletter2">
+								<h3>newsletter</h3>
+								<form action="mail.php" method="post">
+									<input type="text" name="email" placeholder="Enter your email..."/>
+									<input type="submit" value="subscribe"/>
+								</form>
+							</div>
+							<div class="social-icons">
+								<a href="#"><i class="mdi mdi-facebook"></i></a>
+								<a href="#"><i class="mdi mdi-twitter"></i></a>
+								<a href="#"><i class="mdi mdi-google-plus"></i></a>
+								<a href="#"><i class="mdi mdi-dribbble"></i></a>
+								<a href="#"><i class="mdi mdi-rss"></i></a>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-offset-1 col-md-5">
+							<div class="newsletter get-touch">
+								<h3>get in touch</h3>
+								<form action="mail.php" method="post">
+									<input type="text" name="name" placeholder="Enter your Name..."/>
+									<input type="text" name="email" placeholder="Enter your email..."/>
+									<textarea name="message" rows="2" placeholder="Enter your message...."></textarea>
+									<input type="submit" value="send your message"/>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- social media section end -->
+			
+        
+		<!-- all js here -->
+		<!-- jquery latest version -->
+        <script src="{% static 'js/vendorjquery-1.12.3.min.js' %}"></script>
+		<!-- Google Map JS -->
+		<script src="https://maps.googleapis.com/maps/api/js"></script>
+		<script>
+			function initialize() {
+			
+			  var mapOptions = {
+				zoom: 17,
+				hue: '#E9E5DC',
+				scrollwheel: false,
+				mapTypeId:google.maps.MapTypeId.TERRAIN,
+				center: new google.maps.LatLng(23.760772, 90.424790)
+			  };
+
+			  var map = new google.maps.Map(document.getElementById('googleMap'),
+				  mapOptions);
+
+
+			  var marker = new google.maps.Marker({
+				position: map.getCenter(),
+				icon: img/map-marker.png,
+				map: map
+			  });
+
+			}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script> 
+		{% endblock %} 
+    </body>
+</html>
