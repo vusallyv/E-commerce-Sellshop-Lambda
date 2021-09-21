@@ -23,7 +23,7 @@ class Subcategory(models.Model):
 class Product(models.Model):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
     subtitle = models.CharField("Subtitle", max_length=30, help_text="Max 30 char.")
-    ex_price = models.DecimalField(verbose_name="Ex Price", max_digits=10, decimal_places=2)
+    # ex_price = models.DecimalField(verbose_name="Ex Price", max_digits=10, decimal_places=2)
     price = models.DecimalField(verbose_name="Price", max_digits=10, decimal_places=2)
     description = models.TextField(verbose_name="Description")
     rating = models.DecimalField(verbose_name="Rating", max_digits=3, decimal_places=1)
@@ -31,16 +31,16 @@ class Product(models.Model):
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 class Color(models.Model):
-    color = models.CharField(verbose_name="color", max_length=30, help_text="Max 30 char.")
+    color = models.CharField(verbose_name="Color", max_length=30, help_text="Max 30 char.")
     product_id = models.ManyToManyField(Product, related_name="Product_Color")
     
 class Size(models.Model):
     size = models.CharField(verbose_name="Size", max_length=30, help_text="Max 30 char.")
-    color_id = models.ManyToManyField(Color, related_name="Color_Size")
+    product_id = models.ManyToManyField(Product, related_name="Product_Size")
     
 class Quantity(models.Model):
-    quantity = models.CharField(verbose_name="quantity", max_length=30, help_text="Max 30 char.")
-    size_id = models.ManyToManyField(Size, related_name="Size_Quantity")
+    quantity = models.CharField(verbose_name="Quantity", max_length=30, help_text="Max 30 char.")
+    product_id = models.ManyToManyField(Product, related_name="Product_Quantity")
     
 class Review(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30, help_text="Max 30 char.")
@@ -52,7 +52,6 @@ class Review(models.Model):
 class Image(models.Model):
     image = models.CharField(verbose_name="Image", max_length=255, help_text="Max 255 char.")
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-
 
 class Blog(models.Model):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
@@ -72,5 +71,3 @@ class Self_Comment(models.Model):
     description = models.IntegerField(verbose_name="Description")
     created_at = models.DateTimeField(verbose_name="Created_at")
     comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    
-
