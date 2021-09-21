@@ -2,11 +2,16 @@ from django.contrib import admin
 
 # Register your models here.
 
-from product.models import Product, Product_Category, Product_Brand, Product_Color, Product_Size, Product_Subcategory
+from product.models import Product, Category, Brand, Color, Size, Subcategory, Quantity, Review, Comment, Self_Comment, Blog, Image
 
 admin.site.register(Product)
-admin.site.register(Product_Category)
-admin.site.register(Product_Brand)
-admin.site.register(Product_Color)
-admin.site.register(Product_Size)
-admin.site.register(Product_Subcategory)
+admin.site.register(Category)
+admin.site.register(Brand)
+admin.site.register(Color)
+admin.site.register(Size)
+admin.site.register(Subcategory)
+admin.site.register(Review)
+admin.site.register(Comment)
+admin.site.register(Self_Comment)
+admin.site.register(Blog)
+admin.site.register(Image)

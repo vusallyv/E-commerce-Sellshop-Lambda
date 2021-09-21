@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from account.models import Person, Contact
+from account.models import Contact
 
-admin.site.register(Person)
+# admin.site.register(Profile)
 admin.site.register(Contact)
