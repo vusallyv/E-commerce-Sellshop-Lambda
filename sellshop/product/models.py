@@ -23,24 +23,24 @@ class Subcategory(models.Model):
 class Product(models.Model):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
     subtitle = models.CharField("Subtitle", max_length=30, help_text="Max 30 char.")
-    # ex_price = models.DecimalField(verbose_name="Ex Price", max_digits=10, decimal_places=2)
+    ex_price = models.DecimalField(verbose_name="Ex Price", max_digits=10, decimal_places=2)
     price = models.DecimalField(verbose_name="Price", max_digits=10, decimal_places=2)
     description = models.TextField(verbose_name="Description")
     rating = models.DecimalField(verbose_name="Rating", max_digits=3, decimal_places=1)
     brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-class Size(models.Model):
-    size = models.CharField(verbose_name="Size", max_length=30, help_text="Max 30 char.")
-    product_id = models.ManyToManyField(Product, related_name="Product_Size")
-    
 class Color(models.Model):
     color = models.CharField(verbose_name="color", max_length=30, help_text="Max 30 char.")
     product_id = models.ManyToManyField(Product, related_name="Product_Color")
     
+class Size(models.Model):
+    size = models.CharField(verbose_name="Size", max_length=30, help_text="Max 30 char.")
+    color_id = models.ManyToManyField(Color, related_name="Color_Size")
+    
 class Quantity(models.Model):
     quantity = models.CharField(verbose_name="quantity", max_length=30, help_text="Max 30 char.")
-    product_id = models.ManyToManyField(Product, related_name="Product_Quantity")
+    size_id = models.ManyToManyField(Size, related_name="Size_Quantity")
     
 class Review(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30, help_text="Max 30 char.")
