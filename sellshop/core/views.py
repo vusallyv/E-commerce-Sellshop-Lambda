@@ -3,13 +3,26 @@ from django.shortcuts import render
 # Create your views here.
 
 def about(request):
-    return render(request, 'about.html')
+    context = {
+        'title': 'About Sellshop',
+        
+    }
+    return render(request, 'about.html', context=context)
 
 def blog(request):
-    return render(request, 'blog.html')
+    context = {
+        'title': 'Blog Sellshop',
+    }
+    return render(request, 'blog.html', context=context)
 
 def error_404(request):
-    return render(request, 'error-404.html')
+    context = {
+        'title': 'Error Sellshop',
+    }
+    return render(request, 'error-404.html', context=context)
 
 def index(request):
-    return render(request, 'index.html')
+    context = {
+        'title': 'Home Sellshop',
+    }
+    return render(request, 'index.html', context=context)
