@@ -1,4 +1,12 @@
 {% load static %}
+
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- favicon -->
@@ -32,6 +40,7 @@
         <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 		<!-- modernizr js -->
         <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+		<title>{% block title %}{% endblock %}</title>
     </head>
     <body>
 		<!--[if lt IE 8]>
@@ -141,8 +150,8 @@
 										</li>
 										<li><a href="{% url 'blog' %}">Blog</a>
 											<ul class="dropdown">
-												<li><a href="blog-style-1.html">Blog Style One</a></li>
-												<li><a href="blog-style-2.html">Blog Style Two</a></li>
+												<li><a href="#">Blog Style One</a></li>
+												<li><a href="#">Blog Style Two</a></li>
 												<li><a href="{% url 'single_blog' %}">Single Blog</a></li>
 											</ul>
 										</li>
@@ -405,3 +414,6 @@
         <script src="{% static 'js/plugins.js' %}"></script>
 		<!-- main js -->
         <script src="{% static 'js/main.js' %}"></script>
+	</body>
+
+	</html>

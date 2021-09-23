@@ -1,12 +1,7 @@
 
-<!doctype html>
-<html class="no-js" lang="">
-	<head>
-		<meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Contact Us || Sellshop</title>
 {% extends 'base.html' %}
 {% load static %}
+{% block title %}{{title}}{% endblock %}
 {% block base %}
 
 			<!-- pages-title-start -->
@@ -158,5 +153,4 @@
 			google.maps.event.addDomListener(window, 'load', initialize);
 		</script> 
 		{% endblock %} 
-    </body>
-</html>
+

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'account',
     'core',
     'order',
-    'product'
+    'product',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.request',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -70,6 +72,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'sellshop.wsgi.application'
 
@@ -81,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sellshopdb',
         'USER': 'sellshopuser',
-        'PASSWORD': '123456',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'POST': 5432,
     }
@@ -112,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Baku'
 
 USE_I18N = True
 

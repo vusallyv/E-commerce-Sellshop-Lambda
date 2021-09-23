@@ -9,10 +9,19 @@ from django.http import HttpResponse
 #     return HttpResponse(html)
 
 def contact(request):
-    return render(request, "contact.html")
+    context = {
+        'title':  'Contact Us Sellshop'
+    }
+    return render(request, "contact.html", context=context)
 
 def login(request):
-    return render(request, "login.html")
+    context = {
+        'title':  'Login Sellshop'
+    }
+    return render(request, "login.html", context=context)
 
 def my_account(request):
-    return render(request, "my-account.html")
+    context = {
+        'title':  'My-account Sellshop'
+    }
+    return render(request, "my-account.html", context=context)

@@ -3,14 +3,26 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 
-def cart(request):
-    return render(request, "cart.html")
+def card(request):
+    context = {
+        'title': 'Card Sellshop'
+    }
+    return render(request, "cart.html", context=context)
 
 def checkout(request):
-    return render(request, "checkout.html")
+    context = {
+        'title': 'Checkout Sellshop'
+    }
+    return render(request, "checkout.html", context=context)
 
 def order_complete(request):
-    return render(request, "order-complete.html")
+    context = {
+        'title': 'Order Complete Sellshop'
+    }
+    return render(request, "order-complete.html", context=context)
 
 def wishlist(request):
-    return render(request, "wishlist.html")
+    context = {
+        'title': 'Wishlist Sellshop'
+    }
+    return render(request, "wishlist.html", context=context)
