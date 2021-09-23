@@ -14,7 +14,13 @@ class User(models.Model):
     additional_info = models.TextField(verbose_name="Additional Info", default="", null=True, blank=True)
     password = models.CharField(verbose_name="Password", max_length=30, null=False, blank=False, default="")
 
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
 class Contact(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30, help_text="Max 30 char.")
     email = models.EmailField(verbose_name="Email Address", null=False, blank=False, default="")
     message = models.TextField(verbose_name="Message")
+
+    def __str__(self) -> str:
+        return self.name
