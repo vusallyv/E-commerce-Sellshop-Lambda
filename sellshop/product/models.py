@@ -5,12 +5,18 @@ from django.db import models
 class Brand(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
 
+    def __str__(self) -> str:
+        return self.title
+
 class Category(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
 
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+
+    def __str__(self) -> str:
+        return self.title
 
 class Subcategory(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
@@ -19,6 +25,9 @@ class Subcategory(models.Model):
     class Meta:
         verbose_name = "Subcategory"
         verbose_name_plural = "Subcategories"
+    
+    def __str__(self) -> str:
+        return self.title
 
 class Product(models.Model):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
