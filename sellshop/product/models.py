@@ -30,16 +30,18 @@ class Product(models.Model):
     brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-class Product_version(models.Model):
+    def __str__(self) -> str:
+        return self.title
+
+class ProductVersion(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     colors = (
-        (1, 'red'),
-        (2, 'blue'),
-        (3, 'red'),
-        (4, 'black'),
-        (5, 'green'),
-        (6, 'yellow'),
-        (7, 'white')
+        (1, 'Red'),
+        (2, 'Blue'),
+        (3, 'Black'),
+        (4, 'Green'),
+        (5, 'Yellow'),
+        (6, 'White')
     )
     sizes = (
         (1, 'S'),
@@ -47,30 +49,20 @@ class Product_version(models.Model):
         (3, 'L'),
         (4, 'X'),
         (5, 'XL'),
-        (6, 'XXl'),
-        (7, '2XXl'),
-        (8, '3XXl')
+        (6, 'XXL'),
+        (7, '2XL'),
+        (8, '3XL')
     )
     quantity = models.IntegerField(verbose_name='Quantity')
     color = models.IntegerField(choices=colors, default=1, verbose_name='Color')
     size = models.IntegerField(choices=sizes, default=1, verbose_name='Size')
+    wishlist_id = models.ManyToManyField("order.Wishlist", related_name="Wishlist_Product")
+    cart_id = models.ManyToManyField("order.Cart", related_name="Cart_Product")
     is_main = models.BooleanField(verbose_name='Is_main')
         
-    # def __str__(self):
-    #     return f'{self.product_id.title} version'
+    def __str__(self):
+        return self.product_id.title
 
-# class Color(models.Model):
-#     color = models.CharField(verbose_name="Color", max_length=30, help_text="Max 30 char.")
-#     product_id = models.ManyToManyField(Product, related_name="Product_Color")
-    
-# class Size(models.Model):
-#     size = models.CharField(verbose_name="Size", max_length=30, help_text="Max 30 char.")
-#     product_id = models.ManyToManyField(Product, related_name="Product_Size")
-    
-# class Quantity(models.Model):
-#     quantity = models.CharField(verbose_name="Quantity", max_length=30, help_text="Max 30 char.")
-#     product_id = models.ManyToManyField(Product, related_name="Product_Quantity")
-    
 class Review(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30, help_text="Max 30 char.")
     email = models.CharField(verbose_name="Email", max_length=30, help_text="Max 30 char.")
@@ -79,8 +71,8 @@ class Review(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 class Image(models.Model):
-    image = models.CharField(verbose_name="Image", max_length=255, help_text="Max 255 char.")
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(verbose_name="Image")
+    product_id = models.ForeignKey(ProductVersion, on_delete=models.CASCADE, verbose_name="Prodcut_ID")
 
 class Blog(models.Model):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
@@ -95,8 +87,4 @@ class Comment(models.Model):
     description = models.IntegerField(verbose_name="Description")
     created_at = models.DateField(verbose_name="Created_at")
     blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE)
-
-class Self_Comment(models.Model):
-    description = models.IntegerField(verbose_name="Description")
-    created_at = models.DateTimeField(verbose_name="Created_at")
-    comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    comment_id = models.ForeignKey('product.Comment', on_delete=models.CASCADE)

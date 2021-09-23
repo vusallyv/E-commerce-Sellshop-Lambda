@@ -10,3 +10,9 @@ class Billing(models.Model):
     state = models.CharField(verbose_name="State", max_length=255, null=False, blank=False)
     city = models.CharField(verbose_name="City", max_length=255, null=False, blank=False)
     address = models.TextField(verbose_name="Address", null=False, blank=False)
+
+class Wishlist(models.Model):
+    user_id = models.ManyToManyField("account.User", related_name="User_Wishlist")
+
+class Cart(models.Model):
+    user_id = models.ManyToManyField("account.User", related_name="User_Cart")

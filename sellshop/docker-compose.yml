@@ -4,10 +4,12 @@ services:
 
   postgres:
     container_name:  postgres
-    image:  postgres:13
-    restart: always
+    image:           postgres:13
+    restart: "on-failure"
     ports:
       - 5432:5432 # Bind host port 5432 to PostgreSQL port 5432
     volumes:
       - ./postgredb:/var/lib/postgresql/data
-    env_file: ./.env
+    env_file: .env
+    environment: 
+      - LC_ALL=C.UTF-8
