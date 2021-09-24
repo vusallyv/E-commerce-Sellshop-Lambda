@@ -79,9 +79,10 @@
 									</li>
 								</ul>
 								<div class="right floatright">
-									<form action="#" method="get">
-										<button type="submit"><i class="mdi mdi-magnify"></i></button>
-										<input type="text" placeholder="Search within these results..." />
+									<form action="{% url 'product_list' %}" method="POST">
+										{% csrf_token %}
+										<button type="button"><i class="mdi mdi-magnify"></i></button>
+										<input type="text" name="search_name" placeholder="Search within these results..." />
 									</form>
 								</div>
 							</div>

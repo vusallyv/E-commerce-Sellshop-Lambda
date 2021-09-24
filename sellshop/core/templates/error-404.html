@@ -27,8 +27,9 @@
 					<img src="{% static 'img/error.png' %}" alt="" />
 					<h4>Ooops.... Error 404</h4>
 					<p>Sorry, But the page you are looking for does't exist</p>
-					<form action="#" method="get">
-						<input type="text" placeholder="Search within these results..." />
+					<form action="{% url 'product_list' %}" method="POST">
+						{% csrf_token %}
+						<input type="text" name="search_name" placeholder="Search within these results..." />
 						<button type="submit"><i class="mdi mdi-magnify"></i></button>
 					</form>
 					<h5>or</h5>

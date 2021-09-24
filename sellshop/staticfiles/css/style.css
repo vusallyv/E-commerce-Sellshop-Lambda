@@ -1342,9 +1342,8 @@ header.header-one.header-page {box-shadow: 0 2px 7px rgba(25, 25, 25, 0.2);}
 }
 .about-author.reply {
 	border-bottom: 1px solid #eeeeee;
-	border-top: 1px solid #eeeeee;
-	padding: 30px 0 30px 50px;
-	margin-bottom:30px;
+	padding: 30px 0 20px 50px;
+	margin-bottom: 10px;
 }
 .autohr-text > img {
     float: left;

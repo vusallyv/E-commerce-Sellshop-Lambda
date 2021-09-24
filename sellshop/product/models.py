@@ -2,6 +2,8 @@ from django.db import models
 
 # Create your models here.
 
+from django.utils import timezone
+
 class Brand(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
 
@@ -10,6 +12,7 @@ class Brand(models.Model):
 
 class Category(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
+    subcategory_id = models.ManyToManyField("product.Subcategory", related_name="Product_Subbctegory", verbose_name="Subcategory")
 
     class Meta:
         verbose_name = "Category"
@@ -20,7 +23,6 @@ class Category(models.Model):
 
 class Subcategory(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
-    category_id = models.ManyToManyField(Category, related_name="Product_Category")
 
     class Meta:
         verbose_name = "Subcategory"
@@ -38,7 +40,6 @@ class Product(models.Model):
     rating = models.DecimalField(verbose_name="Rating", max_digits=3, decimal_places=1)
     brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
-    tag_id = models.ManyToManyField("product.Tag", related_name="Product_Tags")
 
     def __str__(self) -> str:
         return self.title
@@ -63,32 +64,34 @@ class ProductVersion(models.Model):
         (7, '2XL'),
         (8, '3XL')
     )
-    quantity = models.IntegerField(verbose_name='Quantity')
+    quantity = models.PositiveIntegerField(verbose_name='Quantity')
     color = models.IntegerField(choices=colors, default=1, verbose_name='Color')
     size = models.IntegerField(choices=sizes, default=1, verbose_name='Size')
-    wishlist_id = models.ManyToManyField("order.Wishlist", related_name="Wishlist_Product", blank=False)
-    cart_id = models.ManyToManyField("order.Cart", related_name="Cart_Product", blank=False)
+    tag_id = models.ManyToManyField("product.Tag", related_name="ProductVersion_Tags")
     is_main = models.BooleanField(verbose_name='Is_main', default=False)
         
     def __str__(self):
         return self.product_id.title
 
 class Tag(models.Model):
-    title = models.CharField("Title", max_length=255, help_text="Max 255 char.")
+    title = models.CharField(verbose_name="Title", max_length=255, help_text="Max 255 char.")
 
     def __str__(self) -> str:
         return self.title
 
 class Review(models.Model):
-    name = models.CharField(verbose_name="Name", max_length=30, help_text="Max 30 char.")
-    email = models.CharField(verbose_name="Email", max_length=30, help_text="Max 30 char.")
+    user_id = models.ForeignKey("account.User",verbose_name="User", on_delete=models.CASCADE, default="")
     review = models.TextField(verbose_name="Review")
-    rating = models.IntegerField(verbose_name="Rating")
+    rating = models.DecimalField(verbose_name="Rating", max_digits=2, decimal_places=1, default=0)
+    created_at = models.DateTimeField(verbose_name="Created_at", default=timezone.now())
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return f"{self.user_id.first_name} {self.user_id.last_name}'s review"
+
 class Image(models.Model):
-    image = models.ImageField(verbose_name="Image", upload_to="media/")
-    product_id = models.ForeignKey("product.Product", on_delete=models.CASCADE, verbose_name="Product")
+    image = models.ImageField(verbose_name="Image", upload_to="media/", null=True)
+    productversion_id = models.ForeignKey("product.ProductVersion", on_delete=models.CASCADE, verbose_name="Product Version")
 
     def __str__(self) -> str:
         return f"{self.image}"
@@ -98,7 +101,7 @@ class Blog(models.Model):
     description = models.TextField(verbose_name="Description")
     creator = models.ForeignKey("account.User", on_delete=models.CASCADE)
     created_at = models.DateField(verbose_name="Created_at")
-    like = models.IntegerField(verbose_name="Like")
+    like = models.PositiveIntegerField(verbose_name="Like")
     brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
@@ -106,7 +109,11 @@ class Blog(models.Model):
         return f"{self.title}"
 
 class Comment(models.Model):
-    description = models.IntegerField(verbose_name="Description")
+    user_id = models.ForeignKey("account.User",verbose_name="User", on_delete=models.CASCADE, default="")
+    description = models.TextField(verbose_name="Description")
     created_at = models.DateField(verbose_name="Created_at")
     blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    comment_id = models.ForeignKey('product.Comment', on_delete=models.CASCADE)
+    comment_id = models.ForeignKey('product.Comment', on_delete=models.CASCADE, null=True, blank=True, default="")
+    
+    def __str__(self) -> str:
+        return f"{self.description}"

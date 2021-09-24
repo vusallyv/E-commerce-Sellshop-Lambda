@@ -2,10 +2,11 @@ from django.shortcuts import render
 
 # Create your views here.
 
+from product.models import Product
+
 def about(request):
     context = {
         'title': 'About Sellshop',
-        
     }
     return render(request, 'about.html', context=context)
 
