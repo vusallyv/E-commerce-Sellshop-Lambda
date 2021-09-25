@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from product.models import Product, Category, Brand, ProductVersion, Subcategory, Review, Comment, Blog, Image, Tag
+from product.models import Product, Category, Brand, ProductVersion, Review, Comment, Blog, Image, Tag
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
@@ -32,4 +32,4 @@ class BlogAdmin(admin.ModelAdmin):
     
 
 
-admin.site.register([Category, Brand, Subcategory, Review, Comment, Image])
+admin.site.register([Category, Brand, Review, Comment, Image])

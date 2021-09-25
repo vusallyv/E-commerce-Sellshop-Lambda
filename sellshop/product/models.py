@@ -12,22 +12,12 @@ class Brand(models.Model):
 
 class Category(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
-    subcategory_id = models.ManyToManyField("product.Subcategory", related_name="Product_Subbctegory", verbose_name="Subcategory")
+    subcategory = models.ForeignKey('self', verbose_name="Subcategory", on_delete=models.CASCADE, null=True, blank=True, default="", related_name="subcategories")
 
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
-    def __str__(self) -> str:
-        return self.title
-
-class Subcategory(models.Model):
-    title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
-
-    class Meta:
-        verbose_name = "Subcategory"
-        verbose_name_plural = "Subcategories"
-    
     def __str__(self) -> str:
         return self.title
 
@@ -39,7 +29,7 @@ class Product(models.Model):
     description = models.TextField(verbose_name="Description")
     rating = models.DecimalField(verbose_name="Rating", max_digits=3, decimal_places=1)
     brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, verbose_name="Category", on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.title
@@ -67,7 +57,7 @@ class ProductVersion(models.Model):
     quantity = models.PositiveIntegerField(verbose_name='Quantity')
     color = models.IntegerField(choices=colors, default=1, verbose_name='Color')
     size = models.IntegerField(choices=sizes, default=1, verbose_name='Size')
-    tag_id = models.ManyToManyField("product.Tag", related_name="ProductVersion_Tags")
+    tag_id = models.ManyToManyField("product.Tag", related_name="ProductVersion_Tags", null=True, blank=True)
     is_main = models.BooleanField(verbose_name='Is_main', default=False)
         
     def __str__(self):
@@ -84,7 +74,7 @@ class Review(models.Model):
     review = models.TextField(verbose_name="Review")
     rating = models.DecimalField(verbose_name="Rating", max_digits=2, decimal_places=1, default=0)
     created_at = models.DateTimeField(verbose_name="Created_at", default=timezone.now())
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(ProductVersion, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"{self.user_id.first_name} {self.user_id.last_name}'s review"
@@ -113,7 +103,7 @@ class Comment(models.Model):
     description = models.TextField(verbose_name="Description")
     created_at = models.DateField(verbose_name="Created_at")
     blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    comment_id = models.ForeignKey('product.Comment', on_delete=models.CASCADE, null=True, blank=True, default="")
+    comment_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, default=0, related_name="replies")
     
     def __str__(self) -> str:
         return f"{self.description}"
