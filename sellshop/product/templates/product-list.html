@@ -143,11 +143,12 @@
                       </div>
                     </form>
                   </div>
-                  {% endif %} {% for subcategory in category.subcategories.all %}
+                  {% endif %} 
                   <div
-                    class="panel-collapse collapse in"
-                    id="collapse{{ category.id }}"
+                  class="panel-collapse collapse in"
+                  id="collapse{{ category.id }}"
                   >
+                  {% for subcategory in category.subcategories.all %}
                     <form action="{% url 'product_list' %}" method="POST">
                       {% csrf_token %}
                       <div class="normal-a">
@@ -164,9 +165,10 @@
                       </div>
                     </form>
                     <div class="medium-a"></div>
+                    {% endfor %} 
                   </div>
                 </li>
-                {% endfor %} {% endfor %}
+                {% endfor %}
               </ul>
             </div>
           </div>
