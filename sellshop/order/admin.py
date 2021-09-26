@@ -4,4 +4,12 @@ from django.contrib import admin
 
 from order.models import Billing, Cart, Wishlist
 
-admin.site.register([Billing, Cart, Wishlist])
+
+class Wishlistadmin(admin.ModelAdmin):
+    search_fields = ['user_id']
+
+
+admin.site.register(Billing)
+admin.site.register(Cart)
+admin.site.register(Wishlist)
+

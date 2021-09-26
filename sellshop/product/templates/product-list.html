@@ -3,6 +3,11 @@
 {% load static %}
 {% block title %} {{title}}{% endblock %}
 {% block base %}
+
+
+{{ x }}
+{{ y }}
+
         <!-- pages-title-start -->
 		<div class="pages-title section-padding">
 			<div class="container">
@@ -66,87 +71,24 @@
 								</div>
 								<div class="categories left-right-p">
 									<ul id="accordion" class="panel-group clearfix">
+										{% for category in categories %}
 										<li class="panel">
-											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
+											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{category.id}}">
 												<div class="medium-a">
-													Women
+													{{ category.title }}
 												</div>
 											</div>
-											<div class="panel-collapse collapse in" id="collapse1">
+											<div class="panel-collapse collapse" id="collapse{{category.id}}">
+												{% for subcategory in subcategories%}
 												<div class="normal-a">
-													<a href="#">Men Bag</a>
-													<a href="#">Shoes</a>
-													<a href="#">Watch</a>
-													<a href="#">T-shirt</a>
-													<a href="#">shirt</a>
+													<a href="#">{{ subcategory.title }}</a>
 												</div>
+												{% endfor %}
 											</div>
-										</li>
-										<li class="panel">
-											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
-												<div class="medium-a">
-													Fashion
-												</div>
-											</div>
-											<div class="paypal-dsc panel-collapse collapse" id="collapse2">
-												<div class="normal-a">
-													<a href="#">Men Bag</a>
-													<a href="#">Shoes</a>
-													<a href="#">Watch</a>
-													<a href="#">T-shirt</a>
-													<a href="#">shirt</a>
-												</div>
-											</div>
-										</li>
-										<li class="panel">
-											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
-												<div class="medium-a">
-													Accessories
-												</div>
-											</div>
-											<div class="paypal-dsc panel-collapse collapse" id="collapse3">
-												<div class="normal-a">
-													<a href="#">Men Bag</a>
-													<a href="#">Shoes</a>
-													<a href="#">Watch</a>
-													<a href="#">T-shirt</a>
-													<a href="#">shirt</a>
-												</div>
-											</div>
-										</li>
-										<li class="panel">
-											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse4">
-												<div class="medium-a">
-													Top Brands
-												</div>
-											</div>
-											<div class="paypal-dsc panel-collapse collapse" id="collapse4">
-												<div class="normal-a">
-													<a href="#">Men Bag</a>
-													<a href="#">Shoes</a>
-													<a href="#">Watch</a>
-													<a href="#">T-shirt</a>
-													<a href="#">shirt</a>
-												</div>
-											</div>
-										</li>
-										<li class="panel">
-											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse5">
-												<div class="medium-a">
-													Jewelry
-												</div>
-											</div>
-											<div class="paypal-dsc panel-collapse collapse" id="collapse5">
-												<div class="normal-a">
-													<a href="#">Men Bag</a>
-													<a href="#">Shoes</a>
-													<a href="#">Watch</a>
-													<a href="#">T-shirt</a>
-													<a href="#">shirt</a>
-												</div>
-											</div>
-										</li>
+										</li>					
+										{% endfor %}
 									</ul>
+									
 								</div>
 							</div>
 							<div class="s-side-text">
@@ -474,151 +416,52 @@
 										</div>
 										<!-- single product end -->
 									</div>
-									<div class="tab-pane fade active in" id="list">
-										<div class="col-xs-12">
-											<div class="single-list-view">
-												<div class="row">
-													<div class="col-xs-12 col-md-4">
-														<div class="list-img">
-															<div class="product-img">
-																<div class="pro-type sell">
-																	<span>sell</span>
-																</div>
-																<a href="#"><img src="{% static 'img/products/8.jpg' %}" alt="Product Title" /></a>
-															</div>
-														</div>
-													</div>
-													<div class="col-xs-12 col-md-8">
-														<div class="list-text">
-															<h3>men’s Black t-shirt</h3>
-															<span>Summer men’s fashion</span>
-															<div class="ratting floatright">
-																<p>( 27 Rating )</p>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star-half"></i>
-																<i class="mdi mdi-star-outline"></i>
-															</div>
-															<h5><del>$79.30</del> $69.30</h5>
-															<p>There are many variations of passages of Lorem Ipsum available, but the majority have be suffered alteration in some form, by injected humour, or randomised words which donot look even slightly believable. If you are going to use a passage of Lorem Ipsum, you neede be sure there isn't anything embarrassing.</p>
-															<div class="list-btn">
-																<a href="#">add to cart</a>
-																<a href="#">wishlist</a>
-																<a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+									
+											<!-- single product end -->
+											
 											<!-- single product end -->
 											<div class="single-list-view">
 												<div class="row">
 													<div class="col-xs-12 col-md-4">
-														<div class="list-img">
-															<div class="product-img">
-																<div class="pro-type sell">
-																	<span>sell</span>
-																</div>
-																<a href="#"><img src="{% static 'img/products/12.jpg' %}" alt="Product Title" /></a>
-															</div>
-														</div>
-													</div>
-													<div class="col-xs-12 col-md-8">
-														<div class="list-text">
-															<h3>men’s Gray t-shirt</h3>
-															<span>Summer men’s fashion</span>
-															<div class="ratting floatright">
-																<p>( 27 Rating )</p>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star-half"></i>
-																<i class="mdi mdi-star-outline"></i>
-															</div>
-															<h5><del>$79.30</del> $69.30</h5>
-															<p>There are many variations of passages of Lorem Ipsum available, but the majority have be suffered alteration in some form, by injected humour, or randomised words which donot look even slightly believable. If you are going to use a passage of Lorem Ipsum, you neede be sure there isn't anything embarrassing.</p>
-															<div class="list-btn">
-																<a href="#">add to cart</a>
-																<a href="#">wishlist</a>
-																<a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<!-- single product end -->
-											<div class="single-list-view">
-												<div class="row">
-													<div class="col-xs-12 col-md-4">
+														{% for image in images %}
 														<div class="list-img">
 															<div class="product-img">
 																<div class="pro-type">
 																	<span>-15</span>
 																</div>
-																<a href="#"><img src="{% static 'img/products/8.jpg' %}" alt="Product Title" /></a>
+																<a href="#"><img src="{{ image }}" alt="Product Title" /></a>
 															</div>
 														</div>
+														{% endfor %}
 													</div>
 													<div class="col-xs-12 col-md-8">
 														<div class="list-text">
-															<h3>men’s Black t-shirt</h3>
-															<span>Summer men’s fashion</span>
+															{% for product in products %}
+															<h3>{{product.title}}</h3>
+															<span>{{product.subtitle}}</span>
 															<div class="ratting floatright">
-																<p>( 27 Rating )</p>
+																<p>( {{product.rating}} Rating )</p>
 																<i class="mdi mdi-star"></i>
 																<i class="mdi mdi-star"></i>
 																<i class="mdi mdi-star"></i>
 																<i class="mdi mdi-star-half"></i>
 																<i class="mdi mdi-star-outline"></i>
 															</div>
-															<h5><del>$79.30</del> $69.30</h5>
-															<p>There are many variations of passages of Lorem Ipsum available, but the majority have be suffered alteration in some form, by injected humour, or randomised words which donot look even slightly believable. If you are going to use a passage of Lorem Ipsum, you neede be sure there isn't anything embarrassing.</p>
+															<h5><del>{{product.ex_price}}$</del> {{product.price}}$</h5>
+															<p>{{product.description}}</p>
 															<div class="list-btn">
 																<a href="#">add to cart</a>
 																<a href="#">wishlist</a>
 																<a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
 															</div>
+															{% endfor %}
 														</div>
 													</div>
+												
 												</div>
 											</div>
 											<!-- single product end -->
-											<div class="single-list-view">
-												<div class="row">
-													<div class="col-xs-12 col-md-4">
-														<div class="list-img">
-															<div class="product-img">
-																<div class="pro-type">
-																	<span>new</span>
-																</div>
-																<a href="#"><img src="{% static 'img/products/13.jpg' %}" alt="Product Title" /></a>
-															</div>
-														</div>
-													</div>
-													<div class="col-xs-12 col-md-8">
-														<div class="list-text">
-															<h3>men’s White t-shirt</h3>
-															<span>Summer men’s fashion</span>
-															<div class="ratting floatright">
-																<p>( 27 Rating )</p>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star"></i>
-																<i class="mdi mdi-star-half"></i>
-																<i class="mdi mdi-star-outline"></i>
-															</div>
-															<h5><del>$79.30</del> $69.30</h5>
-															<p>There are many variations of passages of Lorem Ipsum available, but the majority have be suffered alteration in some form, by injected humour, or randomised words which donot look even slightly believable. If you are going to use a passage of Lorem Ipsum, you neede be sure there isn't anything embarrassing.</p>
-															<div class="list-btn">
-																<a href="#">add to cart</a>
-																<a href="#">wishlist</a>
-																<a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
+									
 											<!-- single product end -->
 										</div>
 									</div>
