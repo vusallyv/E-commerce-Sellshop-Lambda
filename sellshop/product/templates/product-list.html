@@ -41,10 +41,10 @@
         </div>
         <div class="col-xs-12 col-md-8">
           <div class="list-text">
-            <h3>{{ productversion.product_id.title }}</h3>
-            <span>{{ productversion.product_id.subtitle }}</span>
+            <h3>{{ productversion.product.title }}</h3>
+            <span>{{ productversion.product.subtitle }}</span>
             <div class="ratting floatright">
-              <p>( {{ productversion.product_id.rating }} Rating )</p>
+              <p>( {{ productversion.product.rating }} Rating )</p>
               <i class="mdi mdi-star"></i>
               <i class="mdi mdi-star"></i>
               <i class="mdi mdi-star"></i>
@@ -52,10 +52,10 @@
               <i class="mdi mdi-star-outline"></i>
             </div>
             <h5>
-              <del>${{ productversion.product_id.ex_price }}</del> ${{
-              productversion.product_id.price }}
+              <del>${{ productversion.product.ex_price }}</del> ${{
+              productversion.product.price }}
             </h5>
-            <p>{{ productversion.product_id.description }}</p>
+            <p>{{ productversion.product.description }}</p>
             <div class="list-btn">
               <a href="#">add to cart</a>
               <a href="#">wishlist</a>
@@ -145,7 +145,7 @@
                   </div>
                   {% endif %} 
                   <div
-                  class="panel-collapse collapse in"
+                  class="panel-collapse collapse  "
                   id="collapse{{ category.id }}"
                   >
                   {% for subcategory in category.subcategories.all %}
@@ -180,7 +180,7 @@
               <form action="#" method="get">
                 <label
                   ><span>You range</span>
-                  <input type="text" id="amount" readonly
+                  <input type="text" id="amount" name="price" readonly
                 /></label>
                 <div id="slider-range"></div>
               </form>
@@ -192,11 +192,21 @@
               <h5 class="floatright"><a href="#">All</a></h5>
             </div>
             <div class="size-select clearfix">
-              <a href="#">m</a>
-              <a href="#">s</a>
-              <a href="#">l</a>
-              <a href="#">sl</a>
-              <a href="#">xl</a>
+              <form action="{% url 'product_list' %}" method="POST">
+                {% csrf_token %}
+              {% for size in sizes %}
+              <a href="#">
+                <button
+                  type="submit"
+                  name="size"
+                  value="{{ size.title }}"
+                  style="background-color: transparent; border: none"
+                >
+                  {{ size.title }}
+                </button>
+              </a>
+              {% endfor %}
+            </form>
             </div>
           </div>
           <div class="s-side-text">
@@ -223,7 +233,19 @@
               <ul>
                 {% for brand in brands %}
                 <li>
-                  <a href="#">{{ brand.title }}</a>
+                  <form action="{% url 'product_list' %}" method="POST">
+                    {% csrf_token %}
+                  <a href="#">
+                    <button
+                      type="submit"
+                      name="brand"
+                      value="{{ brand.title }}"
+                      style="background-color: transparent; border: none"
+                    >
+                      {{ brand.title }}
+                    </button>
+                  </a>
+                </form>
                 </li>
                 {% endfor %}
               </ul>
@@ -293,7 +315,7 @@
                     </div>
                     <div class="product-dsc">
                       <p>
-                        <a href="#">{{ productversion.product_id.title }}</a>
+                        <a href="#">{{ productversion.product.title }}</a>
                       </p>
                       <div class="ratting">
                         <i class="mdi mdi-star"></i>
@@ -302,7 +324,7 @@
                         <i class="mdi mdi-star-half"></i>
                         <i class="mdi mdi-star-outline"></i>
                       </div>
-                      <span>${{ productversion.product_id.price }}</span>
+                      <span>${{ productversion.product.price }}</span>
                     </div>
                   </div>
                 </div>
@@ -330,11 +352,11 @@
                       </div>
                       <div class="col-xs-12 col-md-8">
                         <div class="list-text">
-                          <h3>{{ productversion.product_id.title }}</h3>
+                          <h3>{{ productversion.product.title }}</h3>
                           <span>Summer men’s fashion</span>
                           <div class="ratting floatright">
                             <p>
-                              ( {{ productversion.product_id.rating }} Rating )
+                              ( {{ productversion.product.rating }} Rating )
                             </p>
                             <i class="mdi mdi-star"></i>
                             <i class="mdi mdi-star"></i>
@@ -343,10 +365,10 @@
                             <i class="mdi mdi-star-outline"></i>
                           </div>
                           <h5>
-                            <del>${{ productversion.product_id.ex_price }}</del>
-                            ${{ productversion.product_id.price }}
+                            <del>${{ productversion.product.ex_price }}</del>
+                            ${{ productversion.product.price }}
                           </h5>
-                          <p>{{ productversion.product_id.description }}</p>
+                          <p>{{ productversion.product.description }}</p>
                           <div class="list-btn">
                             <a href="#">add to cart</a>
                             <a href="#">wishlist</a>
