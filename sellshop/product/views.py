@@ -4,6 +4,8 @@ from django.shortcuts import render
 
 from django.db.models import Q, F
 from product.models import Blog, Category, Color, ProductVersion, Image, Review, Product, Comment, Brand, Size
+from account.models import User
+from product.forms import CommentForm
 
 
 def product_list(request):
@@ -50,7 +52,11 @@ def single_blog(request, pk):
     qs_blogs = Blog.objects.order_by('-created_at')
     qs_category = Category.objects.all()
     qs_comment = Comment.objects.all()
+    qs_user = User.objects.first()
     qs_brand = Brand.objects.all()
+
+    if request.POST.get("description"):
+        print(request.POST.get("description"))
 
     context = {
         'title': 'Single-blog Sellshop',
@@ -60,6 +66,8 @@ def single_blog(request, pk):
         'categories': qs_category,
         'brands': qs_brand,
         'comments': qs_comment,
+        'form': CommentForm,
+        'user': qs_user,
     }
     return render(request, 'single-blog.html', context=context)
 
@@ -67,9 +75,11 @@ def single_blog(request, pk):
 def single_product(request, pk):
     qs_productversion_all = ProductVersion.objects.get(pk=pk)
     qs_reviews = Review.objects.all()
+    qs_user = User.objects.first()
     context = {
         'title': 'Single-product Sellshop',
         'allproductversions': qs_productversion_all,
         'reviews': qs_reviews,
+        'user': qs_user,
     }
     return render(request, 'single-product.html', context=context)

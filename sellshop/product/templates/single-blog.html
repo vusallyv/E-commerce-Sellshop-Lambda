@@ -85,7 +85,7 @@
               {% for comment in comments.all %} {% if not comment.comment_id %}
               <div class="about-author comments">
                 <div class="autohr-text">
-                  <img src="{% static 'img/blog/author2.png' %}" alt="" />
+                  <img style="width: 90px; height: 100px;"src="{{ comment.user_id.image.url }}" alt="" />
                   <div class="author-des">
                     <h4>
                       <a href="#">{{ comment.user_id.first_name }} {{comment.user_id.last_name }}</a>
@@ -99,7 +99,7 @@
               {% endif %} {% for reply in comment.replies.all %}
               <div class="about-author reply">
                 <div class="autohr-text">
-                  <img src="{% static 'img/blog/author3.png' %}" alt="" />
+                  <img style="width: 90px; height: 100px;"src="{{ comment.user_id.image.url }}" alt="" />
                   <div class="author-des">
                     <h4>
                       <a href="#">{{ reply.user_id.first_name }} {{ reply.user_id.last_name }}</a>
@@ -114,21 +114,22 @@
             </div>
             <div class="leave-comment">
               <h4>leave your review</h4>
-              <form action="mail.php" method="post">
+              <form action="" method="post">
+                {% csrf_token %}
                 <div class="row">
                   <div class="col-xs-12 col-sm-6">
                     <div class="input-text">
-                      <input type="text" name="name" placeholder="Name here" value="" />
+                      <input type="text" name="name" placeholder="Name here" value="{{user.first_name }}" readonly/>
                     </div>
                   </div>
                   <div class="col-xs-12 col-sm-6">
                     <div class="input-text">
-                      <input type="text" name="email" placeholder="Email here" value="" />
+                      <input type="text" name="email" placeholder="Email here" value="{{user.email}}" readonly/>
                     </div>
                   </div>
                   <div class="col-xs-12">
                     <div class="input-text">
-                      <textarea name="comment" id="comment" placeholder="Comment here" rows="4"></textarea>
+                      {{form.description}}
                     </div>
                   </div>
                   <div class="col-xs-12">

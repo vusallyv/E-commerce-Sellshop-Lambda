@@ -13,7 +13,7 @@ class User(models.Model):
     phone_number = models.IntegerField(verbose_name="Phone number", null=False, blank=False, default=0)
     additional_info = models.TextField(verbose_name="Additional Info", default="", null=True, blank=True)
     password = models.CharField(verbose_name="Password", max_length=30, null=False, blank=False, default="")
-    image = models.ImageField(verbose_name="User Image", upload_to="staticfiles/img/user/", default="staticfiles/img/blog/author1.png")
+    image = models.ImageField(verbose_name="User Image", upload_to="users/", default="staticfiles/img/blog/author1.png")
 
     def __str__(self) -> str:
         return f"{self.first_name} {self.last_name}"

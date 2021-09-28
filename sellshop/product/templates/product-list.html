@@ -33,7 +33,7 @@
               <div class="pro-type sell">
                 <span>sell</span>
               </div>
-              <a href="#"
+              <a href="http://127.0.0.1:8000/product/single-product/{{productversion.id}}"
                 ><img src="/static/img/products/8.jpg" alt="Product Title"
               /></a>
             </div>
@@ -52,8 +52,7 @@
               <i class="mdi mdi-star-outline"></i>
             </div>
             <h5>
-              <del>${{ productversion.product.ex_price }}</del> ${{
-              productversion.product.price }}
+              <del>${{ productversion.product.ex_price }}</del> ${{ productversion.product.price }}
             </h5>
             <p>{{ productversion.product.description }}</p>
             <div class="list-btn">
