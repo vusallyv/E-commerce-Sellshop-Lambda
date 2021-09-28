@@ -104,7 +104,7 @@
                     <h4>
                       <a href="#">{{ reply.user_id.first_name }} {{ reply.user_id.last_name }}</a>
                     </h4>
-                    <span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
+                    <span class="floatright"><a href="#">Hide</a></span>
                     <span>{{ reply.created_at }}</span>
                     <p>{{ reply.description }}</p>
                   </div>
@@ -223,8 +223,8 @@
               <ul>
                 {% for blog in blogs %}
                 <li>
-                  <a href="#"><img src="{% static 'img/blog/r3.jpg' %}" alt="" /></a>
-                  <h5><a href="#">{{ blog.title }}</a></h5>
+                  <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/r3.jpg' %}" alt="" /></a>
+                  <h5><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h5>
                   <span>{{ blog.created_at }}</span>
                 </li>
                 {% endfor %}
@@ -262,24 +262,24 @@
         <div class="row">
           {% for blog in relatedblogs %}
           {% if blog.product.product.category.title == firstblog.product.product.category.title %}
-          <div class="col-sm-4">
+          <div class="col-sm-12">
             <div class="l-blog-text">
               <div class="banner">
-                <a href="#"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
+                <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
               </div>
               <div class="s-blog-text">
                 <h4>
-                  <a href="#">{{ blog.title }}</a>
+                  <a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a>
                 </h4>
-                <span>By : <a href="#">{{ blog.creator }}</a> | <a href="#">{{ blog.like }} Like</a> |
-                  <a href="#">{{ comments|length }} Comments</a></span>
+                <span>By : <a href="{% url 'single_blog' blog.id %}">{{ blog.creator }}</a> | <a href="{% url 'single_blog' blog.id %}">{{ blog.like }} Like</a> |
+                  <a href="{% url 'single_blog' blog.id %}">{{ comments|length }} Comments</a></span>
                 <p>
                   {{ blog.description }}
                 </p>
               </div>
               <div class="date-read clearfix">
-                <a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
-                <a href="#">read more</a>
+                <a href="{% url 'single_blog' blog.id %}"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
+                <a href="{% url 'single_blog' blog.id %}">read more</a>
               </div>
             </div>
           </div>

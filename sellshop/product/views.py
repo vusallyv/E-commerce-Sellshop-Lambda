@@ -15,7 +15,6 @@ def product_list(request):
     qs_category = Category.objects.all()
     qs_brand = Brand.objects.all()
     qs = None
-    qs_color = Color.objects.all()
     qs_size = Size.objects.all()
 
     if request.POST.get("search_name"):
@@ -49,15 +48,16 @@ def product_list(request):
 
 def single_blog(request, pk):
     qs_one_blog = Blog.objects.get(pk=pk)
-    qs_blogs = Blog.objects.order_by('-created_at')
+    qs_blogs = Blog.objects.order_by('-created_at').exclude(id=pk)
     qs_category = Category.objects.all()
-    qs_comment = Comment.objects.all()
+    qs_comment = Comment.objects.filter(blog_id=pk)
     qs_user = User.objects.first()
     qs_brand = Brand.objects.all()
 
-    if request.POST.get("description"):
-        print(request.POST.get("description"))
-
+    if request.method == "POST":
+        form = CommentForm(request.POST, initial={'blog_id': pk})
+        if form.is_valid():
+            form.save()
     context = {
         'title': 'Single-blog Sellshop',
         'blogs': qs_blogs[0:3],
