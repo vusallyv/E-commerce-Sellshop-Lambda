@@ -37,26 +37,26 @@ def product_list(request):
         'productversions': qs,
         'brands': qs_brand,
         'allproductversions': qs_productversion_all[0:8],
-        'bestproductversion': qs_productversion_best,        
+        'bestproductversion': qs_productversion_best,
         'products': qs_product,
         'categories': qs_category,
         'sizes': qs_size
-
     }
     return render(request, 'product-list.html', context=context)
 
 
-def single_blog(request):
-    qs = Blog.objects.order_by('-created_at')
+def single_blog(request, pk):
+    qs_one_blog = Blog.objects.get(pk=pk)
+    qs_blogs = Blog.objects.order_by('-created_at')
     qs_category = Category.objects.all()
     qs_comment = Comment.objects.all()
     qs_brand = Brand.objects.all()
 
-
     context = {
         'title': 'Single-blog Sellshop',
-        'blogs': qs[0:3],
-        'relatedblogs': qs[1::],
+        'blogs': qs_blogs[0:3],
+        'relatedblogs': qs_blogs,
+        'firstblog': qs_one_blog,
         'categories': qs_category,
         'brands': qs_brand,
         'comments': qs_comment,
@@ -64,12 +64,12 @@ def single_blog(request):
     return render(request, 'single-blog.html', context=context)
 
 
-def single_product(request):
-    qs_productversion_all = ProductVersion.objects.all()
+def single_product(request, pk):
+    qs_productversion_all = ProductVersion.objects.get(pk=pk)
     qs_reviews = Review.objects.all()
     context = {
         'title': 'Single-product Sellshop',
-        'allproductversions': qs_productversion_all[0],
+        'allproductversions': qs_productversion_all,
         'reviews': qs_reviews,
     }
     return render(request, 'single-product.html', context=context)

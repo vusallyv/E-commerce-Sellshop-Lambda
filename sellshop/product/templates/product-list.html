@@ -195,7 +195,7 @@
               <form action="{% url 'product_list' %}" method="POST">
                 {% csrf_token %}
               {% for size in sizes %}
-              <a href="#">
+              <a href="">
                 <button
                   type="submit"
                   name="size"
@@ -235,7 +235,7 @@
                 <li>
                   <form action="{% url 'product_list' %}" method="POST">
                     {% csrf_token %}
-                  <a href="#">
+                  <a href="">
                     <button
                       type="submit"
                       name="brand"
