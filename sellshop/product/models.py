@@ -124,11 +124,11 @@ class Blog(models.Model):
 
 
 class Comment(models.Model):
-    user_id = models.ForeignKey(
-        "account.User", verbose_name="User", on_delete=models.CASCADE, default=1)
+    # user_id = models.ForeignKey(
+    #     "account.User", verbose_name="User", on_delete=models.CASCADE, default=1)
     description = models.TextField(verbose_name="Description")
     created_at = models.DateField(verbose_name="Created_at", default=timezone.now())
-    blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True)
+    blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True, default=1)
     comment_id = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, default="", related_name="replies")
 

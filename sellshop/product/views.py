@@ -32,16 +32,14 @@ def product_list(request):
     elif request.POST.get("brand"):
         qs_productversion_all = ProductVersion.objects.filter(
             product__brand__title=request.POST.get("brand"))
-
     context = {
         'title': 'Product-list Sellshop',
         'productversions': qs,
         'brands': qs_brand,
         'allproductversions': qs_productversion_all[0:8],
+        'sizes': qs_size,
         'bestproductversion': qs_productversion_best,
         'products': qs_product,
-        'categories': qs_category,
-        'sizes': qs_size
     }
     return render(request, 'product-list.html', context=context)
 
