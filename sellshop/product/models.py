@@ -1,11 +1,15 @@
 from django.db import models
+from django.db.models.fields.related import ForeignKey
 
 from sellshop.utils.base_models import BaseModel
+from blog.models import Comment, Blog
+
 class Brand(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
     
     def __str__(self) -> str:
         return self.title
+
 
 class Category(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
@@ -17,13 +21,15 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.title
 
+
 class Subcategory(models.Model):
     title = models.CharField(verbose_name="Title", max_length=30, help_text="Max 30 char.")
-    category_id = models.ManyToManyField(Category, related_name="Product_Category")
+    category_id = models.ManyToManyField(Category, related_name="ProductCategory")
 
     class Meta:
         verbose_name = "Subcategory"
         verbose_name_plural = "Subcategories"
+
 
 class Product(models.Model):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
@@ -34,11 +40,21 @@ class Product(models.Model):
     rating = models.IntegerField(verbose_name="Rating")
     brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+   
 
     def __str__(self) -> str:
         return self.title
+    
 
-class ProductVersion(models.Model):
+
+class Tag(models.Model):
+    title = models.CharField(max_length=30, verbose_name='Title', help_text='Max 30 char.', unique=True)
+    
+    def __str__(self):
+        return self.title
+   
+    
+class ProductVersion(BaseModel):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     colors = (
         (1, 'Red'),
@@ -61,43 +77,27 @@ class ProductVersion(models.Model):
     quantity = models.PositiveIntegerField(verbose_name='Quantity')
     color = models.IntegerField(choices=colors, default=1, verbose_name='Color')
     size = models.IntegerField(choices=sizes, default=1, verbose_name='Size')
-    # wishlist_id = models.ManyToManyField("order.Wishlist", related_name="Wishlist_Product")
-    # cart_id = models.ManyToManyField("order.Cart", related_name="Cart_Product")
     is_main = models.BooleanField(verbose_name='Is_main')
+    tags = models.ManyToManyField("product.Tag", related_name="products")
+
         
     def __str__(self):
         return self.product_id.title
 
+
 class Review(models.Model):
     name = models.CharField(verbose_name="Name", max_length=30, help_text="Max 30 char.")
     email = models.CharField(verbose_name="Email", max_length=30, help_text="Max 30 char.")
-    review = models.TextField(verbose_name="Review")
-    rating = models.IntegerField(verbose_name="Rating")
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+    review = models.CharField(max_length=300,verbose_name="Review")
+    rating = models.IntegerField(verbose_name="Rating", default=0)
+    product_id = models.ForeignKey(Product,null=True, blank=True,default="", on_delete=models.CASCADE) # bu commentde qalmasin
     
     def __str__(self):
-        return self.name
+        return self.review
     
 
 class Image(models.Model):
-    image = models.ImageField(verbose_name="Image")
+    image = models.ImageField(verbose_name="Image", upload_to='products/images')
     product_id = models.ForeignKey(ProductVersion, on_delete=models.CASCADE, verbose_name="Prodcut_ID")
 
-class Blog(models.Model):
-    title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
-    description = models.TextField(verbose_name="Description")
-    creator = models.CharField("Creator", max_length=30, help_text="Max 30 char.")
-    created_at = models.DateField(verbose_name="Created_at")
-    like = models.IntegerField(verbose_name="Like")
-    brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.title
-    
 
-class Comment(models.Model):
-    description = models.TextField(verbose_name="Description")
-    created_at = models.DateField(verbose_name="Created at")
-    blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    comment_id = models.ForeignKey('product.Comment', on_delete=models.CASCADE)

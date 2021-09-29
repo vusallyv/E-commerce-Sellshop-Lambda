@@ -1,0 +1,9 @@
+qs 6
+Bu tetbiq edilmediyi uchun shell codunu qeyd edirem
+
+from django.db.models import Count
+
+from product.models import *
+
+fifty_tags = Tag.objects.annotate(num_tags = Count('products')).order_by('-num_tags')[0:5]
+

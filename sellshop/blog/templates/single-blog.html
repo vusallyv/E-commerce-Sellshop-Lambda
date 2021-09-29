@@ -31,25 +31,19 @@
 					</div>
 					<div class="padding30">
 						<div class="blog-text">
+							{% for i in all_blogs2 %}
 							<div class="post-title">
-								<h3>Fashion style fine arts drawing</h3>
+								<!-- Fashion style fine arts drawing -->
+								<h3>{{ i.title }}</h3>
 								<ul class="clearfix">
-									<li><i class="pe-7s-user"></i>By :<a href="#">Rakib</a><span>|</span></li>
-									<li><i class="pe-7s-comment"></i><a href="#">Jun 25, 2016</a><span>|</span></li>
-									<li><i class="pe-7s-like"></i><a href="#">210 Like</a><span>|</span></li>
-									<li><i class="pe-7s-back"></i><a href="#">69 Comments</a></li>
+									<li><i class="pe-7s-user"></i>By :<a href="#">{{ i.creator }}</a><span>|</span></li>
+									<li><i class="pe-7s-comment"></i><a href="#">{{ i.create_at }}</a><span>|</span></li>
+									<li><i class="pe-7s-like"></i><a href="#">{{ i.like }} Like</a><span>|</span></li>
+									<li><i class="pe-7s-back"></i><a href="#">70 Comments</a></li>
 								</ul>
 							</div>
-							<p>On the other hand, we denounce with righteous indignation and dislike men who are so
-								beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire,
-								that they cannot foresee the pain and trouble that are bound to ensue; and equal blame
-								belongs to those who fail in their duty through weakness of will, which is the same as
-								saying through shrinking from toil and pain. These cases are perfectly simple and easy
-								to distinguish. In a free hour, when our power of choice is untrammelled and when
-								nothing prevents our being able to do what we like best, every pleasure is to be
-								welcomed and every pain avoided. But in certain circumstances and owing to the claims of
-								duty or the obligations of business it will frequently occur that pleasures have to be
-								repudiated and annoyances accepted.</p>
+							<p>{{ i.description }}</p>
+							{% endfor %}
 							<div class="italic">
 								<p>“The wise man therefore always holds in these matters to this principle of selection:
 									he rejects pleasures to secure other greater pleasures, or else he endures pains to
@@ -116,6 +110,7 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="leave-comment">
 							<h4>leave your review</h4>
 							<form action="mail.php" method="post">
@@ -253,24 +248,25 @@
 		<ul class="blog-row">
 			<li>
 				<div class="row">
+					{% for i in all_blogs %}
 					<div class="col-sm-4">
 						<div class="l-blog-text">
 							<div class="banner"><a href="{% url 'single_blog' %}"><img
 										src="{% static 'img/blog/4.jpg' %}" alt="" /></a></div>
 							<div class="s-blog-text">
 								<h4><a href="{% url 'single_blog' %}">Fashion style fine arts drawing</a></h4>
-								<span>By : <a href="#">Rakib</a> | <a href="#">210 Like</a> | <a href="#">69
+								<span>By : <a href="#">{{i.creator}}</a> | <a href="#">{{i.like}} Like</a> | <a href="#">69
 										Comments</a></span>
-								<p>There are many variations of passages of Lorem Ipsum available, but the majority have
-									suffered alteration in some form, by injected humour....</p>
+								<p> {{i.description }} </p>
 							</div>
 							<div class="date-read clearfix">
-								<a href="#"><i class="mdi mdi-clock"></i> jun 25, 2016</a>
+								<a href="#"><i class="mdi mdi-clock"></i>{{i.create_at}}</a>
 								<a href="{% url 'single_blog' %}">read more</a>
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-4">
+					{% endfor %}
+					<!-- <div class="col-sm-4">
 						<div class="l-blog-text">
 							<div class="banner"><a href="{% url 'single_blog' %}"><img
 										src="{% static 'img/blog/5.jpg' %}" alt="" /></a></div>
@@ -286,8 +282,8 @@
 								<a href="{% url 'single_blog' %}">read more</a>
 							</div>
 						</div>
-					</div>
-					<div class="col-sm-4">
+					</div> -->
+					<!-- <div class="col-sm-4">
 						<div class="l-blog-text">
 							<div class="banner"><a href="{% url 'single_blog' %}"><img
 										src="{% static 'img/blog/6.jpg' %}" alt="" /></a></div>
@@ -303,7 +299,8 @@
 								<a href="{% url 'single_blog' %}">read more</a>
 							</div>
 						</div>
-					</div>
+					</div> -->
+					
 				</div>
 			</li>
 		</ul>

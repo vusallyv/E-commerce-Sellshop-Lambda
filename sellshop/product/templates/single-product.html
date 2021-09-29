@@ -160,10 +160,11 @@
 								</div>
 								<div class="info-reviews review-text tab-pane fade in active" id="reviews">
 									<div class="about-author">
+										{% for i in review %}
 										<div class="autohr-text">
-											<img src="{% static 'img/blog/author1.png' %}" alt="" />
 											<div class="author-des">
-												<h4><a href="#">Gregory Hernandez</a></h4>
+												<img src="{% static 'img/blog/author1.png' %}" alt="" />
+												<h4><a href="#">{{i.title}}</a></h4>
 												<span class="floatright ratting">
 													<i class="mdi mdi-star"></i>
 													<i class="mdi mdi-star"></i>
@@ -172,46 +173,14 @@
 													<i class="mdi mdi-star-outline"></i>
 												</span>
 												<span>27 Jun, 2016 at 2:30pm</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas eleifend. Phasellus a felis at est bibenes dum feugiat ut eget eni Praesent et messages in consectetur.</p>
+												<div>
+													<p>{{i.description}}</p>
+												</div>
 											</div>
 										</div>
+										{% endfor %}
 									</div>
-									<hr />
-									<div class="about-author">
-										<div class="autohr-text">
-											<img src="{% static 'img/blog/author2.png' %}" alt="" />
-											<div class="author-des">
-												<h4><a href="#">Gregory Hernandez</a></h4>
-												<span class="floatright ratting">
-													<i class="mdi mdi-star"></i>
-													<i class="mdi mdi-star"></i>
-													<i class="mdi mdi-star"></i>
-													<i class="mdi mdi-star-half"></i>
-													<i class="mdi mdi-star-outline"></i>
-												</span>
-												<span>27 Jun, 2016 at 2:30pm</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas eleifend. Phasellus a felis at est bibenes dum feugiat ut eget eni Praesent et messages in consectetur.</p>
-											</div>
-										</div>
-									</div>
-									<hr />
-									<div class="about-author">
-										<div class="autohr-text">
-											<img src="{% static 'img/blog/author3.png' %}" alt="" />
-											<div class="author-des">
-												<h4><a href="#">Gregory Hernandez</a></h4>
-												<span class="floatright ratting">
-													<i class="mdi mdi-star"></i>
-													<i class="mdi mdi-star"></i>
-													<i class="mdi mdi-star"></i>
-													<i class="mdi mdi-star-half"></i>
-													<i class="mdi mdi-star-outline"></i>
-												</span>
-												<span>27 Jun, 2016 at 2:30pm</span>
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas eleifend. Phasellus a felis at est bibenes dum feugiat ut eget eni Praesent et messages in consectetur.</p>
-											</div>
-										</div>
-									</div>
+							
 									<div class="your-rating log-title">
 										<h3>leave your review</h3>
 										<h5>Your rating</h5>
@@ -260,29 +229,32 @@
 										</div>
 									</div>
 									<div class="custom-input">
-										<form action="mail.php" method="post">
+										<form method="post">
+											{% csrf_token %}
 											<div class="row">
+													
 												<div class="col-sm-6">
 													<div class="input-mail">
-														<input type="text" name="name" placeholder="Your Name" />
+														<input type="text" name="name" placeholder="Your Name" value='Taleh' readonly/>
 													</div>
 												</div>
 												<div class="col-sm-6">
 													<div class="input-mail">
-														<input type="text" name="email" placeholder="Your Email" />
-													</div>
+														<input type="text" name="email" placeholder="Your Email" value='taleh@gmail.com' readonly/>
+													</div> 
 												</div>
 												<div class="col-xs-12">
-													<div class="custom-mess">
+													{{ form.as_p }}
+													<!-- <div class="custom-mess">
 														<textarea name="message" placeholder="Your Review" rows="2"></textarea>
-													</div>
+													</div> -->
 												</div>
 												<div class="col-xs-12">
 													<div class="submit-text">
 														<button type="submit">submit review</button>
 													</div>
 												</div>
-											</div>
+											</div> 
 										</form>
 									</div>
 								</div>

@@ -1,30 +1,31 @@
 from django.shortcuts import render
 
-from product.models import Category, Subcategory
-from product.models import ProductVersion, Product, Image
+
+from product.models import Category, Subcategory, ProductVersion, Product, Image,  Review
 
 from django.db.models import Q
-
-
-def single_blog(request):
-    categories = Category.objects.all()
-    subcategories = Subcategory.objects.all()
-    context = {
-        'title': 'Single-blog Sellshop',
-        'categories': categories,
-        'subcategories': subcategories,
-    }
-    return render(request, 'single-blog.html', context=context)
+from product.forms import ReviewForm
 
 
 def single_product(request):
-    # qs_image = Image.objects.all()
+    qs_image = Image.objects.all()
     qs = ProductVersion.objects.all()[0:1]
+    review = Product.objects.all()[0:1]
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = ReviewForm()
+    else:
+        form = ReviewForm()
    
     context = {
         'title': 'Single-product Sellshop',
         'products': qs,
-        # 'images': qs_image,
+        'review': review,
+        'images': qs_image,
+        'form': ReviewForm(),
     }
     return render(request, 'single-product.html', context=context)
 

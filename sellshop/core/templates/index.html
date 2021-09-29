@@ -92,6 +92,7 @@
 					<ul class="load-list load-list-one">
 						<li>
 							<div class="row text-center">
+								{% for productversion in all_versions %}
 								<div class="col-xs-12 col-sm-6 col-md-3">
 									<div class="single-product">
 										<div class="product-img">
@@ -106,13 +107,14 @@
 											</div>
 										</div>
 										<div class="product-dsc">
-											<p><a href="#">men’s Black t-shirt</a></p>
-											<span>$65.20</span>
+											<p><a href="#">{{ productversion.product_id.title }}</a></p>
+											<span>{{productversion.product_id.price}}</span>
 										</div>
 									</div>
 								</div>
+								{% endfor %}
 								<!-- single product end -->
-								<div class="col-xs-12 col-sm-6 col-md-3">
+								<!-- <div class="col-xs-12 col-sm-6 col-md-3">
 									<div class="single-product">
 										<div class="product-img">
 											<div class="pro-type sell">
@@ -130,9 +132,9 @@
 											<span>$57.00</span>
 										</div>
 									</div>
-								</div>
+								</div> -->
 								<!-- single product end -->
-								<div class="col-xs-12 col-sm-6 col-md-3 r-margin-top">
+								<!-- <div class="col-xs-12 col-sm-6 col-md-3 r-margin-top">
 									<div class="single-product">
 										<div class="product-img">
 											<div class="pro-type">
@@ -150,9 +152,9 @@
 											<span>$56.00</span>
 										</div>
 									</div>
-								</div>
+								</div> -->
 								<!-- single product end -->
-								<div class="col-xs-12 col-sm-6 col-md-3 r-margin-top">
+								<!-- <div class="col-xs-12 col-sm-6 col-md-3 r-margin-top">
 									<div class="single-product">
 										<div class="product-img">
 											<a href="#"><img src="{% static 'img/products/19.jpg' %}" alt="Product Title" /></a>
@@ -167,7 +169,7 @@
 											<span>$96.20</span>
 										</div>
 									</div>
-								</div>
+								</div> -->
 								<!-- single product end -->
 							</div>
 						</li>
