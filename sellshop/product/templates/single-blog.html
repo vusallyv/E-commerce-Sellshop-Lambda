@@ -85,7 +85,11 @@
               {% for comment in comments.all %} {% if not comment.comment_id %}
               <div class="about-author comments">
                 <div class="autohr-text">
-                  <img style="width: 90px; height: 100px;"src="{{ comment.user_id.image.url }}" alt="" />
+                  {% if comment.user_id.image == 'staticfiles/img/blog/author1.png' %}
+                  <img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}" alt="" />
+                  {% else %}
+                  <img style="width: 90px; height: 100px;" src="{{ comment.user_id.image.url }}" alt="" />
+                  {% endif %}
                   <div class="author-des">
                     <h4>
                       <a href="#">{{ comment.user_id.first_name }} {{comment.user_id.last_name }}</a>
@@ -99,7 +103,11 @@
               {% endif %} {% for reply in comment.replies.all %}
               <div class="about-author reply">
                 <div class="autohr-text">
-                  <img style="width: 90px; height: 100px;"src="{{ comment.user_id.image.url }}" alt="" />
+                  {% if reply.user_id.image == 'staticfiles/img/blog/author1.png' %}
+                  <img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}" alt="" />
+                  {% else %}
+                  <img style="width: 90px; height: 100px;" src="{{ reply.user_id.image.url }}" alt="" />
+                  {% endif %}
                   <div class="author-des">
                     <h4>
                       <a href="#">{{ reply.user_id.first_name }} {{ reply.user_id.last_name }}</a>
@@ -119,12 +127,12 @@
                 <div class="row">
                   <div class="col-xs-12 col-sm-6">
                     <div class="input-text">
-                      <input type="text" name="name" placeholder="Name here" value="{{user.username }}" readonly/>
+                      <input type="text" name="name" placeholder="Name here" value="{{user.username }}" readonly />
                     </div>
                   </div>
                   <div class="col-xs-12 col-sm-6">
                     <div class="input-text">
-                      <input type="text" name="email" placeholder="Email here" value="{{user.email}}" readonly/>
+                      <input type="text" name="email" placeholder="Email here" value="{{user.email}}" readonly />
                     </div>
                   </div>
                   <div class="col-xs-12">
@@ -271,7 +279,8 @@
                 <h4>
                   <a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a>
                 </h4>
-                <span>By : <a href="{% url 'single_blog' blog.id %}">{{ blog.creator }}</a> | <a href="{% url 'single_blog' blog.id %}">{{ blog.like }} Like</a> |
+                <span>By : <a href="{% url 'single_blog' blog.id %}">{{ blog.creator }}</a> | <a
+                    href="{% url 'single_blog' blog.id %}">{{ blog.like }} Like</a> |
                   <a href="{% url 'single_blog' blog.id %}">{{ comments|length }} Comments</a></span>
                 <p>
                   {{ blog.description }}
