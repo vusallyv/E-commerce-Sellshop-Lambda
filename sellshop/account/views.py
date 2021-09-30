@@ -3,8 +3,7 @@ from django.shortcuts import redirect, redirect, render
 # Create your views here.
 
 from account.models import User
-from account.forms import LoginForm, RegisterForm, RegisterForm
-from django.contrib.auth.decorators import login_required
+from account.forms import LoginForm, RegisterForm
 from django.contrib import auth
 import random
 
@@ -21,37 +20,31 @@ def login(request):
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
         if form.is_valid():
-            if User.objects.filter(email=request.POST.get('email')).exists() == False:
-                if User.objects.filter(phone_number=request.POST.get('phone_number')).exists() == False:
-                    if request.POST.get('password') == request.POST.get('confirm_password'):
-                        random_number = random.randint(0, 10000)
-                        while User.objects.filter(username=f"Guest_{random_number}"):
-                            random_number = random.randint(0, 1000000)
-                        user = User(
-                            first_name=request.POST.get('first_name'),
-                            email=request.POST.get('email'),
-                            phone_number=request.POST.get('phone_number'),
-                            password=request.POST.get('password'),  
-                            username=f"Guest_{random_number}",
-                        )
-                        user.save()
-                        auth.login(request, user)
-                        return redirect(my_account)
-                    else:
-                        raise 'Password must be same'
-                else:
-                    raise 'Phone number already in use'
-            else:
-                raise 'Email already in use'
+            random_number = random.randint(0, 10000)
+            while User.objects.filter(username=f"Guest_{random_number}"):
+                random_number = random.randint(0, 1000000)
+            user = User(
+                first_name=request.POST.get('first_name'),
+                email=request.POST.get('email'),
+                phone_number=request.POST.get('phone_number'),
+                username=f"Guest_{random_number}",
+            )
+            user.set_password(request.POST.get('password')),
+            user.save()
+            auth.login(request, user)
+            return redirect(my_account)
     else:
         form = RegisterForm()
-    
+
     if request.method == "POST" and 'login' in request.POST:
         form = RegisterForm(request.POST)
-        auth.login(request, User.objects.get(email=request.POST.get('email')))
-        return redirect(my_account)
-        # else:   
-        #     raise "Email not found"
+        user = User.objects.filter(email=request.POST.get('email')).first()
+        if user is not None and user.check_password(request.POST.get('password')):
+            auth.login(request, user)
+            return redirect(my_account)
+    else:
+        form = LoginForm(request.POST)
+
     context = {
         'title':  'Login Sellshop',
         'login':  LoginForm,

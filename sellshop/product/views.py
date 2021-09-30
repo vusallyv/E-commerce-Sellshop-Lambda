@@ -12,7 +12,6 @@ def product_list(request):
     qs_productversion_all = ProductVersion.objects.all()
     qs_productversion_best = ProductVersion.objects.order_by('-rating')[0]
     qs_product = Product.objects.all()
-    qs_category = Category.objects.all()
     qs_brand = Brand.objects.all()
     qs = None
     qs_size = Size.objects.all()
@@ -49,7 +48,6 @@ def single_blog(request, pk):
     qs_blogs = Blog.objects.order_by('-created_at').exclude(id=pk)
     qs_category = Category.objects.all()
     qs_comment = Comment.objects.filter(blog_id=pk)
-    qs_user = User.objects.first()
     qs_brand = Brand.objects.all()
 
     if request.method == "POST":
@@ -68,7 +66,6 @@ def single_blog(request, pk):
         'brands': qs_brand,
         'comments': qs_comment,
         'form': CommentForm,
-        'user': qs_user,
     }
     return render(request, 'single-blog.html', context=context)
 
@@ -76,11 +73,9 @@ def single_blog(request, pk):
 def single_product(request, pk):
     qs_productversion_all = ProductVersion.objects.get(pk=pk)
     qs_reviews = Review.objects.all()
-    qs_user = User.objects.first()
     context = {
         'title': 'Single-product Sellshop',
         'allproductversions': qs_productversion_all,
         'reviews': qs_reviews,
-        'user': qs_user,
     }
     return render(request, 'single-product.html', context=context)

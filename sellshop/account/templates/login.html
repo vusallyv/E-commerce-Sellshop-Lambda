@@ -55,7 +55,7 @@
 							{% csrf_token %}
 							{{register.first_name}}
 							{% if error %}
-							{{ error }}
+								{{ error }}
 							{% endif %}
 							{{register.email}}
 							{{register.phone_number}}

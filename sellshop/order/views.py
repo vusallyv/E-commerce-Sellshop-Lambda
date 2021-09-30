@@ -14,14 +14,12 @@ def card(request):
 
 
 def checkout(request):
-    qs_user = User.objects.first()
     if request.method == "POST":
         form = BillingForm(request.POST)
         if form.is_valid():
             form.save()
     context = {
         'title': 'Checkout Sellshop',
-        'user': qs_user,
         'form': BillingForm,
     }
     return render(request, "checkout.html", context=context)
