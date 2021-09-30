@@ -4,9 +4,11 @@ from django.db.models.expressions import F
 # Create your models here.
 
 from django.contrib.auth.models import AbstractUser
+import random
 
 
 class User(AbstractUser):
+    email = models.EmailField(('email address'), blank=True, unique=True)
     birth = models.DateField(verbose_name="Date of Birth", null=True)
     country = models.CharField(
         verbose_name="Country", max_length=255, null=False, blank=False, default="")
@@ -18,6 +20,7 @@ class User(AbstractUser):
         verbose_name="Additional Info", default="", null=True, blank=True)
     image = models.ImageField(
         verbose_name="User Image", upload_to="users/", default="staticfiles/img/blog/author1.png")
+    rememberme = models.BooleanField(verbose_name="Remember me", default=False)
 
     def __str__(self) -> str:
         return f"{self.username}"

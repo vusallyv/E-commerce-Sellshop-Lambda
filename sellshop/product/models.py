@@ -5,6 +5,7 @@ from django.db.models.deletion import CASCADE
 
 from django.utils import timezone
 
+
 class Brand(models.Model):
     title = models.CharField(verbose_name="Title",
                              max_length=30, help_text="Max 30 char.")
@@ -127,8 +128,10 @@ class Comment(models.Model):
     user_id = models.ForeignKey(
         "account.User", verbose_name="User", on_delete=models.CASCADE, default=1)
     description = models.TextField(verbose_name="Description")
-    created_at = models.DateField(verbose_name="Created_at", default=timezone.now())
-    blog_id = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True, default=1)
+    created_at = models.DateField(
+        verbose_name="Created_at", default=timezone.now())
+    blog_id = models.ForeignKey(
+        Blog, on_delete=models.CASCADE, null=True, blank=True, default=1)
     comment_id = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, default="", related_name="replies")
 

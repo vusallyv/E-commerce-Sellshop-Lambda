@@ -53,9 +53,12 @@ def single_blog(request, pk):
     qs_brand = Brand.objects.all()
 
     if request.method == "POST":
-        form = CommentForm(request.POST, initial={'blog_id': pk})
+        form = CommentForm(request.POST)
         if form.is_valid():
             form.save()
+    else:
+        form = CommentForm()
+
     context = {
         'title': 'Single-blog Sellshop',
         'blogs': qs_blogs[0:3],

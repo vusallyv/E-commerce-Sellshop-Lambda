@@ -63,8 +63,12 @@
 									<li>
 										<a href="#"><i class="mdi mdi-account"></i></a>
 										<ul>
+											{% if request.user.is_authenticated %}
+											<li><a href="{% url 'login' %}">Logout</a></li>
+											{% else %}
 											<li><a href="{% url 'login' %}">Login</a></li>
-											<li><a href="{% url 'login' %}">Registar</a></li>
+											{% endif %}
+											<li><a href="{% url 'login' %}">Register</a></li>
 											<li><a href="{% url 'my_account' %}">My account</a></li>
 										</ul>
 									</li>
@@ -309,7 +313,7 @@
                         </div>
                         <div class="footer-menu">
                             <ul>
-                                <li><a href="{% url 'login' %}"><i class="mdi mdi-menu-right"></i>My Account</a></li>
+                                <li><a href="{% url 'my_account' %}"><i class="mdi mdi-menu-right"></i>My Account</a></li>
                                 <li><a href="{% url 'wishlist' %}"><i class="mdi mdi-menu-right"></i>My Wishlist</a></li>
                                 <li><a href="{% url 'cart' %}"><i class="mdi mdi-menu-right"></i>My Cart</a></li>
                                 <li><a href="{% url 'login' %}"><i class="mdi mdi-menu-right"></i>Sign In</a></li>
