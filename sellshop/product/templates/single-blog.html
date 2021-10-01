@@ -122,18 +122,29 @@
             </div>
             <div class="leave-comment">
               <h4>leave your review</h4>
+            {% if request.user.is_authenticated %}
               <form action="" method="post">
+                {% else %}
+              <form action="{% url 'login'%}">
+                {% endif %}
                 {% csrf_token %}
                 <div class="row">
                   <div class="col-xs-12 col-sm-6">
                     <div class="input-text">
+                      {% if request.user.is_authenticated %}
                       <input type="text" name="name" placeholder="Name here" value="{{user.username }}" readonly />
+                      {% else %}
+                      <input type="text" name="name" placeholder="Name here" />
+                      {% endif %}
                     </div>
                   </div>
                   <div class="col-xs-12 col-sm-6">
                     <div class="input-text">
-                      <input type="text" name="email" placeholder="Email here" value="{{user.email}}" readonly />
-                    </div>
+                      {% if request.user.is_authenticated %}
+                      <input type="text" name="name" placeholder="Name here" value="{{user.email }}" readonly />
+                      {% else %}
+                      <input type="text" name="name" placeholder="Name here" />
+                      {% endif %}</div>
                   </div>
                   <div class="col-xs-12">
                     <div class="input-text">
@@ -142,9 +153,15 @@
                   </div>
                   <div class="col-xs-12">
                     <div class="submit-text">
+                      {% if request.user.is_authenticated %}
                       <button type="submit" value="submit form">
                         submit comments
+                      </button> 
+                      {% else %}
+                      <button type="text" value="submit form">
+                        submit comments
                       </button>
+                      {% endif %}
                     </div>
                   </div>
                 </div>

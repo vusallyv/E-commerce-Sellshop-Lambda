@@ -53,7 +53,10 @@ def single_blog(request, pk):
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
-            form.save()
+            comment = Comment(
+                description=request.POST.get('description')
+            )
+            comment.save()
     else:
         form = CommentForm()
 

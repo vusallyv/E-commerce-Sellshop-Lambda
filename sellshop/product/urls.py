@@ -3,6 +3,7 @@ from django.urls.resolvers import URLPattern
 
 from . import views
 
+# app_name = 'product'
 
 urlpatterns = [
     path('product-list/', views.product_list, name="product_list"),

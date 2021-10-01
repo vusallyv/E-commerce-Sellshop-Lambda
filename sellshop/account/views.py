@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, redirect, render
+from django.shortcuts import redirect, render
 
 # Create your views here.
 
@@ -6,6 +6,7 @@ from account.models import User
 from account.forms import LoginForm, RegisterForm
 from django.contrib import auth
 import random
+# from django.contrib.auth.decorators import login_required
 
 
 def contact(request):
@@ -28,6 +29,7 @@ def login(request):
                 email=request.POST.get('email'),
                 phone_number=request.POST.get('phone_number'),
                 username=f"Guest_{random_number}",
+                rememberme=request.POST.get('rememberme'),
             )
             user.set_password(request.POST.get('password')),
             user.save()
@@ -48,7 +50,7 @@ def login(request):
     context = {
         'title':  'Login Sellshop',
         'login':  LoginForm,
-        'register':  RegisterForm,
+        'register':  RegisterForm(request.POST),
     }
     return render(request, "login.html", context=context)
 
