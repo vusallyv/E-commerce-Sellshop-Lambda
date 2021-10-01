@@ -39,18 +39,18 @@ def login(request):
         form = RegisterForm()
 
     if request.method == "POST" and 'login' in request.POST:
-        form = RegisterForm(request.POST)
+        form1 = LoginForm(request.POST)
         user = User.objects.filter(email=request.POST.get('email')).first()
         if user is not None and user.check_password(request.POST.get('password')):
             auth.login(request, user)
             return redirect(my_account)
     else:
-        form = LoginForm(request.POST)
+        form1 = LoginForm()
 
     context = {
         'title':  'Login Sellshop',
-        'login':  LoginForm,
-        'register':  RegisterForm(request.POST),
+        'login':  form1,
+        'register':  form,
     }
     return render(request, "login.html", context=context)
 

@@ -34,8 +34,22 @@
 							<p>If you have an account with us, Please log in!</p>
 							<form action="" name="login" method="post">
 								{% csrf_token %}
-								{{login.email}}
-								{{login.password}}
+								<div>
+									{{login.email}}
+									{% if login.email.errors %}
+									<div class="alert alert-danger">
+										<strong>{{login.email.errors}}</strong>
+									</div>
+									{% endif %}
+								</div>
+								<div>
+									{{login.password}}
+									{% if login.password.errors %}
+									<div class="alert alert-danger">
+										<strong>{{login.password.errors}}</strong>
+									</div>
+									{% endif %}
+								</div>
 								<a class="forget" href="#">Forget your password?</a>
 								<div class="submit-text">
 									<button type="submit" name="login"> login </button>
@@ -53,24 +67,41 @@
 					<div class="custom-input">
 						<form action="" method="post" name="register">
 							{% csrf_token %}
-							{{form.errors}}
-							{% if form.errors %}
-							<div class="alert alert-danger">
-								<ul>
-									{% for error in form.errors %}
-									<li>{{error}}</li>
-									{% endfor %}
-								</ul>
+							<div>
+								{{register.first_name}}
+								{% if register.first_name.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.first_name.errors}}</strong>
+								</div>
+								{% endif %}
 							</div>
-							{% endif %}
-							{{register.first_name}}
-							{% if error %}
-							{{ error }}
-							{% endif %}
-							{{register.email}}
-							{{register.phone_number}}
-							{{register.password}}
-							{{register.confirm_password}}
+							<div>
+								{{register.email}}
+								{% if register.email.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.email.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
+							<div>
+								{{register.phone_number}}
+								{% if register.phone_number.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.phone_number.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
+							<div>
+								{{register.password}}
+							</div>
+							<div>
+								{{register.confirm_password}}
+								{% if register.confirm_password.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.confirm_password.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
 							<label class="first-child" style="width: 100%;">
 								{{register.rememberme}}
 								<span style="margin-left: 2%;">

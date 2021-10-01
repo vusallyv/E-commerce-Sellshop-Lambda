@@ -83,7 +83,7 @@
 									</li>
 								</ul>
 								<div class="right floatright">
-									<form action="{% url 'product_list' %}" method="POST">
+									<form action="{% url 'product_list' %}" method="GET">
 										{% csrf_token %}
 										<button type="button"><i class="mdi mdi-magnify"></i></button>
 										<input type="text" name="search_name" placeholder="Search within these results..." />

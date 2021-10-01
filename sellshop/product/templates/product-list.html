@@ -128,7 +128,7 @@
                     data-parent="#accordion"
                     data-target="#collapse{{ category.id }}"
                   >
-                    <form action="{% url 'product_list' %}" method="POST">
+                    <form action="{% url 'product_list' %}" method="GET">
                       {% csrf_token %}
                       <div class="medium-a">
                         <button
@@ -148,7 +148,7 @@
                   id="collapse{{ category.id }}"
                   >
                   {% for subcategory in category.subcategories.all %}
-                    <form action="{% url 'product_list' %}" method="POST">
+                    <form action="{% url 'product_list' %}" method="GET">
                       {% csrf_token %}
                       <div class="normal-a">
                         <a href="#">
@@ -191,7 +191,7 @@
               <h5 class="floatright"><a href="#">All</a></h5>
             </div>
             <div class="size-select clearfix">
-              <form action="{% url 'product_list' %}" method="POST">
+              <form action="{% url 'product_list' %}" method="GET">
                 {% csrf_token %}
               {% for size in sizes %}
               <a href="">
@@ -232,7 +232,7 @@
               <ul>
                 {% for brand in brands %}
                 <li>
-                  <form action="{% url 'product_list' %}" method="POST">
+                  <form action="{% url 'product_list' %}" method="GET">
                     {% csrf_token %}
                   <a href="">
                     <button
@@ -292,7 +292,7 @@
           <div class="row">
             <div class="tab-content grid-content">
               <div class="tab-pane fade in text-center" id="grid">
-                {% for productversion in allproductversions %}
+                {% for productversion in object_list %}
                 <div class="col-xs-12 hidden-sm col-md-4">
                   <div class="single-product">
                     <div class="product-img">
@@ -332,7 +332,7 @@
               </div>
               <div class="tab-pane fade active in" id="list">
                 <div class="col-xs-12">
-                  {% for productversion in allproductversions %}
+                  {% for productversion in object_list %}
                   <div class="single-list-view">
                     <div class="row">
                       <div class="col-xs-12 col-md-4">
@@ -610,7 +610,7 @@
                           </div>
                           <div class="s-shoose">
                             <h5>qty</h5>
-                            <form action="#" method="POST">
+                            <form action="#" method="GET">
                               <div class="plus-minus">
                                 <a class="dec qtybutton">-</a>
                                 <input

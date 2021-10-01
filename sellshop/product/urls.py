@@ -1,12 +1,11 @@
-from django.urls import path, include
-from django.urls.resolvers import URLPattern
+from django.urls import path
 
 from . import views
 
 # app_name = 'product'
 
 urlpatterns = [
-    path('product-list/', views.product_list, name="product_list"),
+    path('product-list/', views.ProductListView.as_view(), name="product_list"),
     path('single-blog/<int:pk>/', views.single_blog, name="single_blog"),
     path('single-product/<int:pk>/', views.single_product, name="single_product"),
 ]

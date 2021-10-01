@@ -14,7 +14,7 @@ class LoginForm(forms.Form):
             email=self.cleaned_data.get('email')).first()
         if not user:
             raise forms.ValidationError('Invalid Username')
-        if not user.check_password(self.cleaned_data['password']):
+        if not user.check_password(self.cleaned_data.get('password')):
             raise forms.ValidationError('Invalid Password')
         return self.cleaned_data
 
@@ -35,15 +35,36 @@ class RegisterForm(forms.Form):
         choices=CHOICES, widget=forms.RadioSelect)
 
     def clean_email(self):
-        email = self.cleaned_data['email']
+        email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Email already in use")
         return email
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if User.objects.filter(phone_number=phone_number).exists():
+            raise forms.ValidationError("Phone number already in use")
+        return phone_number
+
     def clean(self):
         data = super().clean()
-        password = data['password']
-        confirm_password = data['confirm_password']
+        password = data.get('password')
+        confirm_password = data.get('confirm_password')
         if password == confirm_password:
             raise forms.ValidationError("Password confirmation does not match")
         return data
+
+
+# class AccountForm(forms.Form):
+    # first_name = forms.CharField(widget=forms.TextInput(
+    #     attrs={'placeholder': 'Your First Name'}))
+    # last_name = forms.CharField(widget=forms.TextInput(
+    #     attrs={'placeholder': 'Your Last Name'}))
+    # email = forms.EmailField(widget=forms.EmailInput(
+    #     attrs={'placeholder': 'Email Address'}))
+    # current_password = forms.CharField(widget=forms.PasswordInput(
+    #     attrs={'placeholder': 'Current Password'}))
+    # new_password = forms.CharField(widget=forms.PasswordInput(
+    #     attrs={'placeholder': 'New Password'}))
+    # confirm_password = forms.CharField(widget=forms.PasswordInput(
+    #     attrs={'placeholder': 'Confirm Password'}))

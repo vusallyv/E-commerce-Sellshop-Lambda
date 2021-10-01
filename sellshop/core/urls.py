@@ -4,8 +4,8 @@ from django.urls.resolvers import URLPattern
 from . import views
 
 urlpatterns = [
-    path('about/', views.about, name="about"),
+    path('about/', views.AboutView.as_view(), name="about"),
     path('blog/', views.blog, name="blog"),
-    path('error_404/', views.error_404, name="error_404"),
-    path('index/', views.index, name="index"),
+    path('error_404/', views.ErrorView.as_view(), name="error_404"),
+    path('index/', views.HomeView.as_view(), name="index"),
 ]
