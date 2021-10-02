@@ -8,53 +8,67 @@ from product.forms import CommentForm
 from django.views.generic import DetailView, ListView, CreateView, View
 
 
-def product_list(request):
-    qs_productversion_all = ProductVersion.objects.all()
-    qs_productversion_best = ProductVersion.objects.order_by('-rating')[0]
-    qs_product = Product.objects.all()
-    qs_brand = Brand.objects.all()
-    qs = None
-    qs_size = Size.objects.all()
+# def product_list(request):
+#     qs_productversion_all = ProductVersion.objects.all()
+#     qs_productversion_best = ProductVersion.objects.order_by('-rating')[0]
+#     qs_product = Product.objects.all()
+#     qs_brand = Brand.objects.all()
+#     qs = None
+#     qs_size = Size.objects.all()
 
-    if request.GET.get("search_name"):
-        qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
-            product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
-    elif request.GET.get("category_name"):
-        qs_productversion_all = ProductVersion.objects.filter(
-            product__category__title=request.GET.get("category_name"))
-    elif request.GET.get("subcategory_name"):
-        qs_productversion_all = ProductVersion.objects.filter(
-            product__category__subcategories__title=request.GET.get("subcategory_name"))
-    elif request.GET.get("size"):
-        qs_productversion_all = ProductVersion.objects.filter(
-            size__title=request.GET.get("size"))
-    elif request.GET.get("brand"):
-        qs_productversion_all = ProductVersion.objects.filter(
-            product__brand__title=request.GET.get("brand"))
-    context = {
-        'title': 'Product-list Sellshop',
-        'productversions': qs,
-        'brands': qs_brand,
-        'allproductversions': qs_productversion_all[0:8],
-        'sizes': qs_size,
-        'bestproductversion': qs_productversion_best,
-        'products': qs_product,
-    }
-    return render(request, 'product-list.html', context=context)
+#     if request.GET.get("search_name"):
+#         qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
+#             product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
+#     elif request.GET.get("category_name"):
+#         qs_productversion_all = ProductVersion.objects.filter(
+#             product__category__title=request.GET.get("category_name"))
+#     elif request.GET.get("subcategory_name"):
+#         qs_productversion_all = ProductVersion.objects.filter(
+#             product__category__subcategories__title=request.GET.get("subcategory_name"))
+#     elif request.GET.get("size"):
+#         qs_productversion_all = ProductVersion.objects.filter(
+#             size__title=request.GET.get("size"))
+#     elif request.GET.get("brand"):
+#         qs_productversion_all = ProductVersion.objects.filter(
+#             product__brand__title=request.GET.get("brand"))
+#     context = {
+#         'title': 'Product-list Sellshop',
+#         'productversions': qs,
+#         'brands': qs_brand,
+#         'allproductversions': qs_productversion_all[0:8],
+#         'sizes': qs_size,
+#         'bestproductversion': qs_productversion_best,
+#         'products': qs_product,
+#     }
+#     return render(request, 'product-list.html', context=context)
 
 
 class ProductListView(ListView):
-    model = ProductVersion
-    template_name = 'product-list.html'
-    queryset = ProductVersion.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Product-list Sellshop'
-        context['products'] = Product.objects.all()
-        context['sizes'] = Size.objects.all()
-        context['brands'] = Brand.objects.all()
-        return context
+    def get(self, request, *args, **kwargs):
+        qs_productversion_all = ProductVersion.objects.all()
+        if request.GET.get("search_name"):
+            qs_productversion_all = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
+                product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
+        elif request.GET.get("category_name"):
+            qs_productversion_all = ProductVersion.objects.filter(
+                product__category__title=request.GET.get("category_name"))
+        elif request.GET.get("subcategory_name"):
+            qs_productversion_all = ProductVersion.objects.filter(
+                product__category__subcategories__title=request.GET.get("subcategory_name"))
+        elif request.GET.get("size"):
+            qs_productversion_all = ProductVersion.objects.filter(
+                size__title=request.GET.get("size"))
+        elif request.GET.get("brand"):
+            qs_productversion_all = ProductVersion.objects.filter(
+                product__brand__title=request.GET.get("brand"))
+        context = {
+            'title': 'Product-list Sellshop',
+            'products': qs_productversion_all,
+            'sizes': Size.objects.all(),
+            'categories': Category.objects.all(),
+            'brands': Brand.objects.all()
+        }
+        return render(request, 'product-list.html', context=context)
 
 
 def single_blog(request, pk):
@@ -68,7 +82,9 @@ def single_blog(request, pk):
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = Comment(
-                description=request.POST.get('description')
+                description=request.POST.get('description'),
+                blog_id=Blog.objects.get(pk=pk),
+                user_id=request.user
             )
             comment.save()
     else:
@@ -78,7 +94,7 @@ def single_blog(request, pk):
         'title': 'Single-blog Sellshop',
         'blogs': qs_blogs[0:3],
         'relatedblogs': qs_blogs,
-        'firstblog': qs_one_blog,
+        'blog': qs_one_blog,
         'categories': qs_category,
         'brands': qs_brand,
         'comments': qs_comment,
@@ -142,3 +158,15 @@ class ProductDetailView(DetailView):
             'reviews': self.get_reviews(),
         }
         return render(request, 'single-product.html', context=context)
+
+
+def single_product(request, pk):
+    qs_productversion_all = ProductVersion.objects.get(pk=pk)
+    qs_reviews = Review.objects.all()
+    context = {
+        'title': 'Single-product Sellshop',
+        'title': '',
+        'allproductversions': qs_productversion_all,
+        'reviews': qs_reviews,
+    }
+    return render(request, 'single-product.html', context=context)

@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import DateInput
 from account.models import User
 from django.contrib.auth import get_user_model
 
@@ -55,16 +56,11 @@ class RegisterForm(forms.Form):
         return data
 
 
-# class AccountForm(forms.Form):
-    # first_name = forms.CharField(widget=forms.TextInput(
-    #     attrs={'placeholder': 'Your First Name'}))
-    # last_name = forms.CharField(widget=forms.TextInput(
-    #     attrs={'placeholder': 'Your Last Name'}))
-    # email = forms.EmailField(widget=forms.EmailInput(
-    #     attrs={'placeholder': 'Email Address'}))
-    # current_password = forms.CharField(widget=forms.PasswordInput(
-    #     attrs={'placeholder': 'Current Password'}))
-    # new_password = forms.CharField(widget=forms.PasswordInput(
-    #     attrs={'placeholder': 'New Password'}))
-    # confirm_password = forms.CharField(widget=forms.PasswordInput(
-    #     attrs={'placeholder': 'Confirm Password'}))
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('__all__')
+
+        widgets = {
+            'birth': DateInput(attrs={'type': 'date'}),
+        }
