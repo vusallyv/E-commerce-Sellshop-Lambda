@@ -29,21 +29,21 @@
           <div class="padding30">
             <div class="blog-text">
               <div class="post-title">
-                <h3>{{ firstblog.title }}</h3>
+                <h3>{{ blog.title }}</h3>
                 <ul class="clearfix">
                   <li>
-                    <i class="pe-7s-user"></i>By :<a href="#">{{ firstblog.creator }}</a><span>|</span>
+                    <i class="pe-7s-user"></i>By :<a href="#">{{ blog.creator }}</a><span>|</span>
                   </li>
                   <li>
-                    <i class="pe-7s-comment"></i><a href="#">{{ firstblog.created_at }}</a><span>|</span>
+                    <i class="pe-7s-comment"></i><a href="#">{{ blog.created_at }}</a><span>|</span>
                   </li>
                   <li>
-                    <i class="pe-7s-like"></i><a href="#">{{ firstblog.like }} Likes</a><span>|</span>
+                    <i class="pe-7s-like"></i><a href="#">{{ blog.like }} Likes</a><span>|</span>
                   </li>
                   <li><i class="pe-7s-back"></i><a href="#">{{ comments|length }} Comments</a></li>
                 </ul>
               </div>
-              <p>{{ firstblog.description }}</p>
+              <p>{{ blog.description }}</p>
               <div class="italic">
                 <p>
                   “The wise man therefore always holds in these matters to this
@@ -54,7 +54,7 @@
                   you a complete account of the system”,
                 </p>
               </div>
-              <p>{{ firstblog.description }}</p>
+              <p>{{ blog.description }}</p>
               <div class="share-tag clearfix">
                 <ul class="blog-share floatleft">
                   <li>
@@ -286,7 +286,7 @@
       <li>
         <div class="row">
           {% for blog in relatedblogs %}
-          {% if blog.product.product.category.title == firstblog.product.product.category.title %}
+          {% if blog.product.product.category.title == blog.product.product.category.title %}
           <div class="col-sm-12">
             <div class="l-blog-text">
               <div class="banner">

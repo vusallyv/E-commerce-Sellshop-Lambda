@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url
 
 # Create your views here.
 
 from django.db.models import Q, F
 from product.models import Blog, Category, ProductVersion, Image, Review, Product, Comment, Brand, Size
 from product.forms import CommentForm
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView, View
 
 
 def product_list(request):
@@ -43,6 +43,20 @@ def product_list(request):
     return render(request, 'product-list.html', context=context)
 
 
+class ProductListView(ListView):
+    model = ProductVersion
+    template_name = 'product-list.html'
+    queryset = ProductVersion.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Product-list Sellshop'
+        context['products'] = Product.objects.all()
+        context['sizes'] = Size.objects.all()
+        context['brands'] = Brand.objects.all()
+        return context
+
+
 def single_blog(request, pk):
     qs_one_blog = Blog.objects.get(pk=pk)
     qs_blogs = Blog.objects.order_by('-created_at').exclude(id=pk)
@@ -73,36 +87,58 @@ def single_blog(request, pk):
     return render(request, 'single-blog.html', context=context)
 
 
-# class ProductDetailView(DetailView):
-#     model = ProductVersion
-#     template_name = 'single-product.html'
+class BlogDetailView(DetailView):
+    def get_blog(self):
+        return Blog.objects.get(pk=self.kwargs.get('pk'))
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'Single-product Sellshop'
-#         return context
+    def get_comment(self):
+        return Comment.objects.get(blog_id=self.kwargs.get('pk'))
+
+    def get_category(self):
+        return Category.objects.all()
+
+    def get_brand(self):
+        return Brand.objects.all()
+
+    def get_related_blog(self):
+        return Blog.objects.order_by('-created_at').exclude(pk=self.kwargs.get('pk'))
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'comments': self.get_comment(),
+            'title': 'Single-product Sellshop',
+            'blog': self.get_blog(),
+            'relatedblogs': self.get_related_blog(),
+            'categories': self.get_category(),
+            'brands': self.get_brand(),
+
+        }
+        return render(request, 'single-blog.html', context=context)
 
 
-def single_product(request, pk):
-    qs_productversion_all = ProductVersion.objects.get(pk=pk)
-    qs_reviews = Review.objects.all()
-    context = {
-        'title': '',
-        'allproductversions': qs_productversion_all,
-        'reviews': qs_reviews,
-    }
-    return render(request, 'single-product.html', context=context)
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'single-blog.html'
+
+    def get_success_url(self):
+        return resolve_url('product_list')
 
 
-class ProductListView(ListView):
-    model = ProductVersion
-    template_name = 'product-list.html'
-    queryset = ProductVersion.objects.all()
+class ProductDetailView(DetailView):
+    def get_product_version(self):
+        return ProductVersion.objects.get(pk=self.kwargs.get('pk'))
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Product-list Sellshop'
-        context['products'] = Product.objects.all()
-        context['sizes'] = Size.objects.all()
-        context['brands'] = Brand.objects.all()
-        return context
+    def get_reviews(self):
+        try:
+            return Review.objects.get(pk=self.kwargs.get('pk'))
+        except Review.DoesNotExist:
+            return None
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            'allproductversions': self.get_product_version(),
+            'title': 'Single-product Sellshop',
+            'reviews': self.get_reviews(),
+        }
+        return render(request, 'single-product.html', context=context)
