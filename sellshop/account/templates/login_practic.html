@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{title}}{% endblock %}
@@ -10,10 +9,10 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="pages-title-text text-center">
-							<h2>Register</h2>
+							<h2>Login</h2>
 							<ul class="text-left">
 								<li><a href="{% url 'contact' %}">Home </a></li>
-								<li><span> // </span>Register</li>
+								<li><span> // </span>Login</li>
 							</ul>
 						</div>
 					</div>
@@ -33,14 +32,20 @@
 							<div class="login-text">
 								<div class="custom-input">
 									<p>If you have an account with us, Please log in!</p>
-									<!-- <form action="mail.php" method="post">
-										<input type="text" name="email" placeholder="Email" />
-										<input type="password" name="password" placeholder="Password" />
-										<a class="forget" href="#">Forget your password?</a>
-										<div class="submit-text">
-											<a href="{% url 'my_account' %}">login</a>
-										</div>
-									</form> -->
+                                    {% if request.user.is_authenticated %}
+                                    <h1>{{ user }} is authenticated</h1>
+                                    {% endif %}
+									{% if form.errors %}
+									<div class="alert alert-danger">
+										{{ form.errors }}
+									</div>
+									{% endif %}
+
+								<form method="POST">
+									{% csrf_token %}
+									{{ form.as_p }}
+									<button type="submit">Login</button>
+								</form>
 								</div>
 							</div>
 						</div>
@@ -52,17 +57,6 @@
 							</div>
 							<div class="custom-input">
 
-									{% if form.errors %}
-									<div class="alert alert-danger">
-										{{ form.errors }}
-									</div>
-									{% endif %}
-
-								<form method="POST">
-									{% csrf_token %}
-									{{ form.as_p }}
-									<button type="submit">Register</button>
-								</form>
 								<!-- <form action="mail.php" method="post">
 									<input type="text" name="name" placeholder="Name here.." />
 									<input type="text" name="email" placeholder="Email Address.." />

@@ -1,16 +1,15 @@
 from django.shortcuts import render
 
-
-from product.models import Category, Subcategory, ProductVersion, Product, Image,  Review
-
+from django.db.models import Count
+from product.models import Category, Subcategory, Product, Image, ProductVersion, Tag
 from django.db.models import Q
 from product.forms import ReviewForm
 
 
-def single_product(request):
-    qs_image = Image.objects.all()
-    qs = ProductVersion.objects.all()[0:1]
-    review = Product.objects.all()[0:1]
+def single_product(request, pk):
+    image = Image.objects.get(pk=pk)
+    product = Product.objects.get(pk=pk)
+    product_versions = ProductVersion.objects.get(pk=pk)
     
     if request.method == 'POST':
         form = ReviewForm(request.POST)
@@ -22,10 +21,10 @@ def single_product(request):
    
     context = {
         'title': 'Single-product Sellshop',
-        'products': qs,
-        'review': review,
-        'images': qs_image,
+        'images': image,
+        'product': product,
         'form': ReviewForm(),
+        'product_versions': product_versions
     }
     return render(request, 'single-product.html', context=context)
 

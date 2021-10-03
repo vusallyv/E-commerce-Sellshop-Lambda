@@ -12,7 +12,7 @@
 							<h2>men’s white t-shirt</h2>
 							<ul class="text-left">
 								<li><a href="{% url 'index' %}">Home </a></li>
-								<li><span> // </span><a href="shop.html">shop </a></li>
+								<li><span> // </span><a href="#">shop </a></li>
 								<li><span> // </span>men’s white t-shirt</li>
 							</ul>
 						</div>
@@ -31,6 +31,8 @@
 								<div class="single-quick-image text-center">
 									<div class="list-img">
 										<div class="product-img tab-content">
+											
+											
 											<div class="simpleLens-container tab-pane fade in" id="sin-1">
 												<div class="pro-type">
 													<span>new</span>
@@ -41,7 +43,7 @@
 												<div class="pro-type sell">
 													<span>sell</span>
 												</div>
-												<a class="simpleLens-image" data-lens-image="img/products/z2.jpg" href="#"><img src="{% static 'img/products/z2.jpg' %}" alt="" class="simpleLens-big-image"></a>
+												<a class="simpleLens-image" data-lens-image="img/products/z2.jpg" href="#"><img src="{{ images.image.url }}" alt="" class="simpleLens-big-image"></a>
 											</div>
 											<div class="simpleLens-container tab-pane fade in" id="sin-3">
 												<div class="pro-type">
@@ -55,15 +57,16 @@
 												</div>
 												<a class="simpleLens-image" data-lens-image="img/products/z4.jpg" href="#"><img src="{% static 'img/products/z4.jpg' %}" alt="" class="simpleLens-big-image"></a>
 											</div>
+											
 										</div>
 									</div>
 								</div>
 								<div class="quick-thumb">
 									<ul class="product-slider">
-										<li><a data-toggle="tab" href="#sin-1"> <img src="{% static 'img/products/s1.jpg' %}" alt="quick view" /> </a></li>
-										<li class="active"><a data-toggle="tab" href="#sin-2"> <img src="{% static 'img/products/s2.jpg' %}" alt="small image" /> </a></li>
-										<li><a data-toggle="tab" href="#sin-3"> <img src="{% static 'img/products/s3.jpg' %}" alt="small image" /> </a></li>
-										<li><a data-toggle="tab" href="#sin-4"> <img src="{% static 'img/products/s4.jpg' %}" alt="small image" /> </a></li>
+										<li><a data-toggle="tab" href="#sin-1"> <img width="85" height="110" src="{{ images.image.url }}" alt="quick view" /> </a></li>
+										<li class="active"><a data-toggle="tab" href="#sin-2"> <img width="85" height="110" src="{% static 'img/products/s2.jpg' %}" alt="small image" /> </a></li>
+										<li><a data-toggle="tab" href="#sin-3"> <img width="85" height="110" src="{% static 'img/products/s3.jpg' %}" alt="small image" /> </a></li>
+										<li><a data-toggle="tab" href="#sin-4"> <img width="85" height="110" src="{% static 'img/products/s4.jpg' %}" alt="small image" /> </a></li>
 									</ul>
 								</div>
 							</div>
@@ -71,19 +74,18 @@
 						<div class="col-xs-12 col-sm-7 col-md-8">
 							<div class="quick-right">
 								<div class="list-text">
-									{% for product in products %}
-									<h3>{{product.product_id.title}}</h3>
-									<span>{{product.product_id.subtitle}}</span>
+									<h3>{{product.title}}</h3>
+									<span>{{product.subtitle}}</span>
 									<div class="ratting floatright">
-										<p>( {{product.product_id.rating}} Rating )</p>
+										<p>( {{product.rating}} Rating )</p>
 										<i class="mdi mdi-star"></i>
 										<i class="mdi mdi-star"></i>
 										<i class="mdi mdi-star"></i>
 										<i class="mdi mdi-star-half"></i>
 										<i class="mdi mdi-star-outline"></i>
 									</div>
-									<h5><del>${{product.product_id.ex_price}}</del> ${{product.product_id.price}}</h5>
-									<p>{{product.product_id.description }}</p>
+									<h5><del>${{product.ex_price}}</del> ${{product.price}}</h5>
+									<p>{{product.description}}</p> 
 									<div class="all-choose">
 										<div class="s-shoose">
 											<h5>Color</h5>
@@ -96,20 +98,27 @@
 										</div>
 										<div class="s-shoose">
 											<h5>size</h5>
+											
 											<div class="size-drop">
+
 												<div class="btn-group">
 													<button type="button" class="btn">XL</button>
 													<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 														<span class=""><i class="mdi mdi-chevron-down"></i></span>
 													</button>
 													<ul class="dropdown-menu">
-														<li><a href="#">Xl</a></li>
-														<li><a href="#">SL</a></li>
+														{% for size in product_versions.sizes %}
+														<li><a href="#">{{ size }}</a></li>
+														<!-- <li><a href="#">SL</a></li>
 														<li><a href="#">S</a></li>
-														<li><a href="#">L</a></li>
+														<li><a href="#">L</a></li> -->
+														{% endfor %}
+														
 													</ul>
+													
 												</div>
 											</div>
+										
 										</div>
 										<div class="s-shoose">
 											<h5>qty</h5>
@@ -138,7 +147,6 @@
 											<li><a href="#"><i class="mdi mdi-instagram"></i></a></li>
 										</ul>
 									</div>
-									{% endfor %}
 								</div>
 							</div>
 						</div>
@@ -160,11 +168,11 @@
 								</div>
 								<div class="info-reviews review-text tab-pane fade in active" id="reviews">
 									<div class="about-author">
-										{% for i in review %}
+										
 										<div class="autohr-text">
 											<div class="author-des">
-												<img src="{% static 'img/blog/author1.png' %}" alt="" />
-												<h4><a href="#">{{i.title}}</a></h4>
+												<img width=90, height=100 src="{{images.image.url }}" alt="" />
+												<h4><a href="#">{{product.title}}</a></h4>
 												<span class="floatright ratting">
 													<i class="mdi mdi-star"></i>
 													<i class="mdi mdi-star"></i>
@@ -172,13 +180,13 @@
 													<i class="mdi mdi-star-half"></i>
 													<i class="mdi mdi-star-outline"></i>
 												</span>
-												<span>27 Jun, 2016 at 2:30pm</span>
+												<span>{{product.create_at}}</span>
 												<div>
-													<p>{{i.description}}</p>
+													<p>{{product.description}}</p>
 												</div>
 											</div>
 										</div>
-										{% endfor %}
+										
 									</div>
 							
 									<div class="your-rating log-title">
@@ -230,9 +238,12 @@
 									</div>
 									<div class="custom-input">
 										<form method="post">
+											
 											{% csrf_token %}
+											
+											<input type="hidden" name="product_id" value="{{ product.id }}">
+
 											<div class="row">
-													
 												<div class="col-sm-6">
 													<div class="input-mail">
 														<input type="text" name="name" placeholder="Your Name" value='Taleh' readonly/>
@@ -244,7 +255,7 @@
 													</div> 
 												</div>
 												<div class="col-xs-12">
-													{{ form.as_p }}
+													{{ form.review }}
 													<!-- <div class="custom-mess">
 														<textarea name="message" placeholder="Your Review" rows="2"></textarea>
 													</div> -->

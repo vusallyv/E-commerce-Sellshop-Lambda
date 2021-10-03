@@ -6,5 +6,5 @@ from product.models import Review
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['review']
+        fields = ['product_id', 'review']
         
