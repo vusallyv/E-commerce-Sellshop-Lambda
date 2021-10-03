@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.db.models import Count
+from django.views.generic import View
 from product.models import Category, Subcategory, Product, Image, ProductVersion, Tag
 from django.db.models import Q
 from product.forms import ReviewForm
@@ -44,3 +44,4 @@ def product_list(request):
         'subcategories': subcategories,
     }
     return render(request, 'product-list.html', context=context)
+
