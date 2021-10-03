@@ -29,48 +29,22 @@
 						<h3><strong>billing details</strong></h3>
 					</div>
 					<div class="custom-input">
-						<form action="mail.php" method="post">
-							<input type="text" name="subject" placeholder="Your name" value="{{user.first_name}}" />
-							<input type="text" name="subject" placeholder="Enter your here"
-							value="{{user.last_name}}" />
-							<input type="text" name="subject" placeholder="Phone here"
-							value="{{user.phone_number}}" />
-							<input type="text" name="subject" placeholder="Company name here..." />
-							<div class="custom-select">
-								<select class="form-control">
-									<option> Country</option>
-									<option> Bangladesh </option>
-									<option> United States </option>
-									<option> United Kingdom </option>
-									<option> Canada </option>
-									<option> Malaysia </option>
-									<option> United Arab Emirates </option>
-								</select>
-							</div>
-							<div class="custom-select">
-								<select class="form-control">
-									<option> State</option>
-									<option> Aberdeen </option>
-									<option> Bedfordshire </option>
-									<option> Caerphilly </option>
-									<option> Denbighshire </option>
-									<option> East Ayrshire </option>
-									<option> Falkirk </option>
-								</select>
-							</div>
-							<div class="custom-select">
-								<select class="form-control">
-									<option> Town / City</option>
-									<option> Aberdeen </option>
-									<option> Bedfordshire </option>
-									<option> Caerphilly </option>
-									<option> Denbighshire </option>
-									<option> East Ayrshire </option>
-									<option> Falkirk </option>
-								</select>
-							</div>
+						<form action="" method="post" name="billing">
+							{% csrf_token %}
+							<input type="text" name="subject" placeholder="Your name" />
+							<input type="text" name="subject" placeholder="Enter your here" />
+							<input type="text" name="phone_number" placeholder="Phone here" />
+							{{ billing.company_name }}
+							{{ billing.country }}
+							{{ billing.state }}
+							{{ billing.city }}
+
 							<div class="custom-mess">
-								<textarea rows="2" placeholder="Your address here" name="message"></textarea>
+								{{ billing.address }}
+							</div>
+							<div class="submit-text">
+								<button value="submit form" type="submit" name="billing"
+									style="background-color: black; border: none;"> place order</button>
 							</div>
 						</form>
 					</div>
@@ -82,14 +56,14 @@
 						<h3><strong>ship to different address</strong></h3>
 					</div>
 					<div class="custom-input">
-						<form action="" method="POST">
+						<form action="" method="POST" name="shipping">
 							{% csrf_token %}
-							<input type="text" name="subject" placeholder="Your name" />
-							<input type="text" name="subject" placeholder="Enter your here" />
-							<input type="text" name="subject" placeholder="Phone here" />
-							{{form.company_name}}
+							{{shipping.first_name}} 
+							{{shipping.last_name}}
+							{{shipping.phone_number}}
+							{{shipping.company_name}}
 							<div class="custom-select">
-								{{form.country }}
+								{{shipping.country }}
 								{% comment 'country' %}
 								<select class="form-control">
 									<option> Country</option>
@@ -99,149 +73,157 @@
 									<option> Canada </option>
 									<option> Malaysia </option>
 									<option> United Arab Emirates </option>
-									</select>
-									{% endcomment %}
-								</div>
-								<div class="custom-select">
-									{{form.state }}
-									{% comment 'state' %}
-									<select class="form-control">
-										<option> State</option>
-										<option> Aberdeen </option>
-										<option> Bedfordshire </option>
-										<option> Caerphilly </option>
-										<option> Denbighshire </option>
-										<option> East Ayrshire </option>
-										<option> Falkirk </option>
-									</select>
-									{% endcomment %}
-								</div>
-								<div class="custom-select">
-									{{form.city }}
-									{% comment 'city' %}
-									<select class="form-control">
-										<option> Town / City</option>
-										<option> Aberdeen </option>
-										<option> Bedfordshire </option>
-										<option> Caerphilly </option>
-										<option> Denbighshire </option>
-										<option> East Ayrshire </option>
-										<option> Falkirk </option>
-									</select>
-									{% endcomment %}
-								</div>
-								<div class="custom-mess">
-									{{form.address}}
-								</div>
-								
-							</form>
-						</div>
+								</select>
+								{% endcomment %}
+							</div>
+							<div class="custom-select">
+								{{shipping.state }}
+								{% comment 'state' %}
+								<select class="form-control">
+									<option> State</option>
+									<option> Aberdeen </option>
+									<option> Bedfordshire </option>
+									<option> Caerphilly </option>
+									<option> Denbighshire </option>
+									<option> East Ayrshire </option>
+									<option> Falkirk </option>
+								</select>
+								{% endcomment %}
+							</div>
+							<div class="custom-select">
+								{{shipping.city }}
+								{% comment 'city' %}
+								<select class="form-control">
+									<option> Town / City</option>
+									<option> Aberdeen </option>
+									<option> Bedfordshire </option>
+									<option> Caerphilly </option>
+									<option> Denbighshire </option>
+									<option> East Ayrshire </option>
+									<option> Falkirk </option>
+								</select>
+								{% endcomment %}
+							</div>
+							<div class="custom-mess">
+								{{shipping.address}}
+							</div>
+
+							<div class="submit-text">
+								<button value="submit form" type="submit" name="shipping"
+									style="background-color: black; border: none;"> place order</button>
+							</div>
+
+						</form>
 					</div>
 				</div>
 			</div>
-			<div class="row margin-top">
-				<div class="col-xs-12 col-sm-6">
-					<div class="padding60">
-						<div class="log-title">
-							<h3><strong>Our order</strong></h3>
-						</div>
-						<div class="cart-form-text pay-details table-responsive">
-							<table>
-								<thead>
-									<tr>
-										<th>Product</th>
-										<td>Total</td>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th>Men’s White Shirt x 2</th>
-										<td>$86.00</td>
-									</tr>
-									<tr>
-										<th>Men’s Black Shirt x 1</th>
-										<td>$69.00</td>
-									</tr>
-									<tr>
-										<th>Cart Subtotal</th>
-										<td>$155.00</td>
-									</tr>
-									<tr>
-										<th>Shipping and Handing</th>
-										<td>$15.00</td>
-									</tr>
-									<tr>
-										<th>Vat</th>
-										<td>$00.00</td>
-									</tr>
-								</tbody>
-								<tfoot>
-									<tr>
-										<th>Order total</th>
-										<td>$325.00</td>
-									</tr>
-								</tfoot>
-							</table>
-						</div>
+		</div>
+		<div class="row margin-top">
+			<div class="col-xs-12 col-sm-6">
+				<div class="padding60">
+					<div class="log-title">
+						<h3><strong>Our order</strong></h3>
+					</div>
+					<div class="cart-form-text pay-details table-responsive">
+						<table>
+							<thead>
+								<tr>
+									<th>Product</th>
+									<td>Total</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Men’s White Shirt x 2</th>
+									<td>$86.00</td>
+								</tr>
+								<tr>
+									<th>Men’s Black Shirt x 1</th>
+									<td>$69.00</td>
+								</tr>
+								<tr>
+									<th>Cart Subtotal</th>
+									<td>$155.00</td>
+								</tr>
+								<tr>
+									<th>Shipping and Handing</th>
+									<td>$15.00</td>
+								</tr>
+								<tr>
+									<th>Vat</th>
+									<td>$00.00</td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Order total</th>
+									<td>$325.00</td>
+								</tr>
+							</tfoot>
+						</table>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6">
-					<div class="padding60">
-						<div class="log-title">
-							<h3><strong>Payment method</strong></h3>
-						</div>
-						<div class="categories">
-							<ul id="accordion" class="panel-group clearfix">
-								<li class="panel">
-									<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
-										<div class="medium-a">
-											direct bank transfer
-										</div>
-									</div>
-									<div class="panel-collapse collapse in" id="collapse1">
-										<div class="normal-a">
-											<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-												industry. Lorem Ipsum has been the industry.</p>
-											</div>
-										</div>
-									</li>
-									<li class="panel">
-										<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
-											<div class="medium-a">
-												cheque payment
-											</div>
-										</div>
-										<div class="paypal-dsc panel-collapse collapse" id="collapse2">
-											<div class="normal-a">
-												<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-													industry. Lorem Ipsum has been the industry.</p>
-												</div>
-											</div>
-										</li>
-										<li class="panel">
-											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
-												<div class="medium-a">
-													paypal
-												</div>
-											</div>
-											<div class="paypal-dsc panel-collapse collapse" id="collapse3">
-												<div class="normal-a">
-													<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-														industry. Lorem Ipsum has been the industry.</p>
-													</div>
-												</div>
-											</li>
-										</ul>
-										<div class="submit-text">
-											<button value="submit form" type="submit" style="background-color: black; border: none;"> place order</button>
-										</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="padding60">
+					<div class="log-title">
+						<h3><strong>Payment method</strong></h3>
+					</div>
+					<div class="categories">
+						<ul id="accordion" class="panel-group clearfix">
+							<li class="panel">
+								<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
+									<div class="medium-a">
+										direct bank transfer
 									</div>
 								</div>
-							</div>
+								<div class="panel-collapse collapse in" id="collapse1">
+									<div class="normal-a">
+										<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
+											industry. Lorem Ipsum has been the industry.</p>
+									</div>
+								</div>
+							</li>
+							<li class="panel">
+								<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
+									<div class="medium-a">
+										cheque payment
+									</div>
+								</div>
+								<div class="paypal-dsc panel-collapse collapse" id="collapse2">
+									<div class="normal-a">
+										<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
+											industry. Lorem Ipsum has been the industry.</p>
+									</div>
+								</div>
+							</li>
+							<li class="panel">
+								<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
+									<div class="medium-a">
+										paypal
+									</div>
+								</div>
+								<div class="paypal-dsc panel-collapse collapse" id="collapse3">
+									<div class="normal-a">
+										<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
+											industry. Lorem Ipsum has been the industry.</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+						{% comment 'button' %}
+						<div class="submit-text">
+							<button value="submit form" type="submit" style="background-color: black; border: none;">
+								place order</button>
 						</div>
+						{% endcomment %}
 					</div>
-				</section>
-				<!-- Checkout content section end -->
-				
-				<!-- all js here -->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Checkout content section end -->
+
+<!-- all js here -->
 {% endblock %}

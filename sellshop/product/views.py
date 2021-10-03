@@ -5,7 +5,7 @@ from django.shortcuts import render, resolve_url
 from django.db.models import Q, F
 from product.models import Blog, Category, ProductVersion, Image, Review, Product, Comment, Brand, Size
 from product.forms import CommentForm
-from django.views.generic import DetailView, ListView, CreateView, View
+from django.views.generic import DetailView, ListView, CreateView, View, FormView
 
 
 # def product_list(request):
@@ -108,7 +108,7 @@ class BlogDetailView(DetailView):
         return Blog.objects.get(pk=self.kwargs.get('pk'))
 
     def get_comment(self):
-        return Comment.objects.get(blog_id=self.kwargs.get('pk'))
+        return Comment.objects.filter(blog_id=self.kwargs.get('pk'))
 
     def get_category(self):
         return Category.objects.all()
@@ -130,34 +130,6 @@ class BlogDetailView(DetailView):
 
         }
         return render(request, 'single-blog.html', context=context)
-
-
-class CommentCreateView(CreateView):
-    model = Comment
-    form_class = CommentForm
-    template_name = 'single-blog.html'
-
-    def get_success_url(self):
-        return resolve_url('product_list')
-
-
-class ProductDetailView(DetailView):
-    def get_product_version(self):
-        return ProductVersion.objects.get(pk=self.kwargs.get('pk'))
-
-    def get_reviews(self):
-        try:
-            return Review.objects.get(pk=self.kwargs.get('pk'))
-        except Review.DoesNotExist:
-            return None
-
-    def get(self, request, *args, **kwargs):
-        context = {
-            'allproductversions': self.get_product_version(),
-            'title': 'Single-product Sellshop',
-            'reviews': self.get_reviews(),
-        }
-        return render(request, 'single-product.html', context=context)
 
 
 def single_product(request, pk):
