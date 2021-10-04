@@ -108,10 +108,13 @@
 						<div class="col-sm-6 col-md-offset-1 col-md-5">
 							<div class="newsletter get-touch">
 								<h3>get in touch</h3>
-								<form action="mail.php" method="post">
-									<input type="text" name="name" placeholder="Enter your Name..."/>
+								
+								<form  method="post">
+									{% csrf_token %}
+									{{ form.as_p }}
+									<!-- <input type="text" name="name" placeholder="Enter your Name..."/>
 									<input type="text" name="email" placeholder="Enter your email..."/>
-									<textarea name="message" rows="2" placeholder="Enter your message...."></textarea>
+									<textarea name="message" rows="2" placeholder="Enter your message...."></textarea> -->
 									<input type="submit" value="send your message"/>
 								</form>
 							</div>

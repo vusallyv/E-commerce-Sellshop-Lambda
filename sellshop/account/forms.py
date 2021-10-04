@@ -1,7 +1,17 @@
-from django import forms
-from django.forms.widgets import DateInput
 from account.models import User
+from django.forms.widgets import DateInput
+from django import forms
+from django.forms import widgets
+from account.models import Contact
 from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'message']
 
 
 class LoginForm(forms.Form):
@@ -47,18 +57,19 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError("Phone number already in use")
         return phone_number
 
-    def clean_password(self):
-        password = self.cleaned_data.get('password')
-        password_confirm = self.cleaned_data.get('confirm_password')
-        if not (password == password_confirm):
-            raise forms.ValidationError("Password confirmation does not match")
-        return password
+    # def clean_password(self):
+    #     password = self.cleaned_data.get('password')
+    #     password_confirm = self.cleaned_data.get('confirm_password')
+    #     if not (password == password_confirm):
+    #         raise forms.ValidationError("Password confirmation does not match")
+    #     return password
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ('__all__')
 
-        widgets = {
-            'birth': DateInput(attrs={'type': 'date'}),
-        }
+# class UserForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ('__all__')
+
+#         widgets = {
+#             'birth': DateInput(attrs={'type': 'date'}),
+#         }

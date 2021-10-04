@@ -1,11 +1,32 @@
 from django.shortcuts import render, resolve_url
-
-# Create your views here.
-
 from django.db.models import Q, F
-from product.models import Blog, Category, ProductVersion, Image, Review, Product, Comment, Brand, Size
-from product.forms import CommentForm
-from django.views.generic import DetailView, ListView, CreateView, View, FormView
+from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
+from product.forms import ReviewForm
+from django.views.generic import DetailView, ListView
+
+
+def single_product(request, pk):
+    image = Image.objects.get(pk=pk)
+    product = Product.objects.get(pk=pk)
+    product_versions = ProductVersion.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = ReviewForm()
+    else:
+        form = ReviewForm()
+
+    context = {
+        'title': 'Single-product Sellshop',
+        'images': image,
+        'product': product,
+        'form': ReviewForm(),
+        'product_versions': product_versions
+    }
+
+    return render(request, 'single-product.html', context=context)
 
 
 # def product_list(request):
@@ -71,65 +92,84 @@ class ProductListView(ListView):
         return render(request, 'product-list.html', context=context)
 
 
-def single_blog(request, pk):
-    qs_one_blog = Blog.objects.get(pk=pk)
-    qs_blogs = Blog.objects.order_by('-created_at').exclude(id=pk)
-    qs_category = Category.objects.all()
-    qs_comment = Comment.objects.filter(blog_id=pk)
-    qs_brand = Brand.objects.all()
-
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = Comment(
-                description=request.POST.get('description'),
-                blog_id=Blog.objects.get(pk=pk),
-                user_id=request.user
-            )
-            comment.save()
-    else:
-        form = CommentForm()
+def product_list(request):
+    products = Product.objects.order_by('price')[0:4]
+    images = Image.objects.all()
+    categories = Category.objects.all()
 
     context = {
-        'title': 'Single-blog Sellshop',
-        'blogs': qs_blogs[0:3],
-        'relatedblogs': qs_blogs,
-        'blog': qs_one_blog,
-        'categories': qs_category,
-        'brands': qs_brand,
-        'comments': qs_comment,
-        'form': CommentForm,
+        'title': 'Product-list Sellshop',
+        'products': products,
+        'images': images,
+        'categories': categories,
     }
-    return render(request, 'single-blog.html', context=context)
+    return render(request, 'product-list.html', context=context)
 
 
-class BlogDetailView(DetailView):
-    def get_blog(self):
-        return Blog.objects.get(pk=self.kwargs.get('pk'))
+# class Product_list(ListView):
+#     model = Image
+#     template_name = 'practic_list.html'
+#     # queryset = Image.objects.order_by('image')[0:1]
 
-    def get_comment(self):
-        return Comment.objects.filter(blog_id=self.kwargs.get('pk'))
+#     def get_queryset(self):
+#         qs = Image.objects.order_by('image')[0:1]
+#         return qs
 
-    def get_category(self):
-        return Category.objects.all()
 
-    def get_brand(self):
-        return Brand.objects.all()
+class Product_list(ListView):
+    model = Image
+    template_name = 'practic_list.html'
 
-    def get_related_blog(self):
-        return Blog.objects.order_by('-created_at').exclude(pk=self.kwargs.get('pk'))
+    def get_queryset(self):
+        qs = Image.objects.order_by('image')[0:4]
+        return qs
 
-    def get(self, request, *args, **kwargs):
-        context = {
-            'comments': self.get_comment(),
-            'title': 'Single-product Sellshop',
-            'blog': self.get_blog(),
-            'relatedblogs': self.get_related_blog(),
-            'categories': self.get_category(),
-            'brands': self.get_brand(),
+    # model = Product
+    # template_name = 'practic_list.html'
+    # def get_queryset(self):
+    #     qs = Product.objects.order_by('price')[0:4]
+    #     return qs
 
-        }
-        return render(request, 'single-blog.html', context=context)
+    # model = Category
+    # template_name = 'practic_list.html'
+    # def get_queryset(self):
+    #     qs = Category.objects.all()
+    #     return qs
+
+    # model = Subcategory
+    # template_name = 'practic_list.html'
+    # def get_queryset(self):
+    #     qs = Subcategory.objects.all()
+    #     return qs
+
+
+# class BlogDetailView(DetailView):
+#     def get_blog(self):
+#         return Blog.objects.get(pk=self.kwargs.get('pk'))
+
+#     def get_comment(self):
+#         return Comment.objects.filter(blog_id=self.kwargs.get('pk'))
+
+#     def get_category(self):
+#         return Category.objects.all()
+
+#     def get_brand(self):
+#         return Brand.objects.all()
+
+#     def get_related_blog(self):
+#         return Blog.objects.order_by('-created_at').exclude(pk=self.kwargs.get('pk'))
+
+#     def get(self, request, *args, **kwargs):
+#         context = {
+#             'comments': self.get_comment(),
+#             'title': 'Single-product Sellshop',
+#             'blog': self.get_blog(),
+#             'relatedblogs': self.get_related_blog(),
+#             'categories': self.get_category(),
+#             'brands': self.get_brand(),
+
+#         }
+#         return render(request, 'single-blog.html', context=context)
 
 
 def single_product(request, pk):

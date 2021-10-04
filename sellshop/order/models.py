@@ -44,20 +44,20 @@ class ShippingAddress(models.Model):
 
 
 class Wishlist(models.Model):
-    user_id = models.ForeignKey(
-        "account.User", related_name="User_Wishlist", on_delete=models.CASCADE)
-    products = models.ManyToManyField(
-        "product.ProductVersion", related_name="Wishlist_Product", blank=False)
+    user = models.ForeignKey(
+        "account.User", on_delete=models.CASCADE, default="")
+    product = models.ManyToManyField(
+        'product.ProductVersion', related_name='Product_wishlist')
 
-    def __str__(self) -> str:
-        return f"{self.user_id.first_name} {self.user_id.last_name}"
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class Cart(models.Model):
-    user_id = models.ForeignKey(
-        "account.User", related_name="User_Cart", on_delete=models.CASCADE)
-    products = models.ManyToManyField(
-        "product.ProductVersion", related_name="Cart_Product", blank=False)
+    user = models.ForeignKey(
+        "account.User", on_delete=models.CASCADE, default="")
+    product = models.ManyToManyField(
+        "product.ProductVersion", related_name='Product_Cart')
 
     def __str__(self) -> str:
         return f"{self.user_id.first_name} {self.user_id.last_name}"

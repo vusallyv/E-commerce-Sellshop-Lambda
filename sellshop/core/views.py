@@ -1,8 +1,16 @@
 from django.shortcuts import render
+from blog.models import Blog
+from django.db.models import Q
+from django.views.generic import TemplateView
 
 # Create your views here.
 
-from django.views.generic import TemplateView
+
+def about(request):
+    context = {
+        'title': 'About Sellshop',
+    }
+    return render(request, 'about.html', context=context)
 
 
 class AboutView(TemplateView):
@@ -14,11 +22,11 @@ class AboutView(TemplateView):
         return context
 
 
-def blog(request):
+def index(request):
     context = {
-        'title': 'Blog Sellshop',
+        'title': 'Home Sellshop',
     }
-    return render(request, 'blog.html', context=context)
+    return render(request, 'index.html', context=context)
 
 
 class ErrorView(TemplateView):

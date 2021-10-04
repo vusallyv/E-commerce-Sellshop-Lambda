@@ -1,41 +1,50 @@
 from django.contrib import admin
 
 # Register your models here.
-
-from product.models import Color, Product, Category, Brand, ProductVersion, Review, Comment, Blog, Image, Size, Tag
-
-
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    search_fields = ['title']
+from django.utils.html import format_html
+from product.models import Color, Product, Category, Brand, ProductVersion, Size, Review, Image, Tag
 
 
-@admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'ex_price', 'price', 'get_brand')
-    list_editable = ('ex_price', 'price',)
+# @admin.register(ProductVersion)
+# class ProductVersionAdmin(admin.ModelAdmin):
+#     search_fields = ['user_id']
 
-    def get_brand(self, obj):
-        return obj.brand.title
-    get_brand.short_description = 'Brand'
+#     def get_image(self, obj):
+#         if obj.image:
+#             img = '<img src="{}" width="100" height="100" />'.format(
+#                 obj.image.url)
+#             return format_html(img)
+#         return 'No Image'
 
-
-@admin.register(ProductVersion)
-class ProductVersionAdmin(admin.ModelAdmin):
-    list_display = ('get_title', 'quantity', 'color', 'size', 'is_main',)
-    list_editable = ('quantity', 'is_main')
-    list_filter = ('color', 'is_main', 'size', 'rating')
-    autocomplete_fields = ['tag']
-
-    def get_title(self, obj):
-        return obj.product.title
-    get_title.short_description = 'Title'
+#     # autocomplete_fields = ['wishlist_id']
 
 
-@admin.register(Blog)
-class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'creator',)
-    list_filter = ('creator',)
+# @admin.register(Tag)
+# class TagAdmin(admin.ModelAdmin):
+#     search_fields = ['title']
 
 
-admin.site.register([Category, Brand, Review, Comment, Image, Color, Size])
+# @admin.register(Product)
+# class ProductAdmin(admin.ModelAdmin):
+#     list_display = ('title', 'ex_price', 'price', 'get_brand')
+#     list_editable = ('ex_price', 'price',)
+
+#     def get_brand(self, obj):
+#         return obj.brand.title
+#     get_brand.short_description = 'Brand'
+
+
+# @admin.register(ProductVersion)
+# class ProductVersionAdmin(admin.ModelAdmin):
+#     list_display = ('get_title', 'quantity', 'color', 'size', 'is_main',)
+#     list_editable = ('quantity', 'is_main')
+#     list_filter = ('color', 'is_main', 'size', 'rating')
+#     autocomplete_fields = ['tag']
+
+#     def get_title(self, obj):
+#         return obj.product.title
+#     get_title.short_description = 'Title'
+
+
+
+admin.site.register([Color, Product, Category, Brand, ProductVersion, Size, Review, Image, Tag])
