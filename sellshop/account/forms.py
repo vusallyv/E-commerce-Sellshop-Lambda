@@ -62,3 +62,4 @@ class UserForm(forms.ModelForm):
         widgets = {
             'birth': DateInput(attrs={'type': 'date'}),
         }
+        
