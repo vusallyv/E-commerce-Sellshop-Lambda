@@ -41,16 +41,17 @@
 									</tr>
 								</thead>
 								<tbody>
+									{% for product in wishlist %}
 									<tr>
 										<td class="td-img text-left">
 											<a href="#"><img src="{% static 'img/cart/1.png' %}" alt="Add Product" /></a>
 											<div class="items-dsc">
-												<h5><a href="#">men’s black t-shirt</a></h5>
-												<p class="itemcolor">Color : <span>Blue</span></p>
-												<p class="itemcolor">Size   : <span>SL</span></p>
+												<h5><a href="#">{{product.product.title}}</a></h5>
+												<p class="itemcolor">Color : <span>{{product.color}}</span></p>
+												<p class="itemcolor">Size   : <span>{{product.size}}</span></p>
 											</div>
 										</td>
-										<td>$56.00</td>
+										<td>${{product.product.price}}</td>
 										<td>In Stock</td>
 										<td>
 											<div class="submit-text">
@@ -59,42 +60,7 @@
 										</td>
 										<td><i class="mdi mdi-close" title="Remove this product"></i></td>
 									</tr>
-									<tr>
-										<td class="td-img text-left">
-											<a href="#"><img src="{% static 'img/cart/2.png' %}" alt="Add Product" /></a>
-											<div class="items-dsc">
-												<h5><a href="#">men’s white t-shirt</a></h5>
-												<p class="itemcolor">Color : <span>Blue</span></p>
-												<p class="itemcolor">Size   : <span>SL</span></p>
-											</div>
-										</td>
-										<td>$56.00</td>
-										<td>In Stock</td>
-										<td>
-											<div class="submit-text">
-												<a href="{% url 'cart' %}">Add to cart</a>
-											</div>
-										</td>
-										<td><i class="mdi mdi-close" title="Remove this product"></i></td>
-									</tr>
-									<tr>
-										<td class="td-img text-left">
-											<a href="#"><img src="{% static 'img/cart/3.png' %}" alt="Add Product" /></a>
-											<div class="items-dsc">
-												<h5><a href="#">men’s white t-shirt</a></h5>
-												<p class="itemcolor">Color : <span>Blue</span></p>
-												<p class="itemcolor">Size   : <span>SL</span></p>
-											</div>
-										</td>
-										<td>$56.00</td>
-										<td>In Stock</td>
-										<td>
-											<div class="submit-text">
-												<a href="{% url 'cart' %}">Add to cart</a>
-											</div>
-										</td>
-										<td><i class="mdi mdi-close" title="Remove this product"></i></td>
-									</tr>
+									{% endfor %}
 								</tbody>
 							</table>
 						</div>

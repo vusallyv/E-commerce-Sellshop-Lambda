@@ -1,6 +1,11 @@
 from django.contrib import admin
-
 from blog.models import Comment, Blog
 
-admin.site.register(Comment)
-admin.site.register(Blog)
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ('title', 'creator',)
+    list_filter = ('creator',)
+
+
+admin.site.register([Comment])

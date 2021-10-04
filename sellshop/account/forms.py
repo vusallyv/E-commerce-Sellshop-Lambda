@@ -1,3 +1,5 @@
+from account.models import User
+from django.forms.widgets import DateInput
 from django import forms
 from django.forms import widgets
 from account.models import Contact
@@ -10,70 +12,64 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'email', 'message']
-        
-     
-class UserRegisterForm(forms.Form):
-    first_name = forms.CharField(label='First Name')
-    last_name = forms.CharField(label='Last Name')
-    email = forms.EmailField(label='Email')
-    country = forms.CharField(label='Country')
-    address = forms.CharField(label='Address')
-    city = forms.CharField(label='City')
-    phone_number = forms.CharField(label='Phone Number')
-    additional_info = forms.CharField(label='AdditionalInfo')
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password_confirmation = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
-    
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError('The email is already in use')
-        return email
-    
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={'placeholder': 'Email Address..'}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Password'}))
+
     def clean(self):
-        data = super().clean()
-        password = data['password']
-        password_confirmation = data['password_confirmation']
-        if password != password_confirmation:
-            raise forms.ValidationError('Password confirmation does not match.')
-        return data
-        
-        
-class UserLoginForm(forms.Form):
-    email = forms.CharField(label='Email')
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    
-    def clean(self):
-        user = User.objects.filter(email=self.cleaned_data['email']).first()
+        user = User.objects.filter(
+            email=self.cleaned_data.get('email')).first()
         if not user:
-            raise forms.ValidationError('user does not exist.')
-        if not user.check_password(self.cleaned_data['password']):
-            raise forms.ValidationError('password is incorrect.')
+            raise forms.ValidationError('Invalid Username')
+        if not user.check_password(self.cleaned_data.get('password')):
+            raise forms.ValidationError('Invalid Password')
         return self.cleaned_data
 
 
+class RegisterForm(forms.Form):
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Name here..'}))
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={'placeholder': 'Email Address..'}))
+    phone_number = forms.IntegerField(widget=forms.NumberInput(
+        attrs={'placeholder': 'Phone Number..'}))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Password'}))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'placeholder': 'Confirm Password'}))
+    CHOICES = [('1', ' '), ]
+    rememberme = forms.ChoiceField(
+        choices=CHOICES, widget=forms.RadioSelect)
 
-# forms.Form istifade usulu
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already in use")
+        return email
 
-# class ContactForm(forms.Form):
-#     name = forms.CharField(max_length=100, widget=forms.TextInput(
-#         attrs={'class': 'form-control', 'placeholder': 'Enter your name'})
-#     )
-#     email = forms.EmailField(max_length=150, widget=forms.TextInput(
-#         attrs={'class': 'form-control', 'placeholder': 'Enter your email'})
-#     )
-#     message = forms.CharField(max_length=1000, widget=forms.TextInput(
-#         attrs={'class':'form-control', 'placeholder': 'Enter your message'})
-#     )
-    
-#     def clean_name(self):
-#         data = self.cleaned_data['name']
-#         if len(data) < 4:
-#             raise forms.ValidationError('Name len error')
-#         return data
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if User.objects.filter(phone_number=phone_number).exists():
+            raise forms.ValidationError("Phone number already in use")
+        return phone_number
+
+    # def clean_password(self):
+    #     password = self.cleaned_data.get('password')
+    #     password_confirm = self.cleaned_data.get('confirm_password')
+    #     if not (password == password_confirm):
+    #         raise forms.ValidationError("Password confirmation does not match")
+    #     return password
 
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('__all__')
 
-        
-        
-    
+        widgets = {
+            'birth': DateInput(attrs={'type': 'date'}),
+        }

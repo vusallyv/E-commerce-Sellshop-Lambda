@@ -1,310 +1,320 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %} {{title}}{% endblock %}
-{% block base %}
+{% extends 'base.html' %} {% load static %} {% block title %} {{title}}{% endblock %} {% block base %}
 <!-- pages-title-start -->
 <div class="pages-title section-padding">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="pages-title-text text-center">
-					<h2>fashion style fine arts drawing</h2>
-					<ul class="text-left">
-						<li><a href="{% url 'index' %}">Home </a></li>
-						<li><span> // </span><a href="{% url 'blog' %}">blog </a></li>
-						<li><span> // </span>fashion style fine arts drawing</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pages-title-text text-center">
+          <h2>fashion style fine arts drawing</h2>
+          <ul class="text-left">
+            <li><a href="{% url 'index' %}">Home </a></li>
+            <li><span> // </span><a href="{% url 'blog' %}">blog </a></li>
+            <li><span> // </span>fashion style fine arts drawing</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- pages-title-end -->
 <!-- blog-section-start -->
 <section class="pages blog single-blog-area section-padding-top">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-8 col-md-9">
-				<div class="single-blog-page">
-					<div class="single-blog-img">
-						<img src="{{ blog_id.image.url }}" alt="" />
-					</div>
-					<div class="padding30">
-						<div class="blog-text">
-							
-							<div class="post-title">
-								<!-- Fashion style fine arts drawing -->
-								<h3>{{ blog_id.title }}</h3>
-								<ul class="clearfix">
-									<li><i class="pe-7s-user"></i>By :<a href="#">{{ blog_id.creator }}</a><span>|</span></li>
-									<li><i class="pe-7s-comment"></i><a href="#">{{ blog_id.create_at }}</a><span>|</span></li>
-									<li><i class="pe-7s-like"></i><a href="#">{{ blog_id.like }} Like</a><span>|</span></li>
-									<li><i class="pe-7s-back"></i><a href="#">70 Comments</a></li>
-								</ul>
-							</div>
-							<p>{{ blog_id.description }}</p>
-							
-							<div class="italic">
-								<p>“The wise man therefore always holds in these matters to this principle of selection:
-									he rejects pleasures to secure other greater pleasures, or else he endures pains to
-									avoid worse pains. But I must explain to you how all this mistaken idea of
-									denouncing pleasure and praising pain was born and I will give you a complete
-									account of the system”,</p>
-							</div>
-							<p>No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because
-								those who do not know how to pursue pleasure rationally encounter consequences that are
-								extremely painful. Nor again is there anyone who loves or pursues or desires to obtain
-								pain of itself, because it is pain, but because occasionally circumstances occur in
-								which toil and pain can procure him some great pleasure.</p>
-							<div class="share-tag clearfix">
-								<ul class="blog-share floatleft">
-									<li>
-										<h5>share </h5>
-									</li>
-									<li><a href="#"><i class="mdi mdi-facebook"></i></a></li>
-									<li><a href="#"><i class="mdi mdi-twitter"></i></a></li>
-									<li><a href="#"><i class="mdi mdi-linkedin"></i></a></li>
-									<li><a href="#"><i class="mdi mdi-vimeo"></i></a></li>
-									<li><a href="#"><i class="mdi mdi-dribbble"></i></a></li>
-									<li><a href="#"><i class="mdi mdi-instagram"></i></a></li>
-								</ul>
-							</div>
-							<div class="about-author comments">
-								<h4>19 comments</h4>
-								<div class="autohr-text">
-									<img src="{% static 'img/blog/author2.png' %}" alt="" />
-									<div class="author-des">
-										<h4><a href="#">Gerald Barnes</a></h4>
-										<span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
-										<span>27 Jun, 2016 at 2:30pm</span>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-											egestas eleifend. Phasellus a felis at est bibenes dum feugiat ut eget eni
-											Praesent et messages in consectetur.</p>
-									</div>
-								</div>
-							</div>
-							<div class="about-author reply">
-								<div class="autohr-text">
-									<img src="{% static 'img/blog/author3.png' %}" alt="" />
-									<div class="author-des">
-										<h4><a href="#">Gregory Hernandez</a></h4>
-										<span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
-										<span>27 Jun, 2016 at 2:30pm</span>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-											egestas eleifend. Phasellus a felis at est bibenes dum feugiat ut eget eni
-											Praesent et messages in consectetur.</p>
-									</div>
-								</div>
-							</div>
-							<div class="about-author">
-								<div class="autohr-text">
-									<img src="{% static 'img/blog/author3.png' %}" alt="" />
-									<div class="author-des">
-										<h4><a href="#">Gregory Hernandez</a></h4>
-										<span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
-										<span>27 Jun, 2016 at 2:30pm</span>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-											egestas eleifend. Phasellus a felis at est bibenes dum feugiat ut eget eni
-											Praesent et messages in consectetur.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="leave-comment">
-							<h4>leave your review</h4>
-							<form action="mail.php" method="post">
-								<div class="row">
-									<div class="col-xs-12 col-sm-6">
-										<div class="input-text">
-											<input type="text" name="name" placeholder="Name here" value="" />
-										</div>
-									</div>
-									<div class="col-xs-12 col-sm-6">
-										<div class="input-text">
-											<input type="text" name="email" placeholder="Email here" value="" />
-										</div>
-									</div>
-									<div class="col-xs-12">
-										<div class="input-text">
-											<textarea name="comment" id="comment" placeholder="Comment here"
-												rows="4"></textarea>
-										</div>
-									</div>
-									<div class="col-xs-12">
-										<div class="submit-text">
-											<button type="submit" value="submit form">submit comments</button>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<!-- single post end -->
-			</div>
-			<div class="col-xs-12 col-sm-4 col-md-3">
-				<div class="sidebar left-sidebar">
-					<div class="s-side-text">
-						<div class="sidebar-title clearfix">
-							<h4 class="floatleft">Categories</h4>
-							<h5 class="floatright"><a href="#">All</a></h5>
-						</div>
-						
-						<div class="categories left-right-p">
-							<ul id="accordion" class="panel-group clearfix">
-								{% for category in categories %}
-								<li class="panel">
-									<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{category.id}}">
-										<div class="medium-a">
-											{{category.title}}
-										</div>
-									</div>
-									<div class="panel-collapse collapse" id="collapse{{category.id}}">
-										{% for subcategory in subcategories %}
-										<div class="normal-a">
-											<a href="#">{{subcategory.title}}</a>
-										</div>
-										{% endfor %}
-									</div>
-								</li>
-								{% endfor %}
-							</ul>
-						</div>
-					</div>
-					<div class="s-side-text">
-						<div class="sidebar-title clearfix">
-							<h4 class="floatleft">brands</h4>
-							<h5 class="floatright"><a href="#">All</a></h5>
-						</div>
-						<div class="brands-select clearfix">
-							<ul>
-								<li>
-									<a href="#">Offset</a>
-									<a href="#">Ecko Untid</a>
-									<a href="#">Addidas</a>
-									<a href="#">Custo</a>
-									<a href="#">Guccies</a>
-								</li>
-								<li>
-									<a href="#">Unlimited</a>
-									<a href="#">Shoes</a>
-									<a href="#">Watch</a>
-									<a href="#">Color Full</a>
-									<a href="#">Best choice</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="s-side-text">
-						<div class="sidebar-title clearfix">
-							<h4 class="floatleft">recent post</h4>
-						</div>
-						<div class="recent-post clearfix">
-							<ul>
-								<li>
-									<a href="#"><img src="{% static 'img/blog/r1.jpg' %}" alt="" /></a>
-									<h5><a href="#">women’s fashon</a></h5>
-									<span>Jun 25, 2016</span>
-								</li>
-								<li>
-									<a href="#"><img src="{% static 'img/blog/r2.jpg' %}" alt="" /></a>
-									<h5><a href="#">child's fashon</a></h5>
-									<span>Jun 24, 2016</span>
-								</li>
-								<li>
-									<a href="#"><img src="{% static 'img/blog/r3.jpg' %}" alt="" /></a>
-									<h5><a href="#">women’s fashon</a></h5>
-									<span>Jun 22, 2016</span>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div class="s-side-text">
-						<div class="banner clearfix">
-							<a href="#"><img src="{% static 'img/products/banner.jpg' %}" alt="" /></a>
-							<div class="banner-text">
-								<h2>best</h2> <br />
-								<h2 class="banner-brand">brand</h2>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-8 col-md-9">
+        <div class="single-blog-page">
+          <div class="single-blog-img">
+            <img src="{% static 'img/blog/s.jpg' %}" alt="" />
+          </div>
+          <div class="padding30">
+            <div class="blog-text">
+              <div class="post-title">
+                <h3>{{ blog.title }}</h3>
+                <ul class="clearfix">
+                  <li>
+                    <i class="pe-7s-user"></i>By :<a href="#">{{ blog.creator }}</a><span>|</span>
+                  </li>
+                  <li>
+                    <i class="pe-7s-comment"></i><a href="#">{{ blog.created_at }}</a><span>|</span>
+                  </li>
+                  <li>
+                    <i class="pe-7s-like"></i><a href="#">{{ blog.like }} Likes</a><span>|</span>
+                  </li>
+                  <li><i class="pe-7s-back"></i><a href="#">{{ comments|length }} Comments</a></li>
+                </ul>
+              </div>
+              <p>{{ blog.description }}</p>
+              <div class="italic">
+                <p>
+                  “The wise man therefore always holds in these matters to this
+                  principle of selection: he rejects pleasures to secure other
+                  greater pleasures, or else he endures pains to avoid worse
+                  pains. But I must explain to you how all this mistaken idea of
+                  denouncing pleasure and praising pain was born and I will give
+                  you a complete account of the system”,
+                </p>
+              </div>
+              <p>{{ blog.description }}</p>
+              <div class="share-tag clearfix">
+                <ul class="blog-share floatleft">
+                  <li>
+                    <h5>share</h5>
+                  </li>
+                  <li>
+                    <a href="#"><i class="mdi mdi-facebook"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="mdi mdi-twitter"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="mdi mdi-linkedin"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="mdi mdi-vimeo"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="mdi mdi-dribbble"></i></a>
+                  </li>
+                  <li>
+                    <a href="#"><i class="mdi mdi-instagram"></i></a>
+                  </li>
+                </ul>
+              </div>
+
+              <h4>{{ comments|length }} comments</h4>
+              {% for comment in comments.all %} {% if not comment.comment_id %}
+              <div class="about-author comments">
+                <div class="autohr-text">
+                  {% if comment.user_id.image == 'staticfiles/img/blog/author1.png' %}
+                  <img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}" alt="" />
+                  {% else %}
+                  <img style="width: 90px; height: 100px;" src="{{ comment.user_id.image.url }}" alt="" />
+                  {% endif %}
+                  <div class="author-des">
+                    <h4>
+                      <a href="#">{{ comment.user_id.first_name }} {{comment.user_id.last_name }}</a>
+                    </h4>
+                    <span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
+                    <span>{{ comment.created_at }}</span>
+                    <p>{{ comment.description }}</p>
+                  </div>
+                </div>
+              </div>
+              {% endif %} {% for reply in comment.replies.all %}
+              <div class="about-author reply">
+                <div class="autohr-text">
+                  {% if reply.user_id.image == 'staticfiles/img/blog/author1.png' %}
+                  <img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}" alt="" />
+                  {% else %}
+                  <img style="width: 90px; height: 100px;" src="{{ reply.user_id.image.url }}" alt="" />
+                  {% endif %}
+                  <div class="author-des">
+                    <h4>
+                      <a href="#">{{ reply.user_id.first_name }} {{ reply.user_id.last_name }}</a>
+                    </h4>
+                    <span class="floatright"><a href="#">Hide</a></span>
+                    <span>{{ reply.created_at }}</span>
+                    <p>{{ reply.description }}</p>
+                  </div>
+                </div>
+              </div>
+              {% endfor %} {% endfor %}
+            </div>
+            <div class="leave-comment">
+              <h4>leave your review</h4>
+            {% if request.user.is_authenticated %}
+              <form action="" method="post">
+                {% else %}
+              <form action="{% url 'login'%}">
+                {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6">
+                    <div class="input-text">
+                      {% if request.user.is_authenticated %}
+                      <input type="text" name="name" placeholder="Name here" value="{{user.username }}" readonly />
+                      {% else %}
+                      <input type="text" name="name" placeholder="Name here" />
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6">
+                    <div class="input-text">
+                      {% if request.user.is_authenticated %}
+                      <input type="text" name="name" placeholder="Name here" value="{{user.email }}" readonly />
+                      {% else %}
+                      <input type="text" name="name" placeholder="Name here" />
+                      {% endif %}</div>
+                  </div>
+                  <div class="col-xs-12">
+                    <div class="input-text">
+                      {{form.description}}
+                    </div>
+                  </div>
+                  <div class="col-xs-12">
+                    <div class="submit-text">
+                      {% if request.user.is_authenticated %}
+                      <button type="submit" value="submit form">
+                        submit comments
+                      </button> 
+                      {% else %}
+                      <button type="text" value="submit form">
+                        submit comments
+                      </button>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- single post end -->
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-3">
+        <div class="sidebar left-sidebar">
+          <div class="s-side-text">
+            <div class="sidebar-title clearfix">
+              <h4 class="floatleft">Categories</h4>
+              <h5 class="floatright"><a href="#">All</a></h5>
+            </div>
+            <div class="categories left-right-p">
+              <ul id="accordion" class="panel-group clearfix">
+
+                {% for category in categories.all %}
+                <li class="panel">
+                  {% if not category.subcategory %}
+                  <div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ category.id }}">
+                    <form action="{% url 'product_list' %}" method="POST">
+                      {% csrf_token %}
+                      <div class="medium-a">
+                        <button type="submit" name="category_name" value="{{ category.title }}"
+                          style="background-color: transparent; border: none">
+                          {{ category.title }}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  {% endif %}
+                  <div class="panel-collapse collapse" id="collapse{{ category.id }}">
+                    {% for subcategory in category.subcategories.all %}
+                    <form action="{% url 'product_list' %}" method="POST">
+                      {% csrf_token %}
+                      <div class="normal-a">
+                        <a href="#">
+                          <button type="submit" name="subcategory_name" value="{{ subcategory.title }}"
+                            style="background-color: transparent; border: none">
+                            {{ subcategory.title }}
+                          </button>
+                        </a>
+                      </div>
+                    </form>
+                    <div class="medium-a"></div>
+                    {% endfor %}
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="s-side-text">
+            <div class="sidebar-title clearfix">
+              <h4 class="floatleft">brands</h4>
+              <h5 class="floatright"><a href="#">All</a></h5>
+            </div>
+            <div class="brands-select clearfix">
+              <ul>
+                {% for brand in brands %}
+                <li>
+                  <form action="{% url 'product_list' %}" method="POST">
+                    {% csrf_token %}
+                    <a href="#">
+                      <button type="submit" name="brand" value="{{ brand.title }}"
+                        style="background-color: transparent; border: none">
+                        {{ brand.title }}
+                      </button>
+                    </a>
+                  </form>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="s-side-text">
+            <div class="sidebar-title clearfix">
+              <h4 class="floatleft">recent post</h4>
+            </div>
+            <div class="recent-post clearfix">
+              <ul>
+                {% for blog in blogs %}
+                <li>
+                  <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/r3.jpg' %}" alt="" /></a>
+                  <h5><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h5>
+                  <span>{{ blog.created_at }}</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="s-side-text">
+            <div class="banner clearfix">
+              <a href="#"><img src="{% static 'img/products/banner.jpg' %}" alt="" /></a>
+              <div class="banner-text">
+                <h2>best</h2>
+                <br />
+                <h2 class="banner-brand">brand</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- blog section end -->
 <!-- related post section start -->
 <section class="related-post latest-blog section-padding">
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="section-title text-center">
-					<h2>Related Post</h2>
-				</div>
-			</div>
-		</div>
-		<ul class="blog-row">
-			<li>
-				<div class="row">
-					{% for i in all_blogs %}
-					<div class="col-sm-4">
-						<div class="l-blog-text">
-							<div class="banner"><a href="http://127.0.0.1:8000/blog/single-blog/"><img
-										src="{% static 'img/blog/4.jpg' %}" alt="" /></a></div>
-							<div class="s-blog-text">
-								<h4><a href="http://127.0.0.1:8000/blog/single-blog/">Fashion style fine arts drawing</a></h4>
-								<span>By : <a href="#">{{i.creator}}</a> | <a href="#">{{i.like}} Like</a> | <a href="#">69
-										Comments</a></span>
-								<p> {{i.description }} </p>
-							</div>
-							<div class="date-read clearfix">
-								<a href="#"><i class="mdi mdi-clock"></i>{{i.create_at}}</a>
-								<a href="http://127.0.0.1:8000/blog/single-blog/">read more</a>
-							</div>
-						</div>
-					</div>
-					{% endfor %}
-					<!-- <div class="col-sm-4">
-						<div class="l-blog-text">
-							<div class="banner"><a href="http://127.0.0.1:8000/blog/single-blog/"><img
-										src="{% static 'img/blog/5.jpg' %}" alt="" /></a></div>
-							<div class="s-blog-text">
-								<h4><a href="http://127.0.0.1:8000/blog/single-blog/">women’s Fashion style 2016</a></h4>
-								<span>By : <a href="#">Rakib</a> | <a href="#">210 Like</a> | <a href="#">69
-										Comments</a></span>
-								<p>There are many variations of passages of Lorem Ipsum available, but the majority have
-									suffered alteration in some form, by injected humour....</p>
-							</div>
-							<div class="date-read clearfix">
-								<a href="#"><i class="mdi mdi-clock"></i> jun 15, 2016</a>
-								<a href="http://127.0.0.1:8000/blog/single-blog/">read more</a>
-							</div>
-						</div>
-					</div> -->
-					<!-- <div class="col-sm-4">
-						<div class="l-blog-text">
-							<div class="banner"><a href="http://127.0.0.1:8000/blog/single-blog/"><img
-										src="{% static 'img/blog/6.jpg' %}" alt="" /></a></div>
-							<div class="s-blog-text">
-								<h4><a href="http://127.0.0.1:8000/blog/single-blog/">women’s winter Fashion style</a></h4>
-								<span>By : <a href="#">Rakib</a> | <a href="#">210 Like</a> | <a href="#">69
-										Comments</a></span>
-								<p>There are many variations of passages of Lorem Ipsum available, but the majority have
-									suffered alteration in some form, by injected humour....</p>
-							</div>
-							<div class="date-read clearfix">
-								<a href="#"><i class="mdi mdi-clock"></i> jun 22, 2016</a>
-								<a href="http://127.0.0.1:8000/blog/single-blog/">read more</a>
-							</div>
-						</div>
-					</div> -->
-					
-				</div>
-			</li>
-		</ul>
-	</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="section-title text-center">
+          <h2>Related Post</h2>
+        </div>
+      </div>
+    </div>
+    <ul class="blog-row">
+      <li>
+        <div class="row">
+          {% for blog in relatedblogs %}
+          {% if blog.product.product.category.title == blog.product.product.category.title %}
+          <div class="col-sm-12">
+            <div class="l-blog-text">
+              <div class="banner">
+                <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
+              </div>
+              <div class="s-blog-text">
+                <h4>
+                  <a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a>
+                </h4>
+                <span>By : <a href="{% url 'single_blog' blog.id %}">{{ blog.creator }}</a> | <a
+                    href="{% url 'single_blog' blog.id %}">{{ blog.like }} Like</a> |
+                  <a href="{% url 'single_blog' blog.id %}">{{ comments|length }} Comments</a></span>
+                <p>
+                  {{ blog.description }}
+                </p>
+              </div>
+              <div class="date-read clearfix">
+                <a href="{% url 'single_blog' blog.id %}"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
+                <a href="{% url 'single_blog' blog.id %}">read more</a>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </li>
+    </ul>
+  </div>
 </section>
 <!-- related post section end -->
 

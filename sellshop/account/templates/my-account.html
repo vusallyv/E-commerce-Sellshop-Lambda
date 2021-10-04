@@ -50,13 +50,13 @@
 													<form action="mail.php" method="post">
 														<div class="row">
 															<div class="col-md-6">
-																<input type="text" name="name" placeholder="First Name" />
+														<input type="text" name="name" placeholder="First Name" value="{{user.first_name}}" />
 															</div>
 															<div class="col-md-6">
-																<input type="text" name="name" placeholder="Last Name" />
+																<input type="text" name="name" placeholder="Last Name" value="{{user.last_name}}" />
 															</div>
 														</div>
-														<input type="text" name="email" placeholder="Email Address" />
+														<input type="text" name="email" placeholder="Email Address" value="{{user.email}}" />
 														<div class="custom-select">
 															<select class="form-control">
 																<option> Country</option>
@@ -81,7 +81,7 @@
 															</select>
 														</div>
 														<p class="red-color">** You must register at least one phone number.</p>
-														<input type="text" name="text" placeholder="Mobile Phone" />
+														<input type="text" name="text" placeholder="Mobile Phone" value="{{user.phone_number}}" />
 														<div class="custom-mess">
 															<textarea rows="2" placeholder="Additional information" name="message"></textarea>
 														</div>

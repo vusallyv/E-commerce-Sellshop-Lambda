@@ -6,7 +6,6 @@ from account.models import Contact, User
 
 admin.site.site_header = 'Sellshop Admin'
 admin.site.site_title = 'Sellshop Admin'
-# url nece deyishir?
 
 # class UserAdmin(admin.ModelAdmin):
 #     list_display = ('first_name', 'city', 'salary')
@@ -22,5 +21,9 @@ admin.site.site_title = 'Sellshop Admin'
 #         ('different informations', {'fields': ('additional_info',) }),
 #     )
 
-admin.site.register(User)
-admin.site.register(Contact)
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'first_name', 'last_name', 'email' )
+
+
+admin.site.register([Contact])
