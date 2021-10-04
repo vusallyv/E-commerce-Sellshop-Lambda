@@ -132,3 +132,7 @@ dmypy.json
 
 migrations/
 postgredb/
+
+# gunluk suallar
+.suallar.txt
+suallar.txt

@@ -1,69 +1,73 @@
-
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{ title }} {% endblock %}
 {% block base %}
-        <!-- pages-title-start -->
-		<div class="pages-title section-padding">
-			<div class="container">
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="pages-title-text text-center">
-							<h2>Blog</h2>
-							<ul class="text-left">
-								<li><a href="{% url 'index' %}">Home </a></li>
-								<li><span> // </span>Blog</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- pages-title-end -->
-        <!-- blog section start -->
-		<section class="latest-blog section-padding">
-			<div class="container">
-				<ul class="blog-row clearfix">
-					<li>
-						<div class="row">
-							{% for blog in all_blog %}
-							<div class="col-sm-4">
-								<div class="l-blog-text">
-									<div class="banner"><a href="{% url 'single_blog' %}"><img src="{% static 'img/blog/1.jpg' %}" alt="" /></a></div>
-									<div class="s-blog-text">
-										<h4><a href="{% url 'single_blog' %}">{{ blog.title }}</a></h4>
-										<span>By : <a href="#">Rakib</a> | <a href="#">{{blog.like}} Like</a> | <a href="#">{{blog.comments}} Comment</a></span>
-										<div><p>{{ blog.description }}</p></div>
-									</div>
-									<div class="date-read clearfix">
-										<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
-										<a href="{% url 'single_blog' %}">read more</a>
-									</div>
-								</div>
-							</div>
-								{% endfor %}
-							
-							
-						</div>
-					</li>
-					
-				</ul>
-				<div class="pagnation-ul">
-					<ul class="clearfix">
-						<li><a href="#"><i class="mdi mdi-menu-left"></i></a></li>
-						<li><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#">...</a></li>
-						<li><a href="#">10</a></li>
-						<li><a href="#"><i class="mdi mdi-menu-right"></i></a></li>
+<!-- pages-title-start -->
+<div class="pages-title section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pages-title-text text-center">
+					<h2>Blog</h2>
+					<ul class="text-left">
+						<li><a href="{% url 'index' %}">Home </a></li>
+						<li><span> // </span>Blog</li>
 					</ul>
 				</div>
 			</div>
-		</section>
-		<!-- blog section end -->
-        
-		<!-- all js here -->
-		{% endblock %} 
+		</div>
+	</div>
+</div>
+<!-- pages-title-end -->
+<!-- blog section start -->
+<section class="latest-blog section-padding">
+	<div class="container">
+		<ul class="blog-row clearfix">
+			<li>
+				<div class="row">
+
+					{% for blog in blogs %}
+					<div class="col-sm-4">
+						<div class="l-blog-text">
+							<div class="banner"><a href="{% url 'single_blog' %}"><img
+										src="{% static 'img/blog/1.jpg' %}" alt="" /></a></div>
+							<div class="s-blog-text">
+								<h4><a href="{% url 'single_blog' %}">{{ blog.title }}</a></h4>
+								<span>By : <a href="#">Rakib</a> | <a href="#">{{blog.like}} Like</a> | <a
+										href="#">{{blog.comments}} Comment</a></span>
+								<div>
+									<p>{{ blog.description }}</p>
+								</div>
+							</div>
+							<div class="date-read clearfix">
+								<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
+								<a href="{% url 'single_blog' %}">read more</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+
+
+				</div>
+			</li>
+
+		</ul>
+		<div class="pagnation-ul">
+			<ul class="clearfix">
+				<li><a href="#"><i class="mdi mdi-menu-left"></i></a></li>
+				<li><a href="#">1</a></li>
+				<li><a href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">5</a></li>
+				<li><a href="#">...</a></li>
+				<li><a href="#">10</a></li>
+				<li><a href="#"><i class="mdi mdi-menu-right"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</section>
+<!-- blog section end -->
+
+<!-- all js here -->
+{% endblock %}

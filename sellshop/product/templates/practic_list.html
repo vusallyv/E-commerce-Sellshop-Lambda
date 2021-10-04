@@ -71,16 +71,15 @@
 								</div>
 								<div class="categories left-right-p">
 									<ul id="accordion" class="panel-group clearfix">
-										{% for category in categories %}
+										{% for category in  object_list %}
 										<li class="panel">
 											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{category.id}}">
 												<div class="medium-a">
 													{{ category.title }}
 												</div>
 											</div>
-											
 											<div class="panel-collapse collapse" id="collapse{{category.id}}">
-												{% for subcategory in subcategories%}
+												{% for subcategory in object_list %}
 												<div class="normal-a">
 													<a href="#">{{ subcategory.title }}</a>
 												</div>
@@ -424,7 +423,7 @@
 											<div class="single-list-view">
 												<div class="row">
 													<div class="col-xs-12 col-md-4">
-														{% for image in images %}
+														{% for image in object_list %}
 														<div class="list-img">
 															<div class="product-img">
 																<div class="pro-type">
@@ -437,7 +436,7 @@
 													</div>
 													<div class="col-xs-12 col-md-8">
 														<div class="list-text">
-															{% for product in products %}
+															{% for product in object_list %}
 															<h3>{{product.title}}</h3>
 															<span>{{product.subtitle}}</span>
 															<div class="ratting floatright">

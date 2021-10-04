@@ -10,6 +10,7 @@ class Blog(BaseModel):
     like = models.IntegerField(verbose_name="Like")
     brand_id = models.ForeignKey('product.Brand', on_delete=models.CASCADE)
     category_id = models.ForeignKey('product.Category', on_delete=models.CASCADE)
+    image = models.ImageField(verbose_name="Image", null=True, blank=True)
     
     def __str__(self):
         return self.title
