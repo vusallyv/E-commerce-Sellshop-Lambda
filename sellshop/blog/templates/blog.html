@@ -23,33 +23,32 @@
 <section class="latest-blog section-padding">
 	<div class="container">
 		<ul class="blog-row clearfix">
-			<li>
-				<div class="row">
+			<div class="row">
 
-					{% for blog in blogs %}
-					<div class="col-sm-4">
-						<div class="l-blog-text">
-							<div class="banner"><a href="{% url 'single_blog' %}"><img
-										src="{% static 'img/blog/1.jpg' %}" alt="" /></a></div>
-							<div class="s-blog-text">
-								<h4><a href="{% url 'single_blog' %}">{{ blog.title }}</a></h4>
-								<span>By : <a href="#">Rakib</a> | <a href="#">{{blog.like}} Like</a> | <a
-										href="#">{{blog.comments}} Comment</a></span>
-								<div>
-									<p>{{ blog.description }}</p>
-								</div>
-							</div>
-							<div class="date-read clearfix">
-								<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
-								<a href="{% url 'single_blog' %}">read more</a>
+				{% for blog in blogs %}
+				<div class="col-sm-4">
+					<div class="l-blog-text">
+						<div class="banner"><a href="{% url 'single_blog' blog.id %}"><img
+									src="{% static 'img/blog/1.jpg' %}" alt="" /></a></div>
+						<div class="s-blog-text">
+							<h4><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h4>
+							<span>By : <a href="#">{{blog.creator}}</a> | <a href="#">{{blog.like}} Like</a> | <a
+									href="#">{{blog.comments}} Comment</a></span>
+
+							<div>
+								<p>{{ blog.description }}</p>
 							</div>
 						</div>
+						<div class="date-read clearfix">
+							<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
+							<a href="{% url 'single_blog' blog.id %}">read more</a>
+						</div>
 					</div>
-					{% endfor %}
-
-
 				</div>
-			</li>
+				{% endfor %}
+
+
+			</div>
 
 		</ul>
 		<div class="pagnation-ul">

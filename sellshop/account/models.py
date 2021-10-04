@@ -1,23 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from sellshop.utils.base_models import BaseModel
-import random
-
-
-# class UserProfile(BaseModel):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-#     country = models.CharField(verbose_name="Country", max_length=255, null=True, blank=True, default="")
-#     address = models.CharField(verbose_name="Address", max_length=255, null=True, blank=True, default="")
-#     city = models.CharField(verbose_name="City", max_length=30, null=True, blank=True, default="")
-#     phone_number = models.CharField(verbose_name="Phone number",max_length=255, null=True, blank=True, default=""'')
-#     additional_info = models.TextField(verbose_name="Additional Info", default="", null=True, blank=True)
-
-#     class Meta:
-#         verbose_name = 'User Profile'
-#         verbose_name_plural = 'User Profiles'
-
-#     def __str__(self):
-#         return f'{self.user} - Profile'
 
 
 class Contact(models.Model):
@@ -43,7 +26,8 @@ class User(AbstractUser):
         verbose_name="Additional Info", default="", null=True, blank=True)
     image = models.ImageField(
         verbose_name="User Image", upload_to="users/", default="staticfiles/img/blog/author1.png")
-    rememberme = models.BooleanField(verbose_name="Remember me", default=False, null=True, blank=True)
+    rememberme = models.BooleanField(
+        verbose_name="Remember me", default=False, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.username}"

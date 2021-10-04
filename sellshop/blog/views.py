@@ -2,25 +2,9 @@ from django.shortcuts import render
 from blog.models import Blog, Comment
 from django.db.models import Q
 from product.models import Brand, Category, Product
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from blog.forms import CommentForm
 
-
-def blog(request):
-    # all_blog = None
-    # if request.POST.get("search_name"):
-    #     all_blog = Blog.objects.filter(
-    #         Q(title__icontains=request.POST.get("search_name")) | Q(
-    #             description__icontains=request.POST.get("search_name"))
-    #     )[0:9]
-    all_blog = Blog.objects.all()[0:3]
-
-    context = {
-        'title': 'Blog Sellshop',
-        'all_blog': all_blog,
-
-    }
-    return render(request, 'blog.html', context=context)
 
 def single_blog(request, pk):
     qs_one_blog = Blog.objects.get(pk=pk)
@@ -54,21 +38,48 @@ def single_blog(request, pk):
     return render(request, 'single-blog.html', context=context)
 
 
-class Bloglist(ListView):
+class BlogDetailView(DetailView):
     model = Blog
-    # context_object_name = 'blogs'
+    template_name = 'single-blog.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm
+        context['comments'] = Comment.objects.filter(
+            blog_id=self.kwargs.get('pk'))
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment = Comment(
+                description=request.POST.get('description'),
+                blog_id=Blog.objects.get(pk=self.kwargs.get('pk')),
+                user_id=request.user
+            )
+            comment.save()
+
+            self.object = self.get_object()
+            context = super().get_context_data(**kwargs)
+            context['form'] = CommentForm
+            return self.render_to_response(context=context)
+        else:
+            form = CommentForm()
+            self.object = self.get_object()
+            context = super().get_context_data(**kwargs)
+            context['form'] = form
+            return self.render_to_response(context=context)
+
+
+class BlogListView(ListView):
+    model = Blog
     template_name = 'blog.html'
 
     def get_blogs(self):
         qs = Blog.objects.all()[0:3]
         return qs
 
-    # def get_comments(self):
-    #     qs = Comment.objects.all()[0:3]
-    #     return qs
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['blogs'] = self.get_blogs()
-        # context['comments'] = self.get_comments()
         return context

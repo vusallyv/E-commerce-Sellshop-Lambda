@@ -1,5 +1,5 @@
 from account.models import User
-from django.forms.widgets import DateInput
+from django.forms.widgets import DateInput, TextInput, Textarea
 from django import forms
 from django.forms import widgets
 from account.models import Contact
@@ -12,6 +12,12 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ['name', 'email', 'message']
+
+        widgets = {
+            'name': TextInput(attrs={'placeholer': 'Enter your Name...'}),
+            'email': TextInput(attrs={'placeholer': 'Enter your email...'}),
+            'message': Textarea(attrs={'placeholer': 'Enter your message....', 'rows': 2}),
+        }
 
 
 class LoginForm(forms.Form):

@@ -5,4 +5,8 @@ from product.models import Review
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['product', 'review']
+        fields = ['review']
+
+        widgets = {
+            'review': forms.Textarea(attrs={'placeholder': 'Your Review', 'rows': 2})
+        }

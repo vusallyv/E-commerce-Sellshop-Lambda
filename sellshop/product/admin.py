@@ -5,33 +5,33 @@ from django.utils.html import format_html
 from product.models import Color, Product, Category, Brand, ProductVersion, Size, Review, Image, Tag
 
 
-# @admin.register(ProductVersion)
-# class ProductVersionAdmin(admin.ModelAdmin):
-#     search_fields = ['user_id']
+@admin.register(ProductVersion)
+class ProductVersionAdmin(admin.ModelAdmin):
+    search_fields = ['user_id']
 
-#     def get_image(self, obj):
-#         if obj.image:
-#             img = '<img src="{}" width="100" height="100" />'.format(
-#                 obj.image.url)
-#             return format_html(img)
-#         return 'No Image'
+    def get_image(self, obj):
+        if obj.image:
+            img = '<img src="{}" width="100" height="100" />'.format(
+                obj.image.url)
+            return format_html(img)
+        return 'No Image'
 
-#     # autocomplete_fields = ['wishlist_id']
-
-
-# @admin.register(Tag)
-# class TagAdmin(admin.ModelAdmin):
-#     search_fields = ['title']
+    # autocomplete_fields = ['wishlist_id']
 
 
-# @admin.register(Product)
-# class ProductAdmin(admin.ModelAdmin):
-#     list_display = ('title', 'ex_price', 'price', 'get_brand')
-#     list_editable = ('ex_price', 'price',)
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    search_fields = ['title']
 
-#     def get_brand(self, obj):
-#         return obj.brand.title
-#     get_brand.short_description = 'Brand'
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('title', 'ex_price', 'price', 'get_brand')
+    list_editable = ('ex_price', 'price',)
+
+    def get_brand(self, obj):
+        return obj.brand_id.title
+    get_brand.short_description = 'Brand'
 
 
 # @admin.register(ProductVersion)
@@ -47,4 +47,4 @@ from product.models import Color, Product, Category, Brand, ProductVersion, Size
 
 
 
-admin.site.register([Color, Product, Category, Brand, ProductVersion, Size, Review, Image, Tag])
+admin.site.register([Color, Category, Brand, Size, Review, Image])
