@@ -47,14 +47,12 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError("Phone number already in use")
         return phone_number
 
-    def clean(self):
-        data = super().clean()
-        password = data.get('password')
-        confirm_password = data.get('confirm_password')
-        if password == confirm_password:
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        password_confirm = self.cleaned_data.get('confirm_password')
+        if not (password == password_confirm):
             raise forms.ValidationError("Password confirmation does not match")
-        return data
-
+        return password
 
 class UserForm(forms.ModelForm):
     class Meta:

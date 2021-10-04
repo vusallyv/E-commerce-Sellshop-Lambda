@@ -93,6 +93,11 @@
 							</div>
 							<div>
 								{{register.password}}
+								{% if register.password.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.password.errors}}</strong>
+								</div>
+								{% endif %}
 							</div>
 							<div>
 								{{register.confirm_password}}
