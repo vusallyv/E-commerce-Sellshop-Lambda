@@ -34,6 +34,15 @@ class ProductAdmin(admin.ModelAdmin):
     get_brand.short_description = 'Brand'
 
 
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('get_user_details', 'review', 'rating', )
+    list_editable = ('rating',)
+
+    def get_user_details(self, obj):
+        return f"{obj.user.first_name} {obj.user.last_name}"
+    get_user_details.short_description = 'Full Name'
+
 # @admin.register(ProductVersion)
 # class ProductVersionAdmin(admin.ModelAdmin):
 #     list_display = ('get_title', 'quantity', 'color', 'size', 'is_main',)
@@ -46,5 +55,4 @@ class ProductAdmin(admin.ModelAdmin):
 #     get_title.short_description = 'Title'
 
 
-
-admin.site.register([Color, Category, Brand, Size, Review, Image])
+admin.site.register([Color, Category, Brand, Size, Image])

@@ -107,7 +107,7 @@ class Review(BaseModel):
         ProductVersion, on_delete=models.CASCADE, default="")
 
     def __str__(self) -> str:
-        return f"{self.user.first_name} {self.user.last_name}'s review"
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class Image(models.Model):
