@@ -6,30 +6,72 @@ from django.views.generic import DetailView, ListView
 
 
 def single_product(request, pk):
-    image = Image.objects.get(pk=pk)
+    image = Image.objects.filter(productversion_id=pk)
     product = Product.objects.get(pk=pk)
     product_versions = ProductVersion.objects.get(pk=pk)
+    review = Review.objects.filter(product=pk)
 
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
+            form = Review(
+                user=request.user,
+                review=request.POST.get('review'),
+                product=ProductVersion.objects.get(pk=pk),
+            )
             form.save()
-            form = ReviewForm()
     else:
         form = ReviewForm()
+        
 
     context = {
         'title': 'Single-product Sellshop',
         'images': image,
         'product': product,
-        'form': ReviewForm(),
-        'product_versions': product_versions
+        'form': form,
+        'product_versions': product_versions,
+        'reviews': review,
     }
 
     return render(request, 'single-product.html', context=context)
 
 
-# def product_list(request):
+class ProductDetailView(DetailView):
+    model = ProductVersion
+    template_name = 'single-product.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Single-product Sellshop'
+        context['form'] = ReviewForm
+        context['reviews'] = Review.objects.filter(
+            product=self.kwargs.get('pk'))
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = ReviewForm(request.POST, request.FILES)
+        if form.is_valid():
+            review = Review(
+                review=request.POST.get('review'),
+                product=ProductVersion.objects.get(pk=self.kwargs.get('pk')),
+                user=request.user
+            )
+            review.save()
+
+            self.object = self.get_object()
+            context = super().get_context_data(**kwargs)
+            context['form'] = form
+            return self.render_to_response(context=context)
+        else:
+            form = ReviewForm()
+            self.object = self.get_object()
+            context = super().get_context_data(**kwargs)
+            context['form'] = form
+            return self.render_to_response(context=context)
+
+
+
+def product_list(request):
     qs_productversion_all = ProductVersion.objects.all()
     qs_productversion_best = ProductVersion.objects.order_by('-rating')[0]
     qs_product = Product.objects.all()
@@ -51,7 +93,7 @@ def single_product(request, pk):
             size__title=request.GET.get("size"))
     elif request.GET.get("brand"):
         qs_productversion_all = ProductVersion.objects.filter(
-            product__brand__title=request.GET.get("brand"))
+            product__brand_id__title=request.GET.get("brand"))
     context = {
         'title': 'Product-list Sellshop',
         'productversions': qs,
@@ -91,34 +133,21 @@ class ProductListView(ListView):
         }
         return render(request, 'product-list.html', context=context)
 
+# class BlogDetailView(DetailView):
+#     def get_blog(self):
+#         return Blog.objects.get(pk=self.kwargs.get('pk'))
 
-# def product_list(request):
-#     products = Product.objects.order_by('price')[0:4]
-#     images = Image.objects.all()
-#     categories = Category.objects.all()
+#     def get_comment(self):
+#         return Comment.objects.filter(blog_id=self.kwargs.get('pk'))
 
-#     context = {
-#         'title': 'Product-list Sellshop',
-#         'products': products,
-#         'images': images,
-#         'categories': categories,
-#     }
-#     return render(request, 'product-list.html', context=context)
+#     def get_category(self):
+#         return Category.objects.all()
 
+#     def get_brand(self):
+#         return Brand.objects.all()
 
-# class Product_list(ListView):
-    model = Image
-    template_name = 'practic_list.html'
-    # queryset = Image.objects.order_by('image')[0:1]
-
-    def get_queryset(self):
-        qs = Image.objects.order_by('image')[0:1]
-        return qs
-
-
-class Product_list(ListView):
-    model = Image
-    template_name = 'practic_list.html'
+#     def get_related_blog(self):
+#         return Blog.objects.order_by('-created_at').exclude(pk=self.kwargs.get('pk'))
 
     def get_image(self):
         return Image.objects.all()
@@ -137,15 +166,5 @@ class Product_list(ListView):
         
     
 
-
-
-def single_product(request, pk):
-    qs_productversion_all = ProductVersion.objects.get(pk=pk)
-    qs_reviews = Review.objects.all()
-    context = {
-        'title': 'Single-product Sellshop',
-        'title': '',
-        'allproductversions': qs_productversion_all,
-        'reviews': qs_reviews,
-    }
-    return render(request, 'single-product.html', context=context)
+#         }
+#         return render(request, 'single-blog.html', context=context)

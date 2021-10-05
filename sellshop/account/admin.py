@@ -21,9 +21,12 @@ admin.site.site_title = 'Sellshop Admin'
 #         ('different informations', {'fields': ('additional_info',) }),
 #     )
 
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'email' )
+    list_display = ('username', 'first_name', 'last_name', 'email')
 
 
-admin.site.register([Contact])
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message',)
