@@ -28,16 +28,6 @@ class Category(models.Model):
         return self.title
 
 
-# class Subcategory(models.Model):
-#     title = models.CharField(verbose_name="Title",
-#                              max_length=30, help_text="Max 30 char.")
-#     category_id = models.ManyToManyField(
-#         Category, related_name="ProductCategory")
-
-#     def __str__(self) -> str:
-#         return self.title
-
-
 class Product(BaseModel):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
     subtitle = models.CharField(
