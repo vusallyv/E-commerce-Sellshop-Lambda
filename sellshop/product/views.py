@@ -22,6 +22,7 @@ def single_product(request, pk):
             form.save()
     else:
         form = ReviewForm()
+        
 
     context = {
         'title': 'Single-product Sellshop',
