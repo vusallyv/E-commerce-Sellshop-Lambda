@@ -3,14 +3,31 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model, login, logout
 from account.forms import ContactForm, LoginForm, RegisterForm
-# from account.models import UserProfile
 from account.models import User
 # from django.db import transaction
 from django.contrib import auth
 import random
-# from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import FormView
 
 User = get_user_model()
+
+
+class ContactView(FormView):
+    template_name = 'contact.html'
+    form_class = ContactForm
+    
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        if request.method == 'POST':
+            form = ContactForm(request.POST)
+            if form.is_valid():
+                form.save()
+                form = ContactForm()
+        else:
+            form = ContactForm()
+            form.send_email()
+        return super().post(request, *args, **kwargs)
+    
 
 
 def contact(request):

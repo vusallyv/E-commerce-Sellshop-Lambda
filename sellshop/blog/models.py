@@ -11,6 +11,7 @@ class Blog(BaseModel):
     like = models.PositiveIntegerField(verbose_name="Like")
     product = models.ForeignKey(
         "product.ProductVersion", on_delete=models.CASCADE, default="")
+    image = models.ImageField(verbose_name="Image", null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.title}"
@@ -21,7 +22,7 @@ class Comment(BaseModel):
         "account.User", verbose_name="User", on_delete=models.CASCADE)
     description = models.TextField(verbose_name="Description")
     created_at = models.DateField(
-        verbose_name="Created_at", default=timezone.now())
+        verbose_name="Created_at", default=timezone.now)
     blog_id = models.ForeignKey(
         Blog, on_delete=models.CASCADE, null=True, blank=True)
     comment_id = models.ForeignKey(

@@ -2,7 +2,7 @@ from django.db import models
 from sellshop.utils.base_models import BaseModel
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-
+from django.utils import timezone
 User = get_user_model()
 
 
@@ -88,7 +88,7 @@ class ProductVersion(models.Model):
     rating = models.DecimalField(
         verbose_name="Rating", max_digits=3, decimal_places=1, default=0)
     tag = models.ManyToManyField(
-        "product.Tag", null=True, blank=True)
+        "product.Tag")
     is_main = models.BooleanField(verbose_name='Main', default=False)
 
     def __str__(self):
@@ -102,7 +102,7 @@ class Review(BaseModel):
     rating = models.DecimalField(
         verbose_name="Rating", max_digits=2, decimal_places=1, default=0)
     created_at = models.DateTimeField(
-        verbose_name="Created_at", default=timezone.now())
+        verbose_name="Created_at", default=timezone.now)
     product = models.ForeignKey(
         ProductVersion, on_delete=models.CASCADE, default="")
 
