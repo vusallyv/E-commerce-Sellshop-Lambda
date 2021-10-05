@@ -13,11 +13,13 @@ import random
 
 User = get_user_model()
 
+
 class ContactView(CreateView):
     form_class = ContactForm
     template_name = 'contact.html'
     model = Contact
-    success_url = reverse_lazy('login') 
+    success_url = reverse_lazy('login')
+
 
 def contact(request):
     if request.method == 'POST':
@@ -35,7 +37,6 @@ def contact(request):
 
 
 def login(request):
-    auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -73,10 +74,10 @@ def login(request):
     return render(request, "login.html", context=context)
 
 
-# def logout_user(request):
-#     if request.user.is_authenticated():
-#         logout(request)
-#         return redirect('login')
+def logout(request):
+    if request.user.is_authenticated:
+        auth.logout(request)
+        return redirect('login')
 
 
 # @login_required(login_url='/account/my-account/')

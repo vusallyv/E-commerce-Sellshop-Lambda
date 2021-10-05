@@ -25,6 +25,7 @@ def single_blog(request, pk):
     else:
         form = CommentForm()
 
+
     context = {
         'title': 'Single-blog Sellshop',
         'blogs': qs_blogs[0:3],
