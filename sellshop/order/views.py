@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse
-from account.models import User
+from user.models import User
 from order.forms import BillingForm, ShippingAddressForm
 from order.models import Billing, ShippingAddress, Wishlist
 

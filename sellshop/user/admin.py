@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from account.models import Contact, User
+from user.models import Contact, User
 
 admin.site.site_header = 'Sellshop Admin'
 admin.site.site_title = 'Sellshop Admin'

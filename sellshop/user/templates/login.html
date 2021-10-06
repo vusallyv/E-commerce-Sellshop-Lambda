@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block title %} {{title}}{% endblock %}
 {% block base %}
 
@@ -113,6 +114,7 @@
 									Sign up for our newsletter!
 								</span>
 							</label>
+							<a href="{% provider_login_url 'google' %}">Login With Google</a>
 							<div class="submit-text coupon" style="margin-top: 0">
 								<button type="submit" name="register"> Register </button>
 							</div>

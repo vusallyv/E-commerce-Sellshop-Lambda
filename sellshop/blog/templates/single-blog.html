@@ -181,12 +181,11 @@
             <div class="categories left-right-p">
               <ul id="accordion" class="panel-group clearfix">
 
-                {% for category in categories.all %}
+                {% for category in categories %}
                 <li class="panel">
-                  {% if not category.subcategory %}
+                  {% if not category.parent %}
                   <div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ category.id }}">
-                    <form action="{% url 'product_list' %}" method="POST">
-                      {% csrf_token %}
+                    <form method="GET">
                       <div class="medium-a">
                         <button type="submit" name="category_name" value="{{ category.title }}"
                           style="background-color: transparent; border: none">
@@ -197,14 +196,13 @@
                   </div>
                   {% endif %}
                   <div class="panel-collapse collapse" id="collapse{{ category.id }}">
-                    {% for subcategory in category.subcategories.all %}
-                    <form action="{% url 'product_list' %}" method="POST">
-                      {% csrf_token %}
+                    {% for child in category.parent_category.all %}
+                    <form method="GET">
                       <div class="normal-a">
                         <a href="#">
-                          <button type="submit" name="subcategory_name" value="{{ subcategory.title }}"
+                          <button type="submit" name="subcategory_name" value="{{ child.title }}"
                             style="background-color: transparent; border: none">
-                            {{ subcategory.title }}
+                            {{ child.title }}
                           </button>
                         </a>
                       </div>
@@ -226,8 +224,7 @@
               <ul>
                 {% for brand in brands %}
                 <li>
-                  <form action="{% url 'product_list' %}" method="POST">
-                    {% csrf_token %}
+                  <form method="GET">
                     <a href="#">
                       <button type="submit" name="brand" value="{{ brand.title }}"
                         style="background-color: transparent; border: none">

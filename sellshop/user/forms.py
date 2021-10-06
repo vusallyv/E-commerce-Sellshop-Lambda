@@ -1,8 +1,8 @@
-from account.models import User
+from user.models import User
 from django.forms.widgets import DateInput, TextInput, Textarea
 from django import forms
 from django.forms import widgets
-from account.models import Contact
+from user.models import Contact
 from django.contrib.auth import get_user_model
 
 User = get_user_model()

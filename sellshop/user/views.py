@@ -2,16 +2,15 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 
-from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from account.forms import ContactForm, LoginForm, RegisterForm
-from account.models import User, Contact
+from user.forms import ContactForm, LoginForm, RegisterForm
+from user.models import User, Contact
 from django.contrib import auth
 from django.views.generic import CreateView
 import random
 # from django.contrib.auth.decorators import login_required
 
-User = get_user_model()
+User = auth.get_user_model()
 
 
 class ContactView(CreateView):
@@ -71,7 +70,10 @@ def login(request):
         'login':  form1,
         'register':  form,
     }
-    return render(request, "login.html", context=context)
+    if not request.user.is_authenticated:
+        return render(request, "login.html", context=context)
+    else:
+        return render(request, "index.html", context=context)
 
 
 def logout(request):

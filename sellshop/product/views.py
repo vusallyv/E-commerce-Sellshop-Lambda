@@ -6,7 +6,7 @@ from django.views.generic import DetailView, ListView
 
 
 def single_product(request, pk):
-    image = Image.objects.filter(productversion_id=pk)
+    image = Image.objects.filter(productversion=pk)
     product = Product.objects.get(pk=pk)
     product_versions = ProductVersion.objects.get(pk=pk)
     review = Review.objects.filter(product=pk)
@@ -83,16 +83,17 @@ def product_list(request):
             product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
     elif request.GET.get("category_name"):
         qs_productversion_all = ProductVersion.objects.filter(
-            product__category_id__subcategory__title=request.GET.get("category_name"))
+            product__category__parent__title=request.GET.get("category_name"))
     elif request.GET.get("subcategory_name"):
         qs_productversion_all = ProductVersion.objects.filter(
-            product__category_id__title=request.GET.get("subcategory_name"))
+            product__category__title=request.GET.get("subcategory_name"))
     elif request.GET.get("size"):
         qs_productversion_all = ProductVersion.objects.filter(
             size__title=request.GET.get("size"))
     elif request.GET.get("brand"):
         qs_productversion_all = ProductVersion.objects.filter(
-            product__brand_id__title=request.GET.get("brand"))
+            product__brand__title=request.GET.get("brand"))
+            
     context = {
         'title': 'Product-list Sellshop',
         'productversions': qs,
@@ -115,16 +116,16 @@ class ProductListView(ListView):
                 product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
         elif request.GET.get("category_name"):
             qs_productversion_all = ProductVersion.objects.filter(
-                product__category_id__subcategory__title=request.GET.get("category_name"))
+                product__category__parent__title=request.GET.get("category_name"))
         elif request.GET.get("subcategory_name"):
             qs_productversion_all = ProductVersion.objects.filter(
-                product__category_id__title=request.GET.get("subcategory_name"))
+                product__category__title=request.GET.get("subcategory_name"))
         elif request.GET.get("size"):
             qs_productversion_all = ProductVersion.objects.filter(
                 size__title=request.GET.get("size"))
         elif request.GET.get("brand"):
             qs_productversion_all = ProductVersion.objects.filter(
-                product__brand_id__title=request.GET.get("brand"))
+                product__brand__title=request.GET.get("brand"))
         context = {
             'title': 'Product-list Sellshop',
             'allproductversions': qs_productversion_all[0:4],
