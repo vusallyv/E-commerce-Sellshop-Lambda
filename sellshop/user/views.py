@@ -70,10 +70,7 @@ def login(request):
         'login':  form1,
         'register':  form,
     }
-    if not request.user.is_authenticated:
-        return render(request, "login.html", context=context)
-    else:
-        return render(request, "index.html", context=context)
+    return render(request, "login.html", context=context)
 
 
 def logout(request):

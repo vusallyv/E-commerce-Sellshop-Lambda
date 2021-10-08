@@ -165,19 +165,26 @@ AUTH_USER_MODEL = 'user.User'
 #     'allauth.account.auth_backends.AuthenticationBackend'
 # ]
 
-# SOCIALACCOUNT_PROVIDERS = {
-#     'google': {
-#         'SCOPE': [
-#             'profile',
-#             'email',
-#         ],
-#         'AUTH_PARAMS': {
-#             'access_type': 'online',
-#         }
-#     }
-# }   
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}   
 
-# SITE_ID = 3
+SITE_ID = 3
 
-# LOGIN_REDIRECT_URL = 'core/index/'
-# LOGOUT_REDIRECT_URL = 'core/index/'
+LOGIN_REDIRECT_URL = 'core/index/'
+LOGOUT_REDIRECT_URL = 'core/index/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vusal581176@gmail.com'
+EMAIL_HOST_PASSWORD = 'pulsar12345'

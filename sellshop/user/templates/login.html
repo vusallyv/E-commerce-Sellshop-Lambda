@@ -51,7 +51,12 @@
 									</div>
 									{% endif %}
 								</div>
-								<a class="forget" href="#">Forget your password?</a>
+								<div>
+									<a href="{% provider_login_url 'google' %}">Login With Google</a>
+								</div>
+								<div>
+									<a class="forget" href="{% url 'password_reset'%}">Forget your password?</a>
+								</div>
 								<div class="submit-text">
 									<button type="submit" name="login"> login </button>
 								</div>
@@ -114,7 +119,6 @@
 									Sign up for our newsletter!
 								</span>
 							</label>
-							<a href="{% provider_login_url 'google' %}">Login With Google</a>
 							<div class="submit-text coupon" style="margin-top: 0">
 								<button type="submit" name="register"> Register </button>
 							</div>
