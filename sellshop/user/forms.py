@@ -51,6 +51,7 @@ class RegisterForm(forms.Form):
     rememberme = forms.ChoiceField(
         choices=CHOICES, widget=forms.RadioSelect)
 
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -61,6 +62,8 @@ class RegisterForm(forms.Form):
         phone_number = self.cleaned_data.get('phone_number')
         if User.objects.filter(phone_number=phone_number).exists():
             raise forms.ValidationError("Phone number already in use")
+        elif len(str(phone_number))>10:
+            raise forms.ValidationError("Invalid phone number")
         return phone_number
 
     # def clean_password(self):
@@ -70,12 +73,3 @@ class RegisterForm(forms.Form):
     #         raise forms.ValidationError("Password confirmation does not match")
     #     return password
 
-
-# class UserForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ('__all__')
-
-#         widgets = {
-#             'birth': DateInput(attrs={'type': 'date'}),
-#         }

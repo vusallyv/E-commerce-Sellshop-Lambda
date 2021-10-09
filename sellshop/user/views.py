@@ -64,7 +64,6 @@ def login(request):
             return redirect(my_account)
     else:
         form1 = LoginForm()
-
     context = {
         'title':  'Login Sellshop',
         'login':  form1,
