@@ -35,7 +35,7 @@
                     <i class="pe-7s-user"></i>By :<a href="#">{{ blog.creator }}</a><span>|</span>
                   </li>
                   <li>
-                    <i class="pe-7s-comment"></i><a href="#">{{ blog.created_at }}</a><span>|</span>
+                    <i class="pe-7s-comment"></i><a href="#">{{ blog.create_at }}</a><span>|</span>
                   </li>
                   <li>
                     <i class="pe-7s-like"></i><a href="#">{{ blog.like }} Likes</a><span>|</span>
@@ -82,7 +82,7 @@
               </div>
 
               <h4>{{ comments|length }} comments</h4>
-              {% for comment in comments.all %}
+              {% for comment in comments %}
               {% if not comment.comment_id %}
               <div class="about-author comments">
                 <div class="autohr-text">
@@ -96,7 +96,7 @@
                       <a href="#">{{ comment.user_id.first_name }} {{comment.user_id.last_name }}</a>
                     </h4>
                     <span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
-                    <span>{{ comment.created_at }}</span>
+                    <span>{{ comment.create_at }}</span>
                     <p>{{ comment.description }}</p>
                   </div>
                 </div>
@@ -114,7 +114,7 @@
                       <a href="#">{{ reply.user_id.first_name }} {{ reply.user_id.last_name }}</a>
                     </h4>
                     <span class="floatright"><a href="#">Hide</a></span>
-                    <span>{{ reply.created_at }}</span>
+                    <span>{{ reply.create_at }}</span>
                     <p>{{ reply.description }}</p>
                   </div>
                 </div>
@@ -251,7 +251,7 @@
                 <li>
                   <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/r3.jpg' %}" alt="" /></a>
                   <h5><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h5>
-                  <span>{{ blog.created_at }}</span>
+                  <span>{{ blog.create_at }}</span>
                 </li>
                 {% endfor %}
               </ul>
@@ -287,11 +287,11 @@
       <li>
         <div class="row">
           {% for blog in relatedblogs %}
-          {% if blog.product.product.category.title == blog.product.product.category.title %}
+          {% if blog.product.product.category_id.title == urlblog.product.product.category_id.title %}
           <div class="col-sm-12">
             <div class="l-blog-text">
-              <div class="banner">
-                <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
+              <div class="banner" >
+                <a href="{% url 'single_blog' blog.id %}"><img  src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
               </div>
               <div class="s-blog-text">
                 <h4>
@@ -305,12 +305,12 @@
                 </p>
               </div>
               <div class="date-read clearfix">
-                <a href="{% url 'single_blog' blog.id %}"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
+                <a href="{% url 'single_blog' blog.id %}"><i class="mdi mdi-clock"></i> {{ blog.create_at }}</a>
                 <a href="{% url 'single_blog' blog.id %}">read more</a>
               </div>
             </div>
           </div>
-          {% endif %}
+         {% endif %}
           {% endfor %}
         </div>
       </li>
@@ -320,4 +320,6 @@
 <!-- related post section end -->
 
 <!-- all js here -->
+
+</div>
 {% endblock %}

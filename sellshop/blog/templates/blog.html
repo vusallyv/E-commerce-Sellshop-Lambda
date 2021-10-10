@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block title %} {{ title }} {% endblock %}
 {% block base %}
 <!-- pages-title-start -->
@@ -20,6 +20,7 @@
 </div>
 <!-- pages-title-end -->
 <!-- blog section start -->
+
 <section class="latest-blog section-padding">
 	<div class="container">
 		<ul class="blog-row clearfix">
@@ -32,16 +33,16 @@
 									src="{% static 'img/blog/1.jpg' %}" alt="" /></a></div>
 						<div class="s-blog-text">
 							<h4><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h4>
-							<span>By : <a href="#">{{blog.creator}}</a> | <a href="#">{{blog.like}} Like</a> | <a
-									href="#">{{blog.comments}} Comment</a></span>
+							<span>By : <a href="#">{{blog.creator}}</a> | <a href="#"> {% blocktranslate %} '{{blog.like}}'  Like {% endblocktranslate %}</a> | <a
+									href="#">{{blog.comments}} {% translate 'Comments' %}</a></span>
 
 							<div>
 								<p>{{ blog.description }}</p>
 							</div>
 						</div>
 						<div class="date-read clearfix">
-							<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
-							<a href="{% url 'single_blog' blog.id %}">read more</a>
+							<a href="#"><i class="mdi mdi-clock"></i> {{ blog.create_at }}</a>
+							<a href="{% url 'single_blog' blog.id %}">{% translate 'read more' %}</a>
 						</div>
 					</div>
 				</div>

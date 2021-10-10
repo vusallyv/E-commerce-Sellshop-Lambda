@@ -33,22 +33,37 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'jet',
+    
+    # priority third party apps
+    'modeltranslation',
+    
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.flatpages',
+    'django.contrib.sites',
+    
+    # third party apps
+    'rosetta',
+    'ckeditor', 
+    
+    # custom apps
     'account',
     'core',
     'order',
     'product',
     'blog',
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -115,9 +130,23 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+#from django.utils.translation import ugettext_lazy as _
 
-TIME_ZONE = 'Asia/Baku'
+from django.utils.translation import ugettext_lazy as _
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('az', _('Azerbaijan')),
+    ('ru', _('Russian')),
+)
+
+LOCALE_PATHS = (
+    BASE_DIR / 'locale',
+)
+
+LANGUAGE_CODE = 'en'
+
+TIME_ZONE = 'Asia/Dubai'
 
 USE_I18N = True
 
@@ -139,6 +168,11 @@ STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
 ]
 
+# MODELTRANSLATIONS_DEFAULT_LANGUAGE = 'en'
+# MODELTRANSLATIONS_LANGUAGES = (
+#     'en', 'az'
+# )
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -155,3 +189,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.User'
+
+CKEDITOR_UPLOAD_PATH = "uploads/"

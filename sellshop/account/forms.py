@@ -71,11 +71,3 @@ class RegisterForm(forms.Form):
     #     return password
 
 
-# class UserForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ('__all__')
-
-#         widgets = {
-#             'birth': DateInput(attrs={'type': 'date'}),
-#         }

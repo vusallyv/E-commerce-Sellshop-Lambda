@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    {% for productversion in results %}
+    {% for productversion in productversions %}
     <div class="single-list-view">
       <div class="row">
         <div class="col-xs-12 col-md-4">
@@ -314,7 +314,7 @@
                     </div>
                     <div class="product-dsc">
                       <p>
-                        <a href="#">{{ productversion.product.title }}</a>
+                        <a href="#">{{ productversion.title }}</a>
                       </p>
                       <div class="ratting">
                         <i class="mdi mdi-star"></i>
@@ -323,7 +323,7 @@
                         <i class="mdi mdi-star-half"></i>
                         <i class="mdi mdi-star-outline"></i>
                       </div>
-                      <span>${{ productversion.product.price }}</span>
+                      <span>${{ productversion.price }}</span>
                     </div>
                   </div>
                 </div>

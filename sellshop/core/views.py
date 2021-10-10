@@ -2,7 +2,7 @@ from django.shortcuts import render
 from blog.models import Blog
 from django.db.models import Q
 from django.views.generic import TemplateView
-
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 
@@ -12,10 +12,18 @@ def about(request):
     }
     return render(request, 'about.html', context=context)
 
+class BaseView(TemplateView):
+    template_name = "base.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context
+
 
 class AboutView(TemplateView):
     template_name = "about.html"
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'About Sellshop'
@@ -45,3 +53,16 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Home Sellshop'
         return context
+
+def change_language(request):
+    if request.GET.get('lang') == 'en' or request.GET.get('lang') == 'az' or request.GET.get('lang') == 'ru':
+        # print(request.META.get('HTTP_REFERER'))
+        path_list = request.META.get('HTTP_REFERER').split('/')
+        # print(path_list)
+        path_list[3] = request.GET.get('lang')
+        path = '/'.join(path_list)
+        print(path)
+        
+        response = HttpResponseRedirect(path)
+        response.set_cookie('django_language', request.GET['lang'])
+        return response

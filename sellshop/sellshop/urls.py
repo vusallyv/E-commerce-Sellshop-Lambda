@@ -18,17 +18,21 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 
-
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path("core/", include("core.urls")),
     path("product/", include("product.urls")),
     path("account/", include("account.urls")),
     path("order/", include("order.urls")),
-    path("blog/", include("blog.urls")),
+    path("blog/", include("blog.urls")), 
     path('admin/', admin.site.urls),
-    # path('jet/', include('jet.urls', 'jet'))
-]
+    path('rosetta/', include("rosetta.urls")),
+    # path('jet/', include('jet.urls', 'jet')),
+    path('', include('django.contrib.flatpages.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+)
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,

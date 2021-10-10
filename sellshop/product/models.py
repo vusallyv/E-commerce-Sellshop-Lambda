@@ -3,6 +3,9 @@ from sellshop.utils.base_models import BaseModel
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+
+# from ckeditor_uploader.fields import RichTextUploadingField #niye gormur ???
+
 User = get_user_model()
 
 
@@ -38,7 +41,7 @@ class Category(models.Model):
 #         return self.title
 
 
-class Product(BaseModel):
+class Product(BaseModel):   
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
     subtitle = models.CharField(
         "Subtitle", max_length=30, help_text="Max 30 char.")
@@ -46,7 +49,8 @@ class Product(BaseModel):
         verbose_name="Ex Price", max_digits=10, decimal_places=2)
     price = models.DecimalField(
         verbose_name="Price", max_digits=10, decimal_places=2)
-    description = models.TextField(verbose_name="Description")
+    description = models.TextField(verbose_name="Description")  
+    # description = RichTextUploaderField(null=True, blank=True)
     brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 

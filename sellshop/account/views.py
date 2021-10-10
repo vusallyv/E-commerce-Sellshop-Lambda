@@ -1,55 +1,32 @@
 from django.shortcuts import render, redirect
-
-# Create your views here.
-
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from account.forms import ContactForm, LoginForm, RegisterForm
 from account.models import User, Contact
 from django.contrib import auth
 from django.views.generic import CreateView
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.forms import PasswordChangeForm
 import random
-from django.views.generic.edit import FormView
+
 
 User = get_user_model()
+
+
+class PasswordsChangeView(PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('password_success')
+
+
+def password_success(request):
+    return render(request, 'password_success.html', {})
+
 
 class ContactView(CreateView):
     form_class = ContactForm
     template_name = 'contact.html'
     model = Contact
-    success_url = reverse_lazy('login') 
-
-# class ContactView(FormView):
-#     template_name = 'contact.html'
-#     form_class = ContactForm
-    
-#     def post(self, request, *args, **kwargs):
-#         self.object = None
-#         if request.method == 'POST':
-#             form = ContactForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 form = ContactForm()
-#         else:
-#             form = ContactForm()
-#             form.send_email()
-#         return super().post(request, *args, **kwargs)
-    
-
-
-def contact(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            form = ContactForm()
-    else:
-        form = ContactForm()
-    context = {
-        'title':  'Contact Us Sellshop',
-        'form': ContactForm(),
-    }
-    return render(request, "contact.html", context=context)
+    success_url = reverse_lazy('login')
 
 
 def login(request):
@@ -91,13 +68,6 @@ def login(request):
     return render(request, "login.html", context=context)
 
 
-# def logout_user(request):
-#     if request.user.is_authenticated():
-#         logout(request)
-#         return redirect('login')
-
-
-# @login_required(login_url='/account/my-account/')
 def my_account(request):
     context = {
         'title':  'My-account Sellshop'
