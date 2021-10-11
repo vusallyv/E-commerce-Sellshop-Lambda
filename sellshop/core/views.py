@@ -61,7 +61,7 @@ def change_language(request):
         # print(path_list)
         path_list[3] = request.GET.get('lang')
         path = '/'.join(path_list)
-        print(path)
+        # print(path)
         
         response = HttpResponseRedirect(path)
         response.set_cookie('django_language', request.GET['lang'])
