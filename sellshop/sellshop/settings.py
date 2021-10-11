@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'sellshop.middleware.IPAddressMiddleware'
+    # 'sellshop.middleware.LoggingMiddleware'
 ]
 
 ROOT_URLCONF = 'sellshop.urls'

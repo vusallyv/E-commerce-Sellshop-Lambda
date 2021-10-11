@@ -1,7 +1,6 @@
 from user.models import User
-from django.forms.widgets import DateInput, TextInput, Textarea
+from django.forms.widgets import TextInput, Textarea
 from django import forms
-from django.forms import widgets
 from user.models import Contact
 from django.contrib.auth import get_user_model
 
@@ -51,7 +50,6 @@ class RegisterForm(forms.Form):
     rememberme = forms.ChoiceField(
         choices=CHOICES, widget=forms.RadioSelect)
 
-
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
@@ -62,7 +60,7 @@ class RegisterForm(forms.Form):
         phone_number = self.cleaned_data.get('phone_number')
         if User.objects.filter(phone_number=phone_number).exists():
             raise forms.ValidationError("Phone number already in use")
-        elif len(str(phone_number))>10:
+        elif len(str(phone_number)) > 10:
             raise forms.ValidationError("Invalid phone number")
         return phone_number
 
@@ -72,4 +70,3 @@ class RegisterForm(forms.Form):
     #     if not (password == password_confirm):
     #         raise forms.ValidationError("Password confirmation does not match")
     #     return password
-
