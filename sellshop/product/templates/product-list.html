@@ -122,14 +122,13 @@
               <ul id="accordion" class="panel-group clearfix">
                 {% for category in categories.all %}
                 <li class="panel">
-                  {% if not category.subcategory %}
+                  {% if not category.parent %}
                   <div
                     data-toggle="collapse"
                     data-parent="#accordion"
                     data-target="#collapse{{ category.id }}"
                   >
-                    <form action="{% url 'product_list' %}" method="GET">
-                      {% csrf_token %}
+                    <form method="GET">
                       <div class="medium-a">
                         <button
                           type="submit"
@@ -147,18 +146,17 @@
                   class="panel-collapse collapse  "
                   id="collapse{{ category.id }}"
                   >
-                  {% for subcategory in category.subcategories.all %}
-                    <form action="{% url 'product_list' %}" method="GET">
-                      {% csrf_token %}
+                  {% for child in category.parent_category.all %}
+                    <form method="GET">
                       <div class="normal-a">
                         <a href="#">
                           <button
                             type="submit"
                             name="subcategory_name"
-                            value="{{ subcategory.title }}"
+                            value="{{ child.title }}"
                             style="background-color: transparent; border: none"
                           >
-                            {{ subcategory.title }}
+                            {{ child.title }}
                           </button>
                         </a>
                       </div>
@@ -191,8 +189,7 @@
               <h5 class="floatright"><a href="#">All</a></h5>
             </div>
             <div class="size-select clearfix">
-              <form action="{% url 'product_list' %}" method="GET">
-                {% csrf_token %}
+              <form method="GET">
               {% for size in sizes %}
               <a href="">
                 <button
@@ -232,8 +229,7 @@
               <ul>
                 {% for brand in brands %}
                 <li>
-                  <form action="{% url 'product_list' %}" method="GET">
-                    {% csrf_token %}
+                  <form method="GET">
                   <a href="">
                     <button
                       type="submit"

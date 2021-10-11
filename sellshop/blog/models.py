@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _ #python daxilinde transl
 class Blog(BaseModel):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
     description = models.TextField(verbose_name="Description")
-    creator = models.ForeignKey("account.User", on_delete=models.CASCADE)
+    creator = models.ForeignKey("user.User", on_delete=models.CASCADE)
     # created_at = models.DateField(verbose_name="Created_at")
     like = models.PositiveIntegerField(verbose_name="Like")
     product = models.ForeignKey(
@@ -18,14 +18,14 @@ class Blog(BaseModel):
                     
 
 class Comment(BaseModel):
-    user_id = models.ForeignKey(
-        "account.User", verbose_name="User", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "user.User", verbose_name="User", on_delete=models.CASCADE)
     description = models.TextField(verbose_name="Description")
     created_at = models.DateField(
-        verbose_name="Created_at", default=timezone.now)
-    blog_id = models.ForeignKey(
+        verbose_name="Created_at", default=timezone.now())
+    blog = models.ForeignKey(
         Blog, on_delete=models.CASCADE, null=True, blank=True)
-    comment_id = models.ForeignKey(
+    reply = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, default="", related_name="replies")
 
     def __str__(self) -> str:

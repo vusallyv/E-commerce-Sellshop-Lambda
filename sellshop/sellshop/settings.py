@@ -45,19 +45,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     
     # third party apps
     'rosetta',
     'ckeditor', 
     
     # custom apps
-    'account',
+    'user',
     'core',
     'order',
     'product',
     'blog',
 
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +74,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'sellshop.middleware.IPAddressMiddleware'
+    # 'sellshop.middleware.LoggingMiddleware'
 ]
 
 ROOT_URLCONF = 'sellshop.urls'
@@ -101,7 +108,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sellshopdb',
         'USER': 'sellshopuser',
-        'PASSWORD': '1234',
+        'PASSWORD': '123456',
         'HOST': 'localhost',
         'POST': 5432,
     }
@@ -177,7 +184,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-
 # MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
@@ -188,8 +194,36 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'account.User'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
-SITE_ID = 1
+AUTH_USER_MODEL = 'user.User'
+
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend'
+# ]
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'SCOPE': [
+#             'profile',
+#             'email',
+#         ],
+#         'AUTH_PARAMS': {
+#             'access_type': 'online',
+#         }
+#     }
+# }   
+
+SITE_ID = 3
+
+LOGIN_REDIRECT_URL = 'core/index/'
+LOGOUT_REDIRECT_URL = 'core/index/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vusal581176@gmail.com'
+EMAIL_HOST_PASSWORD = 'pulsar12345'

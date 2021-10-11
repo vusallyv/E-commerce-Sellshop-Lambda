@@ -4,8 +4,8 @@ from django.db import models
 
 
 class Billing(models.Model):
-    user_id = models.ForeignKey(
-        "account.User", related_name="User_Billing", on_delete=models.CASCADE, verbose_name="User")
+    user = models.ForeignKey(
+        "user.User", related_name="User_Billing", on_delete=models.CASCADE, verbose_name="User")
     company_name = models.CharField(
         verbose_name="Company name", max_length=255, help_text="Max 255 char.", null=False, blank=False)
     country = models.CharField(
@@ -17,12 +17,12 @@ class Billing(models.Model):
     address = models.TextField(verbose_name="Address", null=False, blank=False)
 
     def __str__(self) -> str:
-        return f"{self.user_id.first_name} {self.user_id.last_name}"
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class ShippingAddress(models.Model):
-    user_id = models.ForeignKey(
-        "account.User", related_name="User_Shipping", on_delete=models.CASCADE, verbose_name="User")
+    user = models.ForeignKey(
+        "user.User", related_name="User_Shipping", on_delete=models.CASCADE, verbose_name="User")
     first_name = models.CharField(
         verbose_name="First name", max_length=30, help_text="Max 30 char.", null=False, blank=False)
     last_name = models.CharField(
@@ -45,7 +45,7 @@ class ShippingAddress(models.Model):
 
 class Wishlist(models.Model):
     user = models.ForeignKey(
-        "account.User", on_delete=models.CASCADE, default="")
+        "user.User", on_delete=models.CASCADE, default="")
     product = models.ManyToManyField(
         'product.ProductVersion', related_name='Product_wishlist')
 
@@ -55,9 +55,9 @@ class Wishlist(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(
-        "account.User", on_delete=models.CASCADE, default="")
+        "user.User", on_delete=models.CASCADE, default="")
     product = models.ManyToManyField(
         "product.ProductVersion", related_name='Product_Cart')
 
     def __str__(self) -> str:
-        return f"{self.user_id.first_name} {self.user_id.last_name}"
+        return f"{self.user.first_name} {self.user.last_name}"

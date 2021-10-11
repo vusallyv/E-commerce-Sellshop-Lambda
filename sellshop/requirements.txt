@@ -1,4 +1,5 @@
 asgiref==3.4.1
+autopep8==1.5.7
 backports.zoneinfo==0.2.1
 certifi==2021.5.30
 cffi==1.14.6
@@ -22,6 +23,9 @@ Pillow==8.3.2
 polib==1.1.1
 prompt-toolkit==2.0.9
 psycopg2-binary==2.9.1
+prompt-toolkit==2.0.9
+psycopg2-binary==2.9.1
+pycodestyle==2.7.0
 pycparser==2.20
 PyJWT==2.1.0
 python-dateutil==2.8.2
@@ -34,6 +38,11 @@ six==1.16.0
 social-auth-core==4.1.0
 SQLAlchemy==1.4.24
 sqlparse==0.4.2
+social-auth-app-django==5.0.0
+social-auth-core==4.1.0
+SQLAlchemy==1.4.24
+sqlparse==0.4.2
+toml==0.10.2
 tzlocal==3.0
 urllib3==1.26.7
 wcwidth==0.2.5

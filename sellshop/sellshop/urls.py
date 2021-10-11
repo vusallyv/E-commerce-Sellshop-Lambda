@@ -23,7 +23,8 @@ from django.conf.urls.i18n import i18n_patterns
 urlpatterns = i18n_patterns(
     path("core/", include("core.urls")),
     path("product/", include("product.urls")),
-    path("account/", include("account.urls")),
+    path("user/", include("user.urls")),
+    path('user/', include('django.contrib.auth.urls')),
     path("order/", include("order.urls")),
     path("blog/", include("blog.urls")), 
     path('admin/', admin.site.urls),

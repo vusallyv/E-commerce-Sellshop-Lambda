@@ -11,7 +11,7 @@ from product.forms import FlatpageCustomForm
 
 @admin.register(ProductVersion)
 class ProductVersionAdmin(admin.ModelAdmin):
-    search_fields = ['user_id']
+    search_fields = ['user']
 
     def get_image(self, obj):
         if obj.image:
@@ -20,7 +20,7 @@ class ProductVersionAdmin(admin.ModelAdmin):
             return format_html(img)
         return 'No Image'
 
-    # autocomplete_fields = ['wishlist_id']
+    # autocomplete_fields = ['wishlist']
 
 
 @admin.register(Tag)
@@ -34,7 +34,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ('ex_price', 'price',)
 
     def get_brand(self, obj):
-        return obj.brand_id.title
+        return obj.brand.title
     get_brand.short_description = 'Brand'
 
 
