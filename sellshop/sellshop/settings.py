@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # third party apps
     'rosetta',
     'ckeditor', 
+    'rest_framework',
     
     # custom apps
     'user',
@@ -73,6 +74,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    "sellshop.middleware.RequestLogMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'sellshop.middleware.IPAddressMiddleware'
     # 'sellshop.middleware.LoggingMiddleware'
@@ -216,7 +218,7 @@ AUTH_USER_MODEL = 'user.User'
 #     }
 # }   
 
-SITE_ID = 3
+SITE_ID = 4
 
 LOGIN_REDIRECT_URL = 'core/index/'
 LOGOUT_REDIRECT_URL = 'core/index/'
@@ -227,3 +229,11 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'vusal581176@gmail.com'
 EMAIL_HOST_PASSWORD = 'pulsar12345'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
