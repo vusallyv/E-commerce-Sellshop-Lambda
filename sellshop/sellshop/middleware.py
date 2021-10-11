@@ -4,7 +4,6 @@ import time
 import socket
 from django.shortcuts import render
 from django.utils.deprecation import MiddlewareMixin
-from django.http import HttpResponse
 
 
 class IPAddressMiddleware(MiddlewareMixin):
