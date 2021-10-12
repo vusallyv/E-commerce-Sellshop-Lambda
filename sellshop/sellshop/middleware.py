@@ -56,7 +56,7 @@ class RequestLogMiddleware:
         log_data["run_time"] = time.time() - start_time
 
         request_logger.info(msg=log_data)
-
+        
         return response
 
     # Log unhandled exceptions as well
