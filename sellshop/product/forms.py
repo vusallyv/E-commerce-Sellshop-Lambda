@@ -1,7 +1,7 @@
 from django import forms
 from product.models import Review
-from django.contrib.flatpages.forms import FlatpageForm
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
+# from django.contrib.flatpages.forms import FlatpageForm
+# from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 class ReviewForm(forms.ModelForm):
     class Meta:
@@ -11,5 +11,5 @@ class ReviewForm(forms.ModelForm):
         widgets = {
             'review': forms.Textarea(attrs={'placeholder': 'Your Review', 'rows': 2})
         }
-class FlatpageCustomForm(FlatpageForm):
-    content = forms.CharField(widget=CKEditorUploadingWidget())
+# class FlatpageCustomForm(FlatpageForm):
+#     content = forms.CharField(widget=CKEditorUploadingWidget())

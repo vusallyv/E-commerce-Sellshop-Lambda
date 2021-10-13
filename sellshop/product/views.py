@@ -1,4 +1,4 @@
-from django.shortcuts import render, resolve_url
+from django.shortcuts import render
 from django.db.models import Q, F
 from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
 from product.forms import ReviewForm
@@ -7,7 +7,7 @@ from django.views.generic import DetailView, ListView
 
 def single_product(request, pk):
     image = Image.objects.filter(productversion=pk)
-    product = Product.objects.get(pk=pk)
+    # product = Product.objects.get(pk=pk)
     product_versions = ProductVersion.objects.get(pk=pk)
     review = Review.objects.filter(product=pk)
 
@@ -26,9 +26,9 @@ def single_product(request, pk):
     context = {
         'title': 'Single-product Sellshop',
         'images': image,
-        'product': product,
+        # 'product': product,
         'form': form,
-        'product_versions': product_versions,
+        'productversion': product_versions,
         'reviews': review,
     }
 
@@ -43,8 +43,7 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Single-product Sellshop'
         context['form'] = ReviewForm
-        context['reviews'] = Review.objects.filter(
-            product=self.kwargs.get('pk'))
+        context['reviews'] = Review.objects.filter(product=self.kwargs.get('pk'))
         return context
 
     def post(self, request, *args, **kwargs):

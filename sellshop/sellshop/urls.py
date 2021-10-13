@@ -31,7 +31,7 @@ urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
     path('rosetta/', include("rosetta.urls")),
     # path('jet/', include('jet.urls', 'jet')),
-    path('', include('django.contrib.flatpages.urls')),
+    # path('', include('django.contrib.flatpages.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 )
 

@@ -5,9 +5,9 @@ from django.utils.html import format_html
 from product.models import Color, Product, Category, Brand, ProductVersion, Size, Review, Image, Tag
 
 from django.utils.translation import gettext_lazy as _
-from django.contrib.flatpages.models import FlatPage
+# from django.contrib.flatpages.models import FlatPage
 
-from product.forms import FlatpageCustomForm
+# from product.forms import FlatpageCustomForm
 
 @admin.register(ProductVersion)
 class ProductVersionAdmin(admin.ModelAdmin):
@@ -60,18 +60,18 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 admin.site.register([Color, Category, Brand, Size, Image])
-admin.site.unregister(FlatPage)
+# admin.site.unregister(FlatPage)
 
-@admin.register(FlatPage)
-class FlatPageAdmin(admin.ModelAdmin):
-    form = FlatpageCustomForm
-    fieldsets = (
-        (None, {'fields': ('url', 'title', 'content', 'sites')}),
-        (_('Advanced options'), {
-            'classes': ('collapse',),
-            'fields': ('registration_required', 'template_name'),
-        }),
-    )
-    list_display = ('url', 'title')
-    list_filter = ('sites', 'registration_required')
-    search_fields = ('url', 'title')
+# @admin.register(FlatPage)
+# class FlatPageAdmin(admin.ModelAdmin):
+#     form = FlatpageCustomForm
+#     fieldsets = (
+#         (None, {'fields': ('url', 'title', 'content', 'sites')}),
+#         (_('Advanced options'), {
+#             'classes': ('collapse',),
+#             'fields': ('registration_required', 'template_name'),
+#         }),
+#     )
+#     list_display = ('url', 'title')
+#     list_filter = ('sites', 'registration_required')
+#     search_fields = ('url', 'title')
