@@ -21,16 +21,18 @@ from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = i18n_patterns(
+    path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('rosetta/', include("rosetta.urls")),
     path("core/", include("core.urls")),
     path("product/", include("product.urls")),
     path("account/", include("account.urls")),
     path("order/", include("order.urls")),
     path("blog/", include("blog.urls")), 
-    path('admin/', admin.site.urls),
-    path('rosetta/', include("rosetta.urls")),
+    path('api/', include('api.urls')),
     # path('jet/', include('jet.urls', 'jet')),
     path('', include('django.contrib.flatpages.urls')),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    
 )
 
 

@@ -341,11 +341,15 @@
                             <div class="pro-type">
                               <span>new</span>
                             </div>
+                            {% for image in images %}
+                            {% if productversion == image.productversion_id %}
                             <a href="#"
                               ><img
-                                src="{% static 'img/products/13.jpg' %}"
+                                src="{{ image.image.url }}"
                                 alt="Product Title"
                             /></a>
+                            {% endif %}
+                            {% endfor %}
                           </div>
                         </div>
                       </div>

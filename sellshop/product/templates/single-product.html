@@ -69,8 +69,10 @@
 						</div>
 						<div class="quick-thumb">
 							<ul class="product-slider">
+								{% for i in image %}
 								<li><a data-toggle="tab" href="#sin-1"> <img width="85" height="110"
-											src="{{ images.image.url }}" alt="quick view" /> </a></li>
+											src="{{ i.image.url }}" alt="quick view" /> </a></li>
+								{% endfor %}
 								<li class="active"><a data-toggle="tab" href="#sin-2"> <img width="85" height="110"
 											src="{% static 'img/products/s2.jpg' %}" alt="small image" /> </a></li>
 								<li><a data-toggle="tab" href="#sin-3"> <img width="85" height="110"
@@ -269,14 +271,14 @@
 									<div class="row">
 										<div class="col-sm-6">
 											<div class="input-mail">
-												<input type="text" name="name" placeholder="Your Name"
-													value="{{user.first_name}}" readonly />
+												<input type="text" name="name" placeholder="{{account.user.first_name}}"
+													value="{{account.user.first_name}}" />
 											</div>
 										</div>
 										<div class="col-sm-6">
 											<div class="input-mail">
 												<input type="text" name="email" placeholder="Your Email"
-													value="{{user.email}} " readonly />
+													/>
 											</div>
 										</div>
 										<div class="col-xs-12">

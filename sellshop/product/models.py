@@ -56,6 +56,18 @@ class Product(BaseModel):
 
     def __str__(self) -> str:
         return self.title
+    
+    @property
+    def main_version(self):
+        return self.versions.filter(is_main=True).first()
+    
+    
+'''
+{% for product in  products %}
+    <img src="{% product.main_version.images.first.url %}">
+{% endfor %}
+'''
+        
 
 
 class Tag(models.Model):
@@ -83,7 +95,7 @@ class Size(models.Model):
 
 
 class ProductVersion(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, default="")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, default="", related_name="versions")
     quantity = models.PositiveIntegerField(verbose_name='Quantity')
     color = models.ForeignKey(
         Color, default=1, verbose_name='Color', on_delete=models.CASCADE)
@@ -118,7 +130,12 @@ class Image(models.Model):
     image = models.ImageField(verbose_name="Image",
                               upload_to="media/", null=True)
     productversion_id = models.ForeignKey(
-        ProductVersion, on_delete=models.CASCADE, verbose_name="Product Version")
+        ProductVersion, on_delete=models.CASCADE, verbose_name="Product Version", related_name="images")
 
     def __str__(self) -> str:
         return f"{self.image}"
+    
+
+'''
+product.main_version.images.image.url
+'''

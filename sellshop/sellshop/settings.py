@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # third party apps
     'rosetta',
     'ckeditor', 
+    'rest_framework',
     
     # custom apps
     'account',
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'order',
     'product',
     'blog',
+    'api',
 
 ]
 
@@ -192,4 +194,13 @@ AUTH_USER_MODEL = 'account.User'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
+# site id
 SITE_ID = 1
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
