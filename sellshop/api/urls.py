@@ -8,4 +8,5 @@ urlpatterns = [
     path('products/create/', views.ProductCreateAPIView.as_view(), name="product"),
     path('products/destroy/<int:pk>/', views.ProductDestroyAPIView.as_view(), name="product"),
     path('products/update/<int:pk>/', views.ProductUpdateAPIView.as_view(), name="product"),
+    path('user/create/', views.UserCreateAPIView.as_view(), name="user"),
 ]

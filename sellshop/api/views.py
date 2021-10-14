@@ -3,10 +3,11 @@
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
-from api.serializers import ProductSerializer
+from api.serializers import ProductSerializer, UserSerializer
 from rest_framework.response import Response
 
 from product.models import Product
+from user.models import User
 
 
 class ListProductAPIView(ListAPIView):
@@ -59,3 +60,9 @@ class ProductUpdateAPIView(UpdateAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+
+class UserCreateAPIView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.IsAdminUser,)
+

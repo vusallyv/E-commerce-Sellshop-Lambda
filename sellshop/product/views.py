@@ -9,6 +9,7 @@ def single_product(request, pk):
     image = Image.objects.filter(productversion=pk)
     # product = Product.objects.get(pk=pk)
     product_versions = ProductVersion.objects.get(pk=pk)
+    related_products = ProductVersion.objects.exclude(pk=pk)
     review = Review.objects.filter(product=pk)
 
     if request.method == 'POST':
@@ -29,6 +30,7 @@ def single_product(request, pk):
         # 'product': product,
         'form': form,
         'productversion': product_versions,
+        'relatedproducts': related_products,
         'reviews': review,
     }
 

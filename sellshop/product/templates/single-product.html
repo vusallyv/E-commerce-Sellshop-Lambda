@@ -70,7 +70,7 @@
 						<div class="quick-thumb">
 							<ul class="product-slider">
 								<li><a data-toggle="tab" href="#sin-1"> <img width="85" height="110"
-											src="{{ images.image.url }}" alt="quick view" /> </a></li>
+											src="{% static 'img/products/s1.jpg' %}" alt="quick view" /> </a></li>
 								<li class="active"><a data-toggle="tab" href="#sin-2"> <img width="85" height="110"
 											src="{% static 'img/products/s2.jpg' %}" alt="small image" /> </a></li>
 								<li><a data-toggle="tab" href="#sin-3"> <img width="85" height="110"
@@ -319,6 +319,7 @@
 			</div>
 		</div>
 		<div class="row text-center">
+			{% for relatedproduct in relatedproducts %}
 			<div class="col-xs-12 col-sm-6 col-md-3 r-margin-top">
 				<div class="single-product">
 					<div class="product-img">
@@ -330,11 +331,12 @@
 						</div>
 					</div>
 					<div class="product-dsc">
-						<p><a href="#">men’s White t-shirt</a></p>
-						<span>$96.20</span>
+						<p><a href="#">{{ relatedproduct.title }}</a></p>
+						<span>${{ relatedproduct.price }}</span>
 					</div>
 				</div>
 			</div>
+			{% endfor %}
 			<!-- single product end -->
 		</div>
 	</div>

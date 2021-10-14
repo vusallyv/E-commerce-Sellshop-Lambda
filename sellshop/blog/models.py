@@ -11,7 +11,7 @@ class Blog(BaseModel):
     like = models.PositiveIntegerField(verbose_name="Like")
     product = models.ForeignKey(
         "product.ProductVersion", on_delete=models.CASCADE, default="") 
-    image = models.ImageField(verbose_name="Image", null=True, blank=True)
+    image = models.ImageField(verbose_name="Image", upload_to="blogs/")
 
     def __str__(self) -> str:
         return f"{self.title}"
