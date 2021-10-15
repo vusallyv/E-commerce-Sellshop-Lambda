@@ -7,8 +7,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-from api.serializers import UserSerializer, UserOverviewSerializer, CategorySerializer
-from product.models import Product, Category
+from api.serializers import UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
+from product.models import Category
+from blog.models import Blog
 
 from rest_framework.decorators import api_view
 User = get_user_model()
@@ -97,3 +98,30 @@ class UpdateCategoryAPIView(UpdateAPIView):
 class DeleteCategoryAPIView(DestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    
+# Blog api
+    
+class ListBlogAPIView(ListAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    
+
+class DetailListBlogAPIView(RetrieveAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+
+
+class CreateBlogAPIView(CreateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    
+
+class UpdateBlogAPIView(UpdateAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    
+    
+class DeleteBlogAPIView(DestroyAPIView):
+    queryset = Blog.objects.all()
+    serializer_class = BlogSerializer
+    
