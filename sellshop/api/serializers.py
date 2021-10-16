@@ -1,15 +1,39 @@
 import random
 from django import forms
+from django.db import models
+from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
+from rest_framework.fields import SerializerMethodField
 
-from product.models import Product
+from product.models import Product, ProductVersion
 from user.models import User
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    main_version = serializers.SerializerMethodField()
+    total_quantity = serializers.SerializerMethodField()
+    versions = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
+        fields = ("title", "subtitle", "ex_price", "price", "description",
+                  "brand", "category", "total_quantity", "main_version", "versions")
+
+    def get_total_quantity(self, obj):
+        return obj.total_quantity
+
+    def get_main_version(self, obj):
+        return ProductVersionSerializer(obj.main_version).data
+
+    def get_versions(self, obj):
+        qs = obj.versions.exclude(id=obj.main_version.id)
+        return ProductVersionSerializer(qs, many=True).data
+
+
+class ProductVersionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductVersion
         fields = "__all__"
 
 

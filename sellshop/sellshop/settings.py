@@ -75,7 +75,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    "sellshop.middleware.RequestLogMiddleware",
+    # "sellshop.middleware.RequestLogMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'sellshop.middleware.IPAddressMiddleware'
     # 'sellshop.middleware.LoggingMiddleware'

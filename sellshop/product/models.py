@@ -9,7 +9,7 @@ from django.utils import timezone
 User = get_user_model()
 
 
-class Brand(models.Model):
+class Brand(BaseModel):
     title = models.CharField(verbose_name="Title",
                              max_length=30, help_text="Max 30 char.")
 
@@ -17,17 +17,41 @@ class Brand(models.Model):
         return self.title
 
 
-class Category(models.Model):
+class Category(BaseModel):
     title = models.CharField(verbose_name="Title",
                              max_length=30, help_text="Max 30 char.")
     parent = models.ForeignKey('self', verbose_name="Parent", on_delete=models.CASCADE,
-                                    null=True, blank=True, default="", related_name="parent_category")
+                               null=True, blank=True, default="", related_name="parent_category")
 
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
 
     def __str__(self) -> str:
+        return self.title
+
+
+class Tag(BaseModel):
+    title = models.CharField(
+        max_length=30, verbose_name='Title', help_text='Max 30 char.', unique=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Color(BaseModel):
+    title = models.CharField(verbose_name="Title",
+                             max_length=30, help_text="Max 30 char.")
+
+    def __str__(self):
+        return self.title
+
+
+class Size(BaseModel):
+    title = models.CharField(verbose_name="Title",
+                             max_length=30, help_text="Max 30 char.")
+
+    def __str__(self):
         return self.title
 
 
@@ -39,42 +63,26 @@ class Product(BaseModel):
         verbose_name="Ex Price", max_digits=10, decimal_places=2)
     price = models.DecimalField(
         verbose_name="Price", max_digits=10, decimal_places=2)
-    description = models.TextField(verbose_name="Description")  
+    description = models.TextField(verbose_name="Description")
     # description = RichTextUploaderField(null=True, blank=True)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.title
+    
+    @property
+    def main_version(self):
+        return self.versions.filter(is_main=True).first()
+
+    @property
+    def total_quantity(self):
+        return sum([version.quantity for version in self.versions.all()])
 
 
-class Tag(models.Model):
-    title = models.CharField(
-        max_length=30, verbose_name='Title', help_text='Max 30 char.', unique=True)
-
-    def __str__(self):
-        return self.title
-
-
-class Color(models.Model):
-    title = models.CharField(verbose_name="Title",
-                             max_length=30, help_text="Max 30 char.")
-
-    def __str__(self):
-        return self.title
-
-
-class Size(models.Model):
-    title = models.CharField(verbose_name="Title",
-                             max_length=30, help_text="Max 30 char.")
-
-    def __str__(self):
-        return self.title
-
-
-class ProductVersion(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, default="")
-    quantity = models.PositiveIntegerField(verbose_name='Quantity')
+class ProductVersion(BaseModel):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, default="", related_name="versions")
+    quantity = models.PositiveIntegerField(verbose_name='Quantity', default=0)
     color = models.ForeignKey(
         Color, default=1, verbose_name='Color', on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE,
@@ -95,8 +103,6 @@ class Review(BaseModel):
     review = models.TextField(verbose_name="Review")
     rating = models.DecimalField(
         verbose_name="Rating", max_digits=2, decimal_places=1, default=0)
-    created_at = models.DateTimeField(
-        verbose_name="Created_at", default=timezone.now)
     product = models.ForeignKey(
         ProductVersion, on_delete=models.CASCADE, default="")
 
@@ -104,7 +110,7 @@ class Review(BaseModel):
         return f"{self.user.first_name} {self.user.last_name}"
 
 
-class Image(models.Model):
+class Image(BaseModel):
     image = models.ImageField(verbose_name="Image",
                               upload_to="media/", null=True)
     productversion = models.ForeignKey(
