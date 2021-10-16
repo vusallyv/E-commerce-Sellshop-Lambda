@@ -7,7 +7,6 @@ from django.views.generic import DetailView, ListView
 
 def single_product(request, pk):
     image = Image.objects.filter(productversion=pk)
-    # product = Product.objects.get(pk=pk)
     product_versions = ProductVersion.objects.get(pk=pk)
     related_products = ProductVersion.objects.exclude(pk=pk)
     review = Review.objects.filter(product=pk)
@@ -27,7 +26,6 @@ def single_product(request, pk):
     context = {
         'title': 'Single-product Sellshop',
         'images': image,
-        # 'product': product,
         'form': form,
         'productversion': product_versions,
         'relatedproducts': related_products,
@@ -112,7 +110,6 @@ class ProductListView(ListView):
     def get(self, request, *args, **kwargs):
         qs = None
         qs_productversion_all = ProductVersion.objects.all()
-        qs_images = Image.objects.all()
 
         if request.GET.get("search_name"):
             qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
@@ -133,7 +130,7 @@ class ProductListView(ListView):
         context = {
             'title': 'Product-list Sellshop',
             'productversions': qs,
-            'images': qs_images,
+            'images': Image.objects.all(),
             'allproductversions': qs_productversion_all[0:4],
             'sizes': Size.objects.all(),
             'categories': Category.objects.all(),

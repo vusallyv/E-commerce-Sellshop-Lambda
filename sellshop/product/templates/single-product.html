@@ -31,52 +31,27 @@
 							<div class="list-img">
 								<div class="product-img tab-content">
 
-
-									<div class="simpleLens-container tab-pane fade in" id="sin-1">
+									{% for image in images %}
+									<div class="simpleLens-container tab-pane fade in" id="sin-{{image.id}}">
 										<div class="pro-type">
 											<span>new</span>
 										</div>
-										<a class="simpleLens-image" data-lens-image="img/products/z1.jpg" href="#"><img
-												src="{% static 'img/products/z1.jpg' %}" alt=""
+										<a class="simpleLens-image" data-lens-image="{{ image.image.url }}" href="#"><img style="width: 360px; height: 467px;"
+												src="{{ image.image.url }}" alt=""
 												class="simpleLens-big-image"></a>
 									</div>
-									<div class="simpleLens-container tab-pane active fade in" id="sin-2">
-										<div class="pro-type sell">
-											<span>sell</span>
-										</div>
-										<a class="simpleLens-image" data-lens-image="img/products/z2.jpg" href="#"><img
-												src="{{ images.image.url }}" alt="" class="simpleLens-big-image"></a>
-									</div>
-									<div class="simpleLens-container tab-pane fade in" id="sin-3">
-										<div class="pro-type">
-											<span>-15%</span>
-										</div>
-										<a class="simpleLens-image" data-lens-image="img/products/z3.jpg" href="#"><img
-												src="{% static 'img/products/z3.jpg' %}" alt=""
-												class="simpleLens-big-image"></a>
-									</div>
-									<div class="simpleLens-container tab-pane fade in" id="sin-4">
-										<div class="pro-type">
-											<span>new</span>
-										</div>
-										<a class="simpleLens-image" data-lens-image="img/products/z4.jpg" href="#"><img
-												src="{% static 'img/products/z4.jpg' %}" alt=""
-												class="simpleLens-big-image"></a>
-									</div>
+									{% endfor %}
 
 								</div>
 							</div>
 						</div>
 						<div class="quick-thumb">
 							<ul class="product-slider">
-								<li><a data-toggle="tab" href="#sin-1"> <img width="85" height="110"
-											src="{% static 'img/products/s1.jpg' %}" alt="quick view" /> </a></li>
-								<li class="active"><a data-toggle="tab" href="#sin-2"> <img width="85" height="110"
-											src="{% static 'img/products/s2.jpg' %}" alt="small image" /> </a></li>
-								<li><a data-toggle="tab" href="#sin-3"> <img width="85" height="110"
-											src="{% static 'img/products/s3.jpg' %}" alt="small image" /> </a></li>
-								<li><a data-toggle="tab" href="#sin-4"> <img width="85" height="110"
-											src="{% static 'img/products/s4.jpg' %}" alt="small image" /> </a></li>
+								{% for image in images %}
+								<li><a data-toggle="tab" href="#sin-{{image.id}}"> <img style="width: 85px; height: 106.75px;" src="{{ image.image.url }}"
+											alt="small image" /> </a></li>
+								
+								{% endfor %}
 							</ul>
 						</div>
 					</div>
@@ -186,13 +161,12 @@
 
 								<div class="autohr-text">
 									{% if review.user.image == 'staticfiles/img/blog/author1.png' %}
-									<img style="width: 90px; height: 100px;"
-										src="{% static 'img/blog/author1.png' %}" alt="" />
-									{% else %}
-									<img style="width: 90px; height: 100px;" src="{{ review.user.image.url }}"
+									<img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}"
 										alt="" />
+									{% else %}
+									<img style="width: 90px; height: 100px;" src="{{ review.user.image.url }}" alt="" />
 									{% endif %}
-									
+
 									<div class="author-des">
 										<h4><a href="#">{{ review.user.first_name }}</a></h4>
 										<span class="floatright ratting">
@@ -360,60 +334,27 @@
 											<div class="single-quick-image text-center">
 												<div class="list-img">
 													<div class="product-img tab-content">
-														<div class="simpleLens-container tab-pane fade in" id="q-sin-1">
+														{% for image in images %}
+														<div class="simpleLens-container tab-pane fade in" id="q-sin-{{image.id}}">
 															<div class="pro-type">
 																<span>new</span>
 															</div>
 															<a class="simpleLens-image"
-																data-lens-image="img/products/z1.jpg" href="#"><img
-																	src="{% static 'img/products/z1.jpg' %}" alt=""
+																data-lens-image="{{ image.image.url }}" href="#"><img
+																	src="{{ image.image.url }}" alt=""
 																	class="simpleLens-big-image"></a>
 														</div>
-														<div class="simpleLens-container tab-pane active fade in"
-															id="q-sin-2">
-															<div class="pro-type sell">
-																<span>sell</span>
-															</div>
-															<a class="simpleLens-image"
-																data-lens-image="img/products/z2.jpg" href="#"><img
-																	src="{% static 'img/products/z2.jpg' %}" alt=""
-																	class="simpleLens-big-image"></a>
-														</div>
-														<div class="simpleLens-container tab-pane fade in" id="q-sin-3">
-															<div class="pro-type">
-																<span>-15%</span>
-															</div>
-															<a class="simpleLens-image"
-																data-lens-image="img/products/z3.jpg" href="#"><img
-																	src="{% static 'img/products/z3.jpg' %}" alt=""
-																	class="simpleLens-big-image"></a>
-														</div>
-														<div class="simpleLens-container tab-pane fade in" id="q-sin-4">
-															<div class="pro-type">
-																<span>new</span>
-															</div>
-															<a class="simpleLens-image"
-																data-lens-image="img/products/z4.jpg" href="#"><img
-																	src="{% static 'img/products/z4.jpg' %}" alt=""
-																	class="simpleLens-big-image"></a>
-														</div>
+														{% endfor %}
 													</div>
 												</div>
 											</div>
 											<div class="quick-thumb">
 												<ul class="product-slider">
-													<li><a data-toggle="tab" href="#q-sin-1"> <img
-																src="{% static 'img/products/s1.jpg' %}"
+													{% for image in images %}
+													<li><a data-toggle="tab" href="#q-sin-{{image.id}}"> <img style="width: 85px; height: 106.76px;"
+																src="{{ image.image.url }}"
 																alt="quick view" /> </a></li>
-													<li class="active"><a data-toggle="tab" href="#q-sin-2"> <img
-																src="{% static 'img/products/s2.jpg' %}"
-																alt="small image" /> </a></li>
-													<li><a data-toggle="tab" href="#q-sin-3"> <img
-																src="{% static 'img/products/s3.jpg' %}"
-																alt="small image" /> </a></li>
-													<li><a data-toggle="tab" href="#q-sin-4"> <img
-																src="{% static 'img/products/s4.jpg' %}"
-																alt="small image" /> </a></li>
+													{% endfor %}
 												</ul>
 											</div>
 										</div>

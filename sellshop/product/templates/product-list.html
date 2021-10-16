@@ -33,9 +33,11 @@
               <div class="pro-type sell">
                 <span>sell</span>
               </div>
-              <a href="{% url 'single_product' productversion.id %}"
-                ><img src="/static/img/products/8.jpg" alt="Product Title"
-              /></a>
+              <a href="{% url 'single_product' productversion.id %}">
+                {% for image in images %}
+                <img src="{{image.image.url}}" alt="Product Title" />
+                {% endfor %}
+              </a>
             </div>
           </div>
         </div>
@@ -123,46 +125,31 @@
                 {% for category in categories.all %}
                 <li class="panel">
                   {% if not category.parent %}
-                  <div
-                    data-toggle="collapse"
-                    data-parent="#accordion"
-                    data-target="#collapse{{ category.id }}"
-                  >
+                  <div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ category.id }}">
                     <form method="GET">
                       <div class="medium-a">
-                        <button
-                          type="submit"
-                          name="category_name"
-                          value="{{ category.title }}"
-                          style="background-color: transparent; border: none"
-                        >
+                        <button type="submit" name="category_name" value="{{ category.title }}"
+                          style="background-color: transparent; border: none">
                           {{ category.title }}
                         </button>
                       </div>
                     </form>
                   </div>
-                  {% endif %} 
-                  <div
-                  class="panel-collapse collapse  "
-                  id="collapse{{ category.id }}"
-                  >
-                  {% for child in category.parent_category.all %}
+                  {% endif %}
+                  <div class="panel-collapse collapse  " id="collapse{{ category.id }}">
+                    {% for child in category.parent_category.all %}
                     <form method="GET">
                       <div class="normal-a">
                         <a href="#">
-                          <button
-                            type="submit"
-                            name="subcategory_name"
-                            value="{{ child.title }}"
-                            style="background-color: transparent; border: none"
-                          >
+                          <button type="submit" name="subcategory_name" value="{{ child.title }}"
+                            style="background-color: transparent; border: none">
                             {{ child.title }}
                           </button>
                         </a>
                       </div>
                     </form>
                     <div class="medium-a"></div>
-                    {% endfor %} 
+                    {% endfor %}
                   </div>
                 </li>
                 {% endfor %}
@@ -175,10 +162,8 @@
             </div>
             <div class="range-slider clearfix">
               <form action="#" method="get">
-                <label
-                  ><span>You range</span>
-                  <input type="text" id="amount" name="price" readonly
-                /></label>
+                <label><span>You range</span>
+                  <input type="text" id="amount" name="price" readonly /></label>
                 <div id="slider-range"></div>
               </form>
             </div>
@@ -190,19 +175,15 @@
             </div>
             <div class="size-select clearfix">
               <form method="GET">
-              {% for size in sizes %}
-              <a href="">
-                <button
-                  type="submit"
-                  name="size"
-                  value="{{ size.title }}"
-                  style="background-color: transparent; border: none"
-                >
-                  {{ size.title }}
-                </button>
-              </a>
-              {% endfor %}
-            </form>
+                {% for size in sizes %}
+                <a href="">
+                  <button type="submit" name="size" value="{{ size.title }}"
+                    style="background-color: transparent; border: none">
+                    {{ size.title }}
+                  </button>
+                </a>
+                {% endfor %}
+              </form>
             </div>
           </div>
           <div class="s-side-text">
@@ -230,17 +211,13 @@
                 {% for brand in brands %}
                 <li>
                   <form method="GET">
-                  <a href="">
-                    <button
-                      type="submit"
-                      name="brand"
-                      value="{{ brand.title }}"
-                      style="background-color: transparent; border: none"
-                    >
-                      {{ brand.title }}
-                    </button>
-                  </a>
-                </form>
+                    <a href="">
+                      <button type="submit" name="brand" value="{{ brand.title }}"
+                        style="background-color: transparent; border: none">
+                        {{ brand.title }}
+                      </button>
+                    </a>
+                  </form>
                 </li>
                 {% endfor %}
               </ul>
@@ -248,9 +225,7 @@
           </div>
           <div class="s-side-text">
             <div class="banner clearfix">
-              <a href="#"
-                ><img src="{% static 'img/products/banner.jpg' %}" alt=""
-              /></a>
+              <a href="#"><img src="{% static 'img/products/banner.jpg' %}" alt="" /></a>
               <div class="banner-text">
                 <h2>best</h2>
                 <br />
@@ -292,19 +267,15 @@
                 <div class="col-xs-12 hidden-sm col-md-4">
                   <div class="single-product">
                     <div class="product-img">
-                      <a href="#"
-                        ><img
-                          src="{% static 'img/products/10.jpg' %}"
-                          alt="Product Title"
-                      /></a>
+                      <a href="#">
+                        {% for image in images %}
+                        {% if image.is_main %}
+                        <img style="width: 270px; height: 340.25px;" src="{{image.image.url}}" alt="Product Title" />
+                        {% endif %}
+                        {% endfor %}</a>
                       <div class="actions-btn">
                         <a href="#"><i class="mdi mdi-cart"></i></a>
-                        <a
-                          href="#"
-                          data-toggle="modal"
-                          data-target="#quick-view"
-                          ><i class="mdi mdi-eye"></i
-                        ></a>
+                        <a href="#" data-toggle="modal" data-target="#quick-view"><i class="mdi mdi-eye"></i></a>
                         <a href="#"><i class="mdi mdi-heart"></i></a>
                       </div>
                     </div>
@@ -337,11 +308,12 @@
                             <div class="pro-type">
                               <span>new</span>
                             </div>
-                            <a href="#"
-                              ><img
-                                src="{% static 'img/products/13.jpg' %}"
-                                alt="Product Title"
-                            /></a>
+                            <a href="#">
+                              {% for image in images %}
+                        {% if image.is_main %}
+                        <img style="width: 270px; height: 340.25px;" src="{{image.image.url}}" alt="Product Title" />
+                        {% endif %}
+                        {% endfor %}</a>
                           </div>
                         </div>
                       </div>
@@ -367,12 +339,7 @@
                           <div class="list-btn">
                             <a href="#">add to cart</a>
                             <a href="#">wishlist</a>
-                            <a
-                              href="#"
-                              data-toggle="modal"
-                              data-target="#quick-view"
-                              >zoom</a
-                            >
+                            <a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
                           </div>
                         </div>
                       </div>
@@ -429,79 +396,39 @@
                       <div class="single-quick-image text-center">
                         <div class="list-img">
                           <div class="product-img tab-content">
-                            <div
-                              class="simpleLens-container tab-pane fade in"
-                              id="q-sin-1"
-                            >
+                            <div class="simpleLens-container tab-pane fade in" id="q-sin-1">
                               <div class="pro-type">
                                 <span>new</span>
                               </div>
-                              <a
-                                class="simpleLens-image"
-                                data-lens-image="img/products/z1.jpg"
-                                href="#"
-                                ><img
-                                  src="{% static 'img/products/z1.jpg' %}"
-                                  alt=""
-                                  class="simpleLens-big-image"
-                              /></a>
+                              <a class="simpleLens-image" data-lens-image="img/products/z1.jpg" href="#"><img
+                                  src="{% static 'img/products/z1.jpg' %}" alt="" class="simpleLens-big-image" /></a>
                             </div>
-                            <div
-                              class="
+                            <div class="
                                 simpleLens-container
                                 tab-pane
                                 active
                                 fade
                                 in
-                              "
-                              id="q-sin-2"
-                            >
+                              " id="q-sin-2">
                               <div class="pro-type sell">
                                 <span>sell</span>
                               </div>
-                              <a
-                                class="simpleLens-image"
-                                data-lens-image="img/products/z2.jpg"
-                                href="#"
-                                ><img
-                                  src="{% static 'img/products/z2.jpg' %}"
-                                  alt=""
-                                  class="simpleLens-big-image"
-                              /></a>
+                              <a class="simpleLens-image" data-lens-image="img/products/z2.jpg" href="#"><img
+                                  src="{% static 'img/products/z2.jpg' %}" alt="" class="simpleLens-big-image" /></a>
                             </div>
-                            <div
-                              class="simpleLens-container tab-pane fade in"
-                              id="q-sin-3"
-                            >
+                            <div class="simpleLens-container tab-pane fade in" id="q-sin-3">
                               <div class="pro-type">
                                 <span>-15%</span>
                               </div>
-                              <a
-                                class="simpleLens-image"
-                                data-lens-image="img/products/z3.jpg"
-                                href="#"
-                                ><img
-                                  src="{% static 'img/products/z3.jpg' %}"
-                                  alt=""
-                                  class="simpleLens-big-image"
-                              /></a>
+                              <a class="simpleLens-image" data-lens-image="img/products/z3.jpg" href="#"><img
+                                  src="{% static 'img/products/z3.jpg' %}" alt="" class="simpleLens-big-image" /></a>
                             </div>
-                            <div
-                              class="simpleLens-container tab-pane fade in"
-                              id="q-sin-4"
-                            >
+                            <div class="simpleLens-container tab-pane fade in" id="q-sin-4">
                               <div class="pro-type">
                                 <span>new</span>
                               </div>
-                              <a
-                                class="simpleLens-image"
-                                data-lens-image="img/products/z4.jpg"
-                                href="#"
-                                ><img
-                                  src="{% static 'img/products/z4.jpg' %}"
-                                  alt=""
-                                  class="simpleLens-big-image"
-                              /></a>
+                              <a class="simpleLens-image" data-lens-image="img/products/z4.jpg" href="#"><img
+                                  src="{% static 'img/products/z4.jpg' %}" alt="" class="simpleLens-big-image" /></a>
                             </div>
                           </div>
                         </div>
@@ -510,34 +437,22 @@
                         <ul class="product-slider">
                           <li>
                             <a data-toggle="tab" href="#q-sin-1">
-                              <img
-                                src="{% static 'img/products/s1.jpg' %}"
-                                alt="quick view"
-                              />
+                              <img src="{% static 'img/products/s1.jpg' %}" alt="quick view" />
                             </a>
                           </li>
                           <li class="active">
                             <a data-toggle="tab" href="#q-sin-2">
-                              <img
-                                src="{% static 'img/products/s2.jpg' %}"
-                                alt="small image"
-                              />
+                              <img src="{% static 'img/products/s2.jpg' %}" alt="small image" />
                             </a>
                           </li>
                           <li>
                             <a data-toggle="tab" href="#q-sin-3">
-                              <img
-                                src="{% static 'img/products/s3.jpg' %}"
-                                alt="small image"
-                              />
+                              <img src="{% static 'img/products/s3.jpg' %}" alt="small image" />
                             </a>
                           </li>
                           <li>
                             <a data-toggle="tab" href="#q-sin-4">
-                              <img
-                                src="{% static 'img/products/s4.jpg' %}"
-                                alt="small image"
-                              />
+                              <img src="{% static 'img/products/s4.jpg' %}" alt="small image" />
                             </a>
                           </li>
                         </ul>
@@ -584,16 +499,9 @@
                             <div class="size-drop">
                               <div class="btn-group">
                                 <button type="button" class="btn">XL</button>
-                                <button
-                                  type="button"
-                                  class="btn dropdown-toggle"
-                                  data-toggle="dropdown"
-                                  aria-haspopup="true"
-                                  aria-expanded="false"
-                                >
-                                  <span class=""
-                                    ><i class="mdi mdi-chevron-down"></i
-                                  ></span>
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                  aria-haspopup="true" aria-expanded="false">
+                                  <span class=""><i class="mdi mdi-chevron-down"></i></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                   <li><a href="#">Xl</a></li>
@@ -609,12 +517,7 @@
                             <form action="#" method="GET">
                               <div class="plus-minus">
                                 <a class="dec qtybutton">-</a>
-                                <input
-                                  type="text"
-                                  value="02"
-                                  name="qtybutton"
-                                  class="plus-minus-box"
-                                />
+                                <input type="text" value="02" name="qtybutton" class="plus-minus-box" />
                                 <a class="inc qtybutton">+</a>
                               </div>
                             </form>
@@ -623,16 +526,13 @@
                         <div class="list-btn">
                           <a href="#">add to cart</a>
                           <a href="#">wishlist</a>
-                          <a
-                            href="#"
-                            data-toggle="modal"
-                            data-target="#quick-view"
-                            >zoom</a
-                          >
+                          <a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
                         </div>
                         <div class="share-tag clearfix">
                           <ul class="blog-share floatleft">
-                            <li><h5>share</h5></li>
+                            <li>
+                              <h5>share</h5>
+                            </li>
                             <li>
                               <a href="#"><i class="mdi mdi-facebook"></i></a>
                             </li>

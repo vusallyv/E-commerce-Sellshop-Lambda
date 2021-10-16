@@ -115,6 +115,7 @@ class Image(BaseModel):
                               upload_to="media/", null=True)
     productversion = models.ForeignKey(
         ProductVersion, on_delete=models.CASCADE, verbose_name="Product Version")
+    is_main = models.BooleanField(verbose_name="Is main?", default=False)
 
     def __str__(self) -> str:
         return f"{self.image}"
