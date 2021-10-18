@@ -17,6 +17,9 @@ django-ckeditor==6.1.0
 django-js-asset==1.2.2
 django-modeltranslation==0.17.3
 django-rosetta==0.9.7
+djangorestframework==3.12.4
+djangorestframework-simplejwt==5.0.0
+djangorestframework-simplejwt-sso==1.0.1
 Flask==2.0.2
 google-api-core==2.1.0
 google-api-python-client==2.24.0
@@ -31,6 +34,7 @@ itsdangerous==2.0.1
 jet-bridge-base==1.0.2
 jet-django==1.1.5
 Jinja2==3.0.2
+jwt==1.3.1
 MarkupSafe==2.0.1
 oauthlib==3.1.1
 Pillow==8.3.2

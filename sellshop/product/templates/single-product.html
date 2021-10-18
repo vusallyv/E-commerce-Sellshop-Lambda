@@ -36,9 +36,9 @@
 										<div class="pro-type">
 											<span>new</span>
 										</div>
-										<a class="simpleLens-image" data-lens-image="{{ image.image.url }}" href="#"><img style="width: 360px; height: 467px;"
-												src="{{ image.image.url }}" alt=""
-												class="simpleLens-big-image"></a>
+										<a class="simpleLens-image" data-lens-image="{{ image.image.url }}"
+											href="#"><img style="width: 360px; height: 467px;"
+												src="{{ image.image.url }}" alt="" class="simpleLens-big-image"></a>
 									</div>
 									{% endfor %}
 
@@ -48,9 +48,10 @@
 						<div class="quick-thumb">
 							<ul class="product-slider">
 								{% for image in images %}
-								<li><a data-toggle="tab" href="#sin-{{image.id}}"> <img style="width: 85px; height: 106.75px;" src="{{ image.image.url }}"
+								<li><a data-toggle="tab" href="#sin-{{image.id}}"> <img
+											style="width: 85px; height: 106.75px;" src="{{ image.image.url }}"
 											alt="small image" /> </a></li>
-								
+
 								{% endfor %}
 							</ul>
 						</div>
@@ -62,7 +63,7 @@
 							<h3>{{ productversion.product.title }}</h3>
 							<span>{{ productversion.product.subtitle }}</span>
 							<div class="ratting floatright">
-								<p>( {{ productversion.rating }} Rating )</p>
+								<p> {{ rating }} Rating </p>
 								<i class="mdi mdi-star"></i>
 								<i class="mdi mdi-star"></i>
 								<i class="mdi mdi-star"></i>
@@ -168,7 +169,7 @@
 									{% endif %}
 
 									<div class="author-des">
-										<h4><a href="#">{{ review.user.first_name }}</a></h4>
+										<h4><a href="#">{{ review.user.username }}</a></h4>
 										<span class="floatright ratting">
 											<i class="mdi mdi-star"></i>
 											<i class="mdi mdi-star"></i>
@@ -187,49 +188,6 @@
 						<div class="your-rating log-title">
 							<h3>leave your review</h3>
 							<h5>Your rating</h5>
-							<div class="rating clearfix">
-								<ul>
-									<li>
-										<a href="#">
-											<i class="mdi mdi-star-outline"></i>
-										</a>
-										<span>|</span>
-									</li>
-									<li>
-										<a href="#">
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-										</a>
-										<span>|</span>
-									</li>
-									<li>
-										<a href="#">
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-										</a>
-										<span>|</span>
-									</li>
-									<li>
-										<a href="#">
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-										</a>
-										<span>|</span>
-									</li>
-									<li>
-										<a href="#">
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-											<i class="mdi mdi-star-outline"></i>
-										</a>
-									</li>
-								</ul>
-							</div>
 						</div>
 						<div class="custom-input">
 							{% if request.user.is_authenticated %}
@@ -239,18 +197,53 @@
 									{% endif %}
 
 									{% csrf_token %}
-
+									<div class="rating clearfix">
+										<ul>
+											<li>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+											</li>
+										</ul>
+									</div>
+									<div>
+										{{form.rating}}
+									</div>
 									<div class="row">
 										<div class="col-sm-6">
 											<div class="input-mail">
-												<input type="text" name="name" placeholder="{{account.user.first_name}}"
-													value="{{account.user.first_name}}" />
+												<input type="text" name="name" placeholder="{{user.username }}"
+													value="{{user.username }}" readonly />
 											</div>
 										</div>
 										<div class="col-sm-6">
 											<div class="input-mail">
-												<input type="text" name="email" placeholder="Your Email"
-													/>
+												<input type="text" name="email" placeholder="{{user.email}}"
+													value="{{user.email}}" readonly />
 											</div>
 										</div>
 										<div class="col-xs-12">
@@ -335,7 +328,8 @@
 												<div class="list-img">
 													<div class="product-img tab-content">
 														{% for image in images %}
-														<div class="simpleLens-container tab-pane fade in" id="q-sin-{{image.id}}">
+														<div class="simpleLens-container tab-pane fade in"
+															id="q-sin-{{image.id}}">
 															<div class="pro-type">
 																<span>new</span>
 															</div>
@@ -351,9 +345,10 @@
 											<div class="quick-thumb">
 												<ul class="product-slider">
 													{% for image in images %}
-													<li><a data-toggle="tab" href="#q-sin-{{image.id}}"> <img style="width: 85px; height: 106.76px;"
-																src="{{ image.image.url }}"
-																alt="quick view" /> </a></li>
+													<li><a data-toggle="tab" href="#q-sin-{{image.id}}"> <img
+																style="width: 85px; height: 106.76px;"
+																src="{{ image.image.url }}" alt="quick view" /> </a>
+													</li>
 													{% endfor %}
 												</ul>
 											</div>

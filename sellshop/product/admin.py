@@ -45,8 +45,8 @@ class ReviewAdmin(admin.ModelAdmin):
     list_editable = ('rating',)
 
     def get_user_details(self, obj):
-        return f"{obj.user.first_name} {obj.user.last_name}"
-    get_user_details.short_description = 'Full Name'
+        return obj.user.username
+    get_user_details.short_description = 'Username'
 
 
 

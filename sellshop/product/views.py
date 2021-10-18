@@ -1,3 +1,4 @@
+from django.db.models.aggregates import Avg
 from django.shortcuts import render
 from django.db.models import Q, F
 from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
@@ -45,6 +46,7 @@ class ProductDetailView(DetailView):
         context['images'] = Image.objects.filter(
             productversion=self.kwargs.get('pk'))
         context['form'] = ReviewForm
+        context['rating'] = "{:.1f}".format(Review.objects.filter(product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg'])
         context['reviews'] = Review.objects.filter(
             product=self.kwargs.get('pk'))
         context['productversion'] = ProductVersion.objects.get(
@@ -58,6 +60,7 @@ class ProductDetailView(DetailView):
         if form.is_valid():
             review = Review(
                 review=request.POST.get('review'),
+                rating=request.POST.get('rating'),
                 product=ProductVersion.objects.get(pk=self.kwargs.get('pk')),
                 user=request.user
             )

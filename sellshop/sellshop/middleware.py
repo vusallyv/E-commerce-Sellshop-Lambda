@@ -9,7 +9,6 @@ from django.utils.deprecation import MiddlewareMixin
 class IPAddressMiddleware(MiddlewareMixin):
     def process_request(self, request):
         pass
-        # print(socket.gethostbyname(socket.gethostname()))
 
     def process_response(self, request, response):
         BLOCKED_IP = ['127.0.0.1']

@@ -120,16 +120,22 @@ class ProductVersion(BaseModel):
 
 
 class Review(BaseModel):
+    CHOICES = (
+        (1, '*'),
+        (2, '**'),
+        (3, '***'),
+        (4, '****'),
+        (5, '*****'),
+    )
     user = models.ForeignKey(
         "user.User", verbose_name="User", on_delete=models.CASCADE, default="")
     review = models.TextField(verbose_name="Review")
-    rating = models.DecimalField(
-        verbose_name="Rating", max_digits=2, decimal_places=1, default=0)
+    rating = models.IntegerField(choices=CHOICES, verbose_name="Rating", default=1)
     product = models.ForeignKey(
         ProductVersion, on_delete=models.CASCADE, default="")
 
     def __str__(self) -> str:
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f"{self.rating}"
 
 
 class Image(BaseModel):

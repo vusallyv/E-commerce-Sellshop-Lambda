@@ -6,10 +6,10 @@ from product.models import Review
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['review']
+        fields = ('review', 'rating')
 
         widgets = {
-            'review': forms.Textarea(attrs={'placeholder': 'Your Review', 'rows': 2})
+            'review': forms.Textarea(attrs={'placeholder': 'Your Review', 'rows': 2}),
         }
 # class FlatpageCustomForm(FlatpageForm):
 #     content = forms.CharField(widget=CKEditorUploadingWidget())
