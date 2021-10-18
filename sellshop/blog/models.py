@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from sellshop.utils.base_models import BaseModel
-from django.utils.translation import ugettext_lazy as _ #python daxilinde translate etmek uchun ugettext
+from django.utils.translation import ugettext_lazy as _
+
 
 class Blog(BaseModel):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
@@ -10,12 +11,12 @@ class Blog(BaseModel):
     # created_at = models.DateField(verbose_name="Created_at")
     like = models.PositiveIntegerField(verbose_name="Like")
     product = models.ForeignKey(
-        "product.ProductVersion", on_delete=models.CASCADE, default="") 
+        "product.ProductVersion", on_delete=models.CASCADE, default="")
     image = models.ImageField(verbose_name="Image", null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.title}"
-                    
+
 
 class Comment(BaseModel):
     user = models.ForeignKey(
