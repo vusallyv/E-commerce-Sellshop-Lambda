@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from django.utils.translation import ugettext_lazy as _
 import os
 from pathlib import Path
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,10 +78,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # "sellshop.middleware.RequestLogMiddleware",
+    "sellshop.middleware.RequestLogMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'sellshop.middleware.IPAddressMiddleware'
-    # 'sellshop.middleware.LoggingMiddleware'
 ]
 
 ROOT_URLCONF = 'sellshop.urls'
@@ -178,6 +178,8 @@ STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
 ]
+
+LOGS_ROOT = BASE_DIR / f'logs/{datetime.date.today()}.log'
 
 # MODELTRANSLATIONS_DEFAULT_LANGUAGE = 'en'
 # MODELTRANSLATIONS_LANGUAGES = (
