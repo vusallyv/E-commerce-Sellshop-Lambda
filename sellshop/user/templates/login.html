@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load socialaccount %}
+{% block title %} {{title}}{% endblock %}
+{% block base %}
+
+<!-- pages-title-start -->
+<div class="pages-title section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pages-title-text text-center">
+					<h2>Register</h2>
+					<ul class="text-left">
+						<li><a href="{% url 'contact' %}">Home </a></li>
+						<li><span> // </span>Register</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- pages-title-end -->
+<!-- login content section start -->
+<section class="pages login-page section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="main-input padding60">
+					<div class="log-title">
+						<h3><strong>registered customers</strong></h3>
+					</div>
+					<div class="login-text">
+						<div class="custom-input">
+							<p>If you have an account with us, Please log in!</p>
+							<form action="" name="login" method="post">
+								{% csrf_token %}
+								<div>
+									{{login.email}}
+									{% if login.email.errors %}
+									<div class="alert alert-danger">
+										<strong>{{login.email.errors}}</strong>
+									</div>
+									{% endif %}
+								</div>
+								<div>
+									{{login.password}}
+									{% if login.password.errors %}
+									<div class="alert alert-danger">
+										<strong>{{login.password.errors}}</strong>
+									</div>
+									{% endif %}
+								</div>
+								<div>
+									<a href="{% provider_login_url 'google' %}">Login With Google</a>
+								</div>
+								<div>
+									<a class="forget" href="{% url 'password_reset'%}">Forget your password?</a>
+								</div>
+								<div class="submit-text">
+									<button type="submit" name="login"> login </button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="main-input padding60 new-customer">
+					<div class="log-title">
+						<h3><strong>new customers</strong></h3>
+					</div>
+					<div class="custom-input">
+						<form action="" method="post" name="register">
+							{% csrf_token %}
+							<div>
+								{{register.first_name}}
+								{% if register.first_name.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.first_name.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
+							<div>
+								{{register.email}}
+								{% if register.email.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.email.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
+							<div>
+								{{register.phone_number}}
+								{% if register.phone_number.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.phone_number.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
+							<div>
+								{{register.password}}
+								{% if register.password.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.password.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
+							<div>
+								{{register.confirm_password}}
+								{% if register.confirm_password.errors %}
+								<div class="alert alert-danger">
+									<strong>{{register.confirm_password.errors}}</strong>
+								</div>
+								{% endif %}
+							</div>
+							<label class="first-child" style="width: 100%;">
+								{{register.rememberme}}
+								<span style="margin-left: 2%;">
+									Sign up for our newsletter!
+								</span>
+							</label>
+							<div class="submit-text coupon" style="margin-top: 0">
+								<button type="submit" name="register"> Register </button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- login content section end -->
+<!-- footer section start -->
+<footer class="footer-two">
+	<!-- brand logo area start -->
+	<div class="brand-logo">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="barnd-bg">
+						<a href="#"><img src="{% static 'img/brand/1.png' %}" alt="Brand Logo" /></a>
+						<a href="#"><img src="{% static 'img/brand/2.png' %}" alt="Brand Logo" /></a>
+						<a href="#"><img src="{% static 'img/brand/3.png' %}" alt="Brand Logo" /></a>
+						<a href="#"><img src="{% static 'img/brand/4.png' %}" alt="Brand Logo" /></a>
+						<a href="#"><img src="{% static 'img/brand/5.png' %}" alt="Brand Logo" /></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- brand logo section end -->
+	<!-- social media section start -->
+	<div class="social-media section-padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="newsletter newsletter2">
+						<h3>newsletter</h3>
+						<form action="mail.php" method="post">
+							<input type="text" name="email" placeholder="Enter your email..." />
+							<input type="submit" value="subscribe" />
+						</form>
+					</div>
+					<div class="social-icons">
+						<a href="#"><i class="mdi mdi-facebook"></i></a>
+						<a href="#"><i class="mdi mdi-twitter"></i></a>
+						<a href="#"><i class="mdi mdi-google-plus"></i></a>
+						<a href="#"><i class="mdi mdi-dribbble"></i></a>
+						<a href="#"><i class="mdi mdi-rss"></i></a>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-offset-1 col-md-5">
+					<div class="newsletter get-touch">
+						<h3>get in touch</h3>
+						<form action="mail.php" method="post">
+							<input type="text" name="name" placeholder="Enter your Name..." />
+							<input type="text" name="email" placeholder="Enter your email..." />
+							<textarea name="message" rows="2" placeholder="Enter your message...."></textarea>
+							<input type="submit" value="send your message" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- social media section end -->
+
+
+	<!-- all js here -->
+	{% endblock %}

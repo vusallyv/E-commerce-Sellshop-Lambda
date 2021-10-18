@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     
     # third party apps
     'rosetta',
@@ -54,13 +54,18 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     
     # custom apps
-    'account',
+    'user',
     'core',
     'order',
     'product',
     'blog',
     'api',
 
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +77,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'sellshop.middleware.IPAddressMiddleware'
+    # 'sellshop.middleware.LoggingMiddleware'
 ]
 
 ROOT_URLCONF = 'sellshop.urls'
@@ -104,7 +111,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sellshopdb',
         'USER': 'sellshopuser',
-        'PASSWORD': '1234',
+        'PASSWORD': '123456',
         'HOST': 'localhost',
         'POST': 5432,
     }
@@ -171,6 +178,14 @@ STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
 ]
 
+# MODELTRANSLATIONS_DEFAULT_LANGUAGE = 'en'
+# MODELTRANSLATIONS_LANGUAGES = (
+#     'en', 'az'
+# )
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
@@ -182,7 +197,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'account.User'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 

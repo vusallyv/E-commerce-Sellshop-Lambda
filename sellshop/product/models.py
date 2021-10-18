@@ -20,8 +20,8 @@ class Brand(models.Model):
 class Category(models.Model):
     title = models.CharField(verbose_name="Title",
                              max_length=30, help_text="Max 30 char.")
-    subcategory = models.ForeignKey('self', verbose_name="Subcategory", on_delete=models.CASCADE,
-                                    null=True, blank=True, default="", related_name="subcategories")
+    parent = models.ForeignKey('self', verbose_name="Parent", on_delete=models.CASCADE,
+                                    null=True, blank=True, default="", related_name="parent_category")
 
     class Meta:
         verbose_name = "Category"
@@ -31,17 +31,7 @@ class Category(models.Model):
         return self.title
 
 
-# class Subcategory(models.Model):
-#     title = models.CharField(verbose_name="Title",
-#                              max_length=30, help_text="Max 30 char.")
-#     category_id = models.ManyToManyField(
-#         Category, related_name="ProductCategory")
-
-#     def __str__(self) -> str:
-#         return self.title
-
-
-class Product(BaseModel):   
+class Product(BaseModel):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
     subtitle = models.CharField(
         "Subtitle", max_length=30, help_text="Max 30 char.")
@@ -51,8 +41,8 @@ class Product(BaseModel):
         verbose_name="Price", max_digits=10, decimal_places=2)
     description = models.TextField(verbose_name="Description")  
     # description = RichTextUploaderField(null=True, blank=True)
-    brand_id = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.title
@@ -113,7 +103,7 @@ class ProductVersion(models.Model):
 
 class Review(BaseModel):
     user = models.ForeignKey(
-        "account.User", verbose_name="User", on_delete=models.CASCADE, default="")
+        "user.User", verbose_name="User", on_delete=models.CASCADE, default="")
     review = models.TextField(verbose_name="Review")
     rating = models.DecimalField(
         verbose_name="Rating", max_digits=2, decimal_places=1, default=0)
@@ -129,8 +119,8 @@ class Review(BaseModel):
 class Image(models.Model):
     image = models.ImageField(verbose_name="Image",
                               upload_to="media/", null=True)
-    productversion_id = models.ForeignKey(
-        ProductVersion, on_delete=models.CASCADE, verbose_name="Product Version", related_name="images")
+    productversion = models.ForeignKey(
+        ProductVersion, on_delete=models.CASCADE, verbose_name="Product Version")
 
     def __str__(self) -> str:
         return f"{self.image}"
