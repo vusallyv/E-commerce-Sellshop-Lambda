@@ -29,11 +29,11 @@ urlpatterns = i18n_patterns(
     path("user/", include("user.urls")),
     path('user/', include('django.contrib.auth.urls')),
     path("order/", include("order.urls")),
-    path("blog/", include("blog.urls")), 
+    path("blog/", include("blog.urls")),
     path('api/', include('api.urls')),
     # path('jet/', include('jet.urls', 'jet')),
-    path('', include('django.contrib.flatpages.urls')),
-    
+    # path('', include('django.contrib.flatpages.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 )
 
 

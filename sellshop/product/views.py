@@ -1,4 +1,4 @@
-from django.shortcuts import render, resolve_url
+from django.shortcuts import render
 from django.db.models import Q, F
 from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
 from product.forms import ReviewForm
@@ -7,8 +7,8 @@ from django.views.generic import DetailView, ListView
 
 def single_product(request, pk):
     image = Image.objects.filter(productversion=pk)
-    product = Product.objects.get(pk=pk)
     product_versions = ProductVersion.objects.get(pk=pk)
+    related_products = ProductVersion.objects.exclude(pk=pk)
     review = Review.objects.filter(product=pk)
 
     if request.method == 'POST':
@@ -26,9 +26,9 @@ def single_product(request, pk):
     context = {
         'title': 'Single-product Sellshop',
         'images': image,
-        'product': product,
         'form': form,
-        'product_versions': product_versions,
+        'productversion': product_versions,
+        'relatedproducts': related_products,
         'reviews': review,
     }
 
@@ -39,19 +39,18 @@ class ProductDetailView(DetailView):
     model = ProductVersion
     template_name = 'single-product.html'
 
-    # def get_image(self, pk):
-    #     image = Image.objects.filter(productversion_id=pk)
-    #     return image
-    
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Single-product Sellshop'
+        context['images'] = Image.objects.filter(
+            productversion=self.kwargs.get('pk'))
         context['form'] = ReviewForm
         context['reviews'] = Review.objects.filter(
             product=self.kwargs.get('pk'))
-        context['image'] = Image.objects.filter(
-            productversion_id=self.kwargs.get('pk'))
-        # context['image'] = self.get_image
+        context['productversion'] = ProductVersion.objects.get(
+            pk=self.kwargs.get('pk'))
+        context['relatedproducts'] = ProductVersion.objects.exclude(
+            pk=self.kwargs.get('pk'))
         return context
 
     def post(self, request, *args, **kwargs):
@@ -138,6 +137,7 @@ class ProductListView(ListView):
         context = {
             'title': 'Product-list Sellshop',
             'productversions': qs,
+            'images': Image.objects.all(),
             'allproductversions': qs_productversion_all[0:4],
             'images': Image.objects.all(),
             'sizes': Size.objects.all(),
@@ -146,4 +146,3 @@ class ProductListView(ListView):
             'products': Product.objects.order_by('price')[0:6],
         }
         return render(request, 'product-list.html', context=context)
-

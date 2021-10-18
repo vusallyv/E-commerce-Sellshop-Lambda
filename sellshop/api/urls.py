@@ -1,7 +1,7 @@
+from . import views
 from django.urls import path, include
-from rest_framework.generics import ListCreateAPIView
 from rest_framework.routers import DefaultRouter
-from . import views 
+from . import views
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -18,37 +18,35 @@ auth_views = [
 ]
 
 urlpatterns = [
-
-    #  this category def method
-    # path('cartegory-get/', views.CategoriesList),
-    # path('cartegory-get/<int:pk>/', views.CategoriesDetail),
-    # path('cartegory-create/', views.CategoriesCreate),
-    # path('cartegory-update/<int:pk>/', views.CategoriesUpdate),
-    # path('cartegory-delete/<int:pk>/', views.CategoriesDelete),
-    
-    # this category class method
-    path('cartegory-list/', views.ListCategoryAPIView.as_view()),
-    path('cartegory-list/<int:pk>/', views.DetailCategoryAPIView.as_view()),
-    path('cartegory-create/', views.CreateCategoryAPIView.as_view()),
-    path('cartegory-update/<int:pk>/', views.UpdateCategoryAPIView.as_view()),
-    path('cartegory-delete/<int:pk>/', views.DeleteCategoryAPIView.as_view()),
-    
-    # this blog class method
-    path('blog-list/', views.ListBlogAPIView.as_view()),
-    path('blog-list/<int:pk>/', views.DetailListBlogAPIView.as_view()),
-    path('blog-create/', views.CreateBlogAPIView.as_view()),
-    path('blog-update/<int:pk>/', views.UpdateBlogAPIView.as_view()),
-    path('blog-delete/<int:pk>/', views.DeleteBlogAPIView.as_view()),
-    
-    # include routes
+    path('categories/', views.ListCategoryAPIView.as_view()),
+    path('categories/<int:pk>/', views.DetailCategoryAPIView.as_view()),
+    path('categories/create/', views.CreateCategoryAPIView.as_view()),
+    path('categories/<int:pk>/update/', views.UpdateCategoryAPIView.as_view()),
+    path('categories/<int:pk>/delete/', views.DeleteCategoryAPIView.as_view()),
+    path('blogs/', views.ListBlogAPIView.as_view()),
+    path('blogs/<int:pk>/', views.DetailListBlogAPIView.as_view()),
+    path('blogs/create/', views.CreateBlogAPIView.as_view()),
+    path('blogs/<int:pk>/update/', views.UpdateBlogAPIView.as_view()),
+    path('blogs/<int:pk>/delete/', views.DeleteBlogAPIView.as_view()),
+    path('products/', views.ProductAPIView.as_view(), name="products"),
+    path('products/<int:pk>/', views.ProductAPIView.as_view(), name="product"),
+    path('products/<int:product>/versions/',
+         views.ProductVersionAPIVIew.as_view(), name="product_versions"),
+    path('products/<int:product>/versions/<int:pk>/',
+         views.ProductVersionAPIVIew.as_view(), name="product_version"),
+    path('products/create/', views.ProductCreateAPIView.as_view(),
+         name="product_create"),
+    path('products/<int:pk>/destroy/',
+         views.ProductDestroyAPIView.as_view(), name="product_destroy"),
+    path('products/<int:pk>/update/',
+         views.ProductUpdateAPIView.as_view(), name="product_update"),
+    path('products/<int:product>/versions/create/',
+         views.ProductVersionCreateAPIView.as_view(), name="product_version_create"),
+    path('products/<int:product>/versions/<int:pk>/destroy/',
+         views.ProductVersionDestroyAPIView.as_view(), name="product_version_destroy"),
+    path('products/<int:product>/versions/<int:pk>/update/',
+         views.ProductVersionUpdateAPIView.as_view(), name="product_version_update"),
+    path('user/create/', views.UserCreateAPIView.as_view(), name="user"),
     path('', include(router.urls)),
-    
-    # include auth_views
     path('', include(auth_views)),
-    
 ]
-
-
-
-
-    

@@ -30,10 +30,10 @@
 				<div class="col-sm-4">
 					<div class="l-blog-text">
 						<div class="banner"><a href="{% url 'single_blog' blog.id %}"><img
-									src="{% static 'img/blog/1.jpg' %}" alt="" /></a></div>
+									src="{{ blog.image.url }}" style="width: 370px; height: 255px;" alt="" /></a></div>
 						<div class="s-blog-text">
 							<h4><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h4>
-							<span>By : <a href="#">{{blog.creator}}</a> | <a href="#"> {% blocktranslate %} '{{blog.like}}'  Like {% endblocktranslate %}</a> | <a
+							<span>By : <a href="#">{{blog.creator}}</a> | <a href="#"> {{blog.like}} Like </a> | <a
 									href="#">{{blog.comments}} {% translate 'Comments' %}</a></span>
 
 							<div>
@@ -41,7 +41,7 @@
 							</div>
 						</div>
 						<div class="date-read clearfix">
-							<a href="#"><i class="mdi mdi-clock"></i> {{ blog.create_at }}</a>
+							<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
 							<a href="{% url 'single_blog' blog.id %}">{% translate 'read more' %}</a>
 						</div>
 					</div>

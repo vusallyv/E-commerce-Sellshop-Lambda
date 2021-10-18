@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from django.utils.translation import ugettext_lazy as _
 import os
 from pathlib import Path
 
@@ -33,10 +34,10 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'jet',
-    
+
     # priority third party apps
     'modeltranslation',
-    
+
     # django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,15 +45,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.flatpages',
+    # 'django.contrib.flatpages',
     # 'django.contrib.sites',
-    
+
     # third party apps
     'rosetta',
-    'ckeditor', 
+    'ckeditor',
     'rest_framework',
     'rest_framework_simplejwt',
-    
+
     # custom apps
     'user',
     'core',
@@ -76,6 +77,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    # "sellshop.middleware.RequestLogMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'sellshop.middleware.IPAddressMiddleware'
     # 'sellshop.middleware.LoggingMiddleware'
@@ -111,7 +113,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sellshopdb',
         'USER': 'sellshopuser',
-        'PASSWORD': '1234',
+        'PASSWORD': '123456',
         'HOST': 'localhost',
         'POST': 5432,
     }
@@ -142,7 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #from django.utils.translation import ugettext_lazy as _
 
-from django.utils.translation import ugettext_lazy as _
 
 LANGUAGES = (
     ('en', _('English')),
@@ -186,12 +187,6 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-# MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -200,8 +195,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
-# site id
-SITE_ID = 1
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -230,9 +223,24 @@ AUTH_USER_MODEL = 'user.User'
 #             'access_type': 'online',
 #         }
 #     }
-# }   
+# }
 
-SITE_ID = 3
+SITE_ID = 4
 
 LOGIN_REDIRECT_URL = 'core/index/'
 LOGOUT_REDIRECT_URL = 'core/index/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vusal581176@gmail.com'
+EMAIL_HOST_PASSWORD = 'pulsar12345'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
