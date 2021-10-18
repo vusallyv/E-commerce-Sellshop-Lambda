@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
 
-from rest_framework import status, permissions, viewsets
+from rest_framework import viewsets
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView,DestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -25,19 +25,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.request.method == 'GET':
             serializer = self.serializer_class
         return serializer
-        
     
-    
-    # def update(self,request, *args, **kwargs): #bu hisse qaranliq
-    #     partial = kwargs.pop('partial', False)
-    #     instance = self.get_object()
-    #     serializer = self.overview_serializer_class(instance,data=request.data, partial=partial)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_update(serializer)
-
-    #     if getattr(instance,'perfetched_objects_cashe', None):
-    #         instance._perfetched_objects_cashe = {}
-    #     return Response(serializer.data)
         
 # decorators api method
 @api_view(['GET'])
