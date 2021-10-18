@@ -5,6 +5,7 @@ from product.forms import ReviewForm
 from django.views.generic import DetailView, ListView
 
 
+
 class ProductDetailView(DetailView):
     model = ProductVersion
     template_name = 'single-product.html'
