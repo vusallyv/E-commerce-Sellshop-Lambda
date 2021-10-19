@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 
@@ -11,10 +12,10 @@ from django.views.generic import CreateView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm
 import random
+from user.tasks import send_mail_to_subscribers
 
 
 User = auth.get_user_model()
-
 
 
 class PasswordsChangeView(PasswordChangeView):
@@ -31,6 +32,32 @@ class ContactView(CreateView):
     template_name = 'contact.html'
     model = Contact
     success_url = reverse_lazy('contact')
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST' and "contact" in request.POST:
+            form = ContactForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('contact')
+        else:
+            form = ContactForm()
+
+        if request.method == 'POST' and 'subscribe' in request.POST:
+            subscribe = SubscriberForm(request.POST)
+            if subscribe.is_valid():
+                subscribe.save()
+                return redirect('contact')
+        else:
+            subscribe = SubscriberForm()
+
+    def get(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+        context = {
+            'title':  'Contact Us Sellshop',
+            # 'contactform': form,
+            # 'subscribeform': subscribe,
+        }
+        return render(request, 'contact.html', context=context)
 
 
 def contact(request):
@@ -49,7 +76,6 @@ def contact(request):
             return redirect('contact')
     else:
         subscribe = SubscriberForm()
-
 
     context = {
         'title':  'Contact Us Sellshop',
@@ -111,3 +137,8 @@ def my_account(request):
         return render(request, "my-account.html", context=context)
     else:
         return render(request, "error-404.html", context=context)
+
+
+def send_mail_to_subscribers_view(request):
+    send_mail_to_subscribers.delay()
+    return HttpResponse("Salam")

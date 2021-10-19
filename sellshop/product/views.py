@@ -142,7 +142,6 @@ class ProductListView(ListView):
             'productversions': qs,
             'images': Image.objects.filter(is_main=True),
             'allproductversions': qs_productversion_all[0:4],
-            'images': Image.objects.all(),
             'sizes': Size.objects.all(),
             'categories': Category.objects.all(),
             'brands': Brand.objects.all(),

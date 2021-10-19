@@ -35,7 +35,9 @@
               </div>
               <a href="{% url 'single_product' productversion.id %}">
                 {% for image in images %}
+                {% if image.productversion == productversion.id %}
                 <img src="{{image.image.url}}" alt="Product Title" />
+                {% endif %}
                 {% endfor %}
               </a>
             </div>
@@ -268,10 +270,8 @@
                   <div class="single-product">
                     <div class="product-img">
                       <a href="#">
-                        {% for image in images %}
-                        {% if image.is_main %}
+                        {% for image in images %}                
                         <img style="width: 270px; height: 340.25px;" src="{{image.image.url}}" alt="Product Title" />
-                        {% endif %}
                         {% endfor %}</a>
                       <div class="actions-btn">
                         <a href="#"><i class="mdi mdi-cart"></i></a>
@@ -309,9 +309,8 @@
                               <span>new</span>
                             </div>
                             {% for image in images %}
-                            {% if productversion == image.productversion %}
+                            {% if image.productversion == productversion %}
                             <a href="#">
-
                               <img style="width: 270px; height: 340.25px;" src="{{image.image.url}}"
                                 alt="Product Title" />
                             </a>
@@ -323,7 +322,7 @@
                       <div class="col-xs-12 col-md-8">
                         <div class="list-text">
                           <h3>{{ productversion.product.title }}</h3>
-                          <span>Summer men’s fashion</span>
+                          <span>{{ productversion.product.subtitle }}</span>
                           <div class="ratting floatright">
                             <p>
                               ( {{ productversion.product.rating }} Rating )

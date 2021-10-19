@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
      path("contact/", views.contact, name="contact"),
      path("login/", views.login, name="login"),
+     path("send_mail_to_subscribers/", views.send_mail_to_subscribers_view, name="send_mail_to_subscribers"),
      path("my-account/", views.my_account, name="my_account"),
      path('logout/', views.logout, name="logout"),
      path('accounts/', include('allauth.urls')),
