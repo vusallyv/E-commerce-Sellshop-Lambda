@@ -140,7 +140,7 @@ class ProductListView(ListView):
         context = {
             'title': 'Product-list Sellshop',
             'productversions': qs,
-            'images': Image.objects.all(),
+            'images': Image.objects.filter(is_main=True),
             'allproductversions': qs_productversion_all[0:4],
             'images': Image.objects.all(),
             'sizes': Size.objects.all(),

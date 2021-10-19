@@ -1,10 +1,20 @@
-from user.models import User
+from django.db import models
+from django.db.models import fields
+from user.models import Subscriber, User, Contact
 from django.forms.widgets import TextInput, Textarea
 from django import forms
-from user.models import Contact
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+class SubscriberForm(forms.ModelForm):
+    class Meta:
+        model = Subscriber
+        fields = ['email']
+
+        widgets = {
+            'email': TextInput(attrs={'placeholer': 'Enter your email...'}),
+        }
 
 
 class ContactForm(forms.ModelForm):

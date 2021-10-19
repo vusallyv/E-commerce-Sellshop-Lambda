@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 
 from django.urls import reverse_lazy
-from user.forms import ContactForm, LoginForm, RegisterForm
+from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm
 from user.models import User, Contact
 from django.contrib import auth
 from django.views.generic import CreateView
@@ -34,16 +34,27 @@ class ContactView(CreateView):
 
 
 def contact(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and "contact" in request.POST:
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            form = ContactForm()
+            return redirect('contact')
     else:
         form = ContactForm()
+
+    if request.method == 'POST' and 'subscribe' in request.POST:
+        subscribe = SubscriberForm(request.POST)
+        if subscribe.is_valid():
+            subscribe.save()
+            return redirect('contact')
+    else:
+        subscribe = SubscriberForm()
+
+
     context = {
         'title':  'Contact Us Sellshop',
-        'form': ContactForm(),
+        'contactform': form,
+        'subscribeform': subscribe,
     }
     return render(request, "contact.html", context=context)
 

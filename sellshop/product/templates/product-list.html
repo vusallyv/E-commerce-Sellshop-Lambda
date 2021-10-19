@@ -310,13 +310,11 @@
                             </div>
                             {% for image in images %}
                             {% if productversion == image.productversion %}
-                            {% if image.is_main %}
                             <a href="#">
 
                               <img style="width: 270px; height: 340.25px;" src="{{image.image.url}}"
                                 alt="Product Title" />
                             </a>
-                            {% endif %}
                             {% endif %}
                             {% endfor %}</a>
                           </div>
