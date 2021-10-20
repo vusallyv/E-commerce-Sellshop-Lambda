@@ -130,10 +130,12 @@
                   <div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ category.id }}">
                     <form method="GET">
                       <div class="medium-a">
-                        <button type="submit" name="category_name" value="{{ category.title }}"
-                          style="background-color: transparent; border: none">
-                          {{ category.title }}
-                        </button>
+                        <a name="category_name" {%if "?" in request.get_full_path %}
+                          href="{{ request.get_full_path }}&category={{category.title}}">
+                          {% else %}
+                          href="{{ request.get_full_path }}?category={{category.title}}">
+                          {% endif %}
+                          {{ category.title }}</a>
                       </div>
                     </form>
                   </div>
@@ -142,12 +144,12 @@
                     {% for child in category.parent_category.all %}
                     <form method="GET">
                       <div class="normal-a">
-                        <a href="#">
-                          <button type="submit" name="subcategory_name" value="{{ child.title }}"
-                            style="background-color: transparent; border: none">
-                            {{ child.title }}
-                          </button>
-                        </a>
+                        <a name="subcategory_name" {%if "?" in request.get_full_path %}
+                          href="{{ request.get_full_path }}&subcategory={{child.title}}">
+                          {% else %}
+                          href="{{ request.get_full_path }}?child={{child.title}}">
+                          {% endif %}
+                          {{ child.title }}</a>
                       </div>
                     </form>
                     <div class="medium-a"></div>
@@ -178,12 +180,14 @@
             <div class="size-select clearfix">
               <form method="GET">
                 {% for size in sizes %}
-                <a href="">
-                  <button type="submit" name="size" value="{{ size.title }}"
-                    style="background-color: transparent; border: none">
-                    {{ size.title }}
-                  </button>
-                </a>
+                <a name="size" {%if "?" in request.get_full_path and size.title not in request.get_full_path %}
+                  href="{{ request.get_full_path }}&size={{size.title}}">
+                  {% elif size.title in request.get_full_path %}
+                  href="{{ request.get_full_path }}">
+                  {% else %}
+                  href="{{ request.get_full_path }}?size={{size.title}}">
+                  {% endif %}
+                  {{ size.title }}</a>
                 {% endfor %}
               </form>
             </div>
@@ -213,12 +217,12 @@
                 {% for brand in brands %}
                 <li>
                   <form method="GET">
-                    <a href="">
-                      <button type="submit" name="brand" value="{{ brand.title }}"
-                        style="background-color: transparent; border: none">
-                        {{ brand.title }}
-                      </button>
-                    </a>
+                    <a name="brand" {%if "?" in request.get_full_path %}
+                      href="{{ request.get_full_path }}&brand={{brand.title}}">
+                      {% else %}
+                      href="{{ request.get_full_path }}?brand={{brand.title}}">
+                      {% endif %}
+                      {{ brand.title }}</a>
                   </form>
                 </li>
                 {% endfor %}
@@ -270,7 +274,7 @@
                   <div class="single-product">
                     <div class="product-img">
                       <a href="#">
-                        {% for image in images %}                
+                        {% for image in images %}
                         <img style="width: 270px; height: 340.25px;" src="{{image.image.url}}" alt="Product Title" />
                         {% endfor %}</a>
                       <div class="actions-btn">
