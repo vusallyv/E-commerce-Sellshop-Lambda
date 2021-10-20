@@ -46,7 +46,8 @@ class ProductDetailView(DetailView):
         context['images'] = Image.objects.filter(
             productversion=self.kwargs.get('pk'))
         context['form'] = ReviewForm
-        context['rating'] = "{:.1f}".format(Review.objects.filter(product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg'])
+        context['rating'] = "{:.1f}".format(Review.objects.filter(
+            product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg'])
         context['reviews'] = Review.objects.filter(
             product=self.kwargs.get('pk'))
         context['productversion'] = ProductVersion.objects.get(
@@ -139,7 +140,12 @@ class ProductListView(ListView):
         if request.GET.get("brand"):
             qs_productversion_all = qs_productversion_all.filter(
                 product__brand__title=request.GET.get("brand"))
-
+        if request.GET.get("min_price"):
+            qs_productversion_all = qs_productversion_all.filter(
+                product__price__gte=request.GET.get("min_price"))
+        if request.GET.get("max_price"):
+            qs_productversion_all = qs_productversion_all.filter(
+                product__price__lte=request.GET.get("max_price"))
         context = {
             'title': 'Product-list Sellshop',
             'productversions': qs,
@@ -151,3 +157,13 @@ class ProductListView(ListView):
             'products': Product.objects.order_by('price')[0:6],
         }
         return render(request, 'product-list.html', context=context)
+
+
+# def filter(request):
+#     if request.GET.get('size'):
+#         current_path = request.get_full_path()
+#         print(current_path)
+#     context = {
+#         'current_path': current_path
+#     }
+#     return render(request, "product-list.html", context=context)
