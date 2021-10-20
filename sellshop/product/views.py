@@ -117,6 +117,9 @@ def product_list(request):
 
 
 class ProductListView(ListView):
+    model = Product
+    template_name = 'product-list.html'
+
     def get(self, request, *args, **kwargs):
         qs = None
         qs_productversion_all = ProductVersion.objects.all()

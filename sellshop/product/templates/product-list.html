@@ -130,8 +130,10 @@
                   <div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ category.id }}">
                     <form method="GET">
                       <div class="medium-a">
-                        <a name="category_name" {%if "?" in request.get_full_path %}
+                        <a name="category_name" {%if "?" in request.get_full_path and category.title not in request.get_full_path %}
                           href="{{ request.get_full_path }}&category={{category.title}}">
+                          {% elif category.title in request.get_full_path %}
+                          href="{{ request.get_full_path }}" style="color: #fe5858;">
                           {% else %}
                           href="{{ request.get_full_path }}?category={{category.title}}">
                           {% endif %}
@@ -144,10 +146,12 @@
                     {% for child in category.parent_category.all %}
                     <form method="GET">
                       <div class="normal-a">
-                        <a name="subcategory_name" {%if "?" in request.get_full_path %}
+                        <a name="subcategory_name" {%if "?" in request.get_full_path and child.title not in request.get_full_path %}
                           href="{{ request.get_full_path }}&subcategory={{child.title}}">
+                          {% elif child.title in request.get_full_path %}
+                          href="{{ request.get_full_path }}" style="color: #fe5858;">
                           {% else %}
-                          href="{{ request.get_full_path }}?child={{child.title}}">
+                          href="{{ request.get_full_path }}?subcategory={{child.title}}">
                           {% endif %}
                           {{ child.title }}</a>
                       </div>
@@ -183,7 +187,9 @@
                 <a name="size" {%if "?" in request.get_full_path and size.title not in request.get_full_path %}
                   href="{{ request.get_full_path }}&size={{size.title}}">
                   {% elif size.title in request.get_full_path %}
-                  href="{{ request.get_full_path }}">
+                  href="{{ request.get_full_path }}" style="background: #fe5858 none repeat scroll 0 0; 
+                  border-color: transparent;
+                  color: #fff;">
                   {% else %}
                   href="{{ request.get_full_path }}?size={{size.title}}">
                   {% endif %}
@@ -217,12 +223,14 @@
                 {% for brand in brands %}
                 <li>
                   <form method="GET">
-                    <a name="brand" {%if "?" in request.get_full_path %}
-                      href="{{ request.get_full_path }}&brand={{brand.title}}">
-                      {% else %}
-                      href="{{ request.get_full_path }}?brand={{brand.title}}">
-                      {% endif %}
-                      {{ brand.title }}</a>
+                    <a name="brand" {%if "?" in request.get_full_path and brand.title not in request.get_full_path %}
+                          href="{{ request.get_full_path }}&brand={{brand.title}}">
+                          {% elif brand.title in request.get_full_path %}
+                          href="{{ request.get_full_path }}" style="color: #fe5858;">
+                          {% else %}
+                          href="{{ request.get_full_path }}?brand={{brand.title}}">
+                          {% endif %}
+                          {{ brand.title }}</a>
                   </form>
                 </li>
                 {% endfor %}
