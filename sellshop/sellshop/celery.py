@@ -16,12 +16,3 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 @app.task(bind=True)
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))
-
-
-app.conf.beat_schedule = {
-    'add-every-30-seconds': {
-        'task': 'user.tasks.send_mail_to_subscribers',
-        'schedule': 30.0,
-    },
-}
-app.conf.timezone = 'UTC'

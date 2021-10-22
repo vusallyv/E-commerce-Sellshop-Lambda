@@ -14,6 +14,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 import random
 from user.tasks import send_mail_to_subscribers
 
+from datetime import datetime
 
 User = auth.get_user_model()
 
@@ -141,4 +142,4 @@ def my_account(request):
 
 def send_mail_to_subscribers_view(request):
     send_mail_to_subscribers.delay()
-    return HttpResponse("Salam")
+    return render(request, "subscriber_mail.html")
