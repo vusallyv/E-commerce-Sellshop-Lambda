@@ -21,8 +21,10 @@ django-3-jet==1.0.8
 django-allauth==0.45.0
 django-celery-beat==2.2.1
 django-ckeditor==6.1.0
+django-cors-headers==3.10.0
 django-js-asset==1.2.2
 django-modeltranslation==0.17.3
+django-orphaned-updated==0.4.2
 django-rosetta==0.9.7
 django-timezone-field==4.2.1
 djangorestframework==3.12.4

@@ -121,6 +121,14 @@
               </div>
               {% endfor %} {% endfor %}
             </div>
+
+            <div>
+              <form id="create-comment-form" method="post">
+                <input type="text" name="description">
+                <button type="submit">Submit</button>
+              </form>
+            </div>
+
             <div class="leave-comment">
               <h4>leave your review</h4>
             {% if request.user.is_authenticated %}
@@ -319,4 +327,5 @@
 <!-- all js here -->
 
 </div>
+<script src="{% static 'js/fetch.js' %}"></script>
 {% endblock %}
