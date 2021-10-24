@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.db.models import Q, F
 from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
 from product.forms import ReviewForm
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 
 
 def single_product(request, pk):
@@ -167,3 +167,4 @@ class ProductListView(ListView):
 #         'current_path': current_path
 #     }
 #     return render(request, "product-list.html", context=context)
+

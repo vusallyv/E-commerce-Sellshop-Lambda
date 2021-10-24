@@ -8,10 +8,11 @@ from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from blog.models import Blog
+from blog.models import Blog, Comment
+from order.models import Cart
 from user.models import User
 from product.models import Product, ProductVersion, Category
-from api.serializers import ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
+from api.serializers import CartSerializer, CommentSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
 
 
 from rest_framework.decorators import api_view
@@ -97,15 +98,43 @@ class DeleteCategoryAPIView(DestroyAPIView):
 
 # Blog api
 
-
-class ListBlogAPIView(ListAPIView):
-    queryset = Blog.objects.all()
+class BlogAPIView(APIView):
     serializer_class = BlogSerializer
 
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("pk"):
+            obj = Blog.objects.get(pk=kwargs.get("pk"))
+            serializer = self.serializer_class(obj)
+        else:
+            obj = Blog.objects.all()
+            serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-class DetailListBlogAPIView(RetrieveAPIView):
-    queryset = Blog.objects.all()
-    serializer_class = BlogSerializer
+
+class CommentAPIView(APIView):
+    serializer_class = CommentSerializer
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("pk"):
+            obj = Comment.objects.get(pk=kwargs.get("pk"))
+            serializer = self.serializer_class(obj)
+        else:
+            obj = Comment.objects.all()
+            serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CartAPIView(APIView):
+    serializer_class = CartSerializer
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("pk"):
+            obj = Cart.objects.get(pk=kwargs.get("pk"))
+            serializer = self.serializer_class(obj)
+        else:
+            obj = Cart.objects.all()
+            serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CreateBlogAPIView(CreateAPIView):
@@ -121,11 +150,6 @@ class UpdateBlogAPIView(UpdateAPIView):
 class DeleteBlogAPIView(DestroyAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-
-
-# class ListProductAPIView(ListAPIView):
-#     serializer_class = ProductSerializer
-#     queryset = Product.objects.all()
 
 
 class ProductAPIView(APIView):

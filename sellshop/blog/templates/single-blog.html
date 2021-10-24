@@ -81,53 +81,14 @@
                 </ul>
               </div>
 
-              <h4>{{ comments|length }} comments</h4>
-              {% for comment in comments %}
-              {% if not comment.comment_id %}
-              <div class="about-author comments">
-                <div class="autohr-text">
-                  {% if comment.user_id.image == 'staticfiles/img/blog/author1.png' %}
-                  <img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}" alt="" />
-                  {% else %}
-                  <img style="width: 90px; height: 100px;" src="{{ comment.user_id.image.url }}" alt="" />
-                  {% endif %}
-                  <div class="author-des">
-                    <h4>
-                      <a href="#">{{ comment.user_id.first_name }} {{comment.user_id.last_name }}</a>
-                    </h4>
-                    <span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
-                    <span>{{ comment.create_at }}</span>
-                    <p>{{ comment.description }}</p>
-                  </div>
-                </div>
+              <h4 id="comment_length">{{ comments|length }}</h4>
+              
+              <div id="main_comments">
               </div>
-              {% endif %} {% for reply in comment.replies.all %}
-              <div class="about-author reply">
-                <div class="autohr-text">
-                  {% if reply.user_id.image == 'staticfiles/img/blog/author1.png' %}
-                  <img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}" alt="" />
-                  {% else %}
-                  <img style="width: 90px; height: 100px;" src="{{ reply.user_id.image.url }}" alt="" />
-                  {% endif %}
-                  <div class="author-des">
-                    <h4>
-                      <a href="#">{{ reply.user_id.first_name }} {{ reply.user_id.last_name }}</a>
-                    </h4>
-                    <span class="floatright"><a href="#">Hide</a></span>
-                    <span>{{ reply.create_at }}</span>
-                    <p>{{ reply.description }}</p>
-                  </div>
-                </div>
-              </div>
-              {% endfor %} {% endfor %}
+              <div id="replies"></div>
+              
             </div>
 
-            <div>
-              <form id="create-comment-form" method="post">
-                <input type="text" name="description">
-                <button type="submit">Submit</button>
-              </form>
-            </div>
 
             <div class="leave-comment">
               <h4>leave your review</h4>
@@ -277,6 +238,7 @@
     </div>
   </div>
 </section>
+
 <!-- blog section end -->
 <!-- related post section start -->
 <section class="related-post latest-blog section-padding">
@@ -325,7 +287,5 @@
 <!-- related post section end -->
 
 <!-- all js here -->
-
-</div>
-<script src="{% static 'js/fetch.js' %}"></script>
+<script src="{% static 'js/comments.js' %}"></script>
 {% endblock %}

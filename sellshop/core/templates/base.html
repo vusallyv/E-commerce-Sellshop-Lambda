@@ -265,9 +265,7 @@
 				</div>
 				<div class="col-sm-2">
 					<div class="cart-itmes">
-						<a class="cart-itme-a" href="{% url 'cart' %}">
-							<i class="mdi mdi-cart"></i>
-							{{product_count.count}} items : <strong>$306.00</strong>	
+						<a class="cart-itme-a" id="cart-items" href="{% url 'cart' %}">
 							
 						</a>
 						<div class="cartdrop">
@@ -275,19 +273,19 @@
 							<div class="sin-itme clearfix">
 								<i class="mdi mdi-close"></i>
 								<a class="cart-img" href="{% url 'cart' %}"><img style="width: 81px; height: 105.391px;" src="{% static 'img/cart/1.png' %}"
-										alt="" /></a>
-								<div class="menu-cart-text">
-									<a href="#">
-										<h5>{{product.product.title}}</h5>
-									</a>
-									<span>Color : {{product.color.title}}</span>
-									<span>Size : {{product.size.title}}</span>
-									<strong>${{product.product.price}}</strong>
+									alt="" /></a>
+									<div class="menu-cart-text">
+										<a href="#">
+											<h5>{{product.product.title}}</h5>
+										</a>
+										<span>Color : {{product.color.title}}</span>
+										<span>Size : {{product.size.title}}</span>
+										<strong>${{product.product.price}}</strong>
+									</div>
 								</div>
-							</div>
 							{% endfor %}
 							<div class="total">
-								<span>total <strong>= $306.00</strong></span>
+								<span>total <strong>= ${{product_sum}}</strong></span>
 							</div>
 							<a class="goto" href="{% url 'cart' %}">go to cart</a>
 							<a class="out-menu" href="{% url 'checkout' %}">Check out</a>
@@ -459,6 +457,8 @@
 	<script src="{% static 'js/plugins.js' %}"></script>
 	<!-- main js -->
 	<script src="{% static 'js/main.js' %}"></script>
+	<!-- basket js -->
+	<script src="{% static 'js/basket.js' %}"></script>
 </body>
 
 </html>
