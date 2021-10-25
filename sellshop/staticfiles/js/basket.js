@@ -1,27 +1,31 @@
-cart_items = document.getElementById("cart-items")
+const BasketLogic = {
+	url: `${location.origin}/api/cart/`,
 
-url = String(window.location.href).split("/")
-function getProducts() {
-
-    fetch('http://127.0.0.1:8000/en/api/carts/')
-        .then(response => {
-            return response.json()
-        })
-        .then(data => {
-            for (let i = 0; i < data.length; i++) {
-                if (url[url.length-2] == 1) {
-                    
-                    console.log(data[0]['productversion'][0]);
-                }
-            }
-            cart_items.innerHTML = `
-                                    <i class="mdi mdi-cart"></i>
-                                    ${data[0]['productversion'][0].length} items : <strong>$ </strong>
-            `
-        }).catch(error => {
-            console.log(error);
-        })
-
+	addProduct(productId) {
+		console.log(localStorage.getItem('token'));
+		fetch(`${this.url}`, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			},
+			body: JSON.stringify({
+				'product_id': productId,
+			})
+		}).then(response => response.json()).then(data => {
+			if (data.success) {
+				console.log(data.message)
+			} else {
+				alert(data.message);
+			}
+		});
+	}
 }
 
-getProducts();
+
+const addToBasket = document.getElementById('add_basket');
+addToBasket.onclick = function () {
+	const productId = this.getAttribute('data');
+	BasketLogic.addProduct(productId);
+}

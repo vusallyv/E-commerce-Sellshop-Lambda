@@ -49,11 +49,11 @@ class RegisterForm(forms.Form):
     first_name = forms.CharField(widget=forms.TextInput(
         attrs={'placeholder': 'Name here..'}))
     email = forms.EmailField(widget=forms.EmailInput(
-        attrs={'placeholder': 'Email Address..'}))
+        attrs={'placeholder': 'Email Address..', "id":"email"}))
     phone_number = forms.IntegerField(widget=forms.NumberInput(
         attrs={'placeholder': 'Phone Number..'}))
     password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'placeholder': 'Password'}))
+        attrs={'placeholder': 'Password', "id":"password"}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(
         attrs={'placeholder': 'Confirm Password'}))
     CHOICES = [('1', ' '), ]

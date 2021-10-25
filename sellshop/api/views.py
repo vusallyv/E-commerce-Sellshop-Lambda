@@ -8,11 +8,11 @@ from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from blog.models import Blog, Comment
+from blog.models import Blog
 from order.models import Cart
 from user.models import User
 from product.models import Product, ProductVersion, Category
-from api.serializers import CartSerializer, CommentSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
+from api.serializers import CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
 
 
 from rest_framework.decorators import api_view
@@ -97,45 +97,6 @@ class DeleteCategoryAPIView(DestroyAPIView):
     serializer_class = CategorySerializer
 
 # Blog api
-
-class BlogAPIView(APIView):
-    serializer_class = BlogSerializer
-
-    def get(self, request, *args, **kwargs):
-        if kwargs.get("pk"):
-            obj = Blog.objects.get(pk=kwargs.get("pk"))
-            serializer = self.serializer_class(obj)
-        else:
-            obj = Blog.objects.all()
-            serializer = self.serializer_class(obj, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class CommentAPIView(APIView):
-    serializer_class = CommentSerializer
-
-    def get(self, request, *args, **kwargs):
-        if kwargs.get("pk"):
-            obj = Comment.objects.get(pk=kwargs.get("pk"))
-            serializer = self.serializer_class(obj)
-        else:
-            obj = Comment.objects.all()
-            serializer = self.serializer_class(obj, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class CartAPIView(APIView):
-    serializer_class = CartSerializer
-
-    def get(self, request, *args, **kwargs):
-        if kwargs.get("pk"):
-            obj = Cart.objects.get(pk=kwargs.get("pk"))
-            serializer = self.serializer_class(obj)
-        else:
-            obj = Cart.objects.all()
-            serializer = self.serializer_class(obj, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class CreateBlogAPIView(CreateAPIView):
     queryset = Blog.objects.all()
@@ -257,4 +218,24 @@ class ProductVersionUpdateAPIView(UpdateAPIView):
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAdminUser,)
+
+
+class CartView(APIView):
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        obj = Cart.objects.get(user=request.user)
+        serializer = self.serializer_class(obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.data.get('product_id')
+        product = Product.objects.filter(pk=product_id).first()
+        if product:
+            basket = Cart.objects.get_or_create(user=request.user)      
+            request.user.shoppingCardOfUser.products.add(product)
+            message = {'success': True, 'message' : 'Product added to your card.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message' : 'Product not found.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)

@@ -4,7 +4,7 @@ from user.models import User
 from product.models import Product, ProductVersion, Category
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from blog.models import Blog, Comment
+from blog.models import Blog
 from order.models import Cart
 
 
@@ -29,22 +29,7 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = ("id", "title", "description",
-                  "creator", "like", "product", "blogs_comment")
-
-    def get_blogs_comment(self, obj):
-        return CommentSerializer(obj.blogs_comment, many=True).data
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    replies = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Comment
-        fields = ("id", "user", "description",
-                  "blog", "replies")
-
-    def get_replies(self, obj):
-        return CommentSerializer(obj.replies, many=True).data
+                  "creator", "like", "product")
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -72,25 +57,6 @@ class ProductVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductVersion
         fields = "__all__"
-
-
-class CartSerializer(serializers.ModelSerializer):
-    productversion = serializers.SerializerMethodField()
-    product = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Cart
-        fields = ("id", "user", "productversion", "product")
-
-    def get_productversion(self, obj):
-        product_list = []
-        for product in Cart.objects.all():
-            product_list.append(product.product.values())
-        return product_list
-
-    def get_product(self, obj):
-        return ProductVersion.objects.get(id=1).Product_Cart.values()
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -124,3 +90,9 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = '__all__'

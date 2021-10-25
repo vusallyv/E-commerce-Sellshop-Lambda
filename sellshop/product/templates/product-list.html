@@ -278,7 +278,7 @@
                                                 {% endif %}
                                                 {% endfor %}</a>
                                             <div class="actions-btn">
-                                                <a href="#"><i class="mdi mdi-cart"></i></a>
+                                                <a href="#"><i  id="add_basket" data="{{productversion.id}}" class="mdi mdi-cart"></i></a>
                                                 <a href="#" data-toggle="modal" data-target="#quick-view"><i class="mdi mdi-eye"></i></a>
                                                 <a href="#"><i class="mdi mdi-heart"></i></a>
                                             </div>
@@ -556,11 +556,10 @@
     </div>
 </div>
 
-<div id="products">
-</div>
 
 <!-- quick view end -->
 <!-- all js here -->
-    <script src="{% static 'js/products.js' %}"></script>
-    <script src="{% static 'js/script.js' %}"></script>
+
+	<!-- basket js -->
+	<script src="{% static 'js/basket.js' %}"></script>
 {% endblock %}

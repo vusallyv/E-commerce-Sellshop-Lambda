@@ -23,12 +23,6 @@ urlpatterns = [
     path('categories/create/', views.CreateCategoryAPIView.as_view()),
     path('categories/<int:pk>/update/', views.UpdateCategoryAPIView.as_view()),
     path('categories/<int:pk>/delete/', views.DeleteCategoryAPIView.as_view()),
-    path('blogs/', views.BlogAPIView.as_view()),
-    path('blogs/<int:pk>/', views.BlogAPIView.as_view()),
-    path('comments/', views.CommentAPIView.as_view()),
-    path('comments/<int:pk>/', views.CommentAPIView.as_view()),
-    path('carts/', views.CartAPIView.as_view()),
-    path('carts/<int:pk>/', views.CartAPIView.as_view()),
     path('blogs/create/', views.CreateBlogAPIView.as_view()),
     path('blogs/<int:pk>/update/', views.UpdateBlogAPIView.as_view()),
     path('blogs/<int:pk>/delete/', views.DeleteBlogAPIView.as_view()),
@@ -51,6 +45,7 @@ urlpatterns = [
     path('products/<int:product>/versions/<int:pk>/update/',
          views.ProductVersionUpdateAPIView.as_view(), name="product_version_update"),
     path('user/create/', views.UserCreateAPIView.as_view(), name="user"),
+    path('cart/', views.CartView.as_view(), name='card'),\
     path('', include(router.urls)),
     path('', include(auth_views)),
 ]
