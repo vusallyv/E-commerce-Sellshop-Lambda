@@ -47,7 +47,7 @@ class Wishlist(models.Model):
     user = models.ForeignKey(
         "user.User", on_delete=models.CASCADE, default="")
     product = models.ManyToManyField(
-        'product.ProductVersion', related_name='Product_wishlist')
+        'product.ProductVersion', null=True, blank=True, related_name='Product_wishlist')
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
@@ -57,7 +57,7 @@ class Cart(models.Model):
     user = models.ForeignKey(
         "user.User", on_delete=models.CASCADE, default="", related_name="shoppingCardOfUser")
     product = models.ManyToManyField(
-        "product.ProductVersion", related_name='Product_Cart')
+        "product.ProductVersion", null=True, blank=True, related_name='Product_Cart')
 
     def __str__(self) -> str:
         return f"{self.user.username}"

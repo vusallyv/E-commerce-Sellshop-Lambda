@@ -1,20 +1,18 @@
 import random
-import re
-from user.models import User
-from product.models import Product, ProductVersion, Category
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
+from product.models import Product, ProductVersion, Category
+from user.models import User
 from blog.models import Blog
 from order.models import Cart
-
 
 User = get_user_model()
 
 
-class UserOverviewSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name')
+        fields = '__all__'
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -57,6 +55,7 @@ class ProductVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductVersion
         fields = "__all__"
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

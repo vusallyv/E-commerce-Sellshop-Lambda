@@ -1,23 +1,25 @@
-from . import views
 from django.urls import path, include
+from django.db import router
 from rest_framework.routers import DefaultRouter
-from . import views
+
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from api.views import UserViewSet
+from . import views
 
 
 router = DefaultRouter()
-router.register('users', views.UserViewSet)
+# router.register('users', views.UserViewSet)
+router.register('user', UserViewSet, basename='user')
 
-auth_views = [
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-]
 
 urlpatterns = [
+    path('api-auth/', include('rest_framework.urls')),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('categories/', views.ListCategoryAPIView.as_view()),
     path('categories/<int:pk>/', views.DetailCategoryAPIView.as_view()),
     path('categories/create/', views.CreateCategoryAPIView.as_view()),
@@ -45,7 +47,7 @@ urlpatterns = [
     path('products/<int:product>/versions/<int:pk>/update/',
          views.ProductVersionUpdateAPIView.as_view(), name="product_version_update"),
     path('user/create/', views.UserCreateAPIView.as_view(), name="user"),
-    path('cart/', views.CartView.as_view(), name='card'),\
-    path('', include(router.urls)),
-    path('', include(auth_views)),
+    path('cart/', views.CartView.as_view(), name='card'),
 ]
+
+urlpatterns += router.urls

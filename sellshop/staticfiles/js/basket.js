@@ -24,8 +24,12 @@ const BasketLogic = {
 }
 
 
-const addToBasket = document.getElementById('add_basket');
-addToBasket.onclick = function () {
-	const productId = this.getAttribute('data');
-	BasketLogic.addProduct(productId);
-}
+const addToBasket = document.querySelectorAll('.mdi-cart');
+
+addToBasket.forEach(item => {
+	console.log(item);
+	item.onclick = function () {
+		const productId = this.getAttribute('data');
+		BasketLogic.addProduct(productId);
+	}
+})

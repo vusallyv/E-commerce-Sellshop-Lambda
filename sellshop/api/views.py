@@ -1,75 +1,26 @@
 # Create your views here.
 
-from django.shortcuts import render
 from django.contrib.auth import get_user_model
 
-from rest_framework import viewsets, permissions, serializers, status
+from rest_framework import viewsets, permissions, status
 from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
+from api.serializers import CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer
 from blog.models import Blog
 from order.models import Cart
 from user.models import User
 from product.models import Product, ProductVersion, Category
-from api.serializers import CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
 
-
-from rest_framework.decorators import api_view
 User = get_user_model()
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
-    overview_serializer_class = UserOverviewSerializer
-
-    def get_serializer_class(self):
-        serializer = self.overview_serializer_class
-        if self.request.method == 'GET':
-            serializer = self.serializer_class
-        return serializer
-
-
-# decorators api method
-@api_view(['GET'])
-def CategoriesList(request):
-    all_listt = Category.objects.all()
-    serializer = CategorySerializer(all_listt, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def CategoriesDetail(request, pk):
-    get_elemt = Category.objects.get(id=pk)
-    serializer = CategorySerializer(get_elemt, many=False)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-def CategoriesCreate(request):
-    serializer = CategorySerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-def CategoriesUpdate(request, pk):
-    get_elemt = Category.objects.get(id=pk)
-    serializer = CategorySerializer(instance=get_elemt, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
-
-
-@api_view(['DELETE'])
-def CategoriesDelete(request, pk):
-    del_elemt = Category.objects.get(id=pk)
-    del_elemt.delete()
-    return Response('Successfully delete Category ID')
-
-# class api method
+    permission_classes = (IsAuthenticated,)
+    queryset = get_user_model().objects.all()
 
 
 class ListCategoryAPIView(ListAPIView):
@@ -97,6 +48,7 @@ class DeleteCategoryAPIView(DestroyAPIView):
     serializer_class = CategorySerializer
 
 # Blog api
+
 
 class CreateBlogAPIView(CreateAPIView):
     queryset = Blog.objects.all()
@@ -233,9 +185,10 @@ class CartView(APIView):
         product_id = request.data.get('product_id')
         product = Product.objects.filter(pk=product_id).first()
         if product:
-            basket = Cart.objects.get_or_create(user=request.user)      
+            basket = Cart.objects.get_or_create(user=request.user)
             request.user.shoppingCardOfUser.products.add(product)
-            message = {'success': True, 'message' : 'Product added to your card.'}
+            message = {'success': True,
+                       'message': 'Product added to your card.'}
             return Response(message, status=status.HTTP_201_CREATED)
-        message = {'success': False, 'message' : 'Product not found.'}
+        message = {'success': False, 'message': 'Product not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
