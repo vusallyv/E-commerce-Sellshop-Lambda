@@ -31,27 +31,6 @@ class Category(BaseModel):
         return self.title
 
 
-class Product(BaseModel):
-    title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
-    subtitle = models.CharField(
-        "Subtitle", max_length=30, help_text="Max 30 char.")
-    ex_price = models.DecimalField(
-        verbose_name="Ex Price", max_digits=10, decimal_places=2)
-    price = models.DecimalField(
-        verbose_name="Price", max_digits=10, decimal_places=2)
-    description = models.TextField(verbose_name="Description")
-    # description = RichTextUploaderField(null=True, blank=True)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return self.title
-
-    @property
-    def main_version(self):
-        return self.versions.filter(is_main=True).first()
-
-
 class Tag(BaseModel):
     title = models.CharField(
         max_length=30, verbose_name='Title', help_text='Max 30 char.', unique=True)

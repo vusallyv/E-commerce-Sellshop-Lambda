@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from user.models import Contact, User
+from user.models import Contact, User, Subscribers
 
 admin.site.site_header = 'Sellshop Admin'
 admin.site.site_title = 'Sellshop Admin'
@@ -30,3 +30,8 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'message',)
+
+
+@admin.register(Subscribers)
+class SubscribersAdmin(admin.ModelAdmin):
+    list_display = ('email',)

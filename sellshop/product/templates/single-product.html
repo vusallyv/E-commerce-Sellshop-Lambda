@@ -241,17 +241,19 @@
 									{% csrf_token %}
 
 									<div class="row">
+										
 										<div class="col-sm-6">
 											<div class="input-mail">
-												<input type="text" name="name" placeholder="{{account.user.first_name}}"
-													value="{{account.user.first_name}}" />
+												<input type="text" name="name" placeholder="{{user.first_name}}" 
+													value="{{user.first_name}}" />
 											</div>
 										</div>
 										<div class="col-sm-6">
 											<div class="input-mail">
-												<input type="text" name="email" placeholder="Your Email"
-													/>
+												<input type="text" name="email" placeholder="{{user.email}}" readonly
+												value="{{user.email}}" />
 											</div>
+											
 										</div>
 										<div class="col-xs-12">
 											<div class="custom-mess">

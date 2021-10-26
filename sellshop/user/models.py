@@ -31,3 +31,12 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.username}"
+    
+    
+class Subscribers(BaseModel):
+    email = models.EmailField(verbose_name="email",null=False, blank=False, default="")
+    class Meta:
+        verbose_name = "Subscribers"
+        verbose_name_plural = "Subscrib"
+    def __str__(self):
+        return self.email

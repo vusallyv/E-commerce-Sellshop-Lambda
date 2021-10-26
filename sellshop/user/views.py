@@ -4,10 +4,11 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 
 from django.urls import reverse_lazy
-from user.forms import ContactForm, LoginForm, RegisterForm
-from user.models import User, Contact
+from django.views.generic.base import TemplateView, View
+from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm
+from user.models import User, Contact, Subscribers
 from django.contrib import auth
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm
 import random
@@ -26,26 +27,63 @@ def password_success(request):
     return render(request, 'password_success.html', {})
 
 
-class ContactView(CreateView):
-    form_class = ContactForm
-    template_name = 'contact.html'
-    model = Contact
-    success_url = reverse_lazy('contact')
+# class ContactView(CreateView):
+#     form_class = ContactForm
+#     template_name = 'contact.html'
+#     model = Contact
+#     success_url = reverse_lazy('contact')
 
 
-def contact(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            form = ContactForm()
-    else:
-        form = ContactForm()
-    context = {
-        'title':  'Contact Us Sellshop',
-        'form': ContactForm(),
-    }
-    return render(request, "contact.html", context=context)
+# class SubscriptionsView(CreateView):
+#     form_class = SubscriberForm
+#     template_name = 'contact.html'
+#     model = Subscribers
+#     success_url = reverse_lazy('contact')
+
+
+class ContactSubscripView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+            'title': 'Single-blog Sellshop',
+            'form': SubscriberForm,
+            'form2': ContactForm,
+        }
+        return render(request, 'contact.html', context=context) 
+    
+    def post(self, request, *args, **kwargs):
+        context = {
+            'title': 'Single-blog Sellshop',
+            'form': SubscriberForm,
+            'form2': ContactForm,
+        }
+        if 'form' in request.POST:
+            form = SubscriberForm(request.POST, request.FILES)
+            if form.is_valid():
+                comment = Subscribers(
+                    email=request.POST.get('email'),
+                )
+                comment.save()
+                return render(request, 'contact.html', context=context)
+            else:
+                form = SubscriberForm()
+                return render(request, 'contact.html', context=context)
+            
+        if 'form2' in request.POST:
+            form = ContactForm(request.POST, request.FILES)
+            if form.is_valid():
+                comment = Contact(
+                    name=request.POST.get('name'),
+                    email=request.POST.get('email'),
+                    message=request.POST.get('message'),
+                )
+                comment.save()
+                return render(request, 'contact.html', context=context)
+            else:
+                form = ContactForm()
+                return render(request,'contact.html', context=context)
+
+
+
 
 
 def login(request):
@@ -65,7 +103,7 @@ def login(request):
             user.set_password(request.POST.get('password')),
             user.save()
             auth.login(request, user)
-            return redirect(my_account)
+            return redirect('my_account')
     else:
         form = RegisterForm()
 
@@ -74,7 +112,7 @@ def login(request):
         user = User.objects.filter(email=request.POST.get('email')).first()
         if user is not None and user.check_password(request.POST.get('password')):
             auth.login(request, user)
-            return redirect(my_account)
+            return redirect('my_account')
     else:
         form1 = LoginForm()
     context = {
@@ -100,3 +138,17 @@ def my_account(request):
         return render(request, "my-account.html", context=context)
     else:
         return render(request, "error-404.html", context=context)
+
+# def contact(request):
+#     if request.method == 'POST':
+#         form = ContactForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             form = ContactForm()
+#     else:
+#         form = ContactForm()
+#     context = {
+#         'title':  'Contact Us Sellshop',
+#         'form': ContactForm(),
+#     }
+#     return render(request, "contact.html", context=context)
