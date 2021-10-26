@@ -33,7 +33,7 @@
 					<div class="login-text">
 						<div class="custom-input">
 							<p>If you have an account with us, Please log in!</p>
-							<form action="" name="login" method="post">
+							<form action="" name="login" method="post" id="login_form">
 								{% csrf_token %}
 								<div>
 									{{login.email}}
@@ -58,7 +58,7 @@
 									<a class="forget" href="{% url 'password_reset'%}">Forget your password?</a>
 								</div>
 								<div class="submit-text">
-									<button type="submit" name="login"> login </button>
+									<button type="submit" id="sbmt" name="login"> login </button>
 								</div>
 							</form>
 						</div>
@@ -114,7 +114,6 @@
 								{% endif %}
 							</div>
 							<label class="first-child" style="width: 100%;">
-								{{register.rememberme}}
 								<span style="margin-left: 2%;">
 									Sign up for our newsletter!
 								</span>
@@ -187,4 +186,5 @@
 
 
 	<!-- all js here -->
+	<script src="{% static 'js/login.js' %}"></script>
 	{% endblock %}

@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/taleh/MM django/E-commerce-Sellshop-Lambda/.venv"
+VIRTUAL_ENV="/home/vusallyv/Tech Academy/advanced/E-commerce-Sellshop-Lambda/.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

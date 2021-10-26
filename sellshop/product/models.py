@@ -31,27 +31,6 @@ class Category(BaseModel):
         return self.title
 
 
-class Product(BaseModel):
-    title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
-    subtitle = models.CharField(
-        "Subtitle", max_length=30, help_text="Max 30 char.")
-    ex_price = models.DecimalField(
-        verbose_name="Ex Price", max_digits=10, decimal_places=2)
-    price = models.DecimalField(
-        verbose_name="Price", max_digits=10, decimal_places=2)
-    description = models.TextField(verbose_name="Description")
-    # description = RichTextUploaderField(null=True, blank=True)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return self.title
-
-    @property
-    def main_version(self):
-        return self.versions.filter(is_main=True).first()
-
-
 class Tag(BaseModel):
     title = models.CharField(
         max_length=30, verbose_name='Title', help_text='Max 30 char.', unique=True)
@@ -120,23 +99,30 @@ class ProductVersion(BaseModel):
 
 
 class Review(BaseModel):
+    CHOICES = (
+        (1, '*'),
+        (2, '**'),
+        (3, '***'),
+        (4, '****'),
+        (5, '*****'),
+    )
     user = models.ForeignKey(
         "user.User", verbose_name="User", on_delete=models.CASCADE, default="")
     review = models.TextField(verbose_name="Review")
-    rating = models.DecimalField(
-        verbose_name="Rating", max_digits=2, decimal_places=1, default=0)
+    rating = models.IntegerField(
+        choices=CHOICES, verbose_name="Rating", default=1)
     product = models.ForeignKey(
         ProductVersion, on_delete=models.CASCADE, default="")
 
     def __str__(self) -> str:
-        return f"{self.user.first_name} {self.user.last_name}"
+        return f"{self.rating}"
 
 
 class Image(BaseModel):
     image = models.ImageField(verbose_name="Image",
                               upload_to="media/", null=True)
     productversion = models.ForeignKey(
-        ProductVersion, on_delete=models.CASCADE, verbose_name="Product Version")
+        ProductVersion, on_delete=models.CASCADE, verbose_name="Product Version", related_name="version_images")
     is_main = models.BooleanField(verbose_name="Is main?", default=False)
 
     def __str__(self) -> str:

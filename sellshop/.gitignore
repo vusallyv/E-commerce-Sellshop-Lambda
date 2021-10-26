@@ -130,6 +130,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-migrations/
+*/migrations/
 postgredb/
+<<<<<<< HEAD:sellshop/.gitignore
 media/
+=======
+media/
+
+>>>>>>> Vusal:.gitignore

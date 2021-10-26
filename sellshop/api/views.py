@@ -9,9 +9,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from blog.models import Blog
+from order.models import Cart
 from user.models import User
 from product.models import Product, ProductVersion, Category
-from api.serializers import ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
+from api.serializers import CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, UserOverviewSerializer, CategorySerializer, BlogSerializer
 
 
 from rest_framework.decorators import api_view
@@ -97,17 +98,6 @@ class DeleteCategoryAPIView(DestroyAPIView):
 
 # Blog api
 
-
-class ListBlogAPIView(ListAPIView):
-    queryset = Blog.objects.all()
-    serializer_class = BlogSerializer
-
-
-class DetailListBlogAPIView(RetrieveAPIView):
-    queryset = Blog.objects.all()
-    serializer_class = BlogSerializer
-
-
 class CreateBlogAPIView(CreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
@@ -121,11 +111,6 @@ class UpdateBlogAPIView(UpdateAPIView):
 class DeleteBlogAPIView(DestroyAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-
-
-# class ListProductAPIView(ListAPIView):
-#     serializer_class = ProductSerializer
-#     queryset = Product.objects.all()
 
 
 class ProductAPIView(APIView):
@@ -233,4 +218,24 @@ class ProductVersionUpdateAPIView(UpdateAPIView):
 class UserCreateAPIView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (permissions.IsAdminUser,)
+
+
+class CartView(APIView):
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        obj = Cart.objects.get(user=request.user)
+        serializer = self.serializer_class(obj)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.data.get('product_id')
+        product = Product.objects.filter(pk=product_id).first()
+        if product:
+            basket = Cart.objects.get_or_create(user=request.user)      
+            request.user.shoppingCardOfUser.products.add(product)
+            message = {'success': True, 'message' : 'Product added to your card.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message' : 'Product not found.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)

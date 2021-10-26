@@ -28,3 +28,4 @@ class ShippingAddressForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'placeholder': 'City'}),
             'address': forms.TextInput(attrs={'placeholder': 'Address'}),
         }
+        

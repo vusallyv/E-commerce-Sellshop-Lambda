@@ -22,7 +22,7 @@ class Comment(BaseModel):
         "user.User", verbose_name="User", on_delete=models.CASCADE)
     description = models.TextField(verbose_name="Description")
     blog = models.ForeignKey(
-        Blog, on_delete=models.CASCADE, null=True, blank=True)
+        Blog, on_delete=models.CASCADE, null=True, blank=True, related_name="blogs_comment")
     reply = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, default="", related_name="replies")
 

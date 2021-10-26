@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/taleh/MM django/E-commerce-Sellshop-Lambda/.venv"
+set -gx VIRTUAL_ENV "/home/vusallyv/Tech Academy/advanced/E-commerce-Sellshop-Lambda/.venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

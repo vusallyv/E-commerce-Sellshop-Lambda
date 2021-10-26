@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/taleh/MM django/E-commerce-Sellshop-Lambda/.venv/bin/python3" "$0" "$@"
+'''exec' "/home/vusallyv/Tech Academy/advanced/E-commerce-Sellshop-Lambda/.venv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

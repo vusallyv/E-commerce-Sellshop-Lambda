@@ -78,3 +78,4 @@ def wishlist(request):
     if request.user.is_authenticated:
         return render(request, "wishlist.html", context=context)
     return render(request, "error-404.html", context=context)
+

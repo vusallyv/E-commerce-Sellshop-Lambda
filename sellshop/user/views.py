@@ -1,20 +1,22 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 
 # Create your views here.
 
 from django.urls import reverse_lazy
-from user.forms import ContactForm, LoginForm, RegisterForm
+from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm
 from user.models import User, Contact
 from django.contrib import auth
 from django.views.generic import CreateView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm
 import random
+from user.tasks import send_mail_to_subscribers
 
+from datetime import datetime
 
 User = auth.get_user_model()
-
 
 
 class PasswordsChangeView(PasswordChangeView):
@@ -32,18 +34,54 @@ class ContactView(CreateView):
     model = Contact
     success_url = reverse_lazy('contact')
 
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST' and "contact" in request.POST:
+            form = ContactForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('contact')
+        else:
+            form = ContactForm()
+
+        if request.method == 'POST' and 'subscribe' in request.POST:
+            subscribe = SubscriberForm(request.POST)
+            if subscribe.is_valid():
+                subscribe.save()
+                return redirect('contact')
+        else:
+            subscribe = SubscriberForm()
+
+    def get(self, request, *args, **kwargs):
+        super().post(request, *args, **kwargs)
+        context = {
+            'title':  'Contact Us Sellshop',
+            # 'contactform': form,
+            # 'subscribeform': subscribe,
+        }
+        return render(request, 'contact.html', context=context)
+
 
 def contact(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and "contact" in request.POST:
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            form = ContactForm()
+            return redirect('contact')
     else:
         form = ContactForm()
+
+    if request.method == 'POST' and 'subscribe' in request.POST:
+        subscribe = SubscriberForm(request.POST)
+        if subscribe.is_valid():
+            subscribe.save()
+            return redirect('contact')
+    else:
+        subscribe = SubscriberForm()
+
     context = {
         'title':  'Contact Us Sellshop',
-        'form': ContactForm(),
+        'contactform': form,
+        'subscribeform': subscribe,
     }
     return render(request, "contact.html", context=context)
 
@@ -77,6 +115,7 @@ def login(request):
             return redirect(my_account)
     else:
         form1 = LoginForm()
+
     context = {
         'title':  'Login Sellshop',
         'login':  form1,
@@ -100,3 +139,8 @@ def my_account(request):
         return render(request, "my-account.html", context=context)
     else:
         return render(request, "error-404.html", context=context)
+
+
+def send_mail_to_subscribers_view(request):
+    send_mail_to_subscribers.delay()
+    return render(request, "subscriber_mail.html")

@@ -1,8 +1,9 @@
+from django.db.models.aggregates import Avg
 from django.shortcuts import render
 from django.db.models import Q, F
 from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
 from product.forms import ReviewForm
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 
 
 def single_product(request, pk):
@@ -45,6 +46,8 @@ class ProductDetailView(DetailView):
         context['images'] = Image.objects.filter(
             productversion=self.kwargs.get('pk'))
         context['form'] = ReviewForm
+        context['rating'] = "{:.1f}".format(Review.objects.filter(
+            product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg'])
         context['reviews'] = Review.objects.filter(
             product=self.kwargs.get('pk'))
         context['productversion'] = ProductVersion.objects.get(
@@ -58,6 +61,7 @@ class ProductDetailView(DetailView):
         if form.is_valid():
             review = Review(
                 review=request.POST.get('review'),
+                rating=request.POST.get('rating'),
                 product=ProductVersion.objects.get(pk=self.kwargs.get('pk')),
                 user=request.user
             )
@@ -114,6 +118,9 @@ def product_list(request):
 
 
 class ProductListView(ListView):
+    model = Product
+    template_name = 'product-list.html'
+
     def get(self, request, *args, **kwargs):
         qs = None
         qs_productversion_all = ProductVersion.objects.all()
@@ -121,28 +128,43 @@ class ProductListView(ListView):
         if request.GET.get("search_name"):
             qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
                 product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
-        elif request.GET.get("category_name"):
+        if request.GET.get("category_name"):
             qs_productversion_all = ProductVersion.objects.filter(
                 product__category__parent__title=request.GET.get("category_name"))
-        elif request.GET.get("subcategory_name"):
-            qs_productversion_all = ProductVersion.objects.filter(
+        if request.GET.get("subcategory_name"):
+            qs_productversion_all = qs_productversion_all.filter(
                 product__category__title=request.GET.get("subcategory_name"))
-        elif request.GET.get("size"):
-            qs_productversion_all = ProductVersion.objects.filter(
+        if request.GET.get("size"):
+            qs_productversion_all = qs_productversion_all.filter(
                 size__title=request.GET.get("size"))
-        elif request.GET.get("brand"):
-            qs_productversion_all = ProductVersion.objects.filter(
+        if request.GET.get("brand"):
+            qs_productversion_all = qs_productversion_all.filter(
                 product__brand__title=request.GET.get("brand"))
-
+        if request.GET.get("min_price"):
+            qs_productversion_all = qs_productversion_all.filter(
+                product__price__gte=request.GET.get("min_price"))
+        if request.GET.get("max_price"):
+            qs_productversion_all = qs_productversion_all.filter(
+                product__price__lte=request.GET.get("max_price"))
         context = {
             'title': 'Product-list Sellshop',
             'productversions': qs,
-            'images': Image.objects.all(),
+            'images': Image.objects.filter(is_main=True),
             'allproductversions': qs_productversion_all[0:4],
-            'images': Image.objects.all(),
             'sizes': Size.objects.all(),
             'categories': Category.objects.all(),
             'brands': Brand.objects.all(),
             'products': Product.objects.order_by('price')[0:6],
         }
         return render(request, 'product-list.html', context=context)
+
+
+# def filter(request):
+#     if request.GET.get('size'):
+#         current_path = request.get_full_path()
+#         print(current_path)
+#     context = {
+#         'current_path': current_path
+#     }
+#     return render(request, "product-list.html", context=context)
+
