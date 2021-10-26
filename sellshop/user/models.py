@@ -21,7 +21,7 @@ class User(AbstractUser):
     city = models.CharField(
         verbose_name="City", max_length=255, null=True, blank=True)
     phone_number = models.IntegerField(
-        verbose_name="Phone number")
+        verbose_name="Phone number", null=True, blank=True)
     additional_info = models.TextField(
         verbose_name="Additional Info", default="", null=True, blank=True)
     image = models.ImageField(
