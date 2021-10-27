@@ -3,6 +3,7 @@ from django.db.models import fields
 from user.models import Subscriber, User, Contact
 from django.forms.widgets import TextInput, Textarea
 from django import forms
+from user.models import Contact, Subscriber
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -80,3 +81,12 @@ class RegisterForm(forms.Form):
     #     if not (password == password_confirm):
     #         raise forms.ValidationError("Password confirmation does not match")
     #     return password
+
+class SubscriberForm(forms.ModelForm):
+    class Meta:
+        model = Subscriber
+        fields = ['email',]
+
+        widgets = {
+            'email': TextInput(attrs={'placeholer': 'Enter your email...'}),
+        }

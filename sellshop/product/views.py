@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.db.models import Q, F
 from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
 from product.forms import ReviewForm
-from django.views.generic import DetailView, ListView, TemplateView
-
+from django.views.generic import DetailView, ListView
+from user.models import User
 
 def single_product(request, pk):
     image = Image.objects.filter(productversion=pk)
@@ -44,16 +44,17 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Single-product Sellshop'
         context['images'] = Image.objects.filter(
-            productversion=self.kwargs.get('pk'))
+            productversion = self.kwargs.get('pk')) 
         context['form'] = ReviewForm
         context['rating'] = "{:.1f}".format(Review.objects.filter(
             product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg'])
         context['reviews'] = Review.objects.filter(
-            product=self.kwargs.get('pk'))
+            product=self.kwargs.get('pk')) 
         context['productversion'] = ProductVersion.objects.get(
             pk=self.kwargs.get('pk'))
         context['relatedproducts'] = ProductVersion.objects.exclude(
             pk=self.kwargs.get('pk'))
+        context['user'] = User.objects.all()[0] # bele olmasi duzgun deyil
         return context
 
     def post(self, request, *args, **kwargs):
