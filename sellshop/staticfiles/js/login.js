@@ -28,7 +28,6 @@ const LoginLogic = {
     submit.onclick = function () {
         const email = document.querySelector('#id_email').value;
         const password = document.querySelector('#id_password').value;
-        const form = document.querySelector('#login_form');
         LoginLogic.fetchToken(email, password);
         setInterval(form.submit(), 1000);
     }

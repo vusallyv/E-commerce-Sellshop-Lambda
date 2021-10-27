@@ -11,15 +11,13 @@ from api.views import UserViewSet
 from . import views
 
 
-router = DefaultRouter()
-# router.register('users', views.UserViewSet)
-router.register('user', UserViewSet, basename='user')
+# router = DefaultRouter()
+# # router.register('users', views.UserViewSet)
+# router.register('user', UserViewSet, basename='user')
 
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('categories/', views.ListCategoryAPIView.as_view()),
     path('categories/<int:pk>/', views.DetailCategoryAPIView.as_view()),
     path('categories/create/', views.CreateCategoryAPIView.as_view()),
@@ -48,6 +46,8 @@ urlpatterns = [
          views.ProductVersionUpdateAPIView.as_view(), name="product_version_update"),
     path('user/create/', views.UserCreateAPIView.as_view(), name="user"),
     path('cart/', views.CartView.as_view(), name='card'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
-urlpatterns += router.urls
+# urlpatterns += router.urls
