@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}{{title}}{% endblock %}
@@ -112,8 +111,16 @@
 								
 								<form  method="post" name="contact">
 									{% csrf_token %}
+<<<<<<< HEAD
 									{{ contactform }}
 									<input type="submit" name="contact" value="send your message"/>
+=======
+									{{form2}}
+									<!-- <input type="text" name="name" placeholder="Enter your Name..."/>
+									<input type="text" name="email" placeholder="Enter your email..."/>
+									<textarea name="message" rows="2" placeholder="Enter your message...."></textarea> -->
+									<input name="form2" type="submit" value="send your message"/>
+>>>>>>> 221f99a9e743fc09243daa585bb0ef3c431d1d92
 								</form>
 							</div>
 						</div>
@@ -153,5 +160,4 @@
 
 			google.maps.event.addDomListener(window, 'load', initialize);
 		</script> 
-		{% endblock %} 
-
+		{% endblock %}

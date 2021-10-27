@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+from django.conf import settings
 import logging
 import json
 import time
@@ -20,8 +22,13 @@ class IPAddressMiddleware(MiddlewareMixin):
 """
 Middleware to log `*/api/*` requests and responses.
 """
-
-request_logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG,
+    datefmt="%y-%m-%d %H:%M:%S",
+    filename=settings.LOGS_ROOT,
+)
+logging.getLogger().addHandler(logging.StreamHandler())
+logger = logging.getLogger(__name__)
 
 
 class RequestLogMiddleware:
@@ -38,29 +45,24 @@ class RequestLogMiddleware:
             "request_method": request.method,
             "request_path": request.get_full_path(),
         }
-
         # Only logging "*/api/*" patterns
         if "/api/" in str(request.get_full_path()):
             req_body = request.body if request.body else {}
             log_data["request_body"] = req_body
-
         # request passes on to controller
         response = self.get_response(request)
-
         # add runtime to our log_data
         if response and response["content-type"] == "application/json":
             response_body = json.loads(response.content.decode("utf-8"))
             log_data["response_body"] = response_body
         log_data["run_time"] = time.time() - start_time
-
-        request_logger.info(msg=log_data)
-        
+        logger.info(msg=log_data)
         return response
-
     # Log unhandled exceptions as well
+
     def process_exception(self, request, exception):
         try:
             raise exception
         except Exception as e:
-            request_logger.exception("Unhandled Exception: " + str(e))
+            logger.exception("Unhandled Exception: " + str(e))
         return exception
