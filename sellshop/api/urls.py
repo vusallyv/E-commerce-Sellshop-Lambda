@@ -11,9 +11,9 @@ from api.views import UserViewSet
 from . import views
 
 
-# router = DefaultRouter()
-# # router.register('users', views.UserViewSet)
-# router.register('user', UserViewSet, basename='user')
+router = DefaultRouter()
+# router.register('users', views.UserViewSet)
+router.register('user', UserViewSet, basename='user')
 
 
 urlpatterns = [

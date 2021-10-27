@@ -109,7 +109,7 @@ def login(request):
 
     if request.method == "POST" and 'login' in request.POST:
         form1 = LoginForm(request.POST)
-        user = User.objects.filter(email=request.POST.get('email')).first()
+        user = User.objects.filter(username=request.POST.get('username')).first()
         if user is not None and user.check_password(request.POST.get('password')):
             auth.login(request, user)
             return redirect(my_account)

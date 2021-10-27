@@ -11,7 +11,7 @@ const BasketLogic = {
 				'Authorization': `Bearer ${localStorage.getItem('token')}`
 			},
 			body: JSON.stringify({
-				'product_id': productId,
+				'product': productId,
 			})
 		}).then(response => response.json()).then(data => {
 			if (data.success) {
@@ -24,12 +24,18 @@ const BasketLogic = {
 }
 
 
-const addToBasket = document.querySelectorAll('.mdi-cart');
+const addToBasket = document.querySelectorAll('.add_to_cart');
 
 addToBasket.forEach(item => {
-	console.log(item);
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
 		BasketLogic.addProduct(productId);
+		if (item.classList.contains("mdi-cart")){
+			item.parentElement.style.background = "#fe5858 none repeat scroll 0 0"
+			item.parentElement.style.color = "#fff"
+		}else{
+			item.style.background = "#fe5858 none repeat scroll 0 0"
+			item.style.color = "#fff"
+		}
 	}
 })

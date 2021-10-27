@@ -1,13 +1,12 @@
 const LoginLogic = {
     'url': `${location.origin}/api/token/`,
 
-    fetchToken(email, password) {
-        console.log(email, password);
+    fetchToken(username, password) {
         fetch(this.url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                'email': email,
+                'username': username,
                 'password': password
             })
         }).then(response => response.json()).then(data => {
@@ -26,8 +25,8 @@ const LoginLogic = {
     const submit = document.getElementById('sbmt');
 
     submit.onclick = function () {
-        const email = document.querySelector('#id_email').value;
+        const username = document.querySelector('#id_username').value;
         const password = document.querySelector('#id_password').value;
-        LoginLogic.fetchToken(email, password);
+        LoginLogic.fetchToken(username, password);
         setInterval(form.submit(), 1000);
     }

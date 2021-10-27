@@ -182,11 +182,11 @@ class CartView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        product_id = request.data.get('product_id')
+        product_id = request.data.get('product')
         product = Product.objects.filter(pk=product_id).first()
         if product:
             basket = Cart.objects.get_or_create(user=request.user)
-            request.user.shoppingCardOfUser.products.add(product)
+            request.user.shoppingCardOfUser.product.add(product)
             message = {'success': True,
                        'message': 'Product added to your card.'}
             return Response(message, status=status.HTTP_201_CREATED)

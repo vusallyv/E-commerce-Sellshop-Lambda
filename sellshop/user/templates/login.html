@@ -36,10 +36,10 @@
 							<form action="" name="login" method="post" id="login_form">
 								{% csrf_token %}
 								<div>
-									{{login.email}}
-									{% if login.email.errors %}
+									{{login.username}}
+									{% if login.username.errors %}
 									<div class="alert alert-danger">
-										<strong>{{login.email.errors}}</strong>
+										<strong>{{login.username.errors}}</strong>
 									</div>
 									{% endif %}
 								</div>

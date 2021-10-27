@@ -30,14 +30,14 @@ class ContactForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(
-        attrs={'placeholder': 'Email Address..'}))
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Username..'}))
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'placeholder': 'Password'}))
 
     def clean(self):
         user = User.objects.filter(
-            email=self.cleaned_data.get('email')).first()
+            username=self.cleaned_data.get('username')).first()
         if not user:
             raise forms.ValidationError('Invalid Username')
         if not user.check_password(self.cleaned_data.get('password')):
