@@ -1,7 +1,7 @@
 from django.db.models.aggregates import Count
 from celery import shared_task
 import time
-from user.models import Subscribers
+from user.models import Subscriber
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
@@ -10,7 +10,7 @@ from product.models import ProductVersion
 
 @shared_task
 def send_email_to_subscribers():
-    subscribers_emails = Subscribers.objects.values_list('email', flat=True)
+    subscribers_emails = Subscriber.objects.values_list('email', flat=True)
     # products = ProductVersion.objects.all()
     products = ProductVersion.objects.annotate(num_tags=Count('reviews')).order_by('-num_tags')[0:3]
     # products = ProductVersion.objects.filter('-created_at').annotate(num_tags=Count('reviews')).order_by('-num_tags')[0:3]

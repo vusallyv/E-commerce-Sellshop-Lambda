@@ -192,3 +192,17 @@ class CartView(APIView):
             return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Product not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
+# class TokenLoginView(TokenObtainPairView):
+
+#     def post(self, request, *args, **kwargs):
+#         print('------')
+#         print(request.POST)
+#         super().post(request, *args, **kwargs)

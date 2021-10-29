@@ -52,8 +52,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework.authtoken',
-    'corsheaders',
+    "corsheaders",
 
     # custom apps
     'user',
@@ -75,12 +74,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    "sellshop.middleware.RequestLogMiddleware",
+    # "sellshop.middleware.RequestLogMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'sellshop.middleware.IPAddressMiddleware'
 ]
@@ -201,7 +200,6 @@ STATICFILES_DIRS = [
 LOGS_ROOT = BASE_DIR / f'logs/{datetime.date.today()}.log'
 
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -220,8 +218,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny'
     ],
-     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
@@ -256,14 +253,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'vusal581176@gmail.com'
 EMAIL_HOST_PASSWORD = 'goamypedjojjspjs'
 
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ]
-}
-
 
 # CELERY STUFF
 CELERY_BROKER_URL = 'redis://localhost:6379'
@@ -272,3 +261,21 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Baku'
+
+
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:8000",
+]
+
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
