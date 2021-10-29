@@ -33,15 +33,15 @@ const LoginLogic = {
     }
 
 
-function testCard(token) {
-    fetch('http://127.0.0.1:8000/en/api/cart/', {
-        method: 'POST',
-        headers : {
-            'Authorization' : `Bearer ${token}`
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-    })
-}
+// function testCard(token) {
+//     fetch('http://127.0.0.1:8000/en/api/cart/', {
+//         method: 'POST',
+//         headers : {
+//             'Authorization' : `Bearer ${token}`
+//         }
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log(data)
+//     })
+// }

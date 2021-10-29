@@ -55,9 +55,9 @@ class Wishlist(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(
-        "user.User", on_delete=models.CASCADE, default="", related_name="shoppingCardOfUser")
+        "user.User", on_delete=models.CASCADE, default="")
     product = models.ManyToManyField(
-        "product.ProductVersion", null=True, blank=True, related_name='Product_Cart')
+        "product.ProductVersion", null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.user.username}"

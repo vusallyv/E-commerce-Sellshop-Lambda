@@ -1,9 +1,7 @@
 const BasketLogic = {
-	url: `${location.origin}/api/cart/`,
-
 	addProduct(productId) {
 		console.log(localStorage.getItem('token'));
-		fetch(`${this.url}`, {
+		fetch('http://127.0.0.1:8000/en/api/cart/', {
 			method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -13,15 +11,19 @@ const BasketLogic = {
 			body: JSON.stringify({
 				'product': productId,
 			})
-		}).then(response => response.json()).then(data => {
-			if (data.success) {
-				console.log(data.message)
-			} else {
-				alert(data.message);
-			}
-		});
+		})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					console.log(data.message)
+				} else {
+					alert(data.message);
+				}
+			});
 	}
 }
+
+
 
 
 const addToBasket = document.querySelectorAll('.add_to_cart');
@@ -30,10 +32,10 @@ addToBasket.forEach(item => {
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
 		BasketLogic.addProduct(productId);
-		if (item.classList.contains("mdi-cart")){
+		if (item.classList.contains("mdi-cart")) {
 			item.parentElement.style.background = "#fe5858 none repeat scroll 0 0"
 			item.parentElement.style.color = "#fff"
-		}else{
+		} else {
 			item.style.background = "#fe5858 none repeat scroll 0 0"
 			item.style.color = "#fff"
 		}

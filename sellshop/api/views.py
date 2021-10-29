@@ -183,26 +183,19 @@ class CartView(APIView):
 
     def post(self, request, *args, **kwargs):
         product_id = request.data.get('product')
-        product = Product.objects.filter(pk=product_id).first()
-        if product:
-            basket = Cart.objects.get_or_create(user=request.user)
-            request.user.shoppingCardOfUser.product.add(product)
+        product = ProductVersion.objects.filter(pk=product_id).first()
+        if product and product not in Cart.objects.get(user=request.user).product.all():
+            basket = Cart.objects.get(user=request.user).product.add(product)
             message = {'success': True,
                        'message': 'Product added to your card.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        elif product and product in Cart.objects.get(user=request.user).product.all():
+            basket = Cart.objects.get(user=request.user).product.remove(product)
+            message = {'success': True,
+                       'message': 'Product removed from your card.'}
             return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Product not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
-
-# class TokenLoginView(TokenObtainPairView):
-
-#     def post(self, request, *args, **kwargs):
-#         print('------')
-#         print(request.POST)
-#         super().post(request, *args, **kwargs)
+#

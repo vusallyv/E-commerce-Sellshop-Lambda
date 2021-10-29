@@ -457,6 +457,10 @@
 	<script src="{% static 'js/plugins.js' %}"></script>
 	<!-- main js -->
 	<script src="{% static 'js/main.js' %}"></script>
+	<!-- basket js -->
+	{% if request.user.is_authenticated %}
+	<script src="{% static 'js/basket.js' %}"></script>
+	{% endif %}
 </body>
 
 </html>

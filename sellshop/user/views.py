@@ -154,7 +154,7 @@ def login(request):
             user.set_password(request.POST.get('password')),
             user.save()
             auth.login(request, user)
-            # return redirect('my_account')
+            return redirect('my_account')
     else:
         form = RegisterForm()
 
@@ -163,7 +163,7 @@ def login(request):
         user = User.objects.filter(username=request.POST.get('username')).first()
         if user is not None and user.check_password(request.POST.get('password')):
             auth.login(request, user)
-            # return redirect('my_account')
+            return redirect('my_account')
     else:
         form1 = LoginForm()
 
