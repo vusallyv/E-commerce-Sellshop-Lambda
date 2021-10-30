@@ -92,6 +92,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
+    products = serializers.SerializerMethodField()
+
     class Meta:
         model = Cart
-        fields = '__all__'
+        fields = ("id", "user", "products")
+
+    def get_products(self, obj):
+        qs = obj.product.all()
+        return ProductVersionSerializer(qs, many=True).data

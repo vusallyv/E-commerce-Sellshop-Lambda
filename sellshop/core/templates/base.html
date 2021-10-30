@@ -265,32 +265,31 @@
 				</div>
 				<div class="col-sm-2">
 					<div class="cart-itmes">
-						<a class="cart-itme-a" id="cart-items" href="{% url 'cart' %}">
-							
+						<a class="cart-itme-a" href="{% url 'cart' %}">
+							<i class="mdi mdi-cart"></i>
+							<span id="product_count">  </span>
+								items : 
+							<strong>$306.00</strong>
+
 						</a>
 						<div class="cartdrop">
-							{% for product in product_count.all %}
 							<div class="sin-itme clearfix">
 								<i class="mdi mdi-close"></i>
-								<a class="cart-img" href="{% url 'cart' %}"><img style="width: 81px; height: 105.391px;" src="{% static 'img/cart/1.png' %}"
-									alt="" /></a>
-									<div class="menu-cart-text">
-										<a href="#">
-											<h5>{{product.product.title}}</h5>
-										</a>
-										<span>Color : {{product.color.title}}</span>
-										<span>Size : {{product.size.title}}</span>
-										<strong>${{product.product.price}}</strong>
-									</div>
+								<a class="cart-img" href="{% url 'cart' %}"><img src="{% static 'img/cart/2.png' %}"
+										alt="" /></a>
+								<div class="menu-cart-text">
+									<a href="#">
+										<h5>men’s black t-shirt</h5>
+									</a>
+									<span>Color : Black</span>
+									<span>Size : SL</span>
+									<strong>$132.00</strong>
 								</div>
-							{% endfor %}
-							<div class="total">
-								<span>total <strong>= ${{product_sum}}</strong></span>
 							</div>
-							<a class="goto" href="{% url 'cart' %}">go to cart</a>
-							<a class="out-menu" href="{% url 'checkout' %}">Check out</a>
-						</div>
-					</div>
+							<div class="total">
+								<span>total <strong>= $306.00</strong></span>
+							</div>
+
 				</div>
 			</div>
 		</div>

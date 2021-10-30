@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 import os
 from pathlib import Path
 import datetime
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -279,3 +280,8 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+}
