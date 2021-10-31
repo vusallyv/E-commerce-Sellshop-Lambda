@@ -197,5 +197,3 @@ class CartView(APIView):
         message = {'success': False, 'message': 'Product not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-
-#

@@ -54,7 +54,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class ProductVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductVersion
-        fields = "__all__"
+        fields = ("product",)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -101,3 +101,4 @@ class CartSerializer(serializers.ModelSerializer):
     def get_products(self, obj):
         qs = obj.product.all()
         return ProductVersionSerializer(qs, many=True).data
+

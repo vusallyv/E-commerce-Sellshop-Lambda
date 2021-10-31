@@ -1,9 +1,9 @@
 from django.db import models
-
+from sellshop.utils.base_models import BaseModel
 # Create your models here.
 
 
-class Billing(models.Model):
+class Billing(BaseModel):
     user = models.ForeignKey(
         "user.User", related_name="User_Billing", on_delete=models.CASCADE, verbose_name="User")
     company_name = models.CharField(
@@ -20,7 +20,7 @@ class Billing(models.Model):
         return f"{self.user}"
 
 
-class ShippingAddress(models.Model):
+class ShippingAddress(BaseModel):
     user = models.ForeignKey(
         "user.User", related_name="User_Shipping", on_delete=models.CASCADE, verbose_name="User")
     first_name = models.CharField(
@@ -43,7 +43,7 @@ class ShippingAddress(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
-class Wishlist(models.Model):
+class Wishlist(BaseModel):
     user = models.ForeignKey(
         "user.User", on_delete=models.CASCADE, default="")
     product = models.ManyToManyField(
@@ -53,7 +53,7 @@ class Wishlist(models.Model):
         return f"{self.user}"
 
 
-class Cart(models.Model):
+class Cart(BaseModel):
     user = models.ForeignKey(
         "user.User", on_delete=models.CASCADE, default="")
     product = models.ManyToManyField(
@@ -61,3 +61,4 @@ class Cart(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user}"
+
