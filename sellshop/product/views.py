@@ -46,8 +46,8 @@ class ProductDetailView(DetailView):
         context['images'] = Image.objects.filter(
             productversion = self.kwargs.get('pk')) 
         context['form'] = ReviewForm
-        context['rating'] = "{:.1f}".format(Review.objects.filter(
-            product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg'])
+        context['rating'] = Review.objects.filter(
+            product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg']
         context['reviews'] = Review.objects.filter(
             product=self.kwargs.get('pk')) 
         context['productversion'] = ProductVersion.objects.get(

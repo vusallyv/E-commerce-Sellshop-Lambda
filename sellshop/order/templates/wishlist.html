@@ -44,7 +44,10 @@
 									{% for product in wishlist %}
 									<tr>
 										<td class="td-img text-left">
-											<a href="#"><img src="{% static 'img/cart/1.png' %}" alt="Add Product" /></a>
+											{% for image in images %} {% if image.product == product %}
+											<a href="#"><img style="width: 83px; height: 108px;" src="{{image.image.url}}" alt="Add Product" /></a>
+											{% endif %}
+											{% endfor %}
 											<div class="items-dsc">
 												<h5><a href="#">{{product.product.title}}</a></h5>
 												<p class="itemcolor">Color : <span>{{product.color}}</span></p>
@@ -52,10 +55,10 @@
 											</div>
 										</td>
 										<td>${{product.product.price}}</td>
-										<td>In Stock</td>
+										<td>{% if product.quantity > 0 %}In Stock {% else %} Expired {% endif %}</td>
 										<td>
 											<div class="submit-text">
-												<a href="{% url 'cart' %}">Add to cart</a>
+												<a data="{{product.product.id}}" class="add_to_cart">add to cart</a>
 											</div>
 										</td>
 										<td><i class="mdi mdi-close" title="Remove this product"></i></td>

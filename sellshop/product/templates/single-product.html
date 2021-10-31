@@ -113,14 +113,14 @@
 									<form action="#" method="POST">
 										<div class="plus-minus">
 											<a class="dec qtybutton">-</a>
-											<input type="text" value="02" name="qtybutton" class="plus-minus-box">
+											<input type="text" value="1" max="{{productversion.quantity}}" name="qtybutton" class="plus-minus-box">
 											<a class="inc qtybutton">+</a>
 										</div>
 									</form>
 								</div>
 							</div>
 							<div class="list-btn">
-								<a href="#">add to cart</a>
+								<a data="{{productversion.product.id}}" class="add_to_cart">add to cart</a>
 								<a href="#">wishlist</a>
 								<a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
 							</div>
@@ -294,14 +294,14 @@
 					<div class="product-img">
 						<a href="#"><img src="{% static 'img/products/4.jpg' %}" alt="Product Title" /></a>
 						<div class="actions-btn">
-							<a href="#"><i class="mdi mdi-cart"></i></a>
+							<a><i data="{{relatedproduct.product.id}}" class="mdi mdi-cart add_to_cart "></i></a>	
 							<a href="#" data-toggle="modal" data-target="#quick-view"><i class="mdi mdi-eye"></i></a>
 							<a href="#"><i class="mdi mdi-heart"></i></a>
 						</div>
 					</div>
 					<div class="product-dsc">
-						<p><a href="#">{{ relatedproduct.title }}</a></p>
-						<span>${{ relatedproduct.price }}</span>
+						<p><a href="#">{{ relatedproduct.product.title }}</a></p>
+						<span>${{ relatedproduct.product.price }}</span>
 					</div>
 				</div>
 			</div>
@@ -406,7 +406,7 @@
 														<form action="#" method="POST">
 															<div class="plus-minus">
 																<a class="dec qtybutton">-</a>
-																<input type="text" value="02" name="qtybutton"
+																<input type="number" value="1" max="{{productversion.quantity}}" name="qtybutton"
 																	class="plus-minus-box">
 																<a class="inc qtybutton">+</a>
 															</div>
@@ -414,7 +414,7 @@
 													</div>
 												</div>
 												<div class="list-btn">
-													<a href="#">add to cart</a>
+													<a data="{{productversion.id}}" class="add_to_cart">add to cart</a>
 													<a href="#">wishlist</a>
 													<a href="#">zoom</a>
 												</div>

@@ -21,7 +21,7 @@ def checkout(request):
         billing = BillingForm(request.POST)
         if billing.is_valid():
             billing = Billing(
-                user_id=request.user,
+                user=request.user,
                 company_name=request.POST.get('company_name'),
                 country=request.POST.get('country'),
                 state=request.POST.get('state'),
@@ -36,7 +36,7 @@ def checkout(request):
         shipping = ShippingAddressForm(request.POST)
         if shipping.is_valid():
             shipping = ShippingAddress(
-                user_id=request.user,
+                user=request.user,
                 first_name=request.POST.get('first_name'),
                 last_name=request.POST.get('last_name'),
                 phone_number=request.POST.get('phone_number'),
@@ -70,7 +70,8 @@ def order_complete(request):
 
 
 def wishlist(request):
-    qs_wishlist = Wishlist.objects.get(user_id=request.user).products.all()
+    Wishlist.objects.get_or_create(user=request.user)
+    qs_wishlist = Wishlist.objects.get(user=request.user).product.all()
     context = {
         'title': 'Wishlist Sellshop',
         'wishlist': qs_wishlist,

@@ -269,30 +269,13 @@
 							<i class="mdi mdi-cart"></i>
 							<span id="product_count">  </span>
 								items : 
-							<strong>$306.00</strong>
+							<strong id="total"></strong>
 
 						</a>
-						<div class="cartdrop">
-							<div class="sin-itme clearfix">
-								<i class="mdi mdi-close"></i>
-								<a class="cart-img" href="{% url 'cart' %}"><img src="{% static 'img/cart/2.png' %}"
-										alt="" /></a>
-								<div class="menu-cart-text">
-									<a href="#">
-										<h5>men’s black t-shirt</h5>
-									</a>
-									<span>Color : Black</span>
-									<span>Size : SL</span>
-									<strong>$132.00</strong>
-								</div>
-							</div>
-							<div class="total">
-								<span>total <strong>= $306.00</strong></span>
-							</div>
-
+						<div class="cartdrop" id="cartdrop">
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
 	</header>
 	<!-- header section end -->
 	<!-- pages-title-start -->
