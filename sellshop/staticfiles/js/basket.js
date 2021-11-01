@@ -81,19 +81,19 @@ function cartManager() {
 			html = ''
 			total_price = 0
 			for (let i = 0; i < data['products'].length; i++) {
-				total_price += parseFloat(data['products'][i]['price'])
+				total_price += parseFloat(data['products'][i]['product']['price'])
 				html += `
 							<div class="sin-itme clearfix">
 								<a data="${data['products'][i]['id']}" class="add_to_cart"> <i class="mdi mdi-close"></i> </a>
-								<a class="cart-img" href="{% url 'cart' %}"><img src='{% static "img/cart/2.png" %}'
+								<a class="cart-img" href="{% url 'cart' %}"><img src=''
 										alt="" /></a>
 								<div class="menu-cart-text">
 									<a href="#">
-										<h5>${data['products'][i]['title']}</h5>
+										<h5>${data['products'][i]['product']['title']}</h5>
 									</a>
-									<span>Color : ${data['products'][i]['color']}</span>
+									<span>Color : ${data['products'][i]['color']['title']}</span>
 									<span>Size : ${data['products'][i]['size']}</span>
-									<strong>$${data['products'][i]['price']}</strong>
+									<strong>$${data['products'][i]['product']['price']}</strong>
 								</div>
 							</div>
 			`
@@ -106,9 +106,8 @@ function cartManager() {
 			total.innerText = `$${total_price}`
 			id_arr = []
 			for (let i = 0; i < data['products'].length; i++) {
-				id_arr.push(data['products'][i]['product'])
+				id_arr.push(data['products'][i]['id'])
 			}
-			console.log(id_arr);
 			for (let i = 0; i < addToBasket.length; i++) {
 				if (id_arr.includes(parseInt(addToBasket[i].getAttribute("data")))) {
 					if (addToBasket[i].parentElement.nodeName == "DIV") {

@@ -75,6 +75,7 @@ class Product(BaseModel):
     def main_version(self):
         return self.versions.filter(is_main=True).first()
 
+
     @property
     def total_quantity(self):
         return sum([version.quantity for version in self.versions.all()])
@@ -85,7 +86,7 @@ class ProductVersion(BaseModel):
         Product, on_delete=models.CASCADE, default="", related_name="versions")
     quantity = models.PositiveIntegerField(verbose_name='Quantity', default=0)
     color = models.ForeignKey(
-        Color, default=1, verbose_name='Color', on_delete=models.CASCADE)
+        Color, default=1, verbose_name='Color', on_delete=models.CASCADE, related_name='product_color')
     size = models.ForeignKey(Size, on_delete=models.CASCADE,
                              default=1, verbose_name='Size')
     rating = models.DecimalField(
@@ -93,6 +94,10 @@ class ProductVersion(BaseModel):
     tag = models.ManyToManyField(
         "product.Tag")
     is_main = models.BooleanField(verbose_name='Main', default=False)
+
+    # @property
+    # def main_image(self):
+    #     return self.version_images.filter(is_main=True).first()
 
     def __str__(self):
         return self.product.title

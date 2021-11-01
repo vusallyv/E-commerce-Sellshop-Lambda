@@ -1,7 +1,7 @@
 from django.db.models.aggregates import Avg
 from django.shortcuts import render
 from django.db.models import Q, F
-from product.models import Category, ProductVersion, Image, Review, Product, Brand, Size,  Tag
+from product.models import Category, Color, ProductVersion, Image, Review, Product, Brand, Size,  Tag
 from product.forms import ReviewForm
 from django.views.generic import DetailView, ListView
 from user.models import User
@@ -158,14 +158,4 @@ class ProductListView(ListView):
             'products': Product.objects.order_by('price')[0:6],
         }
         return render(request, 'product-list.html', context=context)
-
-
-# def filter(request):
-#     if request.GET.get('size'):
-#         current_path = request.get_full_path()
-#         print(current_path)
-#     context = {
-#         'current_path': current_path
-#     }
-#     return render(request, "product-list.html", context=context)
 

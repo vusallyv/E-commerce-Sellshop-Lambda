@@ -1,7 +1,8 @@
 import random
 from django.contrib.auth import get_user_model
+from django.db.models import fields
 from rest_framework import serializers
-from product.models import Product, ProductVersion, Category
+from product.models import Color, Product, ProductVersion, Category
 from user.models import User
 from blog.models import Blog
 from order.models import Cart
@@ -34,6 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
     main_version = serializers.SerializerMethodField()
     total_quantity = serializers.SerializerMethodField()
     versions = serializers.SerializerMethodField()
+    # main_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
@@ -44,17 +46,43 @@ class ProductSerializer(serializers.ModelSerializer):
         return obj.total_quantity
 
     def get_main_version(self, obj):
-        return ProductVersionSerializer(obj.main_version).data
+        if obj.main_version:
+            return ProductVersionSerializer(obj.main_version).data
+        return None
 
     def get_versions(self, obj):
-        qs = obj.versions.exclude(id=obj.main_version.id)
+        if obj.main_version:
+            qs = obj.versions.exclude(id=obj.main_version.id)
+        else:
+            qs = obj.versions.all()
         return ProductVersionSerializer(qs, many=True).data
+
+    # def get_main_image(self, obj):
+    #     if obj.main_version.main_image.image:
+    #         return obj.main_version.main_image.image.url
+    #     else:
+    #         return None
+
+
+class ProductOverViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class ColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Color
+        fields = "__all__"
 
 
 class ProductVersionSerializer(serializers.ModelSerializer):
+    product = ProductOverViewSerializer()
+    color = ColorSerializer()
+
     class Meta:
         model = ProductVersion
-        fields = ("product",)
+        fields = "__all__"
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -101,4 +129,3 @@ class CartSerializer(serializers.ModelSerializer):
     def get_products(self, obj):
         qs = obj.product.all()
         return ProductVersionSerializer(qs, many=True).data
-
