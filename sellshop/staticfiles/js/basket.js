@@ -106,8 +106,9 @@ function cartManager() {
 			total.innerText = `$${total_price}`
 			id_arr = []
 			for (let i = 0; i < data['products'].length; i++) {
-				id_arr.push(data['products'][i]['id'])
+				id_arr.push(data['products'][i]['product'])
 			}
+			console.log(id_arr);
 			for (let i = 0; i < addToBasket.length; i++) {
 				if (id_arr.includes(parseInt(addToBasket[i].getAttribute("data")))) {
 					if (addToBasket[i].parentElement.nodeName == "DIV") {
