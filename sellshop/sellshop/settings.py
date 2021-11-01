@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'blog',
     'api',
 
+
     'django.contrib.sites',
     'allauth',
     'allauth.account',
