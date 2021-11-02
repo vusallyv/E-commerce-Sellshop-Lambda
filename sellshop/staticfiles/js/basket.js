@@ -30,33 +30,33 @@ const addToBasket = document.querySelectorAll('.add_to_cart');
 addToBasket.forEach(item => {
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
-		for (let i = 0; i < addToBasket.length; i++) {
-			if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") == false && addToBasket[i].parentElement.classList.contains("added") == false)) {
-				if (addToBasket[i].parentElement.nodeName == "DIV") {
-					addToBasket[i].style.background = "#fe5858 none repeat scroll 0 0"
-					addToBasket[i].style.color = "#fff"
-					addToBasket[i].innerText = "remove from cart"
-					addToBasket[i].classList.add("added")
-				} else {
-					addToBasket[i].parentElement.style.background = "#fe5858 none repeat scroll 0 0"
-					addToBasket[i].parentElement.style.color = "#fff"
-					addToBasket[i].parentElement.classList.add("added")
-				}
-			}
-			else if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") | addToBasket[i].parentElement.classList.contains("added"))) {
-				if (addToBasket[i].parentElement.nodeName == "DIV") {
-					addToBasket[i].style.background = ""
-					addToBasket[i].style.color = ""
-					addToBasket[i].innerText = "add to cart"
-					addToBasket[i].classList.remove("added")
-				} else {
-					addToBasket[i].parentElement.style.background = ""
-					addToBasket[i].parentElement.style.color = ""
-					addToBasket[i].parentElement.classList.remove("added")
-				}
-			}
-		}
 		BasketLogic.productManager(productId);
+		// for (let i = 0; i < addToBasket.length; i++) {
+		// 	if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") == false && addToBasket[i].parentElement.classList.contains("added") == false)) {
+		// 		if (addToBasket[i].parentElement.nodeName == "DIV") {
+		// 			addToBasket[i].style.background = "#fe5858 none repeat scroll 0 0"
+		// 			addToBasket[i].style.color = "#fff"
+		// 			addToBasket[i].innerText = "remove from cart"
+		// 			addToBasket[i].classList.add("added")
+		// 		} else {
+		// 			addToBasket[i].parentElement.style.background = "#fe5858 none repeat scroll 0 0"
+		// 			addToBasket[i].parentElement.style.color = "#fff"
+		// 			addToBasket[i].parentElement.classList.add("added")
+		// 		}
+		// 	}
+		// 	else if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") | addToBasket[i].parentElement.classList.contains("added"))) {
+		// 		if (addToBasket[i].parentElement.nodeName == "DIV") {
+		// 			addToBasket[i].style.background = ""
+		// 			addToBasket[i].style.color = ""
+		// 			addToBasket[i].innerText = "add to cart"
+		// 			addToBasket[i].classList.remove("added")
+		// 		} else {
+		// 			addToBasket[i].parentElement.style.background = ""
+		// 			addToBasket[i].parentElement.style.color = ""
+		// 			addToBasket[i].parentElement.classList.remove("added")
+		// 		}
+		// 	}
+		// }
 	}
 })
 
@@ -66,7 +66,7 @@ basketItem = document.getElementById("cartdrop")
 total = document.getElementById("total")
 
 function cartManager() {
-	fetch('http://127.0.0.1:8000/en/api/cart/', {
+	fetch('http://127.0.0.1:8000/en/api/cart-item/', {
 		method: 'GET',
 		credentials: 'include',
 		headers: {
@@ -76,24 +76,27 @@ function cartManager() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
-			product_count.innerText = data['products'].length
+			for (let i = 0; i < data.length; i++) {
+				console.log(data[i]);
+				
+			}
 			html = ''
 			total_price = 0
-			for (let i = 0; i < data['products'].length; i++) {
-				total_price += parseFloat(data['products'][i]['product']['price'])
+			product_count.innerText = data.length
+			for (let i = 0; i < data.length; i++) {
+				total_price += parseFloat(data[i]['quantity']*data[i]['product']['product']['price'])
 				html += `
 							<div class="sin-itme clearfix">
-								<a data="${data['products'][i]['id']}" class="add_to_cart"> <i class="mdi mdi-close"></i> </a>
-								<a class="cart-img" href="{% url 'cart' %}"><img src=''
+								<a data="${data[i]['product']['id']}" class="add_to_cart"> <i class="mdi mdi-close"></i> </a>
+								<a class="cart-img" href="{% url 'cart' %}"><img src='${data[i]['product']['main_image']}'
 										alt="" /></a>
 								<div class="menu-cart-text">
 									<a href="#">
-										<h5>${data['products'][i]['product']['title']}</h5>
+										<h5>${data[i]['quantity']} x ${data[i]['product']['product']['title']}</h5>
 									</a>
-									<span>Color : ${data['products'][i]['color']['title']}</span>
-									<span>Size : ${data['products'][i]['size']}</span>
-									<strong>$${data['products'][i]['product']['price']}</strong>
+									<span>Color : ${data[i]['product']['color']['title']}</span>
+									<span>Size : ${data[i]['product']['size']}</span>
+									<strong>$${data[i]['quantity']*data[i]['product']['product']['price']}</strong>
 								</div>
 							</div>
 			`
@@ -104,24 +107,6 @@ function cartManager() {
 									</div>
 								`
 			total.innerText = `$${total_price}`
-			id_arr = []
-			for (let i = 0; i < data['products'].length; i++) {
-				id_arr.push(data['products'][i]['id'])
-			}
-			for (let i = 0; i < addToBasket.length; i++) {
-				if (id_arr.includes(parseInt(addToBasket[i].getAttribute("data")))) {
-					if (addToBasket[i].parentElement.nodeName == "DIV") {
-						addToBasket[i].style.background = "#fe5858 none repeat scroll 0 0"
-						addToBasket[i].style.color = "#fff"
-						addToBasket[i].innerText = "remove from cart"
-						addToBasket[i].classList.add("added")
-					} else {
-						addToBasket[i].parentElement.style.background = "#fe5858 none repeat scroll 0 0"
-						addToBasket[i].parentElement.style.color = "#fff"
-						addToBasket[i].parentElement.classList.add("added")
-					}
-				}
-			}
 		});
 }
 

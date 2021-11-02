@@ -12,12 +12,14 @@ from django.utils.translation import gettext_lazy as _
 
 @admin.register(ProductVersion)
 class ProductVersionAdmin(admin.ModelAdmin):
-    search_fields = ['user']
+    list_display = ('product', 'quantity', 'color', 'get_image', 'size')
+    list_editable = ('quantity',)
+    search_fields = ['product']
 
     def get_image(self, obj):
-        if obj.image:
+        if obj.version_images:
             img = '<img src="{}" width="100" height="100" />'.format(
-                obj.image.url)
+                obj.version_images)
             return format_html(img)
         return 'No Image'
 
@@ -47,7 +49,6 @@ class ReviewAdmin(admin.ModelAdmin):
     def get_user_details(self, obj):
         return obj.user.username
     get_user_details.short_description = 'Username'
-
 
 
 admin.site.register([Color, Category, Brand, Size, Image])

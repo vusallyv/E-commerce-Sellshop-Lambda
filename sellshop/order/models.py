@@ -58,7 +58,15 @@ class Cart(BaseModel):
         "user.User", on_delete=models.CASCADE, default="")
     product = models.ManyToManyField(
         "product.ProductVersion", blank=True)
+    is_ordered = models.BooleanField(verbose_name="Is Ordered?", default=False)
 
     def __str__(self) -> str:
         return f"{self.user}"
 
+class Cart_Item(BaseModel):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey("product.ProductVersion",on_delete=models.CASCADE , blank=True)
+    quantity = models.PositiveIntegerField("quantity", default=0)
+
+    def __str__(self) -> str:
+        return f"{self.cart}"

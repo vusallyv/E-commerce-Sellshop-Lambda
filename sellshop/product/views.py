@@ -6,6 +6,7 @@ from product.forms import ReviewForm
 from django.views.generic import DetailView, ListView
 from user.models import User
 
+
 def single_product(request, pk):
     image = Image.objects.filter(productversion=pk)
     product_versions = ProductVersion.objects.get(pk=pk)
@@ -44,17 +45,16 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Single-product Sellshop'
         context['images'] = Image.objects.filter(
-            productversion = self.kwargs.get('pk')) 
+            productversion=self.kwargs.get('pk'))
         context['form'] = ReviewForm
         context['rating'] = Review.objects.filter(
             product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg']
         context['reviews'] = Review.objects.filter(
-            product=self.kwargs.get('pk')) 
+            product=self.kwargs.get('pk'))
         context['productversion'] = ProductVersion.objects.get(
             pk=self.kwargs.get('pk'))
         context['relatedproducts'] = ProductVersion.objects.exclude(
             pk=self.kwargs.get('pk'))
-        context['user'] = User.objects.all()[0] # bele olmasi duzgun deyil
         return context
 
     def post(self, request, *args, **kwargs):
@@ -158,4 +158,3 @@ class ProductListView(ListView):
             'products': Product.objects.order_by('price')[0:6],
         }
         return render(request, 'product-list.html', context=context)
-

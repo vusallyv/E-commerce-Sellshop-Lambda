@@ -76,6 +76,7 @@
 							<div class="all-choose">
 								<div class="s-shoose">
 									<h5>Color</h5>
+									{{productversion.color}}
 									<div class="color-select clearfix">
 										<span></span>
 										<span class="outline"></span>
@@ -85,28 +86,19 @@
 								</div>
 								<div class="s-shoose">
 									<h5>size</h5>
-
 									<div class="size-drop">
 
 										<div class="btn-group">
-											<button type="button" class="btn">XL</button>
+											<button type="button" class="btn">{{productversion.size}}</button>
 											<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
 												aria-haspopup="true" aria-expanded="false">
 												<span class=""><i class="mdi mdi-chevron-down"></i></span>
 											</button>
 											<ul class="dropdown-menu">
-												{% for size in product_versions.sizes %}
-												<li><a href="#">{{ size }}</a></li>
-												<!-- <li><a href="#">SL</a></li>
-														<li><a href="#">S</a></li>
-														<li><a href="#">L</a></li> -->
-												{% endfor %}
-
+												<li><a href="#">{{ productversion.size }}</a></li>
 											</ul>
-
 										</div>
 									</div>
-
 								</div>
 								<div class="s-shoose">
 									<h5>qty</h5>
@@ -154,7 +146,7 @@
 					</ul>
 					<div class="tab-content">
 						<div class="info-reviews moreinfo tab-pane fade in" id="moreinfo">
-							<p>{{ product_versions.product.description }}</p>
+							<p>{{ productversion.product.description }}</p>
 						</div>
 						{% for review in reviews %}
 						<div class="info-reviews review-text tab-pane fade in active" id="reviews">
@@ -267,7 +259,9 @@
 						</div>
 					</div>
 					<div class="info-reviews tags tab-pane fade in" id="tags">
-						<p>{{ product_versions.tag_id. }}</p>
+						{% for tag in productversion.tag.all %}
+						<p>{{ tag }}</p>
+						{% endfor %}
 					</div>
 				</div>
 			</div>

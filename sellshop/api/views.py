@@ -8,9 +8,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from api.serializers import CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer
+from api.serializers import CartItemSerializer, CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer
 from blog.models import Blog
-from order.models import Cart
+from order.models import Cart, Cart_Item
 from user.models import User
 from product.models import Product, ProductVersion, Category
 
@@ -183,17 +183,40 @@ class CartView(APIView):
 
     def post(self, request, *args, **kwargs):
         product_id = request.data.get('product')
-        product = ProductVersion.objects.filter(pk=product_id).first()
-        if product and product not in Cart.objects.get(user=request.user).product.all():
-            basket = Cart.objects.get(user=request.user).product.add(product)
+        product = ProductVersion.objects.get(pk=product_id)
+        Cart.objects.get_or_create(user=request.user)
+        cart = Cart.objects.get(user=request.user)
+        if product:
+            product.quantity -= 1
+            product.save()
+            Cart_Item.objects.get_or_create(cart=cart, product=product)
+            cart_item = Cart_Item.objects.get(cart=cart, product=product)
+            cart_item.quantity += 1
+            Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
+            Cart.objects.get(user=request.user).product.add(product)
             message = {'success': True,
                        'message': 'Product added to your card.'}
             return Response(message, status=status.HTTP_201_CREATED)
-        elif product and product in Cart.objects.get(user=request.user).product.all():
-            basket = Cart.objects.get(user=request.user).product.remove(product)
-            message = {'success': True,
-                       'message': 'Product removed from your card.'}
-            return Response(message, status=status.HTTP_201_CREATED)
+        # elif product and product in Cart.objects.get(user=request.user).product.all():
+        #     product.quantity += 1
+        #     product.save()
+        #     Cart_Item.objects.get_or_create(cart=cart, product=product)
+        #     cart_item = Cart_Item.objects.get(cart=cart, product=product)
+        #     cart_item.quantity += 1
+        #     Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
+        #     Cart.objects.get(user=request.user).product.remove(product)
+        #     message = {'success': True,
+        #                'message': 'Product removed from your card.'}
+        #     return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Product not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+
+class CartItemView(APIView):
+    serializer_class = CartItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        obj = Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user))
+        serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

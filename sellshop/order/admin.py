@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from order.models import Billing, Cart, Wishlist, ShippingAddress
+from order.models import Billing, Cart, Cart_Item, Wishlist, ShippingAddress
 
 
 # class Wishlistadmin(admin.ModelAdmin):
@@ -15,14 +15,25 @@ from order.models import Billing, Cart, Wishlist, ShippingAddress
 
 @admin.register(Billing)
 class BillingAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'company_name', 'country',)
+    list_display = ('user', 'company_name', 'country',)
     list_filter = ('company_name',)
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('user', 'is_ordered',)
+    list_editable = ('is_ordered',)
+
+@admin.register(Cart_Item)
+class Cart_ItemAdmin(admin.ModelAdmin):
+    list_display = ('cart', 'product', 'quantity',)
+    list_editable = ('quantity',)
 
 
 @admin.register(ShippingAddress)
 class ShippingAddressAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'phone_number', 'company_name', 'country',)
-    list_filter = ('company_name', 'user_id', 'country')
+    list_display = ('user', 'phone_number', 'company_name', 'country',)
+    list_filter = ('company_name', 'user', 'country')
 
 
-admin.site.register([Cart, Wishlist])
+admin.site.register(Wishlist)

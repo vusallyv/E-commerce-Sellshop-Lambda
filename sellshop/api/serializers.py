@@ -5,7 +5,7 @@ from rest_framework import serializers
 from product.models import Color, Product, ProductVersion, Category
 from user.models import User
 from blog.models import Blog
-from order.models import Cart
+from order.models import Cart, Cart_Item
 
 User = get_user_model()
 
@@ -35,12 +35,12 @@ class ProductSerializer(serializers.ModelSerializer):
     main_version = serializers.SerializerMethodField()
     total_quantity = serializers.SerializerMethodField()
     versions = serializers.SerializerMethodField()
-    # main_image = serializers.SerializerMethodField()
+    main_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ("title", "subtitle", "ex_price", "price", "description",
-                  "brand", "category", "total_quantity", "main_version", "versions")
+                  "brand", "category", "total_quantity", "main_version", "versions", "main_image")
 
     def get_total_quantity(self, obj):
         return obj.total_quantity
@@ -57,11 +57,11 @@ class ProductSerializer(serializers.ModelSerializer):
             qs = obj.versions.all()
         return ProductVersionSerializer(qs, many=True).data
 
-    # def get_main_image(self, obj):
-    #     if obj.main_version.main_image.image:
-    #         return obj.main_version.main_image.image.url
-    #     else:
-    #         return None
+    def get_main_image(self, obj):
+        if obj.main_version.image.image:
+            return obj.main_version.image.image.url
+        else:
+            return None
 
 
 class ProductOverViewSerializer(serializers.ModelSerializer):
@@ -121,6 +121,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
+    # images = serializers.SerializerMethodField()
 
     class Meta:
         model = Cart
@@ -129,3 +130,14 @@ class CartSerializer(serializers.ModelSerializer):
     def get_products(self, obj):
         qs = obj.product.all()
         return ProductVersionSerializer(qs, many=True).data
+
+    # def get_images(self, obj):
+    #     qs = obj.product.first().version_images.all()
+    #     return ProductVersionSerializer(qs, many=True).data
+
+
+class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductVersionSerializer( )
+    class Meta:
+        model = Cart_Item
+        fields = ("product", "quantity")
