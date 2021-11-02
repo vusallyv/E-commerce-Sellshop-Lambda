@@ -55,6 +55,7 @@ class ProductDetailView(DetailView):
             pk=self.kwargs.get('pk'))
         context['relatedproducts'] = ProductVersion.objects.exclude(
             pk=self.kwargs.get('pk'))
+        context['product_color'] = ProductVersion.objects.distinct('color').distinct("size")
         return context
 
     def post(self, request, *args, **kwargs):
@@ -124,7 +125,7 @@ class ProductListView(ListView):
 
     def get(self, request, *args, **kwargs):
         qs = None
-        qs_productversion_all = ProductVersion.objects.all()
+        qs_productversion_all = ProductVersion.objects.filter(is_main=True)
 
         if request.GET.get("search_name"):
             qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(

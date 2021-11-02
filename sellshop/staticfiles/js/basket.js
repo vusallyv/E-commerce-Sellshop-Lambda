@@ -1,5 +1,5 @@
 const BasketLogic = {
-	productManager(productId) {
+	productManager(productId, quantity) {
 		console.log(localStorage.getItem('token'));
 		fetch('http://127.0.0.1:8000/en/api/cart/', {
 			method: 'POST',
@@ -10,6 +10,7 @@ const BasketLogic = {
 			},
 			body: JSON.stringify({
 				'product': productId,
+				'quantity': quantity,
 			})
 		})
 			.then(response => response.json())
@@ -30,7 +31,8 @@ const addToBasket = document.querySelectorAll('.add_to_cart');
 addToBasket.forEach(item => {
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
-		BasketLogic.productManager(productId);
+		quantity = document.getElementById('quantity').value;
+		BasketLogic.productManager(productId, quantity);
 		// for (let i = 0; i < addToBasket.length; i++) {
 		// 	if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") == false && addToBasket[i].parentElement.classList.contains("added") == false)) {
 		// 		if (addToBasket[i].parentElement.nodeName == "DIV") {
@@ -76,10 +78,7 @@ function cartManager() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			for (let i = 0; i < data.length; i++) {
-				console.log(data[i]);
-				
-			}
+			console.log(data);
 			html = ''
 			total_price = 0
 			product_count.innerText = data.length
@@ -95,7 +94,7 @@ function cartManager() {
 										<h5>${data[i]['quantity']} x ${data[i]['product']['product']['title']}</h5>
 									</a>
 									<span>Color : ${data[i]['product']['color']['title']}</span>
-									<span>Size : ${data[i]['product']['size']}</span>
+									<span>Size : ${data[i]['product']['size']['title']}</span>
 									<strong>$${data[i]['quantity']*data[i]['product']['product']['price']}</strong>
 								</div>
 							</div>

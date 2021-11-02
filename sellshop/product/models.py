@@ -42,6 +42,7 @@ class Tag(BaseModel):
 class Color(BaseModel):
     title = models.CharField(verbose_name="Title",
                              max_length=30, help_text="Max 30 char.")
+    hex_code = models.CharField(verbose_name="Hex Code", max_length=6)
 
     def __str__(self):
         return self.title

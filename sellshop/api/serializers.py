@@ -2,7 +2,7 @@ import random
 from django.contrib.auth import get_user_model
 from django.db.models import fields
 from rest_framework import serializers
-from product.models import Color, Product, ProductVersion, Category
+from product.models import Color, Product, ProductVersion, Category, Size
 from user.models import User
 from blog.models import Blog
 from order.models import Cart, Cart_Item
@@ -76,13 +76,26 @@ class ColorSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Size
+        fields = "__all__"
+
+
 class ProductVersionSerializer(serializers.ModelSerializer):
     product = ProductOverViewSerializer()
     color = ColorSerializer()
+    size = SizeSerializer()
 
     class Meta:
         model = ProductVersion
         fields = "__all__"
+
+    # def get_main_image(self, obj):
+    #     if obj.main_version.image.image:
+    #         return obj.main_version.image.image.url
+    #     else:
+    #         return None
 
 
 class UserSerializer(serializers.ModelSerializer):

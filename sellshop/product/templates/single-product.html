@@ -63,7 +63,7 @@
 							<h3>{{ productversion.product.title }}</h3>
 							<span>{{ productversion.product.subtitle }}</span>
 							<div class="ratting floatright">
-								<p> {{ rating }} Rating </p>
+								<p> {% if rating == None %} No {% else %} {{ rating }} {% endif %} Rating </p>
 								<i class="mdi mdi-star"></i>
 								<i class="mdi mdi-star"></i>
 								<i class="mdi mdi-star"></i>
@@ -76,12 +76,20 @@
 							<div class="all-choose">
 								<div class="s-shoose">
 									<h5>Color</h5>
-									{{productversion.color}}
 									<div class="color-select clearfix">
-										<span></span>
+										{% for version in product_color %}
+										{% if version.product.id == productversion.product.id %}
+										{% if version.id == productversion.id %}
+										<a href="{% url 'single_product' version.id %}"><input style="outline: 1px solid #fe5858; outline-offset: 2px;" type="color" value="#{{version.color.hex_code}}" disabled name="" id=""></a>
+										{% else %}
+										<a href="{% url 'single_product' version.id %}"><input type="color" value="#{{version.color.hex_code}}" disabled name="" id=""></a>
+										{% endif %}
+										{% endif %}
+										{% endfor %}
+										<!-- <span></span>
 										<span class="outline"></span>
 										<span></span>
-										<span></span>
+										<span></span> -->
 									</div>
 								</div>
 								<div class="s-shoose">
@@ -95,7 +103,11 @@
 												<span class=""><i class="mdi mdi-chevron-down"></i></span>
 											</button>
 											<ul class="dropdown-menu">
-												<li><a href="#">{{ productversion.size }}</a></li>
+												{% for version in product_color %}
+												{% if version.product.id == productversion.product.id %}
+												<li><a href="{% url 'single_product' version.id %}">{{version.size}}</a></li>
+												{% endif %}
+												{% endfor %}
 											</ul>
 										</div>
 									</div>
@@ -105,14 +117,14 @@
 									<form action="#" method="POST">
 										<div class="plus-minus">
 											<a class="dec qtybutton">-</a>
-											<input type="text" value="1" max="{{productversion.quantity}}" name="qtybutton" class="plus-minus-box">
+											<input type="text" value="1" max="{{productversion.quantity}}" name="qtybutton" id="quantity" class="plus-minus-box">
 											<a class="inc qtybutton">+</a>
 										</div>
 									</form>
 								</div>
 							</div>
 							<div class="list-btn">
-								<a data="{{productversion.product.id}}" class="add_to_cart">add to cart</a>
+								<a data="{{productversion.id}}" class="add_to_cart">add to cart</a>
 								<a href="#">wishlist</a>
 								<a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
 							</div>
@@ -368,6 +380,11 @@
 												<div class="all-choose">
 													<div class="s-shoose">
 														<h5>Color</h5>
+														{% for version in product_color %}
+														{% if version.product.id == productversion.product.id %}
+														{{version.color}}
+														{% endif %}
+														{% endfor %}
 														<div class="color-select clearfix">
 															<span></span>
 															<span class="outline"></span>
