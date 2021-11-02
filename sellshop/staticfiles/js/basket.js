@@ -31,7 +31,11 @@ const addToBasket = document.querySelectorAll('.add_to_cart');
 addToBasket.forEach(item => {
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
-		quantity = document.getElementById('quantity').value;
+		try{
+			quantity = document.getElementById('quantity').value;
+		}catch{
+			quantity = 1
+		}
 		BasketLogic.productManager(productId, quantity);
 		// for (let i = 0; i < addToBasket.length; i++) {
 		// 	if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") == false && addToBasket[i].parentElement.classList.contains("added") == false)) {
@@ -90,7 +94,7 @@ function cartManager() {
 								<a class="cart-img" href="{% url 'cart' %}"><img src='${data[i]['product']['main_image']}'
 										alt="" /></a>
 								<div class="menu-cart-text">
-									<a href="#">
+									<a href="http://127.0.0.1:8000/en/product/single-product/${data[i]['product']['id']}">
 										<h5>${data[i]['quantity']} x ${data[i]['product']['product']['title']}</h5>
 									</a>
 									<span>Color : ${data[i]['product']['color']['title']}</span>
