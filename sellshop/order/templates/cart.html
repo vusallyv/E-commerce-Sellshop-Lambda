@@ -137,7 +137,9 @@
 			</div>
 		</section>
 		<!-- cart content section end -->
-		
+		{% if request.user.is_authenticated %}
+		<script src="{% static 'js/cart.js' %}"></script>
+		{% endif %}
 
 {% endblock %}
 

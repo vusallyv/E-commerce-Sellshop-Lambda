@@ -1,4 +1,3 @@
-
 const BasketLogic = {
 	productManager(productId, quantity) {
 		console.log(localStorage.getItem('token'));
@@ -28,7 +27,6 @@ const BasketLogic = {
 
 
 const addToBasket = document.querySelectorAll('.add_to_cart');
-
 addToBasket.forEach(item => {
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
@@ -38,32 +36,6 @@ addToBasket.forEach(item => {
 			quantity = 1
 		}
 		BasketLogic.productManager(productId, quantity);
-		// for (let i = 0; i < addToBasket.length; i++) {
-		// 	if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") == false && addToBasket[i].parentElement.classList.contains("added") == false)) {
-		// 		if (addToBasket[i].parentElement.nodeName == "DIV") {
-		// 			addToBasket[i].style.background = "#fe5858 none repeat scroll 0 0"
-		// 			addToBasket[i].style.color = "#fff"
-		// 			addToBasket[i].innerText = "remove from cart"
-		// 			addToBasket[i].classList.add("added")
-		// 		} else {
-		// 			addToBasket[i].parentElement.style.background = "#fe5858 none repeat scroll 0 0"
-		// 			addToBasket[i].parentElement.style.color = "#fff"
-		// 			addToBasket[i].parentElement.classList.add("added")
-		// 		}
-		// 	}
-		// 	else if (addToBasket[i].getAttribute("data") == item.getAttribute("data") && (addToBasket[i].classList.contains("added") | addToBasket[i].parentElement.classList.contains("added"))) {
-		// 		if (addToBasket[i].parentElement.nodeName == "DIV") {
-		// 			addToBasket[i].style.background = ""
-		// 			addToBasket[i].style.color = ""
-		// 			addToBasket[i].innerText = "add to cart"
-		// 			addToBasket[i].classList.remove("added")
-		// 		} else {
-		// 			addToBasket[i].parentElement.style.background = ""
-		// 			addToBasket[i].parentElement.style.color = ""
-		// 			addToBasket[i].parentElement.classList.remove("added")
-		// 		}
-		// 	}
-		// }
 	}
 })
 
@@ -83,7 +55,6 @@ function cartManager() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
 			html = ''
 			total_price = 0
 			product_count.innerText = data.length
