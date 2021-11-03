@@ -91,11 +91,11 @@ class ProductVersionSerializer(serializers.ModelSerializer):
         model = ProductVersion
         fields = "__all__"
 
-    # def get_main_image(self, obj):
-    #     if obj.main_version.image.image:
-    #         return obj.main_version.image.image.url
-    #     else:
-    #         return None
+    # # def get_main_image(self, obj):
+    # #     if obj.main_version.image.image:
+    # #         return obj.main_version.image.image.url
+    # #     else:
+    # #         return None
 
 
 class UserSerializer(serializers.ModelSerializer):
