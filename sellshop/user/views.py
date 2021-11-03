@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView, View
+from order.forms import BillingForm
+from order.models import Billing
 from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm
 from user.models import User, Contact, Subscriber
 from django.contrib import auth
@@ -50,8 +52,8 @@ class ContactSubscripView(View):
             'form': SubscriberForm,
             'form2': ContactForm,
         }
-        return render(request, 'contact.html', context=context) 
-    
+        return render(request, 'contact.html', context=context)
+
     def post(self, request, *args, **kwargs):
         context = {
             'title': 'Single-blog Sellshop',
@@ -69,7 +71,7 @@ class ContactSubscripView(View):
             else:
                 form = SubscriberForm()
                 return render(request, 'contact.html', context=context)
-            
+
         if 'form2' in request.POST:
             form = ContactForm(request.POST, request.FILES)
             if form.is_valid():
@@ -82,8 +84,7 @@ class ContactSubscripView(View):
                 return render(request, 'contact.html', context=context)
             else:
                 form = ContactForm()
-                return render(request,'contact.html', context=context)
-
+                return render(request, 'contact.html', context=context)
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and "contact" in request.POST:
@@ -160,7 +161,8 @@ def login(request):
 
     if request.method == "POST" and 'login' in request.POST:
         form1 = LoginForm(request.POST)
-        user = User.objects.filter(username=request.POST.get('username')).first()
+        user = User.objects.filter(
+            username=request.POST.get('username')).first()
         if user is not None and user.check_password(request.POST.get('password')):
             auth.login(request, user)
             return redirect('my_account')
@@ -183,8 +185,33 @@ def logout(request):
 
 # @login_required(login_url='/account/my-account/')
 def my_account(request):
+    if request.method == "POST" and "my_account" in request.POST:
+        billing = BillingForm(request.POST)
+        if billing.is_valid():
+            print(True)
+            if Billing.objects.filter(user=request.user).exists == False:
+                billing = Billing(
+                    user=request.user,
+                    company_name=request.POST.get('company_name'),
+                    country=request.POST.get('country'),
+                    state=request.POST.get('state'),
+                    city=request.POST.get('city'),
+                    address=request.POST.get('address'),
+                )
+                billing.save()
+            else:
+                Billing.objects.filter(user=request.user).update(
+                    company_name=request.POST.get('company_name'),
+                    country=request.POST.get('country'),
+                    state=request.POST.get('state'),
+                    city=request.POST.get('city'),
+                    address=request.POST.get('address')
+                )
+    else:
+        billing = BillingForm()
     context = {
-        'title':  'My-account Sellshop'
+        'title':  'My-account Sellshop',
+        'billing': billing
     }
     if request.user.is_authenticated:
         return render(request, "my-account.html", context=context)

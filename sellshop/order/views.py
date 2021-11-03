@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from user.models import User
 from order.forms import BillingForm, ShippingAddressForm
-from order.models import Billing, ShippingAddress, Wishlist
+from order.models import Billing, Cart, Cart_Item, ShippingAddress, Wishlist
 
 
 def card(request):
@@ -19,7 +19,18 @@ def card(request):
 def checkout(request):
     if request.method == "POST" and "billing" in request.POST:
         billing = BillingForm(request.POST)
-        if billing.is_valid():
+        # if billing.is_valid():
+        print(Billing.objects.filter(user=request.user).exists)
+        if Billing.objects.filter(user=request.user).exists:
+            Billing.objects.filter(user=request.user).update(
+                company_name=request.POST.get('company_name'),
+                country=request.POST.get('country'),
+                state=request.POST.get('state'),
+                city=request.POST.get('city'),
+                address=request.POST.get('address'),
+            )
+        else:
+            print(True)
             billing = Billing(
                 user=request.user,
                 company_name=request.POST.get('company_name'),
@@ -54,6 +65,7 @@ def checkout(request):
         'title': 'Checkout Sellshop',
         'billing': billing,
         'shipping': shipping,
+        'cart_products': Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user)),
     }
     if request.user.is_authenticated:
         return render(request, "checkout.html", context=context)
@@ -79,4 +91,3 @@ def wishlist(request):
     if request.user.is_authenticated:
         return render(request, "wishlist.html", context=context)
     return render(request, "error-404.html", context=context)
-

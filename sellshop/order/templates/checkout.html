@@ -31,11 +31,13 @@
 					<div class="custom-input">
 						<form action="" method="post" name="billing">
 							{% csrf_token %}
-							<input type="text" name="subject" placeholder="Your name" />
+							<input type="text" value="{{billing.user.first_name}}" name="subject" placeholder="Your name" />
 							<input type="text" name="subject" placeholder="Enter your here" />
 							<input type="text" name="phone_number" placeholder="Phone here" />
 							{{ billing.company_name }}
-							{{ billing.country }}
+							<div class="custom-select">
+									{{ billing.country }}
+							</div>
 							{{ billing.state }}
 							{{ billing.city }}
 
@@ -64,17 +66,6 @@
 							{{shipping.company_name}}
 							<div class="custom-select">
 								{{shipping.country }}
-								{% comment 'country' %}
-								<select class="form-control">
-									<option> Country</option>
-									<option> Bangladesh </option>
-									<option> United States </option>
-									<option> United Kingdom </option>
-									<option> Canada </option>
-									<option> Malaysia </option>
-									<option> United Arab Emirates </option>
-								</select>
-								{% endcomment %}
 							</div>
 							<div class="custom-select">
 								{{shipping.state }}
@@ -133,14 +124,13 @@
 								</tr>
 							</thead>
 							<tbody>
+								{% for product in cart_products %}
 								<tr>
-									<th>Men’s White Shirt x 2</th>
-									<td>$86.00</td>
+									
+									<th>{{product.product.color}} {{product.product.product.title}} {{product.product.size}} x {{product.quantity}}</th>
+									<td>{{product.quantity}}*${{product.product.product.price}}</td>
 								</tr>
-								<tr>
-									<th>Men’s Black Shirt x 1</th>
-									<td>$69.00</td>
-								</tr>
+								{% endfor %}
 								<tr>
 									<th>Cart Subtotal</th>
 									<td>$155.00</td>

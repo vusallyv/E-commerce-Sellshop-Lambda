@@ -42,7 +42,7 @@ class Tag(BaseModel):
 class Color(BaseModel):
     title = models.CharField(verbose_name="Title",
                              max_length=30, help_text="Max 30 char.")
-    hex_code = models.CharField(verbose_name="Hex Code", max_length=6)
+    hex_code = models.CharField(verbose_name="Hex Code", max_length=6, default="ffffff")
 
     def __str__(self):
         return self.title
@@ -101,7 +101,7 @@ class ProductVersion(BaseModel):
     #     return self.version_images.filter(is_main=True).first()
 
     def __str__(self):
-        return self.product.title
+        return f"{self.product.title} {self.color} {self.size}"
 
 
 class Review(BaseModel):
