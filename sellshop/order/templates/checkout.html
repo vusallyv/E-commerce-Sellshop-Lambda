@@ -58,7 +58,7 @@
 					<div class="custom-input">
 						<form action="" method="POST" name="shipping">
 							{% csrf_token %}
-							{{shipping.first_name}} 
+							{{shipping.first_name}}
 							{{shipping.last_name}}
 							{{shipping.phone_number}}
 							{{shipping.company_name}}
@@ -226,4 +226,6 @@
 <!-- Checkout content section end -->
 
 <!-- all js here -->
+<script src="{% static 'js/cart.js' %"></script>
+
 {% endblock %}

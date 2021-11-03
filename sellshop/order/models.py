@@ -4,7 +4,7 @@ from sellshop.utils.base_models import BaseModel
 
 
 class Billing(BaseModel):
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         "user.User", related_name="User_Billing", on_delete=models.CASCADE, verbose_name="User")
     company_name = models.CharField(
         verbose_name="Company name", max_length=255, help_text="Max 255 char.", null=False, blank=False)
