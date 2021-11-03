@@ -189,11 +189,11 @@ class CartView(APIView):
         cart = Cart.objects.get(user=request.user)
         if product:
             print(quantity)
-            product.quantity -= int(quantity)
-            product.save()
+            quantity -= 1
+            ProductVersion.objects.filter(pk=product_id).update(quantity=quantity)
             Cart_Item.objects.get_or_create(cart=cart, product=product)
             cart_item = Cart_Item.objects.get(cart=cart, product=product)
-            cart_item.quantity += int(quantity)
+            cart_item.quantity += 1
             Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
             Cart.objects.get(user=request.user).product.add(product)
             message = {'success': True,
@@ -219,6 +219,7 @@ class CartItemView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        obj = Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user))
+        cart = Cart.objects.filter(user=request.user).first()
+        obj = Cart_Item.objects.filter(cart=cart)
         serializer = self.serializer_class(obj, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
