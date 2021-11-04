@@ -1,7 +1,6 @@
 var CartLogic = {
     productManager(productId, quantity) {
-        console.log(localStorage.getItem('token'));
-        fetch('http://127.0.0.1:8000/en/api/cart/', {
+        fetch('http://127.0.0.1:8000/en/api/cart-quantity/', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -16,8 +15,8 @@ var CartLogic = {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert(data.message)
                     cartManager()
+                    cartItemManager()
                 } else {
                     alert(data.message);
                 }
@@ -41,7 +40,6 @@ function cartItemManager() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             let html = ''
             for (let i = 0; i < data.length; i++) {
                 html += `
@@ -54,18 +52,18 @@ function cartItemManager() {
             <p class="itemcolor">Size   : <span>${data[i]['product']['size']['title']}</span></p>
             </div>
             </td>
-            <td>$${data[i]['product']['product']['price']}</td>
+            <td>$${parseFloat(data[i]['product']['product']['price']).toFixed(2)}</td>
             <td>
             <form action="#" method="POST">
             <div class="plus-minus">
             <a class="dec qtybutton">-</a>
-            <input type="number" data="${data[i]['product']['id']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
+            <input type="number" onchange="quantityChange()" data="${data[i]['product']['id']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
             <a class="inc qtybutton">+</a>
             </div>
             </form>
             </td>
             <td>
-            <strong>$${data[i]['product']['product']['price'] * data[i]['quantity']}</strong>
+            <strong>$${parseFloat(data[i]['product']['product']['price'] * data[i]['quantity']).toFixed(2)}</strong>
             </td>
             <td><i class="mdi mdi-close" title="Remove this product"></i></td>
             </tr>
@@ -79,14 +77,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
     cartItemManager()
 });
 
-quantityInput = document.querySelectorAll(".plus-minus-box")
-
-
-for (let i = 0; i < quantityInput.length; i++) {
-    quantityInput[i].addEventListener('change', function () {
-        console.log('salam');
-        const productId = this.getAttribute('data');
-        quantity = quantityInput.value
-        CartLogic.productManager(productId, quantity);
+function quantityChange() {
+    quantityInput = document.querySelectorAll(".plus-minus-box")
+    quantityInput.forEach(item => {
+        item.onchange = function () {
+            const productId = this.getAttribute('data');
+            quantity = item.value;
+            CartLogic.productManager(productId, quantity);
+        }
     })
 }
+
+

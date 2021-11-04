@@ -1,6 +1,5 @@
 const BasketLogic = {
 	productManager(productId, quantity) {
-		console.log(localStorage.getItem('token'));
 		fetch('http://127.0.0.1:8000/en/api/cart/', {
 			method: 'POST',
 			credentials: 'include',
@@ -16,7 +15,6 @@ const BasketLogic = {
 			.then(response => response.json())
 			.then(data => {
 				if (data.success) {
-					alert(data.message)
 					cartManager()
 				} else {
 					alert(data.message);
@@ -71,17 +69,17 @@ function cartManager() {
 									</a>
 									<span>Color : ${data[i]['product']['color']['title']}</span>
 									<span>Size : ${data[i]['product']['size']['title']}</span>
-									<strong>$${data[i]['quantity'] * data[i]['product']['product']['price']}</strong>
+									<strong>$${parseFloat(data[i]['quantity'] * data[i]['product']['product']['price']).toFixed(2)}</strong>
 								</div>
 							</div>
 			`
 			}
 			basketItem.innerHTML = html
 			basketItem.innerHTML += `<div class="total">
-									<span>total <strong>= $${total_price}</strong></span>
+									<span>total <strong>= $${total_price.toFixed(2)}</strong></span>
 									</div>
 								`
-			total.innerText = `$${total_price}`
+			total.innerText = `$${total_price.toFixed(2)}`
 		});
 }
 

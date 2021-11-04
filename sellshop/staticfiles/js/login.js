@@ -10,8 +10,6 @@ const LoginLogic = {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(username, password);
-                console.log(data);
                 if (data.access) {
                     localStorage.setItem('token', data.access);
                 } else {

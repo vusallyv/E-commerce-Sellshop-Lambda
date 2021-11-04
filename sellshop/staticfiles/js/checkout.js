@@ -48,3 +48,4 @@ function cartItemManager() {
 window.addEventListener('DOMContentLoaded', (event) => {
     cartItemManager()
 });
+

@@ -188,9 +188,9 @@ class CartView(APIView):
         Cart.objects.get_or_create(user=request.user)
         cart = Cart.objects.get(user=request.user)
         if product:
-            print(quantity)
-            product.quantity -= int(quantity)
-            product.save()
+            # print(quantity)
+            # product.quantity -= int(quantity)
+            # product.save()
             Cart_Item.objects.get_or_create(cart=cart, product=product)
             cart_item = Cart_Item.objects.get(cart=cart, product=product)
             cart_item.quantity += int(quantity)
@@ -210,6 +210,31 @@ class CartView(APIView):
         #     message = {'success': True,
         #                'message': 'Product removed from your card.'}
         #     return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message': 'Product not found.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CartQuantityView(APIView):
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.data.get('product')
+        quantity = request.data.get('quantity')
+        print(quantity)
+        product = ProductVersion.objects.get(pk=product_id)
+        Cart.objects.get_or_create(user=request.user)
+        cart = Cart.objects.get(user=request.user)
+        if product:
+            Cart_Item.objects.get_or_create(cart=cart, product=product)
+            cart_item = Cart_Item.objects.get(cart=cart, product=product)
+            cart_item.quantity = int(quantity)
+            print(cart_item.quantity)
+            Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
+            Cart.objects.get(user=request.user).product.add(product)
+            message = {'success': True,
+                       'message': 'Product added to your card.'}
+            return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Product not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
