@@ -1,6 +1,6 @@
 var CartLogic = {
-    productManager(productId, quantity) {
-        fetch('http://127.0.0.1:8000/en/api/cart-quantity/', {
+    productManager(productId, quantity, template) {
+        fetch('http://127.0.0.1:8000/en/api/cart/', {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -10,6 +10,7 @@ var CartLogic = {
             body: JSON.stringify({
                 'product': productId,
                 'quantity': quantity,
+                'template': template,
             })
         })
             .then(response => response.json())
@@ -26,7 +27,6 @@ var CartLogic = {
 
 
 let cart_body = document.getElementById("cart_body")
-
 
 
 function cartItemManager() {
@@ -83,7 +83,8 @@ function quantityChange() {
         item.onchange = function () {
             const productId = this.getAttribute('data');
             quantity = item.value;
-            CartLogic.productManager(productId, quantity);
+            template = "cart.html"
+            CartLogic.productManager(productId, quantity, template);
         }
     })
 }

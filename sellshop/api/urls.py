@@ -45,7 +45,6 @@ urlpatterns = [
          views.ProductVersionUpdateAPIView.as_view(), name="product_version_update"),
     path('user/create/', views.UserCreateAPIView.as_view(), name="user"),
     path('cart/', views.CartView.as_view(), name='card'),
-    path('cart-quantity/', views.CartQuantityView.as_view(), name='cart_item'),
     path('cart-item/', views.CartItemView.as_view(), name='cart_item'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

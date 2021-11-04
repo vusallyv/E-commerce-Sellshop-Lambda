@@ -184,54 +184,32 @@ class CartView(APIView):
     def post(self, request, *args, **kwargs):
         product_id = request.data.get('product')
         quantity = request.data.get('quantity')
+        template = request.data.get('template')
+        print(template)
         product = ProductVersion.objects.get(pk=product_id)
         Cart.objects.get_or_create(user=request.user)
         cart = Cart.objects.get(user=request.user)
         if product:
-            # print(quantity)
-            # product.quantity -= int(quantity)
-            # product.save()
-            Cart_Item.objects.get_or_create(cart=cart, product=product)
-            cart_item = Cart_Item.objects.get(cart=cart, product=product)
-            cart_item.quantity += int(quantity)
-            Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
-            Cart.objects.get(user=request.user).product.add(product)
-            message = {'success': True,
-                       'message': 'Product added to your card.'}
-            return Response(message, status=status.HTTP_201_CREATED)
-        # elif product and product in Cart.objects.get(user=request.user).product.all():
-        #     product.quantity += 1
-        #     product.save()
-        #     Cart_Item.objects.get_or_create(cart=cart, product=product)
-        #     cart_item = Cart_Item.objects.get(cart=cart, product=product)
-        #     cart_item.quantity += 1
-        #     Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
-        #     Cart.objects.get(user=request.user).product.remove(product)
-        #     message = {'success': True,
-        #                'message': 'Product removed from your card.'}
-        #     return Response(message, status=status.HTTP_201_CREATED)
-        message = {'success': False, 'message': 'Product not found.'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
-
-
-class CartQuantityView(APIView):
-    serializer_class = CartSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        product_id = request.data.get('product')
-        quantity = request.data.get('quantity')
-        print(quantity)
-        product = ProductVersion.objects.get(pk=product_id)
-        Cart.objects.get_or_create(user=request.user)
-        cart = Cart.objects.get(user=request.user)
-        if product:
-            Cart_Item.objects.get_or_create(cart=cart, product=product)
-            cart_item = Cart_Item.objects.get(cart=cart, product=product)
-            cart_item.quantity = int(quantity)
-            print(cart_item.quantity)
-            Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
-            Cart.objects.get(user=request.user).product.add(product)
+            if template == "cart.html":
+                Cart_Item.objects.get_or_create(cart=cart, product=product)
+                cart_item = Cart_Item.objects.get(cart=cart, product=product)
+                cart_item.quantity = int(quantity)
+                Cart_Item.objects.filter(cart=cart, product=product).update(
+                    quantity=cart_item.quantity)
+                Cart.objects.get(user=request.user).product.add(product)
+            elif template == "product.html":
+                Cart_Item.objects.get_or_create(cart=cart, product=product)
+                cart_item = Cart_Item.objects.get(cart=cart, product=product)
+                cart_item.quantity += int(quantity)
+                Cart_Item.objects.filter(cart=cart, product=product).update(
+                    quantity=cart_item.quantity)
+                Cart.objects.get(user=request.user).product.add(product)
+            elif template == "remove.html":
+                Cart_Item.objects.get_or_create(cart=cart, product=product)
+                cart_item = Cart_Item.objects.get(cart=cart, product=product)
+                Cart_Item.objects.filter(cart=cart, product=product).update(
+                    quantity=0)
+                Cart.objects.get(user=request.user).product.remove(product)
             message = {'success': True,
                        'message': 'Product added to your card.'}
             return Response(message, status=status.HTTP_201_CREATED)
@@ -244,6 +222,7 @@ class CartItemView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        obj = Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user))
+        obj = Cart_Item.objects.filter(
+            cart=Cart.objects.get(user=request.user))
         serializer = self.serializer_class(obj, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
