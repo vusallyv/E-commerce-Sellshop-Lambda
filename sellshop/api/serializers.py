@@ -2,7 +2,7 @@ import random
 from django.contrib.auth import get_user_model
 from django.db.models import fields
 from rest_framework import serializers
-from product.models import Color, Product, ProductVersion, Category, Size
+from product.models import Color, Image, Product, ProductVersion, Category, Size
 from user.models import User
 from blog.models import Blog
 from order.models import Cart, Cart_Item
@@ -35,12 +35,12 @@ class ProductSerializer(serializers.ModelSerializer):
     main_version = serializers.SerializerMethodField()
     total_quantity = serializers.SerializerMethodField()
     versions = serializers.SerializerMethodField()
-    main_image = serializers.SerializerMethodField()
+    # main_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ("title", "subtitle", "ex_price", "price", "description",
-                  "brand", "category", "total_quantity", "main_version", "versions", "main_image")
+                  "brand", "category", "total_quantity", "main_version", "versions")
 
     def get_total_quantity(self, obj):
         return obj.total_quantity
@@ -57,11 +57,11 @@ class ProductSerializer(serializers.ModelSerializer):
             qs = obj.versions.all()
         return ProductVersionSerializer(qs, many=True).data
 
-    def get_main_image(self, obj):
-        if obj.main_version.image.image:
-            return obj.main_version.image.image.url
-        else:
-            return None
+    # def get_main_image(self, obj):
+    #     if obj.main_version.image.image:
+    #         return obj.main_version.image.image.url
+    #     else:
+    #         return None
 
 
 class ProductOverViewSerializer(serializers.ModelSerializer):
@@ -90,6 +90,7 @@ class ProductVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductVersion
         fields = "__all__"
+
 
 
 class UserSerializer(serializers.ModelSerializer):

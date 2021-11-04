@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
 from blog.models import Blog
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
+from product.models import ProductVersion
 
 from user.forms import ContactForm, SubscriberForm
 # Create your views here.
@@ -52,8 +53,13 @@ class AboutView(TemplateView):
 
 
 def index(request):
+    new_arrivals = ProductVersion.objects.order_by("-created_at")
+    mostreview = ProductVersion.objects.annotate(
+        num_rev=Count('review')).order_by('-num_rev')[:5]
     context = {
         'title': 'Home Sellshop',
+        'mostreview': mostreview,
+        'new_arrivals': new_arrivals,
     }
     return render(request, 'index.html', context=context)
 
@@ -73,6 +79,11 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Home Sellshop'
+        context['mostreview'] = ProductVersion.objects.annotate(
+            num_rev=Count('review')).order_by('-num_rev')[:5],
+        context['new_arrivals'] = ProductVersion.objects.order_by("created_at")[0:12],
+        context['latest_blog'] = Blog.objects.order_by("-created_at")[0:3],
+        context['latest_blog2'] = Blog.objects.order_by("-created_at")[3:6],
         return context
 
 

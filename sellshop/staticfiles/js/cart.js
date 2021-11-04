@@ -40,7 +40,6 @@ function cartItemManager() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             let html = ''
             for (let i = 0; i < data.length; i++) {
                 if (data[i]['quantity'] > 0) {

@@ -59,13 +59,14 @@ function cartManager() {
 			total_price = 0
 			let count = 0
 			for (let i = 0; i < data.length; i++) {
+				console.log(data[i]['product']['id']);
 				total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
 				if (data[i]['quantity'] > 0) {
 					count += 1
 					html += `
 					<div class="sin-itme clearfix">
 					<a data="${data[i]['product']['id']}" class="remove_from_cart" onclick="removeFromCart()"> <i class="mdi mdi-close"></i> </a>
-					<a class="cart-img" href="{% url 'cart' %}"><img src='${data[i]['product']['main_image']}'
+					<a class="cart-img" href="{% url 'cart' %}"><img src='https://assets.ajio.com/medias/sys_master/root/20210514/T01n/609e7c45f997ddb3129e999c/-473Wx593H-461571257-blue-MODEL.jpg'
 					alt="" /></a>
 					<div class="menu-cart-text">
 					<a href="http://127.0.0.1:8000/en/product/single-product/${data[i]['product']['id']}">

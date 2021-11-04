@@ -56,7 +56,7 @@ class ProductDetailView(DetailView):
             pk=self.kwargs.get('pk'))
         context['relatedproducts'] = ProductVersion.objects.exclude(
             pk=self.kwargs.get('pk'))
-        context['product_color'] = ProductVersion.objects.distinct('color').distinct("size")
+        context['product_color'] = ProductVersion.objects.all()
         return context
 
     def post(self, request, *args, **kwargs):
