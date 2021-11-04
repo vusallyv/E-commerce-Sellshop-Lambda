@@ -132,22 +132,22 @@ class ProductListView(ListView):
         if request.GET.get("search_name"):
             qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
                 product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
-        if request.GET.get("category_name"):
+        elif request.GET.get("category_name"):
             qs_productversion_all = ProductVersion.objects.filter(
                 product__category__parent__title=request.GET.get("category_name"))
-        if request.GET.get("subcategory_name"):
+        elif request.GET.get("subcategory_name"):
             qs_productversion_all = qs_productversion_all.filter(
                 product__category__title=request.GET.get("subcategory_name"))
-        if request.GET.get("size"):
+        elif request.GET.get("size"):
             qs_productversion_all = qs_productversion_all.filter(
                 size__title=request.GET.get("size"))
-        if request.GET.get("brand"):
+        elif request.GET.get("brand"):
             qs_productversion_all = qs_productversion_all.filter(
                 product__brand__title=request.GET.get("brand"))
-        if request.GET.get("min_price"):
+        elif request.GET.get("min_price"):
             qs_productversion_all = qs_productversion_all.filter(
                 product__price__gte=request.GET.get("min_price"))
-        if request.GET.get("max_price"):
+        elif request.GET.get("max_price"):
             qs_productversion_all = qs_productversion_all.filter(
                 product__price__lte=request.GET.get("max_price"))
         context = {
