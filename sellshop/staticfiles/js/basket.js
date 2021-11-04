@@ -30,9 +30,9 @@ const addToBasket = document.querySelectorAll('.add_to_cart');
 addToBasket.forEach(item => {
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
-		try{
+		try {
 			quantity = document.getElementById('quantity').value;
-		}catch{
+		} catch {
 			quantity = 1
 		}
 		BasketLogic.productManager(productId, quantity);
@@ -59,7 +59,7 @@ function cartManager() {
 			total_price = 0
 			product_count.innerText = data.length
 			for (let i = 0; i < data.length; i++) {
-				total_price += parseFloat(data[i]['quantity']*data[i]['product']['product']['price'])
+				total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
 				html += `
 							<div class="sin-itme clearfix">
 								<a data="${data[i]['product']['id']}" class="add_to_cart"> <i class="mdi mdi-close"></i> </a>
@@ -71,7 +71,7 @@ function cartManager() {
 									</a>
 									<span>Color : ${data[i]['product']['color']['title']}</span>
 									<span>Size : ${data[i]['product']['size']['title']}</span>
-									<strong>$${data[i]['quantity']*data[i]['product']['product']['price']}</strong>
+									<strong>$${data[i]['quantity'] * data[i]['product']['product']['price']}</strong>
 								</div>
 							</div>
 			`

@@ -1,34 +1,4 @@
-var CartLogic = {
-    productManager(productId, quantity) {
-        console.log(localStorage.getItem('token'));
-        fetch('http://127.0.0.1:8000/en/api/cart/', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                'product': productId,
-                'quantity': quantity,
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message)
-                    cartManager()
-                } else {
-                    alert(data.message);
-                }
-            });
-    }
-}
-
-
 let cart_body = document.getElementById("cart_body")
-
-
 
 function cartItemManager() {
     fetch('http://127.0.0.1:8000/en/api/cart-item/', {
@@ -78,15 +48,3 @@ function cartItemManager() {
 window.addEventListener('DOMContentLoaded', (event) => {
     cartItemManager()
 });
-
-quantityInput = document.querySelectorAll(".plus-minus-box")
-
-
-for (let i = 0; i < quantityInput.length; i++) {
-    quantityInput[i].addEventListener('change', function () {
-        console.log('salam');
-        const productId = this.getAttribute('data');
-        quantity = quantityInput.value
-        CartLogic.productManager(productId, quantity);
-    })
-}

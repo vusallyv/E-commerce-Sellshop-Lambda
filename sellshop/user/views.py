@@ -31,20 +31,6 @@ def password_success(request):
     return render(request, 'password_success.html', {})
 
 
-# class ContactView(CreateView):
-#     form_class = ContactForm
-#     template_name = 'contact.html'
-#     model = Contact
-#     success_url = reverse_lazy('contact')
-
-
-# class SubscriptionsView(CreateView):
-#     form_class = SubscriberForm
-#     template_name = 'contact.html'
-#     model = Subscribers
-#     success_url = reverse_lazy('contact')
-
-
 class ContactSubscripView(View):
     def get(self, request, *args, **kwargs):
         context = {

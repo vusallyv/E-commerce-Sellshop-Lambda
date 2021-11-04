@@ -91,12 +91,6 @@ class ProductVersionSerializer(serializers.ModelSerializer):
         model = ProductVersion
         fields = "__all__"
 
-    # def get_main_image(self, obj):
-    #     if obj.main_version.image.image:
-    #         return obj.main_version.image.image.url
-    #     else:
-    #         return None
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -134,7 +128,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     products = serializers.SerializerMethodField()
-    # images = serializers.SerializerMethodField()
 
     class Meta:
         model = Cart
@@ -144,13 +137,10 @@ class CartSerializer(serializers.ModelSerializer):
         qs = obj.product.all()
         return ProductVersionSerializer(qs, many=True).data
 
-    # def get_images(self, obj):
-    #     qs = obj.product.first().version_images.all()
-    #     return ProductVersionSerializer(qs, many=True).data
-
 
 class CartItemSerializer(serializers.ModelSerializer):
-    product = ProductVersionSerializer( )
+    product = ProductVersionSerializer()
+
     class Meta:
         model = Cart_Item
         fields = ("product", "quantity")

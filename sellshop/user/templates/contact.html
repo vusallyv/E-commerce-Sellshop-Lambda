@@ -93,7 +93,7 @@
 								<h3>newsletter</h3>
 								<form method="post" name="subscribe">
 									{% csrf_token %}
-									{{ subscribeform }}
+									{{ subscribeform.email }}
 									<input type="submit" name="subscribe" value="subscribe"/>
 								</form>
 							</div>
@@ -111,16 +111,10 @@
 								
 								<form  method="post" name="contact">
 									{% csrf_token %}
-<<<<<<< HEAD
-									{{ contactform }}
+									{{ contactform.name }}
+									{{ contactform.email }}
+									{{ contactform.message }}
 									<input type="submit" name="contact" value="send your message"/>
-=======
-									{{form2}}
-									<!-- <input type="text" name="name" placeholder="Enter your Name..."/>
-									<input type="text" name="email" placeholder="Enter your email..."/>
-									<textarea name="message" rows="2" placeholder="Enter your message...."></textarea> -->
-									<input name="form2" type="submit" value="send your message"/>
->>>>>>> 221f99a9e743fc09243daa585bb0ef3c431d1d92
 								</form>
 							</div>
 						</div>

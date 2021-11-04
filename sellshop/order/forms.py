@@ -12,6 +12,7 @@ class BillingForm(forms.ModelForm):
             'city': forms.TextInput(attrs={'placeholder':'City'}),
             'address': forms.TextInput(attrs={'placeholder':'Address'}),
         }
+        
 
 
 class ShippingAddressForm(forms.ModelForm):
