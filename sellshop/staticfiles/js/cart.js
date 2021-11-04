@@ -40,9 +40,12 @@ function cartItemManager() {
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             let html = ''
             for (let i = 0; i < data.length; i++) {
-                html += `
+                if (data[i]['quantity'] > 0) {
+
+                    html += `
             <tr>
             <td class="td-img text-left">
             <a href="#"><img src="{% static 'img/cart/1.png' %}" alt="Add Product" /></a>
@@ -57,7 +60,7 @@ function cartItemManager() {
             <form action="#" method="POST">
             <div class="plus-minus">
             <a class="dec qtybutton">-</a>
-            <input type="number" onchange="quantityChange()" data="${data[i]['product']['id']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
+            <input type="number" onchange="quantityChange()" data="${data[i]['product']['id']}" min="1" max="${data[i]['product']['quantity']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
             <a class="inc qtybutton">+</a>
             </div>
             </form>
@@ -65,9 +68,10 @@ function cartItemManager() {
             <td>
             <strong>$${parseFloat(data[i]['product']['product']['price'] * data[i]['quantity']).toFixed(2)}</strong>
             </td>
-            <td><i class="mdi mdi-close" title="Remove this product"></i></td>
+            <td><i data="${data[i]['product']['id']}" class="mdi mdi-close remove_from_cart" onclick="removeFromCart()" title="Remove this product"></i></td>
             </tr>
 			`
+                }
             }
             cart_body.innerHTML = html
         });

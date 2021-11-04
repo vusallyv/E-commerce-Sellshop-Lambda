@@ -127,7 +127,7 @@ class ProductListView(ListView):
 
     def get(self, request, *args, **kwargs):
         qs = None
-        qs_productversion_all = ProductVersion.objects.filter(is_main=True)
+        qs_productversion_all = ProductVersion.objects.filter()
 
         if request.GET.get("search_name"):
             qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(

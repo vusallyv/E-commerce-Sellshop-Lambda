@@ -29,7 +29,7 @@ const addToBasket = document.querySelectorAll('.add_to_cart');
 addToBasket.forEach(item => {
 	item.onclick = function () {
 		const productId = this.getAttribute('data');
-		template = "product.html"
+		template = "product_list.html"
 		try {
 			quantity = document.getElementById('quantity').value;
 		} catch {
@@ -103,6 +103,6 @@ function removeFromCart() {
 		productId = remove_from_cart[i].getAttribute('data');
 	}
 	quantity = 1
-	template = "remove.html"
+	template = "remove_from_cart"
 	BasketLogic.productManager(productId, quantity, template);
 }

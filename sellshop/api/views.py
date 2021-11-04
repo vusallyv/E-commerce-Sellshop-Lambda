@@ -197,18 +197,17 @@ class CartView(APIView):
                 Cart_Item.objects.filter(cart=cart, product=product).update(
                     quantity=cart_item.quantity)
                 Cart.objects.get(user=request.user).product.add(product)
-            elif template == "product.html":
+            elif template == "product_list.html":
                 Cart_Item.objects.get_or_create(cart=cart, product=product)
                 cart_item = Cart_Item.objects.get(cart=cart, product=product)
                 cart_item.quantity += int(quantity)
                 Cart_Item.objects.filter(cart=cart, product=product).update(
                     quantity=cart_item.quantity)
                 Cart.objects.get(user=request.user).product.add(product)
-            elif template == "remove.html":
+            elif template == "remove_from_cart":
                 Cart_Item.objects.get_or_create(cart=cart, product=product)
                 cart_item = Cart_Item.objects.get(cart=cart, product=product)
-                Cart_Item.objects.filter(cart=cart, product=product).update(
-                    quantity=0)
+                Cart_Item.objects.filter(cart=cart, product=product).delete()
                 Cart.objects.get(user=request.user).product.remove(product)
             message = {'success': True,
                        'message': 'Product added to your card.'}
