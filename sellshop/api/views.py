@@ -185,7 +185,6 @@ class CartView(APIView):
         product_id = request.data.get('product')
         quantity = request.data.get('quantity')
         template = request.data.get('template')
-        print(template)
         product = ProductVersion.objects.get(pk=product_id)
         Cart.objects.get_or_create(user=request.user)
         cart = Cart.objects.get(user=request.user)

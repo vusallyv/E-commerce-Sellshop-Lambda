@@ -22,27 +22,27 @@ class Billing(BaseModel):
         return f"{self.user}"
 
 
-class ShippingAddress(BaseModel):
-    user = models.ForeignKey(
-        "user.User", related_name="User_Shipping", on_delete=models.CASCADE, verbose_name="User")
-    first_name = models.CharField(
-        verbose_name="First name", max_length=30, help_text="Max 30 char.", null=False, blank=False)
-    last_name = models.CharField(
-        verbose_name="Last name", max_length=30, help_text="Max 30 char.", null=False, blank=False)
-    phone_number = models.CharField(
-        verbose_name="Phone number", max_length=30, help_text="Max 30 char.", null=False, blank=False)
-    company_name = models.CharField(
-        verbose_name="Company name", max_length=255, help_text="Max 255 char.", null=False, blank=False)
-    country = CountryField(
-        verbose_name="Country", max_length=255, null=False, blank=False)
-    state = models.CharField(verbose_name="State",
-                             max_length=255, null=False, blank=False)
-    city = models.CharField(verbose_name="City",
-                            max_length=255, null=False, blank=False)
-    address = models.TextField(verbose_name="Address", null=False, blank=False)
+# class ShippingAddress(BaseModel):
+#     user = models.ForeignKey(
+#         "user.User", related_name="User_Shipping", on_delete=models.CASCADE, verbose_name="User")
+#     first_name = models.CharField(
+#         verbose_name="First name", max_length=30, help_text="Max 30 char.", null=False, blank=False)
+#     last_name = models.CharField(
+#         verbose_name="Last name", max_length=30, help_text="Max 30 char.", null=False, blank=False)
+#     phone_number = models.CharField(
+#         verbose_name="Phone number", max_length=30, help_text="Max 30 char.", null=False, blank=False)
+#     company_name = models.CharField(
+#         verbose_name="Company name", max_length=255, help_text="Max 255 char.", null=False, blank=False)
+#     country = CountryField(
+#         verbose_name="Country", max_length=255, null=False, blank=False)
+#     state = models.CharField(verbose_name="State",
+#                              max_length=255, null=False, blank=False)
+#     city = models.CharField(verbose_name="City",
+#                             max_length=255, null=False, blank=False)
+#     address = models.TextField(verbose_name="Address", null=False, blank=False)
 
-    def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+#     def __str__(self) -> str:
+#         return f"{self.first_name} {self.last_name}"
 
 
 class Wishlist(BaseModel):

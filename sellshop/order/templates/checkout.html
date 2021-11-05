@@ -31,12 +31,13 @@
 					<div class="custom-input">
 						<form action="" method="post" name="billing">
 							{% csrf_token %}
-							<input type="text" value="{{billing.user.first_name}}" name="subject" placeholder="Your name" />
+							<input type="text" value="{{billing.user.first_name}}" name="subject"
+								placeholder="Your name" />
 							<input type="text" name="subject" placeholder="Enter your here" />
 							<input type="text" name="phone_number" placeholder="Phone here" />
 							{{ billing.company_name }}
 							<div class="custom-select">
-									{{ billing.country }}
+								{{ billing.country }}
 							</div>
 							{{ billing.state }}
 							{{ billing.city }}
@@ -44,70 +45,12 @@
 							<div class="custom-mess">
 								{{ billing.address }}
 							</div>
-							<div class="submit-text">
-								<button value="submit form" type="submit" name="billing"
-									style="background-color: black; border: none;"> place order</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="main-input single-cart-form padding60">
-					<div class="log-title">
-						<h3><strong>ship to different address</strong></h3>
-					</div>
-					<div class="custom-input">
-						<form action="" method="POST" name="shipping">
-							{% csrf_token %}
-							{{shipping.first_name}}
-							{{shipping.last_name}}
-							{{shipping.phone_number}}
-							{{shipping.company_name}}
-							<div class="custom-select">
-								{{shipping.country }}
-							</div>
-							<div class="custom-select">
-								{{shipping.state }}
-								{% comment 'state' %}
-								<select class="form-control">
-									<option> State</option>
-									<option> Aberdeen </option>
-									<option> Bedfordshire </option>
-									<option> Caerphilly </option>
-									<option> Denbighshire </option>
-									<option> East Ayrshire </option>
-									<option> Falkirk </option>
-								</select>
-								{% endcomment %}
-							</div>
-							<div class="custom-select">
-								{{shipping.city }}
-								{% comment 'city' %}
-								<select class="form-control">
-									<option> Town / City</option>
-									<option> Aberdeen </option>
-									<option> Bedfordshire </option>
-									<option> Caerphilly </option>
-									<option> Denbighshire </option>
-									<option> East Ayrshire </option>
-									<option> Falkirk </option>
-								</select>
-								{% endcomment %}
-							</div>
-							<div class="custom-mess">
-								{{shipping.address}}
-							</div>
-
-							<div class="submit-text">
-								<button value="submit form" type="submit" name="shipping"
-									style="background-color: black; border: none;"> place order</button>
-							</div>
 
 						</form>
 					</div>
 				</div>
 			</div>
+
 		</div>
 		<div class="row margin-top">
 			<div class="col-xs-12 col-sm-6">
@@ -126,8 +69,8 @@
 							<tbody>
 								{% for product in cart_products %}
 								<tr>
-									
-									<th>{{product.product.color}} {{product.product.product.title}} {{product.product.size}} x {{product.quantity}}</th>
+									<th>{{product.product.color}} {{product.product.product.title}}
+										{{product.product.size}} x {{product.quantity}}</th>
 									<td>{{product.quantity}}*${{product.product.product.price}}</td>
 								</tr>
 								{% endfor %}
@@ -201,12 +144,10 @@
 								</div>
 							</li>
 						</ul>
-						{% comment 'button' %}
 						<div class="submit-text">
-							<button value="submit form" type="submit" style="background-color: black; border: none;">
-								place order</button>
+							<button value="submit form" type="submit" name="billing"
+								style="background-color: black; border: none;"> place order</button>
 						</div>
-						{% endcomment %}
 					</div>
 				</div>
 			</div>

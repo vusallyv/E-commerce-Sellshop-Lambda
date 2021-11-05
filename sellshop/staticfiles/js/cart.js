@@ -43,7 +43,6 @@ function cartItemManager() {
             let html = ''
             for (let i = 0; i < data.length; i++) {
                 if (data[i]['quantity'] > 0) {
-
                     html += `
             <tr>
             <td class="td-img text-left">
@@ -59,7 +58,7 @@ function cartItemManager() {
             <form action="#" method="POST">
             <div class="plus-minus">
             <a class="dec qtybutton">-</a>
-            <input type="number" onchange="quantityChange()" data="${data[i]['product']['id']}" min="1" max="${data[i]['product']['quantity']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
+            <input type="number" onmouseover="quantityChange()" data="${data[i]['product']['id']}" min="1" max="${data[i]['product']['quantity']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
             <a class="inc qtybutton">+</a>
             </div>
             </form>
@@ -67,7 +66,7 @@ function cartItemManager() {
             <td>
             <strong>$${parseFloat(data[i]['product']['product']['price'] * data[i]['quantity']).toFixed(2)}</strong>
             </td>
-            <td><i data="${data[i]['product']['id']}" class="mdi mdi-close remove_from_cart" onclick="removeFromCart()" title="Remove this product"></i></td>
+            <td><i data="${data[i]['product']['id']}" class="mdi mdi-close remove_from_cart" onmouseover="removeFromCart()" title="Remove this product"></i></td>
             </tr>
 			`
                 }
@@ -82,14 +81,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 function quantityChange() {
     quantityInput = document.querySelectorAll(".plus-minus-box")
-    quantityInput.forEach(item => {
-        item.onchange = function () {
+    for (let i = 0; i < quantityInput.length; i++) {
+        quantityInput[i].onchange = function () {
             const productId = this.getAttribute('data');
-            quantity = item.value;
+            quantity = quantityInput[i].value;
             template = "cart.html"
             CartLogic.productManager(productId, quantity, template);
         }
-    })
+    }
+
 }
 
 

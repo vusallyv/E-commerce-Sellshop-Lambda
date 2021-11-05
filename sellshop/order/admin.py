@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from order.models import Billing, Cart, Cart_Item, Wishlist, ShippingAddress
+from order.models import Billing, Cart, Cart_Item, Wishlist
 
 
 # class Wishlistadmin(admin.ModelAdmin):
@@ -30,10 +30,10 @@ class Cart_ItemAdmin(admin.ModelAdmin):
     list_editable = ('quantity',)
 
 
-@admin.register(ShippingAddress)
-class ShippingAddressAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone_number', 'company_name', 'country',)
-    list_filter = ('company_name', 'user', 'country')
+# @admin.register(ShippingAddress)
+# class ShippingAddressAdmin(admin.ModelAdmin):
+#     list_display = ('user', 'phone_number', 'company_name', 'country',)
+#     list_filter = ('company_name', 'user', 'country')
 
 
 admin.site.register(Wishlist)

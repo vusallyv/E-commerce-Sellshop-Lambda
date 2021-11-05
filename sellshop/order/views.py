@@ -1,10 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
-from user.models import User
-from order.forms import BillingForm, ShippingAddressForm
-from order.models import Billing, Cart, Cart_Item, ShippingAddress, Wishlist
+from order.forms import BillingForm
+from order.models import Billing, Cart, Cart_Item, Wishlist
 
 
 def card(request):
@@ -17,10 +15,9 @@ def card(request):
 
 
 def checkout(request):
-    if request.method == "POST" and "billing" in request.POST:
+    if request.method == "POST":
         billing = BillingForm(request.POST)
         # if billing.is_valid():
-        print(Billing.objects.filter(user=request.user).exists)
         if Billing.objects.filter(user=request.user).exists:
             Billing.objects.filter(user=request.user).update(
                 company_name=request.POST.get('company_name'),
@@ -30,7 +27,6 @@ def checkout(request):
                 address=request.POST.get('address'),
             )
         else:
-            print(True)
             billing = Billing(
                 user=request.user,
                 company_name=request.POST.get('company_name'),
@@ -43,28 +39,28 @@ def checkout(request):
     else:
         billing = BillingForm()
 
-    if request.method == "POST" and "shipping" in request.POST:
-        shipping = ShippingAddressForm(request.POST)
-        if shipping.is_valid():
-            shipping = ShippingAddress(
-                user=request.user,
-                first_name=request.POST.get('first_name'),
-                last_name=request.POST.get('last_name'),
-                phone_number=request.POST.get('phone_number'),
-                company_name=request.POST.get('company_name'),
-                country=request.POST.get('country'),
-                state=request.POST.get('state'),
-                city=request.POST.get('city'),
-                address=request.POST.get('address'),
-            )
-            shipping.save()
-    else:
-        shipping = ShippingAddressForm()
+    # if request.method == "POST" and "shipping" in request.POST:
+    #     shipping = ShippingAddressForm(request.POST)
+    #     if shipping.is_valid():
+    #         shipping = ShippingAddress(
+    #             user=request.user,
+    #             first_name=request.POST.get('first_name'),
+    #             last_name=request.POST.get('last_name'),
+    #             phone_number=request.POST.get('phone_number'),
+    #             company_name=request.POST.get('company_name'),
+    #             country=request.POST.get('country'),
+    #             state=request.POST.get('state'),
+    #             city=request.POST.get('city'),
+    #             address=request.POST.get('address'),
+    #         )
+    #         shipping.save()
+    # else:
+    #     shipping = ShippingAddressForm()
 
     context = {
         'title': 'Checkout Sellshop',
         'billing': billing,
-        'shipping': shipping,
+        # 'shipping': shipping,
         'cart_products': Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user)),
     }
     if request.user.is_authenticated:
