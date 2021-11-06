@@ -29,7 +29,7 @@
 						<h3><strong>billing details</strong></h3>
 					</div>
 					<div class="custom-input">
-						<form action="" method="post" name="billing">
+						<form id="checkoutForm" action="" method="post">
 							{% csrf_token %}
 							<input type="text" value="{{billing.user.first_name}}" name="subject"
 								placeholder="Your name" />
@@ -46,109 +46,109 @@
 								{{ billing.address }}
 							</div>
 
-						</form>
 					</div>
-				</div>
+				</form>
 			</div>
-
 		</div>
-		<div class="row margin-top">
-			<div class="col-xs-12 col-sm-6">
-				<div class="padding60">
-					<div class="log-title">
-						<h3><strong>Our order</strong></h3>
-					</div>
-					<div class="cart-form-text pay-details table-responsive">
-						<table>
-							<thead>
-								<tr>
-									<th>Product</th>
-									<td>Total</td>
-								</tr>
-							</thead>
-							<tbody>
-								{% for product in cart_products %}
-								<tr>
-									<th>{{product.product.color}} {{product.product.product.title}}
-										{{product.product.size}} x {{product.quantity}}</th>
-									<td>{{product.quantity}}*${{product.product.product.price}}</td>
-								</tr>
-								{% endfor %}
-								<tr>
-									<th>Cart Subtotal</th>
-									<td>$155.00</td>
-								</tr>
-								<tr>
-									<th>Shipping and Handing</th>
-									<td>$15.00</td>
-								</tr>
-								<tr>
-									<th>Vat</th>
-									<td>$00.00</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<th>Order total</th>
-									<td>$325.00</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-sm-6">
-				<div class="padding60">
-					<div class="log-title">
-						<h3><strong>Payment method</strong></h3>
-					</div>
-					<div class="categories">
-						<ul id="accordion" class="panel-group clearfix">
-							<li class="panel">
-								<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
-									<div class="medium-a">
-										direct bank transfer
-									</div>
-								</div>
-								<div class="panel-collapse collapse in" id="collapse1">
-									<div class="normal-a">
-										<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-											industry. Lorem Ipsum has been the industry.</p>
-									</div>
-								</div>
-							</li>
-							<li class="panel">
-								<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
-									<div class="medium-a">
-										cheque payment
-									</div>
-								</div>
-								<div class="paypal-dsc panel-collapse collapse" id="collapse2">
-									<div class="normal-a">
-										<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-											industry. Lorem Ipsum has been the industry.</p>
-									</div>
-								</div>
-							</li>
-							<li class="panel">
-								<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
-									<div class="medium-a">
-										paypal
-									</div>
-								</div>
-								<div class="paypal-dsc panel-collapse collapse" id="collapse3">
-									<div class="normal-a">
-										<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-											industry. Lorem Ipsum has been the industry.</p>
-									</div>
-								</div>
-							</li>
-						</ul>
-						<div class="submit-text">
-							<button value="submit form" type="submit" name="billing"
-								style="background-color: black; border: none;"> place order</button>
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div class="padding60">
+						<div class="log-title">
+							<h3><strong>Our order</strong></h3>
+						</div>
+						<div class="cart-form-text pay-details table-responsive">
+							<table>
+								<thead>
+									<tr>
+										<th>Product</th>
+										<td>Total</td>
+									</tr>
+								</thead>
+								<tbody>
+									{% for product in cart_products %}
+									<tr>
+										<th>{{product.product.color}} {{product.product.product.title}}
+											{{product.product.size}} x {{product.quantity}}</th>
+											<td>{{product.quantity}}*${{product.product.product.price}}</td>
+										</tr>
+										{% endfor %}
+										<tr>
+											<th>Cart Subtotal</th>
+											<td>$155.00</td>
+										</tr>
+										<tr>
+											<th>Shipping and Handing</th>
+											<td>$15.00</td>
+										</tr>
+										<!-- <tr>
+											<th>Vat</th>
+											<td>$00.00</td>
+										</tr> -->
+									</tbody>
+									<tfoot>
+										<tr>
+											<th>Order total</th>
+											<td>$325.00</td>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
 						</div>
 					</div>
+					<div class="col-xs-12 col-sm-6">
+						<div style="padding: 0 60px 60px 60px; background: #fff;">
+							<div class="log-title">
+								<h3><strong>Payment method</strong></h3>
+							</div>
+							<div class="categories">
+								<ul id="accordion" class="panel-group clearfix">
+									<li class="panel">
+										<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
+											<div class="medium-a">
+												direct bank transfer
+											</div>
+										</div>
+										<div class="panel-collapse collapse in" id="collapse1">
+											<div class="normal-a">
+												<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
+													industry. Lorem Ipsum has been the industry.</p>
+												</div>
+											</div>
+										</li>
+										<li class="panel">
+											<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
+												<div class="medium-a">
+													cheque payment
+												</div>
+											</div>
+											<div class="paypal-dsc panel-collapse collapse" id="collapse2">
+												<div class="normal-a">
+													<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
+														industry. Lorem Ipsum has been the industry.</p>
+													</div>
+												</div>
+											</li>
+											<li class="panel">
+												<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
+													<div class="medium-a">
+														paypal
+										</div>
+									</div>
+									<div class="paypal-dsc panel-collapse collapse" id="collapse3">
+										<div class="normal-a">
+											<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
+												industry. Lorem Ipsum has been the industry.</p>
+											</div>
+										</div>
+									</li>
+								</ul>
+								<div class="submit-text">
+									<button form="checkoutForm" value="submit form" type="submit" style="background-color: black; border: none; float: right;"> place
+										order</button>
+								</div>
+							</div>
+						</div>
 				</div>
 			</div>
 		</div>
@@ -157,6 +157,5 @@
 <!-- Checkout content section end -->
 
 <!-- all js here -->
-<script src="{% static 'js/cart.js' %"></script>
 
 {% endblock %}

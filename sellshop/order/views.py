@@ -18,7 +18,8 @@ def checkout(request):
     if request.method == "POST":
         billing = BillingForm(request.POST)
         # if billing.is_valid():
-        if Billing.objects.filter(user=request.user).exists:
+        if Billing.objects.filter(user=request.user).exists():
+            print("OK")
             Billing.objects.filter(user=request.user).update(
                 company_name=request.POST.get('company_name'),
                 country=request.POST.get('country'),
