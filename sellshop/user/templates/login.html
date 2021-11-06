@@ -74,10 +74,10 @@
 						<form action="" method="post" name="register">
 							{% csrf_token %}
 							<div>
-								{{register.first_name}}
-								{% if register.first_name.errors %}
+								{{register.username}}
+								{% if register.username.errors %}
 								<div class="alert alert-danger">
-									<strong>{{register.first_name.errors}}</strong>
+									<strong>{{register.username.errors}}</strong>
 								</div>
 								{% endif %}
 							</div>
@@ -114,10 +114,9 @@
 								{% endif %}
 							</div>
 							<label class="first-child" style="width: 100%;">
-								<span style="margin-left: 2%;">
-									Sign up for our newsletter!
-								</span>
+								{{register.rememberme}}
 							</label>
+							
 							<div class="submit-text coupon" style="margin-top: 0">
 								<button type="submit" name="register"> Register </button>
 							</div>
@@ -155,9 +154,10 @@
 				<div class="col-sm-6">
 					<div class="newsletter newsletter2">
 						<h3>newsletter</h3>
-						<form action="mail.php" method="post">
-							<input type="text" name="email" placeholder="Enter your email..." />
-							<input type="submit" value="subscribe" />
+						<form method="post" name="subscribe">
+							{% csrf_token %}
+							{{ subscribeform }}
+							<input type="submit" name="subscribe" value="subscribe"/>
 						</form>
 					</div>
 					<div class="social-icons">
@@ -171,11 +171,12 @@
 				<div class="col-sm-6 col-md-offset-1 col-md-5">
 					<div class="newsletter get-touch">
 						<h3>get in touch</h3>
-						<form action="mail.php" method="post">
-							<input type="text" name="name" placeholder="Enter your Name..." />
-							<input type="text" name="email" placeholder="Enter your email..." />
-							<textarea name="message" rows="2" placeholder="Enter your message...."></textarea>
-							<input type="submit" value="send your message" />
+						<form  method="post" name="contact">
+							{% csrf_token %}
+							{{ contactform.name }}
+							{{ contactform.email }}
+							{{ contactform.message }}
+							<input type="submit" name="contact" value="send your message"/>
 						</form>
 					</div>
 				</div>

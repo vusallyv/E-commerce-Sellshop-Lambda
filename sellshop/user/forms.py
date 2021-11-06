@@ -46,8 +46,8 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    first_name = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': 'Name here..'}))
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Username'}))
     email = forms.EmailField(widget=forms.EmailInput(
         attrs={'placeholder': 'Email Address..', "id": "email"}))
     phone_number = forms.IntegerField(widget=forms.NumberInput(
@@ -56,7 +56,7 @@ class RegisterForm(forms.Form):
         attrs={'placeholder': 'Password', "id": "password"}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(
         attrs={'placeholder': 'Confirm Password'}))
-    CHOICES = [('1', ' '), ]
+    CHOICES = [('1', 'Sign up for our newsletter!'), ]
     rememberme = forms.ChoiceField(
         choices=CHOICES, widget=forms.RadioSelect)
 
@@ -74,6 +74,12 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError("Invalid phone number")
         return phone_number
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Username already in use")
+        return username
+    
     # def clean_password(self):
     #     password = self.cleaned_data.get('password')
     #     password_confirm = self.cleaned_data.get('confirm_password')

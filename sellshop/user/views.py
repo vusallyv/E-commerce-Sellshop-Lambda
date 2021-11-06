@@ -125,39 +125,59 @@ def contact(request):
 
 
 def login(request):
+    auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
-        if form.is_valid():
-            random_number = random.randint(0, 10000)
-            while User.objects.filter(username=f"Guest_{random_number}"):
-                random_number = random.randint(0, 1000000)
-            user = User(
-                first_name=request.POST.get('first_name'),
-                email=request.POST.get('email'),
-                phone_number=request.POST.get('phone_number'),
-                username=f"Guest_{random_number}",
-                rememberme=request.POST.get('rememberme'),
-            )
-            user.set_password(request.POST.get('password')),
-            user.save()
-            auth.login(request, user)
-            return redirect('my_account')
+        # if form.is_valid():
+        print(request.POST.get('rememberme'))
+        # random_number = random.randint(0, 10000)
+        # while User.objects.filter(username=f"Guest_{random_number}"):
+        #     random_number = random.randint(0, 1000000)
+        user = User(
+            first_name=request.POST.get('first_name'),
+            email=request.POST.get('email').lower(),
+            phone_number=request.POST.get('phone_number'),
+            username=request.POST.get('username').lower(),
+            rememberme=request.POST.get('rememberme'),
+        )
+        user.set_password(request.POST.get('password')),
+        user.save()
+        auth.login(request, user)
+        return redirect('my_account')
     else:
         form = RegisterForm()
 
     if request.method == "POST" and 'login' in request.POST:
         form1 = LoginForm(request.POST)
         user = User.objects.filter(
-            username=request.POST.get('username')).first()
+            username=request.POST.get('username').lower()).first()
         if user is not None and user.check_password(request.POST.get('password')):
             auth.login(request, user)
             return redirect('my_account')
     else:
         form1 = LoginForm()
 
+    if request.method == 'POST' and "contact" in request.POST:
+        contactform = ContactForm(request.POST)
+        if contactform.is_valid():
+            contactform.save()
+            return redirect('contact')
+    else:
+        contactform = ContactForm()
+
+    if request.method == 'POST' and 'subscribe' in request.POST:
+        subscribe = SubscriberForm(request.POST)
+        if subscribe.is_valid():
+            subscribe.save()
+            return redirect('contact')
+    else:
+        subscribe = SubscriberForm()
+
     context = {
         'title':  'Login Sellshop',
         'login':  form1,
+        'contactform': contactform,
+        'subscribeform': subscribe,
         'register':  form,
     }
     return render(request, "login.html", context=context)
@@ -174,7 +194,6 @@ def my_account(request):
     if request.method == "POST" and "my_account" in request.POST:
         billing = BillingForm(request.POST)
         if billing.is_valid():
-            print(True)
             if Billing.objects.filter(user=request.user).exists == False:
                 billing = Billing(
                     user=request.user,

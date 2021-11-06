@@ -15,11 +15,11 @@ def card(request):
 
 
 def checkout(request):
+    Cart.objects.get_or_create(user=request.user)
     if request.method == "POST":
         billing = BillingForm(request.POST)
         # if billing.is_valid():
         if Billing.objects.filter(user=request.user).exists():
-            print("OK")
             Billing.objects.filter(user=request.user).update(
                 company_name=request.POST.get('company_name'),
                 country=request.POST.get('country'),
@@ -37,6 +37,7 @@ def checkout(request):
                 address=request.POST.get('address'),
             )
             billing.save()
+            # Billing.objects.filter(user=request.user)
     else:
         billing = BillingForm()
 
@@ -57,7 +58,6 @@ def checkout(request):
     #         shipping.save()
     # else:
     #     shipping = ShippingAddressForm()
-
     context = {
         'title': 'Checkout Sellshop',
         'billing': billing,
