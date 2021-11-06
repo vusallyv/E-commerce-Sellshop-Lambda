@@ -13,7 +13,7 @@ class SubscriberForm(forms.ModelForm):
         fields = ['email']
 
         widgets = {
-            'email': forms.EmailInput(attrs={'placeholder': 'Enter your email...'})
+            'email': forms.EmailInput(attrs={'placeholder': 'Enter your email...', "style": "width: 100% !important;"})
         }
 
 
@@ -24,7 +24,7 @@ class ContactForm(forms.ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'Enter your Name...'}),
-            'email': forms.TextInput(attrs={'placeholder': 'Enter your email...'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Enter your email...', "id": "contactEmail"}),
             'message': forms.Textarea(attrs={'placeholder': 'Enter your message....', 'rows': 2}),
         }
 
@@ -47,7 +47,7 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': 'Username'}))
+        attrs={'placeholder': 'Username', "id": "username"}))
     email = forms.EmailField(widget=forms.EmailInput(
         attrs={'placeholder': 'Email Address..', "id": "email"}))
     phone_number = forms.IntegerField(widget=forms.NumberInput(
@@ -87,12 +87,3 @@ class RegisterForm(forms.Form):
     #         raise forms.ValidationError("Password confirmation does not match")
     #     return password
 
-
-class SubscriberForm(forms.ModelForm):
-    class Meta:
-        model = Subscriber
-        fields = ['email', ]
-
-        widgets = {
-            'email': TextInput(attrs={'placeholer': 'Enter your email...'}),
-        }

@@ -1,7 +1,6 @@
 from django.db.models.aggregates import Avg
 from django.shortcuts import redirect, render
 from django.db.models import Q, F
-from django.urls.base import reverse
 from product.models import Category, Color, ProductVersion, Image, Review, Product, Brand, Size,  Tag
 from product.forms import ReviewForm
 from django.views.generic import DetailView, ListView

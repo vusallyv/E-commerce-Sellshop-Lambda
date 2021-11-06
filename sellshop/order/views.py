@@ -1,8 +1,9 @@
+from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
-from order.forms import BillingForm
-from order.models import Billing, Cart, Cart_Item, Wishlist
+from order.forms import BillingForm, ShippingAddressForm
+from order.models import Billing, Cart, Cart_Item, ShippingAddress, Wishlist
 
 
 def card(request):
@@ -15,54 +16,56 @@ def card(request):
 
 
 def checkout(request):
-    Cart.objects.get_or_create(user=request.user)
-    if request.method == "POST":
-        billing = BillingForm(request.POST)
-        # if billing.is_valid():
-        if Billing.objects.filter(user=request.user).exists():
-            Billing.objects.filter(user=request.user).update(
-                company_name=request.POST.get('company_name'),
-                country=request.POST.get('country'),
-                state=request.POST.get('state'),
-                city=request.POST.get('city'),
-                address=request.POST.get('address'),
-            )
-        else:
-            billing = Billing(
-                user=request.user,
-                company_name=request.POST.get('company_name'),
-                country=request.POST.get('country'),
-                state=request.POST.get('state'),
-                city=request.POST.get('city'),
-                address=request.POST.get('address'),
-            )
-            billing.save()
-            # Billing.objects.filter(user=request.user)
-    else:
-        billing = BillingForm()
-
-    # if request.method == "POST" and "shipping" in request.POST:
-    #     shipping = ShippingAddressForm(request.POST)
-    #     if shipping.is_valid():
-    #         shipping = ShippingAddress(
-    #             user=request.user,
-    #             first_name=request.POST.get('first_name'),
-    #             last_name=request.POST.get('last_name'),
-    #             phone_number=request.POST.get('phone_number'),
+    # if request.method == "POST":
+    #     billing = BillingForm(request.POST)
+    #     # if billing.is_valid():
+    #     if Billing.objects.filter(user=request.user).exists():
+    #         Billing.objects.filter(user=request.user).update(
     #             company_name=request.POST.get('company_name'),
     #             country=request.POST.get('country'),
     #             state=request.POST.get('state'),
     #             city=request.POST.get('city'),
     #             address=request.POST.get('address'),
     #         )
-    #         shipping.save()
+    #     else:
+    #         billing = Billing(
+    #             user=request.user,
+    #             company_name=request.POST.get('company_name'),
+    #             country=request.POST.get('country'),
+    #             state=request.POST.get('state'),
+    #             city=request.POST.get('city'),
+    #             address=request.POST.get('address'),
+    #         )
+    #         billing.save()
+    #         # Billing.objects.filter(user=request.user)
     # else:
-    #     shipping = ShippingAddressForm()
+    #     billing = BillingForm()
+
+    # Cart.objects.get_or_create(user=request.user)
+    if request.method == "POST":
+        shipping = ShippingAddressForm(request.POST)
+        # if shipping.is_valid():
+        shipping = ShippingAddress(
+            user=request.user,
+            company_name=request.POST.get('company_name'),
+            country=request.POST.get('country'),
+            state=request.POST.get('state'),
+            city=request.POST.get('city'),
+            address=request.POST.get('address'),
+        )
+        shipping.save()
+        Cart.objects.filter(is_ordered=False).filter(user=request.user).update(is_ordered=True, shipping_address=shipping)
+    else:
+        shipping = ShippingAddressForm()
+    try:
+        cart = len(Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False)))
+    except:
+        cart = 0
     context = {
         'title': 'Checkout Sellshop',
-        'billing': billing,
-        # 'shipping': shipping,
-        'cart_products': Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user)),
+        # 'billing': billing,
+        'shipping': shipping,
+        'cart_products': cart,
     }
     if request.user.is_authenticated:
         return render(request, "checkout.html", context=context)

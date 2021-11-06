@@ -179,7 +179,9 @@
 						<h3>newsletter</h3>
 						<form method="post" name="subscribe">
 							{% csrf_token %}
-							{{ subscribeform }}
+							<p style="margin-bottom: 3%;">
+								{{ subscribeform.email }}
+							</p>
 							<input type="submit" name="subscribe" value="subscribe" />
 						</form>
 					</div>

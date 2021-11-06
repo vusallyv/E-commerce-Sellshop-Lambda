@@ -141,7 +141,12 @@ class CartSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductVersionSerializer()
+    is_ordered = serializers.SerializerMethodField()
 
     class Meta:
         model = Cart_Item
-        fields = ("product", "quantity")
+        fields = ("product", "quantity", "is_ordered")
+
+    def get_is_ordered(self, obj):
+        qs = obj.cart.is_ordered
+        return qs

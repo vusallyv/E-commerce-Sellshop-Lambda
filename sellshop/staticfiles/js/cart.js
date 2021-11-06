@@ -27,6 +27,7 @@ var CartLogic = {
 
 
 let cart_body = document.getElementById("cart_body")
+let product_table = document.getElementById("product_table")
 
 
 function cartItemManager() {
@@ -42,7 +43,7 @@ function cartItemManager() {
         .then(data => {
             let html = ''
             for (let i = 0; i < data.length; i++) {
-                if (data[i]['quantity'] > 0) {
+                if (data[i]['quantity'] > 0 && data[i]['is_ordered'] == false) {
                     html += `
             <tr>
             <td class="td-img text-left">

@@ -58,11 +58,12 @@ function cartManager() {
 			html = ''
 			total_price = 0
 			let count = 0
-			for (let i = 0; i < data.length; i++) {
-				total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
-				if (data[i]['quantity'] > 0) {
-					count += 1
-					html += `
+			if (data.length > 0 && data[0]['is_ordered'] == false) {
+				for (let i = 0; i < data.length; i++) {
+					total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
+					if (data[i]['quantity'] > 0) {
+						count += 1
+						html += `
 					<div class="sin-itme clearfix">
 					<a data="${data[i]['product']['id']}" class="remove_from_cart" onmouseover="removeFromCart()"> <i class="mdi mdi-close"></i> </a>
 					<a class="cart-img" href="{% url 'cart' %}"><img src='https://assets.ajio.com/medias/sys_master/root/20210514/T01n/609e7c45f997ddb3129e999c/-473Wx593H-461571257-blue-MODEL.jpg'
@@ -77,6 +78,7 @@ function cartManager() {
 					</div>
 					</div>
 					`
+					}
 				}
 			}
 			basketItem.innerHTML = html
@@ -89,6 +91,10 @@ function cartManager() {
 			try {
 				cartItemManager()
 			} catch {
+			}
+			try {
+				checkoutManager()
+			} catch  {
 			}
 		});
 }
