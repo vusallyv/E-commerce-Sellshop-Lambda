@@ -1,9 +1,10 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 # Create your views here.
-from order.forms import BillingForm, ShippingAddressForm
-from order.models import Billing, Cart, Cart_Item, ShippingAddress, Wishlist
+from order.forms import ShippingAddressForm
+from order.models import Cart, Cart_Item, ShippingAddress, Wishlist
+from product.models import ProductVersion
 
 
 def card(request):
@@ -55,12 +56,19 @@ def checkout(request):
         )
         shipping.save()
         Cart.objects.filter(is_ordered=False).filter(user=request.user).update(is_ordered=True, shipping_address=shipping)
+        user_cart = Cart.objects.filter(user=request.user).filter(is_ordered=True).filter(shipping_address=shipping).first()
+        for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
+            quantity = Cart_Item.objects.filter(cart=user_cart)[i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
+            ProductVersion.objects.filter(id=Cart_Item.objects.filter(cart=user_cart)[i].product.id).update(quantity=quantity)
+        return redirect('checkout')
     else:
         shipping = ShippingAddressForm()
+
     try:
         cart = len(Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False)))
     except:
         cart = 0
+    
     context = {
         'title': 'Checkout Sellshop',
         # 'billing': billing,
