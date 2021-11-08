@@ -5,11 +5,11 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="pages-title-text text-center">
-          <h2>fashion style fine arts drawing</h2>
+          <h2>{{ blog.title }}</h2>
           <ul class="text-left">
             <li><a href="{% url 'index' %}">Home </a></li>
             <li><span> // </span><a href="{% url 'blog' %}">blog </a></li>
-            <li><span> // </span>fashion style fine arts drawing</li>
+            <li><span> // </span>{{ blog.title }}</li>
           </ul>
         </div>
       </div>
@@ -81,61 +81,59 @@
                 </ul>
               </div>
 
-              <h4 id="comment_length">{{ comments|length }}</h4>
-              
-              <div id="main_comments">
+              <div id="comments">
               </div>
-              <div id="replies"></div>
-              
+
             </div>
 
 
             <div class="leave-comment">
-              <h4>leave your review</h4>
-            {% if request.user.is_authenticated %}
+              <h4>leave your comment</h4>
+              {% if request.user.is_authenticated %}
               <form action="" method="post">
                 {% else %}
-              <form action="{% url 'login'%}">
-                {% endif %}
-                {% csrf_token %}
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6">
-                    <div class="input-text">
-                      {% if request.user.is_authenticated %}
-                      <input type="text" name="name" placeholder="Name here" value="{{user.username }}" readonly />
-                      {% else %}
-                      <input type="text" name="name" placeholder="Name here" />
-                      {% endif %}
+                <form action="{% url 'login'%}">
+                  {% endif %}
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                      <div class="input-text">
+                        {% if request.user.is_authenticated %}
+                        <input type="text" name="name" placeholder="Name here" value="{{user.username }}" readonly />
+                        {% else %}
+                        <input type="text" name="name" placeholder="Name here" />
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                      <div class="input-text">
+                        {% if request.user.is_authenticated %}
+                        <input type="text" name="name" placeholder="Name here" value="{{user.email }}" readonly />
+                        {% else %}
+                        <input type="text" name="name" placeholder="Name here" />
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="input-text">
+                        {{form.description}}
+                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="submit-text">
+                        {% if request.user.is_authenticated %}
+                        <button id="submit_comment" type="button" value="submit form" data_id="{{blog}}">
+                          submit comments
+                        </button>
+                        {% else %}
+                        <button type="text" value="submit form">
+                          submit comments
+                        </button>
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
-                  <div class="col-xs-12 col-sm-6">
-                    <div class="input-text">
-                      {% if request.user.is_authenticated %}
-                      <input type="text" name="name" placeholder="Name here" value="{{user.email }}" readonly />
-                      {% else %}
-                      <input type="text" name="name" placeholder="Name here" />
-                      {% endif %}</div>
-                  </div>
-                  <div class="col-xs-12">
-                    <div class="input-text">
-                      {{form.description}}
-                    </div>
-                  </div>
-                  <div class="col-xs-12">
-                    <div class="submit-text">
-                      {% if request.user.is_authenticated %}
-                      <button type="submit" value="submit form">
-                        submit comments
-                      </button> 
-                      {% else %}
-                      <button type="text" value="submit form">
-                        submit comments
-                      </button>
-                      {% endif %}
-                    </div>
-                  </div>
-                </div>
-              </form>
+                </form>
             </div>
           </div>
         </div>
@@ -257,8 +255,8 @@
           {% if blog.product.product.category_id.title == urlblog.product.product.category_id.title %}
           <div class="col-sm-12">
             <div class="l-blog-text">
-              <div class="banner" >
-                <a href="{% url 'single_blog' blog.id %}"><img  src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
+              <div class="banner">
+                <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
               </div>
               <div class="s-blog-text">
                 <h4>
@@ -277,7 +275,7 @@
               </div>
             </div>
           </div>
-         {% endif %}
+          {% endif %}
           {% endfor %}
         </div>
       </li>
@@ -287,5 +285,5 @@
 <!-- related post section end -->
 
 <!-- all js here -->
-<script src="{% static 'js/comments.js' %}"></script>
+<script src="{% static 'js/comment.js' %}"></script>
 {% endblock %}

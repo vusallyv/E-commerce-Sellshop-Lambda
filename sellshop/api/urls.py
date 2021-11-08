@@ -23,6 +23,8 @@ urlpatterns = [
     path('categories/<int:pk>/update/', views.UpdateCategoryAPIView.as_view()),
     path('categories/<int:pk>/delete/', views.DeleteCategoryAPIView.as_view()),
     path('blogs/create/', views.CreateBlogAPIView.as_view()),
+    path('blogs/', views.BlogAPIView.as_view()),
+    path('blogs/<int:pk>/', views.BlogAPIView.as_view()),
     path('blogs/<int:pk>/update/', views.UpdateBlogAPIView.as_view()),
     path('blogs/<int:pk>/delete/', views.DeleteBlogAPIView.as_view()),
     path('products/', views.ProductAPIView.as_view(), name="products"),

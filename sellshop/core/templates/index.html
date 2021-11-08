@@ -90,7 +90,8 @@
 					<ul class="load-list load-list-one">
 						<li>
 							<div class="row text-center">
-								{% for productversion in all_versions %}
+								{% for productversion in mostreview %}
+
 								<div class="col-xs-12 col-sm-6 col-md-3">
 									<div class="single-product">
 										<div class="product-img">
@@ -105,8 +106,8 @@
 											</div>
 										</div>
 										<div class="product-dsc">
-											<p><a href="#">{{ productversion.product_id.title }}</a></p>
-											<span>{{productversion.product_id.price}}</span>
+											<p><a href="#">{{ productversion.product.title }}</a></p>
+											<span>{{productversion.product.price}}</span>
 										</div>
 									</div>
 								</div>
@@ -272,6 +273,7 @@
 													</div>
 												</div>
 												<div class="product-dsc">
+													{{productversion}}
 													<p><a href="#">{{ productversion.product.title }}</a></p>
 													<span>${{productversion.product.title}}</span>
 												</div>
@@ -934,7 +936,7 @@
 										</div>
 										<div class="date-read clearfix">
 											<a href="#"><i class="mdi mdi-clock"></i> jun 22, 2016</a>
-											<a href="/single-blog.html">read more</a>
+											<a href="">read more</a>
 										</div>
 									</div>
 								</div>

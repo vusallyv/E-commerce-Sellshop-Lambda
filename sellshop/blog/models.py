@@ -25,6 +25,7 @@ class Comment(BaseModel):
         Blog, on_delete=models.CASCADE, null=True, blank=True, related_name="blogs_comment")
     reply = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, default="", related_name="replies")
+    is_main = models.BooleanField(verbose_name="Is Main?", default=False)
 
     def __str__(self) -> str:
         return f"{self.description}"

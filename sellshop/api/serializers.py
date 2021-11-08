@@ -4,7 +4,7 @@ from django.db.models import fields
 from rest_framework import serializers
 from product.models import Color, Image, Product, ProductVersion, Category, Size
 from user.models import User
-from blog.models import Blog
+from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item
 
 User = get_user_model()
@@ -22,14 +22,28 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    replies = serializers.SerializerMethodField()
+    user = UserSerializer()
+
+    class Meta:
+        model = Comment
+        fields = ("id", "description", "user", "blog", "is_main", "created_at","replies")
+    
+    def get_replies(self, obj):
+        return CommentSerializer(obj.replies.all(), many=True).data
+
 class BlogSerializer(serializers.ModelSerializer):
-    blogs_comment = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
 
     class Meta:
         model = Blog
         fields = ("id", "title", "description",
-                  "creator", "like", "product")
+                  "creator", "like", "product", "comments")
 
+    def get_comments(self, obj):
+        qs =  obj.blogs_comment.filter(is_main=True)
+        return CommentSerializer(qs, many=True).data
 
 class ProductSerializer(serializers.ModelSerializer):
     main_version = serializers.SerializerMethodField()

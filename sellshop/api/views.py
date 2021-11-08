@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from api.serializers import CartItemSerializer, CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer
-from blog.models import Blog
+from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item
 from user.models import User
 from product.models import Product, ProductVersion, Category
@@ -77,6 +77,32 @@ class ProductAPIView(APIView):
             obj = Product.objects.all()
             serializer = self.serializer_class(obj, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class BlogAPIView(APIView):
+    serializer_class = BlogSerializer
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("pk"):
+            obj = Blog.objects.get(pk=kwargs.get("pk"))
+            serializer = self.serializer_class(obj)
+        else:
+            obj = Blog.objects.all()
+            serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        blog_id = request.data.get('blogId')
+        is_main = request.data.get('isMain')
+        description = request.data.get('description')
+        print(blog_id, is_main)
+        if blog_id:
+            Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get("pk")), is_main=is_main, user=request.user, description=description)
+            message = {'success': True,
+                    'message': 'Comment added.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message': 'Blog not found.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductVersionAPIVIew(APIView):
@@ -196,19 +222,22 @@ class CartView(APIView):
                 cart_item.quantity = int(quantity)
                 Cart_Item.objects.filter(cart=cart, product=product).update(
                     quantity=cart_item.quantity)
-                Cart.objects.get(user=request.user, is_ordered=False).product.add(product)
+                Cart.objects.get(user=request.user,
+                                 is_ordered=False).product.add(product)
             elif template == "product_list.html":
                 Cart_Item.objects.get_or_create(cart=cart, product=product)
                 cart_item = Cart_Item.objects.get(cart=cart, product=product)
                 cart_item.quantity += int(quantity)
                 Cart_Item.objects.filter(cart=cart, product=product).update(
                     quantity=cart_item.quantity)
-                Cart.objects.get(user=request.user, is_ordered=False).product.add(product)
+                Cart.objects.get(user=request.user,
+                                 is_ordered=False).product.add(product)
             elif template == "remove_from_cart":
                 Cart_Item.objects.get_or_create(cart=cart, product=product)
                 cart_item = Cart_Item.objects.get(cart=cart, product=product)
                 Cart_Item.objects.filter(cart=cart, product=product).delete()
-                Cart.objects.get(user=request.user, is_ordered=False).product.remove(product)
+                Cart.objects.get(user=request.user,
+                                 is_ordered=False).product.remove(product)
             message = {'success': True,
                        'message': 'Product added to your card.'}
             return Response(message, status=status.HTTP_201_CREATED)
