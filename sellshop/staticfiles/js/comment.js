@@ -64,12 +64,12 @@ function commentManager() {
                         main_comments += `
                                 <div class="about-author reply">
                                     <div class="autohr-text">
-                                        <img src="${data['comments'][i]['replies'][i]['user']['image']}" alt="" />
+                                        <img src="${data['comments'][i]['replies'][j]['user']['image']}" alt="" />
                                         <div class="author-des">
-                                            <h4><a href="#">${data['comments'][i]['replies'][i]['user']['username']}</a></h4>
+                                            <h4><a href="#">${data['comments'][i]['replies'][j]['user']['username']}</a></h4>
                                             <span class="floatright"><a href="#">Hide</a></span>
-                                            <span>${data['comments'][i]['replies'][i]['created_at']}</span>
-                                            <p>${data['comments'][i]['replies'][i]['description']}
+                                            <span>${data['comments'][i]['replies'][j]['created_at']}</span>
+                                            <p>${data['comments'][i]['replies'][j]['description']}
                                             </p>
                                         </div>
                                     </div>
@@ -79,8 +79,6 @@ function commentManager() {
                 }
                 comments.innerHTML += main_comments
             }
-            // var comment_length = document.getElementById('comment_length')
-            // comment_length.innerText = data['comments'].length
         });
 }
 
