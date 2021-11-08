@@ -1,7 +1,7 @@
 url = `${location.origin}/en/blog/single-blog/1/`.split('/')
 url = url[url.length - 2]
 const CommentLogic = {
-    commentPostManager(blogId, description, isMain) {
+    commentPostManager(blogId, description, isMain, replyId) {
         fetch(`${location.origin}/en/api/blogs/${url}/`, {
             method: 'POST',
             credentials: 'include',
@@ -13,6 +13,7 @@ const CommentLogic = {
                 'blogId': blogId,
                 'isMain': isMain,
                 'description': description,
+                'replyId': replyId
             })
         })
             .then(response => response.json())
@@ -41,22 +42,20 @@ function commentManager() {
             var comments = document.getElementById('comments')
             let main_comments = ''
             comments.innerHTML = ''
-            console.log(data)
             for (let i = 0; i < data['comments'].length; i++) {
-                // <h4 id="comment_length">${data['comments'].length} comments</h4>
                 main_comments = `
                                 <div class="about-author comments">
-                                <div class="autohr-text">
-                                    <img src="${data['comments'][i]['user']['image']}" alt="" />
-                                    <div class="author-des">
-                                    <h4><a href="#">${data['comments'][i]['user']['username']}</a></h4>
-                                    <span class="floatright"><a href="#">Reply</a> / <a href="#">Hide</a></span>
-                                    <span>${data['comments'][i]['created_at']}</span>
-                                    <p>
-                                    ${data['comments'][i]['description']}                                   
-                                    </p>
+                                    <div class="autohr-text">
+                                        <img src="${data['comments'][i]['user']['image']}" alt="" />
+                                        <div class="author-des">
+                                        <h4><a href="#">${data['comments'][i]['user']['username']}</a></h4>
+                                        <span class="floatright"><a comment_id="${data['comments'][i]['id']}" class="replyButton" onmouseover="isReply()">Reply</a></span>
+                                        <span>${data['comments'][i]['created_at']}</span>
+                                        <p>
+                                        ${data['comments'][i]['description']}                                   
+                                        </p>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                 `
                 if (data['comments'][i]['replies'].length > 0) {
@@ -67,7 +66,7 @@ function commentManager() {
                                         <img src="${data['comments'][i]['replies'][j]['user']['image']}" alt="" />
                                         <div class="author-des">
                                             <h4><a href="#">${data['comments'][i]['replies'][j]['user']['username']}</a></h4>
-                                            <span class="floatright"><a href="#">Hide</a></span>
+                                            <span class="floatright"></span>
                                             <span>${data['comments'][i]['replies'][j]['created_at']}</span>
                                             <p>${data['comments'][i]['replies'][j]['description']}
                                             </p>
@@ -79,6 +78,19 @@ function commentManager() {
                 }
                 comments.innerHTML += main_comments
             }
+            comment_length = document.getElementsByClassName('comment_length')
+            if (data['comments'].length > 1) {
+                for (let i = 0; i < comment_length.length; i++) {
+                    comment_length[i].innerText = `${data['comments'].length} comments`
+                }
+            }else{
+                for (let i = 0; i < comment_length.length; i++) {
+                    comment_length[i].innerText = `${data['comments'].length} comment`
+                }
+            }
+            submit_comment.setAttribute('isMain', 'True');
+            submit_comment.removeAttribute('replyId');
+            document.getElementById('id_description').value = ''
         });
 }
 
@@ -88,12 +100,31 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
 const submit_comment = document.getElementById("submit_comment")
-let description = document.getElementById('id_description')
 
 submit_comment.onclick = function () {
-    description = submit_comment.parentElement.parentElement.parentElement.children[2].children[0].children[0].value
+    let description = document.getElementById('id_description').value
     const blogId = this.getAttribute('data_id');
-    console.log(description);
-    let isMain = "True"
-    CommentLogic.commentPostManager(blogId, description, isMain);
+    let isMain = this.getAttribute('isMain');
+    let replyId = this.getAttribute('replyId');
+    CommentLogic.commentPostManager(blogId, description, isMain, replyId);
+}
+
+function isReply() {
+    replyButton = document.getElementsByClassName('replyButton')
+    for (let i = 0; i < replyButton.length; i++) {
+        replyButton[i].onclick = function () {
+            for (let j = 0; j < replyButton.length; j++) {
+                replyButton[j].style.color = '#666'                
+            }
+            if (submit_comment.getAttribute('isMain') != 'False') {
+                replyButton[i].style.color = '#fe5858'
+                submit_comment.setAttribute('isMain', 'False')
+                submit_comment.setAttribute('replyId', this.getAttribute('comment_id'))
+            } else {
+                replyButton[i].style.color = '#666'
+                submit_comment.setAttribute('isMain', 'True')
+                submit_comment.removeAttribute('replyId')
+            }
+        }
+    }
 }

@@ -95,9 +95,13 @@ class BlogAPIView(APIView):
         blog_id = request.data.get('blogId')
         is_main = request.data.get('isMain')
         description = request.data.get('description')
-        print(blog_id, is_main)
+        replyId = request.data.get('replyId')
+        print(blog_id, is_main, replyId)
         if blog_id:
-            Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get("pk")), is_main=is_main, user=request.user, description=description)
+            if replyId:
+                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get("pk")), is_main=is_main, user=request.user, description=description, reply=Comment.objects.get(pk=replyId))
+            else:
+                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get("pk")), is_main=is_main, user=request.user, description=description)
             message = {'success': True,
                     'message': 'Comment added.'}
             return Response(message, status=status.HTTP_201_CREATED)

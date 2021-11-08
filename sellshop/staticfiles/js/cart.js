@@ -16,6 +16,7 @@ var CartLogic = {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    alert("Product removed from your card")
                     cartManager()
                     cartItemManager()
                 } else {
