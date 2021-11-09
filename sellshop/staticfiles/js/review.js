@@ -136,6 +136,9 @@ function reviewManager() {
                 `;
             }
             console.log(total_review / data['review'].length);
+            if (data['review'].length == 0) {
+                data['review'].length = 1
+            }
             total_rating = document.getElementById("total_rating")
             total_rating.innerHTML = `
             <p> ${(total_review / data['review'].length).toFixed(2)} Rating </p>

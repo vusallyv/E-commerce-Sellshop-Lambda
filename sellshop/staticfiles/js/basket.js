@@ -66,7 +66,7 @@ function cartManager() {
 						html += `
 					<div class="sin-itme clearfix">
 					<a data="${data[i]['product']['id']}" class="remove_from_cart" onmouseover="removeFromCart()"> <i class="mdi mdi-close"></i> </a>
-					<a class="cart-img" href="{% url 'cart' %}"><img src='${data[i]['product']['images']['image']}'
+					<a class="cart-img" href="http://127.0.0.1:8000/en/product/single-product/${data[i]['product']['id']}/"><img src='${data[i]['product']['images']['image']}'
 					alt="" /></a>
 					<div class="menu-cart-text">
 					<a href="http://127.0.0.1:8000/en/product/single-product/${data[i]['product']['id']}">
