@@ -223,3 +223,4 @@ class CartItemView(APIView):
         obj = Cart_Item.objects.filter(cart=cart)
         serializer = self.serializer_class(obj, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    

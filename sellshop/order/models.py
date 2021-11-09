@@ -51,6 +51,14 @@ class Wishlist(BaseModel):
 
     def __str__(self):
         return f"{self.user}"
+    
+
+# class Wishlist_Item(BaseModel):
+#     wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, default="")
+#     product = models.ForeignKey("product.ProductVersion",on_delete=models.CASCADE , blank=True, null=True)
+    
+#     def __str__(self) -> str:
+#         return f"{self.product}"
 
 
 class Cart(BaseModel):
@@ -63,9 +71,10 @@ class Cart(BaseModel):
     def __str__(self) -> str:
         return f"{self.user}"
 
+
 class Cart_Item(BaseModel):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    product = models.ForeignKey("product.ProductVersion",on_delete=models.CASCADE , blank=True)
+    product = models.ForeignKey("product.ProductVersion",on_delete=models.CASCADE , blank=True, null=True)
     quantity = models.PositiveIntegerField("quantity", default=0)
 
     def __str__(self) -> str:

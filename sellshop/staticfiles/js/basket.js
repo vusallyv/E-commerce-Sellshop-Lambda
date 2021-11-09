@@ -1,5 +1,6 @@
-const BasketLogic = {
-	productManager(productId, quantity) {
+
+const BasketLogic = { 
+	productManager(productId, quantity) {  // # productId, quantity haradan gelir
 		console.log(localStorage.getItem('token'));
 		fetch('http://127.0.0.1:8000/en/api/cart/', {
 			method: 'POST',
@@ -116,3 +117,4 @@ function cartManager() {
 window.addEventListener('DOMContentLoaded', (event) => {
 	cartManager()
 });
+
