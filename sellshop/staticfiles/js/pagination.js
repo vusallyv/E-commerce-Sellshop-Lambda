@@ -1,4 +1,3 @@
-
 $(function () {
     $(".pagin").click(function () {
         console.log("ok");
