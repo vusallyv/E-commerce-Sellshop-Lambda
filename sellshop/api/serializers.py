@@ -2,7 +2,7 @@ import random
 from django.contrib.auth import get_user_model
 from django.db.models import fields
 from rest_framework import serializers
-from product.models import Color, Image, Product, ProductVersion, Category, Size
+from product.models import Color, Image, Product, ProductVersion, Category, Review, Size
 from user.models import User
 from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item
@@ -10,7 +10,7 @@ from order.models import Cart, Cart_Item
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
@@ -24,7 +24,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     replies = serializers.SerializerMethodField()
-    user = UserSerializer()
+    user = UserInfoSerializer()
 
     class Meta:
         model = Comment
@@ -104,12 +104,19 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = "__all__"
 
+class ReviewSerializer(serializers.ModelSerializer):
+    user = UserInfoSerializer()
+    class Meta:
+        model = Review
+        fields = "__all__"
+
 
 class ProductVersionSerializer(serializers.ModelSerializer):
     product = ProductOverViewSerializer()
     color = ColorSerializer()
     size = SizeSerializer()
     images = serializers.SerializerMethodField()
+    review = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductVersion
@@ -118,6 +125,10 @@ class ProductVersionSerializer(serializers.ModelSerializer):
     def get_images(self, obj):
         qs = obj.version_images.get(is_main=True)
         return ImageSerializer(qs).data
+    
+    def get_review(self, obj):
+        qs = obj.product_reviews.all()
+        return ReviewSerializer(qs, many=True).data
 
 
 class UserSerializer(serializers.ModelSerializer):

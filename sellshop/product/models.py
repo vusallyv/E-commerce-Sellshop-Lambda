@@ -118,7 +118,7 @@ class Review(BaseModel):
     rating = models.IntegerField(
         choices=CHOICES, verbose_name="Rating", default=1)
     product = models.ForeignKey(
-        ProductVersion, on_delete=models.CASCADE, default="")
+        ProductVersion, on_delete=models.CASCADE, default="", related_name="product_reviews")
 
     def __str__(self) -> str:
         return f"{self.rating}"

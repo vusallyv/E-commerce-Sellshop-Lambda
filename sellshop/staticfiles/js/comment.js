@@ -1,4 +1,4 @@
-url = `${location.origin}/en/blog/single-blog/1/`.split('/')
+url = location.href.split('/')
 url = url[url.length - 2]
 const CommentLogic = {
     commentPostManager(blogId, description, isMain, replyId) {

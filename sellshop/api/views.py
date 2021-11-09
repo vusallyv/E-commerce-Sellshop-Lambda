@@ -13,7 +13,7 @@ from api.serializers import CartItemSerializer, CartSerializer, ProductSerialize
 from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item
 from user.models import User
-from product.models import Product, ProductVersion, Category
+from product.models import Product, ProductVersion, Category, Review
 
 User = get_user_model()
 
@@ -47,8 +47,6 @@ class UpdateCategoryAPIView(UpdateAPIView):
 class DeleteCategoryAPIView(DestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
-# Blog api
 
 
 class CreateBlogAPIView(CreateAPIView):
@@ -99,11 +97,13 @@ class BlogAPIView(APIView):
         print(blog_id, is_main, replyId)
         if blog_id:
             if replyId:
-                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get("pk")), is_main=is_main, user=request.user, description=description, reply=Comment.objects.get(pk=replyId))
+                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get(
+                    "pk")), is_main=is_main, user=request.user, description=description, reply=Comment.objects.get(pk=replyId))
             else:
-                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get("pk")), is_main=is_main, user=request.user, description=description)
+                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get(
+                    "pk")), is_main=is_main, user=request.user, description=description)
             message = {'success': True,
-                    'message': 'Comment added.'}
+                       'message': 'Comment added.'}
             return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Blog not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
@@ -124,6 +124,34 @@ class ProductVersionAPIVIew(APIView):
             serializer = {"detail": "Product not found"}
             stat = status.HTTP_404_NOT_FOUND
         return Response(serializer.data, status=stat)
+
+
+class ProductVersionReviewAPIVIew(APIView):
+    serializer_class = ProductVersionSerializer
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("pk"):
+            obj = ProductVersion.objects.get(pk=kwargs.get("pk"))
+            serializer = self.serializer_class(obj)
+            stat = status.HTTP_200_OK
+        else:
+            serializer = {"detail": "ProductVersion not found"}
+            stat = status.HTTP_404_NOT_FOUND
+        return Response(serializer.data, status=stat)
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.data.get('productId')
+        rating = request.data.get('rating')
+        review = request.data.get('review')
+        print(product_id, rating, review)
+        if product_id:
+            Review.objects.create(product=ProductVersion.objects.get(pk=product_id),
+                                  user=request.user, rating=rating, review=review)
+            message = {'success': True,
+                       'message': 'Comment added.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message': 'Blog not found.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductCreateAPIView(CreateAPIView):
