@@ -1,5 +1,5 @@
 from django.db.models.aggregates import Avg
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.db.models import Q, F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -49,16 +49,13 @@ class ProductDetailView(DetailView):
         context['images'] = Image.objects.filter(
             productversion=self.kwargs.get('pk'))
         context['form'] = ReviewForm
-        context['rating'] = Review.objects.filter(
-            product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg']
-        context['reviews'] = Review.objects.filter(
-            product=self.kwargs.get('pk'))
+        # context['rating'] = Review.objects.filter(
+        #     product=self.kwargs.get('pk')).aggregate(Avg('rating'))['rating__avg']
         context['productversion'] = ProductVersion.objects.get(
             pk=self.kwargs.get('pk'))
         context['relatedproducts'] = ProductVersion.objects.exclude(
             pk=self.kwargs.get('pk'))
-        context['product_color'] = ProductVersion.objects.distinct(
-            'color').distinct("size")
+        context['product_color'] = ProductVersion.objects.all()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -76,6 +73,7 @@ class ProductDetailView(DetailView):
             context = super().get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context=context)
+            # , redirect(reverse('product_list'))
         else:
             form = ReviewForm()
             self.object = self.get_object()
@@ -132,29 +130,32 @@ class ProductListView(ListView):
         qs_productversion_all = ProductVersion.objects.filter(
             is_main=True).order_by('created_at')
 
-        if request.GET.get("search_name"):
-            qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
-                product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
-        if request.GET.get("category_name"):
-            qs_productversion_all = ProductVersion.objects.filter(
-                product__category__parent__title=request.GET.get("category_name"))
-        if request.GET.get("subcategory_name"):
-            qs_productversion_all = qs_productversion_all.filter(
-                product__category__title=request.GET.get("subcategory_name"))
-        if request.GET.get("size"):
-            qs_productversion_all = qs_productversion_all.filter(
-                size__title=request.GET.get("size"))
-        if request.GET.get("brand"):
-            qs_productversion_all = qs_productversion_all.filter(
-                product__brand__title=request.GET.get("brand"))
-        if request.GET.get("min_price"):
-            qs_productversion_all = qs_productversion_all.filter(
-                product__price__gte=request.GET.get("min_price"))
-        if request.GET.get("max_price"):
-            qs_productversion_all = qs_productversion_all.filter(
-                product__price__lte=request.GET.get("max_price"))
-
-
+        if request.GET:
+            qs_productversion_all = ProductVersion.objects.all()
+            if request.GET.get("search_name"):
+                qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
+                    product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
+            if request.GET.get("category_name"):
+                qs_productversion_all = ProductVersion.objects.filter(
+                    product__category__parent__title=request.GET.get("category_name"))
+            if request.GET.get("subcategory_name"):
+                qs_productversion_all = qs_productversion_all.filter(
+                    product__category__title=request.GET.get("subcategory_name"))
+            if request.GET.get("size"):
+                qs_productversion_all = qs_productversion_all.filter(
+                    size__title=request.GET.get("size"))
+            if request.GET.get("brand"):
+                qs_productversion_all = qs_productversion_all.filter(
+                    product__brand__title=request.GET.get("brand"))
+            if request.GET.get("color"):
+                qs_productversion_all = qs_productversion_all.filter(
+                    color__hex_code=request.GET.get("color"))
+            if request.GET.get("min_price"):
+                qs_productversion_all = qs_productversion_all.filter(
+                    product__price__gte=request.GET.get("min_price"))
+            if request.GET.get("max_price"):
+                qs_productversion_all = qs_productversion_all.filter(
+                    product__price__lte=request.GET.get("max_price"))
         context = {
             'title': 'Product-list Sellshop',
             'productversions': qs,
@@ -163,6 +164,7 @@ class ProductListView(ListView):
             'sizes': Size.objects.all(),
             'categories': Category.objects.all(),
             'brands': Brand.objects.all(),
+            'colors': Color.objects.all(),
             'products': Product.objects.order_by('price')[0:6],
         }
         return render(request, 'product-list.html', context=context)

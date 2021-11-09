@@ -15,7 +15,7 @@ def send_email_to_subscribers():
     present_time = timezone.now()
     end_date = present_time - timedelta(days=7)
     subscribers_emails = Subscriber.objects.values_list('email', flat=True)
-    products = ProductVersion.objects.filter(created_at__gte=end_date).annotate(num_tags=Count('reviews')).order_by('-num_tags')[0:3]
+    products = ProductVersion.objects.filter(created_at__gte=end_date).annotate(num_tags=Count('rating')).order_by('-num_tags')[0:3]
     for mail in subscribers_emails:
         body = render_to_string("subscribers_email.html", context= {
             'email': mail,

@@ -47,10 +47,11 @@
 													<p>To add a new address, please fill out the form below.</p>
 												</div>
 												<div class="custom-input">
-													<form action="mail.php" method="post">
+													<form action="" method="post" name="my_account">
+														{% csrf_token %}
 														<div class="row">
 															<div class="col-md-6">
-														<input type="text" name="name" placeholder="First Name" value="{{user.first_name}}" />
+														<input type="text" name="name" placeholder="First Name" value="" />
 															</div>
 															<div class="col-md-6">
 																<input type="text" name="name" placeholder="Last Name" value="{{user.last_name}}" />
@@ -58,40 +59,29 @@
 														</div>
 														<input type="text" name="email" placeholder="Email Address" value="{{user.email}}" />
 														<div class="custom-select">
-															<select class="form-control">
-																<option> Country</option>
-																<option> Bangladesh </option>
-																<option> United States </option>
-																<option> United Kingdom </option>
-																<option> Canada </option>
-																<option> Malaysia </option>
-																<option> United Arab Emirates </option>
-															</select>
+															{{billing.country}}
 														</div>
-														<input type="text" name="text" placeholder="Address" />
 														<div class="custom-select">
-															<select class="form-control">
-																<option> Town / City</option>
-																<option> Aberdeen </option>
-																<option> Bedfordshire </option>
-																<option> Caerphilly </option>
-																<option> Denbighshire </option>
-																<option> East Ayrshire </option>
-																<option> Falkirk </option>
-															</select>
+															{{billing.state}}
 														</div>
+														<div class="custom-select">
+															{{billing.city}}
+														</div>
+														<div class="custom-select">
+															{{billing.company_name}}
+														</div>
+														{{billing.address}}
 														<p class="red-color">** You must register at least one phone number.</p>
-														<input type="text" name="text" placeholder="Mobile Phone" value="{{user.phone_number}}" />
-														{{user.last_login}}
-														<div class="custom-mess">
+														<input type="text" name="text" placeholder="Mobile Phone" value="{% if user.phone_number == None %} {% else %} {{user.phone_number}} {%endif%}" />
+														<!-- <div class="custom-mess">
 															<textarea rows="2" placeholder="Additional information" name="message"></textarea>
 														</div>
 														<label>Please assign an address title for future reference.<sup>*</sup></label>
 														<div class="input-text">
 															<input type="text" name="refrence" value="" />
-														</div>
+														</div> -->
 														<div class="submit-text">
-															<a href="#">Save</a>
+															<button type="submit" name="my_account">Save</button>
 														</div>
 													</form>
 												</div>

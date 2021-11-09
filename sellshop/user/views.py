@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView, View
+from order.forms import BillingForm
+from order.models import Billing
 from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm
 from user.models import User, Contact, Subscriber
 from django.contrib import auth
@@ -29,20 +31,6 @@ def password_success(request):
     return render(request, 'password_success.html', {})
 
 
-# class ContactView(CreateView):
-#     form_class = ContactForm
-#     template_name = 'contact.html'
-#     model = Contact
-#     success_url = reverse_lazy('contact')
-
-
-# class SubscriptionsView(CreateView):
-#     form_class = SubscriberForm
-#     template_name = 'contact.html'
-#     model = Subscribers
-#     success_url = reverse_lazy('contact')
-
-
 class ContactSubscripView(View):
     def get(self, request, *args, **kwargs):
         context = {
@@ -50,8 +38,8 @@ class ContactSubscripView(View):
             'form': SubscriberForm,
             'form2': ContactForm,
         }
-        return render(request, 'contact.html', context=context) 
-    
+        return render(request, 'contact.html', context=context)
+
     def post(self, request, *args, **kwargs):
         context = {
             'title': 'Single-blog Sellshop',
@@ -69,7 +57,7 @@ class ContactSubscripView(View):
             else:
                 form = SubscriberForm()
                 return render(request, 'contact.html', context=context)
-            
+
         if 'form2' in request.POST:
             form = ContactForm(request.POST, request.FILES)
             if form.is_valid():
@@ -82,8 +70,7 @@ class ContactSubscripView(View):
                 return render(request, 'contact.html', context=context)
             else:
                 form = ContactForm()
-                return render(request,'contact.html', context=context)
-
+                return render(request, 'contact.html', context=context)
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and "contact" in request.POST:
@@ -138,38 +125,59 @@ def contact(request):
 
 
 def login(request):
+    auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
-        if form.is_valid():
-            random_number = random.randint(0, 10000)
-            while User.objects.filter(username=f"Guest_{random_number}"):
-                random_number = random.randint(0, 1000000)
-            user = User(
-                first_name=request.POST.get('first_name'),
-                email=request.POST.get('email'),
-                phone_number=request.POST.get('phone_number'),
-                username=f"Guest_{random_number}",
-                rememberme=request.POST.get('rememberme'),
-            )
-            user.set_password(request.POST.get('password')),
-            user.save()
-            auth.login(request, user)
-            return redirect('my_account')
+        # if form.is_valid():
+        print(request.POST.get('rememberme'))
+        # random_number = random.randint(0, 10000)
+        # while User.objects.filter(username=f"Guest_{random_number}"):
+        #     random_number = random.randint(0, 1000000)
+        user = User(
+            first_name=request.POST.get('first_name'),
+            email=request.POST.get('email').lower(),
+            phone_number=request.POST.get('phone_number'),
+            username=request.POST.get('username').lower(),
+            rememberme=request.POST.get('rememberme'),
+        )
+        user.set_password(request.POST.get('password')),
+        user.save()
+        auth.login(request, user)
+        return redirect('my_account')
     else:
         form = RegisterForm()
 
     if request.method == "POST" and 'login' in request.POST:
         form1 = LoginForm(request.POST)
-        user = User.objects.filter(username=request.POST.get('username')).first()
+        user = User.objects.filter(
+            username=request.POST.get('username').lower()).first()
         if user is not None and user.check_password(request.POST.get('password')):
             auth.login(request, user)
             return redirect('my_account')
     else:
         form1 = LoginForm()
 
+    if request.method == 'POST' and "contact" in request.POST:
+        contactform = ContactForm(request.POST)
+        if contactform.is_valid():
+            contactform.save()
+            return redirect('contact')
+    else:
+        contactform = ContactForm()
+
+    if request.method == 'POST' and 'subscribe' in request.POST:
+        subscribe = SubscriberForm(request.POST)
+        if subscribe.is_valid():
+            subscribe.save()
+            return redirect('contact')
+    else:
+        subscribe = SubscriberForm()
+
     context = {
         'title':  'Login Sellshop',
         'login':  form1,
+        'contactform': contactform,
+        'subscribeform': subscribe,
         'register':  form,
     }
     return render(request, "login.html", context=context)
@@ -183,8 +191,32 @@ def logout(request):
 
 # @login_required(login_url='/account/my-account/')
 def my_account(request):
+    if request.method == "POST" and "my_account" in request.POST:
+        billing = BillingForm(request.POST)
+        if billing.is_valid():
+            if Billing.objects.filter(user=request.user).exists == False:
+                billing = Billing(
+                    user=request.user,
+                    company_name=request.POST.get('company_name'),
+                    country=request.POST.get('country'),
+                    state=request.POST.get('state'),
+                    city=request.POST.get('city'),
+                    address=request.POST.get('address'),
+                )
+                billing.save()
+            else:
+                Billing.objects.filter(user=request.user).update(
+                    company_name=request.POST.get('company_name'),
+                    country=request.POST.get('country'),
+                    state=request.POST.get('state'),
+                    city=request.POST.get('city'),
+                    address=request.POST.get('address')
+                )
+    else:
+        billing = BillingForm()
     context = {
-        'title':  'My-account Sellshop'
+        'title':  'My-account Sellshop',
+        'billing': billing
     }
     if request.user.is_authenticated:
         return render(request, "my-account.html", context=context)

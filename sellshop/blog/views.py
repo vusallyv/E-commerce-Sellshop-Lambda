@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from blog.models import Blog, Comment
-from django.db.models import Q
 from product.models import Brand, Category
 from django.views.generic import DetailView, ListView
 from blog.forms import CommentForm
@@ -42,38 +41,13 @@ class BlogDetailView(DetailView):
     model = Blog
     template_name = 'single-blog.html'
 
-    def post(self, request, *args, **kwargs):
-        form = CommentForm(request.POST, request.FILES)
-        if form.is_valid():
-            comment = Comment(
-                description=request.POST.get('description'),
-                blog=Blog.objects.get(pk=self.kwargs.get('pk')),
-                user=request.user
-            )
-            comment.save()
-
-            self.object = self.get_object()
-            context = super().get_context_data(**kwargs)
-            context['form'] = CommentForm
-            return self.render_to_response(context=context)
-        else:
-            form = CommentForm()
-            self.object = self.get_object()
-            context = super().get_context_data(**kwargs)
-            context['form'] = form
-            return self.render_to_response(context=context)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['brands'] = Brand.objects.all()
+        # context['brands'] = Brand.objects.all()
         context['blogs'] = Blog.objects.order_by(
             '-created_at').exclude(pk=self.kwargs.get('pk'))
-        context['relatedblogs'] = Blog.objects.order_by(
-            '-created_at').exclude(pk=self.kwargs.get('pk'))
         context['form'] = CommentForm
-        context['categories'] = Category.objects.all()
-        context['comments'] = Comment.objects.filter(
-            blog=self.kwargs.get('pk'))
+        # context['categories'] = Category.objects.all()
         context['title'] = 'Single-blog Sellshop'
         return context
 

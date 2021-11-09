@@ -12,8 +12,8 @@ from django.utils.translation import gettext_lazy as _
 
 @admin.register(ProductVersion)
 class ProductVersionAdmin(admin.ModelAdmin):
-    list_display = ('product', 'quantity', 'color', 'get_image', 'size')
-    list_editable = ('quantity',)
+    list_display = ('product', 'quantity', 'color', 'get_image', 'size', 'is_main')
+    list_editable = ('quantity','is_main')
     search_fields = ['product']
 
     def get_image(self, obj):

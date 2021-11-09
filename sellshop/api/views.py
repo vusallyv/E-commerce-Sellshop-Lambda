@@ -1,5 +1,6 @@
 # Create your views here.
 
+import re
 from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets, permissions, status
@@ -9,10 +10,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from api.serializers import CartItemSerializer, CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer
-from blog.models import Blog
+from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item
 from user.models import User
-from product.models import Product, ProductVersion, Category
+from product.models import Product, ProductVersion, Category, Review
 
 User = get_user_model()
 
@@ -47,8 +48,6 @@ class DeleteCategoryAPIView(DestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-# Blog api
-
 
 class CreateBlogAPIView(CreateAPIView):
     queryset = Blog.objects.all()
@@ -78,6 +77,37 @@ class ProductAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class BlogAPIView(APIView):
+    serializer_class = BlogSerializer
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("pk"):
+            obj = Blog.objects.get(pk=kwargs.get("pk"))
+            serializer = self.serializer_class(obj)
+        else:
+            obj = Blog.objects.all()
+            serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        blog_id = request.data.get('blogId')
+        is_main = request.data.get('isMain')
+        description = request.data.get('description')
+        replyId = request.data.get('replyId')
+        if blog_id:
+            if replyId:
+                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get(
+                    "pk")), is_main=is_main, user=request.user, description=description, reply=Comment.objects.get(pk=replyId))
+            else:
+                Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get(
+                    "pk")), is_main=is_main, user=request.user, description=description)
+            message = {'success': True,
+                       'message': 'Comment added.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message': 'Blog not found.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ProductVersionAPIVIew(APIView):
     serializer_class = ProductVersionSerializer
 
@@ -93,6 +123,33 @@ class ProductVersionAPIVIew(APIView):
             serializer = {"detail": "Product not found"}
             stat = status.HTTP_404_NOT_FOUND
         return Response(serializer.data, status=stat)
+
+
+class ProductVersionReviewAPIVIew(APIView):
+    serializer_class = ProductVersionSerializer
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get("pk"):
+            obj = ProductVersion.objects.get(pk=kwargs.get("pk"))
+            serializer = self.serializer_class(obj)
+            stat = status.HTTP_200_OK
+        else:
+            serializer = {"detail": "ProductVersion not found"}
+            stat = status.HTTP_404_NOT_FOUND
+        return Response(serializer.data, status=stat)
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.data.get('productId')
+        rating = request.data.get('rating')
+        review = request.data.get('review')
+        if product_id:
+            Review.objects.create(product=ProductVersion.objects.get(pk=product_id),
+                                  user=request.user, rating=rating, review=review)
+            message = {'success': True,
+                       'message': 'Comment added.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message': 'Blog not found.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductCreateAPIView(CreateAPIView):
@@ -184,32 +241,36 @@ class CartView(APIView):
     def post(self, request, *args, **kwargs):
         product_id = request.data.get('product')
         quantity = request.data.get('quantity')
+        template = request.data.get('template')
         product = ProductVersion.objects.get(pk=product_id)
-        Cart.objects.get_or_create(user=request.user)
-        cart = Cart.objects.get(user=request.user)
+        Cart.objects.get_or_create(user=request.user, is_ordered=False)
+        cart = Cart.objects.get(user=request.user, is_ordered=False)
         if product:
-            print(quantity)
-            quantity -= 1
-            ProductVersion.objects.filter(pk=product_id).update(quantity=quantity)
-            Cart_Item.objects.get_or_create(cart=cart, product=product)
-            cart_item = Cart_Item.objects.get(cart=cart, product=product)
-            cart_item.quantity += 1
-            Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
-            Cart.objects.get(user=request.user).product.add(product)
+            if template == "cart.html":
+                Cart_Item.objects.get_or_create(cart=cart, product=product)
+                cart_item = Cart_Item.objects.get(cart=cart, product=product)
+                cart_item.quantity = int(quantity)
+                Cart_Item.objects.filter(cart=cart, product=product).update(
+                    quantity=cart_item.quantity)
+                Cart.objects.get(user=request.user,
+                                 is_ordered=False).product.add(product)
+            elif template == "product_list.html":
+                Cart_Item.objects.get_or_create(cart=cart, product=product)
+                cart_item = Cart_Item.objects.get(cart=cart, product=product)
+                cart_item.quantity += int(quantity)
+                Cart_Item.objects.filter(cart=cart, product=product).update(
+                    quantity=cart_item.quantity)
+                Cart.objects.get(user=request.user,
+                                 is_ordered=False).product.add(product)
+            elif template == "remove_from_cart":
+                Cart_Item.objects.get_or_create(cart=cart, product=product)
+                cart_item = Cart_Item.objects.get(cart=cart, product=product)
+                Cart_Item.objects.filter(cart=cart, product=product).delete()
+                Cart.objects.get(user=request.user,
+                                 is_ordered=False).product.remove(product)
             message = {'success': True,
                        'message': 'Product added to your card.'}
             return Response(message, status=status.HTTP_201_CREATED)
-        # elif product and product in Cart.objects.get(user=request.user).product.all():
-        #     product.quantity += 1
-        #     product.save()
-        #     Cart_Item.objects.get_or_create(cart=cart, product=product)
-        #     cart_item = Cart_Item.objects.get(cart=cart, product=product)
-        #     cart_item.quantity += 1
-        #     Cart_Item.objects.filter(cart=cart, product=product).update(quantity=cart_item.quantity)
-        #     Cart.objects.get(user=request.user).product.remove(product)
-        #     message = {'success': True,
-        #                'message': 'Product removed from your card.'}
-        #     return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Product not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
@@ -219,8 +280,8 @@ class CartItemView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        cart = Cart.objects.filter(user=request.user).first()
-        obj = Cart_Item.objects.filter(cart=cart)
+        Cart.objects.get_or_create(user=request.user, is_ordered=False)
+        obj = Cart_Item.objects.filter(
+            cart=Cart.objects.get(user=request.user, is_ordered=False))
         serializer = self.serializer_class(obj, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
