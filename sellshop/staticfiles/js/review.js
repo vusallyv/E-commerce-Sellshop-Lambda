@@ -135,11 +135,14 @@ function reviewManager() {
                                 </div>
                 `;
             }
-            console.log(total_review/data['review'].length);
             total_rating = document.getElementById("total_rating")
+            total_review = total_review/data['review'].length;
+            if (isNaN(total_review) == true) {
+                total_review = 0;
+            }
             total_rating.innerHTML = `
-            <p> ${(total_review/data['review'].length).toFixed(2)} Rating </p>
-            ${total_review/data['review'].length >= 0 && total_review/data['review'].length < 0.5 ? `
+            <p> ${(total_review).toFixed(2)} Rating </p>
+            ${total_review >= 0 && total_review < 0.5 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star-half"></i>
             <i class="mdi mdi-star-outline"></i>
@@ -147,7 +150,7 @@ function reviewManager() {
             <i class="mdi mdi-star-outline"></i>
             <i class="mdi mdi-star-outline"></i>
             </span>` : ''}
-        ${total_review/data['review'].length >= 0.5 && total_review/data['review'].length < 1 ? `
+        ${total_review >= 0.5 && total_review < 1 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star-outline"></i>
@@ -155,7 +158,7 @@ function reviewManager() {
             <i class="mdi mdi-star-outline"></i>
             <i class="mdi mdi-star-outline"></i>
             </span>` : ''}
-        ${total_review/data['review'].length >= 1 && total_review/data['review'].length < 1.5 ? `
+        ${total_review >= 1 && total_review < 1.5 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star-half"></i>
@@ -163,7 +166,7 @@ function reviewManager() {
             <i class="mdi mdi-star-outline"></i>
             <i class="mdi mdi-star-outline"></i>
             </span>` : ''}
-        ${total_review/data['review'].length >= 1.5 && total_review/data['review'].length < 2 ? `
+        ${total_review >= 1.5 && total_review < 2 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
@@ -171,7 +174,7 @@ function reviewManager() {
             <i class="mdi mdi-star-outline"></i>
             <i class="mdi mdi-star-outline"></i>
             </span>` : ''}
-        ${total_review/data['review'].length >= 2 && total_review/data['review'].length < 2.5 ? `
+        ${total_review >= 2 && total_review < 2.5 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
@@ -179,35 +182,35 @@ function reviewManager() {
             <i class="mdi mdi-star-outline"></i>
             <i class="mdi mdi-star-outline"></i>
             </span>` : ''}
-        ${total_review/data['review'].length >= 2.5 && total_review/data['review'].length < 3 ? `
+        ${total_review >= 2.5 && total_review < 3 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star-outline"></i>
             <i class="mdi mdi-star-outline"></i></span>` : ''}
-        ${total_review/data['review'].length >= 3 && total_review/data['review'].length < 3.5 ? `
+        ${total_review >= 3 && total_review < 3.5 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star-half"></i>
             <i class="mdi mdi-star-outline"></i></span>` : ''}
-        ${total_review/data['review'].length >= 3.5 && total_review/data['review'].length < 4 ? `
+        ${total_review >= 3.5 && total_review < 4 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star-outline"></i></span>` : ''}
-        ${total_review/data['review'].length >= 4 && total_review/data['review'].length < 4.5 ? `
+        ${total_review >= 4 && total_review < 4.5 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star-half"></i></span>` : ''}
-        ${total_review/data['review'].length >= 4.5 && total_review/data['review'].length < 5 ? `
+        ${total_review >= 4.5 && total_review < 5 ? `
             <span class="floatright ratting">
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
@@ -216,6 +219,9 @@ function reviewManager() {
             <i class="mdi mdi-star"></i>
             </span>` : ''}
             `
+        let review = document.getElementById('id_review')
+        review.value = '';
+        submit_review.removeAttribute('rating');
         });
 }
 

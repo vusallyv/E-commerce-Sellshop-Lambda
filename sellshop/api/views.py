@@ -94,7 +94,6 @@ class BlogAPIView(APIView):
         is_main = request.data.get('isMain')
         description = request.data.get('description')
         replyId = request.data.get('replyId')
-        print(blog_id, is_main, replyId)
         if blog_id:
             if replyId:
                 Comment.objects.create(blog=Blog.objects.get(pk=kwargs.get(
@@ -143,7 +142,6 @@ class ProductVersionReviewAPIVIew(APIView):
         product_id = request.data.get('productId')
         rating = request.data.get('rating')
         review = request.data.get('review')
-        print(product_id, rating, review)
         if product_id:
             Review.objects.create(product=ProductVersion.objects.get(pk=product_id),
                                   user=request.user, rating=rating, review=review)
