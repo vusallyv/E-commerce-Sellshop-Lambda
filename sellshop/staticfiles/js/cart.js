@@ -16,7 +16,7 @@ var CartLogic = {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert("Product removed from your card")
+                    alert("Product quantity changed")
                     cartManager()
                     cartItemManager()
                 } else {
@@ -48,7 +48,7 @@ function cartItemManager() {
                     html += `
             <tr>
             <td class="td-img text-left">
-            <a href="#"><img src="{% static 'img/cart/1.png' %}" alt="Add Product" /></a>
+            <a href="#"><img style="height: 7rem;" src="${data[i]['product']['images']['image']}" alt="Add Product" /></a>
             <div class="items-dsc">
             <h5><a href="#">${data[i]['product']['product']['title']}</a></h5>
             <p class="itemcolor">Color : <span>${data[i]['product']['color']['title']}</span></p>

@@ -198,29 +198,29 @@
 									{% csrf_token %}
 									<div class="rating clearfix">
 										<ul>
-											<li>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<span>|</span>
 											</li>
-											<li>
-												<i class="mdi mdi-star-outline"></i>
-												<i class="mdi mdi-star-outline"></i>
-												<span>|</span>
-											</li>
-											<li>
-												<i class="mdi mdi-star-outline"></i>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<span>|</span>
 											</li>
-											<li>
-												<i class="mdi mdi-star-outline"></i>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<span>|</span>
 											</li>
-											<li>
+											<li class="mdi-stars">
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
@@ -229,24 +229,23 @@
 											</li>
 										</ul>
 									</div>
-									<div>
-										{{form.rating}}
-									</div>
-									<div class="row">
-
+									<div class="row">                        
+										{% if not request.user.is_authenticated %}
 										<div class="col-sm-6">
 											<div class="input-mail">
 												<input type="text" name="name" placeholder="{{user.username }}"
-													value="{{user.username }}" readonly />
+												value="{{user.username }}" readonly />
 											</div>
 										</div>
+										{% endif %}
+										{% if not request.user.is_authenticated %}
 										<div class="col-sm-6">
 											<div class="input-mail">
 												<input type="text" name="email" placeholder="{{user.email}}"
-													value="{{user.email}}" readonly />
+												value="{{user.email}}" readonly />
 											</div>
-
 										</div>
+										{% endif %}
 										<div class="col-xs-12">
 											<div class="custom-mess">
 												{{ form.review }}

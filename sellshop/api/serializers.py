@@ -28,10 +28,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ("id", "description", "user", "blog", "is_main", "created_at","replies")
-    
+        fields = ("id", "description", "user", "blog",
+                  "is_main", "created_at", "replies")
+
     def get_replies(self, obj):
         return CommentSerializer(obj.replies.all(), many=True).data
+
 
 class BlogSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
@@ -42,8 +44,9 @@ class BlogSerializer(serializers.ModelSerializer):
                   "creator", "like", "product", "comments")
 
     def get_comments(self, obj):
-        qs =  obj.blogs_comment.filter(is_main=True)
+        qs = obj.blogs_comment.filter(is_main=True)
         return CommentSerializer(qs, many=True).data
+
 
 class ProductSerializer(serializers.ModelSerializer):
     main_version = serializers.SerializerMethodField()
@@ -96,15 +99,25 @@ class SizeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields = "__all__"
+
+
 class ProductVersionSerializer(serializers.ModelSerializer):
     product = ProductOverViewSerializer()
     color = ColorSerializer()
     size = SizeSerializer()
+    images = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductVersion
         fields = "__all__"
 
+    def get_images(self, obj):
+        qs = obj.version_images.get(is_main=True)
+        return ImageSerializer(qs).data
 
 
 class UserSerializer(serializers.ModelSerializer):

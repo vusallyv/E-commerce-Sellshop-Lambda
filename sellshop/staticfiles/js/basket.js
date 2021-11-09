@@ -66,7 +66,7 @@ function cartManager() {
 						html += `
 					<div class="sin-itme clearfix">
 					<a data="${data[i]['product']['id']}" class="remove_from_cart" onmouseover="removeFromCart()"> <i class="mdi mdi-close"></i> </a>
-					<a class="cart-img" href="{% url 'cart' %}"><img src='https://assets.ajio.com/medias/sys_master/root/20210514/T01n/609e7c45f997ddb3129e999c/-473Wx593H-461571257-blue-MODEL.jpg'
+					<a class="cart-img" href="{% url 'cart' %}"><img src='${data[i]['product']['images']['image']}'
 					alt="" /></a>
 					<div class="menu-cart-text">
 					<a href="http://127.0.0.1:8000/en/product/single-product/${data[i]['product']['id']}">

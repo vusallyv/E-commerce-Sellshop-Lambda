@@ -297,7 +297,7 @@
                                         </div>
                                         <div class="product-dsc">
                                             <p>
-                                                <a href="#">{{ productversion.product.title }}</a>
+                                                <a href="{% url 'single_product' productversion.id %}">{{ productversion.product.title }}</a>
                                             </p>
                                             <div class="ratting">
                                                 <i class="mdi mdi-star"></i>
@@ -335,7 +335,7 @@
                                             </div>
                                             <div class="col-xs-12 col-md-8">
                                                 <div class="list-text">
-                                                    <h3>{{ productversion.product.title }}</h3>
+                                                    <h3><a href="{% url 'single_product' productversion.id %}">{{ productversion.product.title }}</a></h3>
                                                     <span>{{ productversion.product.subtitle }}</span>
                                                     <div class="ratting floatright">
                                                         <p>
