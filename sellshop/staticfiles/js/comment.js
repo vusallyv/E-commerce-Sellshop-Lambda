@@ -39,26 +39,29 @@ function commentManager() {
     })
         .then(response => response.json())
         .then(data => {
+            total_comments = 1
             var comments = document.getElementById('comments')
             let main_comments = ''
             comments.innerHTML = ''
             for (let i = 0; i < data['comments'].length; i++) {
+                total_comments += 1
                 main_comments = `
-                                <div class="about-author comments">
-                                    <div class="autohr-text">
-                                        <img width="100px" src="${data['comments'][i]['user']['image']}" alt="" />
-                                        <div class="author-des">
-                                        <h4><a href="#">${data['comments'][i]['user']['username']}</a></h4>
-                                        <span class="floatright"><a comment_id="${data['comments'][i]['id']}" class="replyButton" onmouseover="isReply()">Reply</a></span>
-                                        <span>${data['comments'][i]['created_at']}</span>
-                                        <p>
-                                        ${data['comments'][i]['description']}                                   
-                                        </p>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="about-author comments">
+                <div class="autohr-text">
+                <img width="100px" src="${data['comments'][i]['user']['image']}" alt="" />
+                <div class="author-des">
+                <h4><a href="#">${data['comments'][i]['user']['username']}</a></h4>
+                <span class="floatright"><a comment_id="${data['comments'][i]['id']}" class="replyButton" onmouseover="isReply()">Reply</a></span>
+                <span>${data['comments'][i]['created_at'].split('T')[0]} ${data['comments'][i]['created_at'].split('T')[1].split('+')[0].substring(0,8)}</span>
+                <p>
+                ${data['comments'][i]['description']}                                   
+                </p>
+                </div>
+                </div>
+                </div>
                 `
                 if (data['comments'][i]['replies'].length > 0) {
+                    total_comments += 1
                     for (let j = 0; j < data['comments'][i]['replies'].length; j++) {
                         main_comments += `
                                 <div class="about-author reply">
@@ -67,7 +70,7 @@ function commentManager() {
                                         <div class="author-des">
                                             <h4><a href="#">${data['comments'][i]['replies'][j]['user']['username']}</a></h4>
                                             <span class="floatright"></span>
-                                            <span>${data['comments'][i]['replies'][j]['created_at']}</span>
+                                            <span>${data['comments'][i]['replies'][j]['created_at'].split('T')[0]} ${data['comments'][i]['replies'][j]['created_at'].split('T')[1].split('+')[0].substring(0,8)}</span>
                                             <p>${data['comments'][i]['replies'][j]['description']}
                                             </p>
                                         </div>
@@ -79,13 +82,13 @@ function commentManager() {
                 comments.innerHTML += main_comments
             }
             comment_length = document.getElementsByClassName('comment_length')
-            if (data['comments'].length > 1) {
+            if (total_comments > 1) {
                 for (let i = 0; i < comment_length.length; i++) {
-                    comment_length[i].innerText = `${data['comments'].length} comments`
+                    comment_length[i].innerText = `${total_comments} comments`
                 }
             }else{
                 for (let i = 0; i < comment_length.length; i++) {
-                    comment_length[i].innerText = `${data['comments'].length} comment`
+                    comment_length[i].innerText = `${total_comments} comment`
                 }
             }
             submit_comment.setAttribute('isMain', 'True');
