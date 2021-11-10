@@ -34,7 +34,6 @@ urlpatterns = i18n_patterns(
     # path('jet/', include('jet.urls', 'jet')),
     # path('', include('django.contrib.flatpages.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('paypal/', include('paypal.standard.ipn.urls')),
 )
 
 

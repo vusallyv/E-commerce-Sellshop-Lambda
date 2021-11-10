@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.shortcuts import redirect, render
 
 # Create your views here.
-from paypal.standard.forms import PayPalPaymentsForm
 from order.forms import ShippingAddressForm
 from order.models import Cart, Cart_Item, ShippingAddress, Wishlist
 from product.models import ProductVersion
@@ -107,30 +106,3 @@ def wishlist(request):
     if request.user.is_authenticated:
         return render(request, "wishlist.html", context=context)
     return render(request, "error-404.html", context=context)
-
-
-class PaypalFormView(FormView):
-    template_name = 'paypal_form.html'
-    form_class = PayPalPaymentsForm
-
-    def get_initial(self):
-        return {
-            "business": 'your-paypal-business-address@example.com',
-            "amount": 20,
-            "currency_code": "EUR",
-            "item_name": 'Example item',
-            "invoice": 1234,
-            "notify_url": self.request.build_absolute_uri(reverse('paypal-ipn')),
-            "return_url": self.request.build_absolute_uri(reverse('paypal-return')),
-            "cancel_return": self.request.build_absolute_uri(reverse('paypal-cancel')),
-            "lc": 'EN',
-            "no_shipping": '1',
-        }
-
-
-class PaypalReturnView(TemplateView):
-    template_name = 'paypal_success.html'
-
-
-class PaypalCancelView(TemplateView):
-    template_name = 'paypal_cancel.html'

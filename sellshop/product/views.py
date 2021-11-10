@@ -213,6 +213,7 @@ def PaginatorProductList(request):
         'sizes': Size.objects.all(),
         'categories': Category.objects.all(),
         'brands': Brand.objects.all(),
+        'colors': Color.objects.all(),
         'products': Product.objects.order_by('price')[0:6],
     }
     return render(request, 'product-list.html', context=context)

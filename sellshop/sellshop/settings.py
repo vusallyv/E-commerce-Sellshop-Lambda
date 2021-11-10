@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     "corsheaders",
-    'paypal.standard.ipn',
 
     # custom apps
     'user',
@@ -102,8 +101,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'order.context_processors.get_user_cart',
-                # 'order.context_processors.remove_product_from_cart',
             ],
         },
     },
@@ -288,3 +285,4 @@ CORS_ALLOW_METHODS = [
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
 }
+
