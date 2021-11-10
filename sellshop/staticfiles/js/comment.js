@@ -46,7 +46,7 @@ function commentManager() {
                 main_comments = `
                                 <div class="about-author comments">
                                     <div class="autohr-text">
-                                        <img src="${data['comments'][i]['user']['image']}" alt="" />
+                                        <img width="100px" src="${data['comments'][i]['user']['image']}" alt="" />
                                         <div class="author-des">
                                         <h4><a href="#">${data['comments'][i]['user']['username']}</a></h4>
                                         <span class="floatright"><a comment_id="${data['comments'][i]['id']}" class="replyButton" onmouseover="isReply()">Reply</a></span>
@@ -63,7 +63,7 @@ function commentManager() {
                         main_comments += `
                                 <div class="about-author reply">
                                     <div class="autohr-text">
-                                        <img src="${data['comments'][i]['replies'][j]['user']['image']}" alt="" />
+                                        <img width="100px" src="${data['comments'][i]['replies'][j]['user']['image']}" alt="" />
                                         <div class="author-des">
                                             <h4><a href="#">${data['comments'][i]['replies'][j]['user']['username']}</a></h4>
                                             <span class="floatright"></span>
