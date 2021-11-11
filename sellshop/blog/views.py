@@ -93,7 +93,7 @@ class BlogListView(ListView):
         return context
 
 
-def BlogList(request):  #blogs
+def BlogList(request):  # BlogListView
     contact_list = Blog.objects.order_by('-created_at')
 
     paginator = Paginator(contact_list, 2)
