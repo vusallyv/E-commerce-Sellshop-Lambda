@@ -6,7 +6,6 @@ $(function () {
             $(this).removeClass("active");
             $(this).removeClass('bg-primary')
             
-            
         }  else {
             $(this).addClass("active");
             $(this).addClass('bg-primary')

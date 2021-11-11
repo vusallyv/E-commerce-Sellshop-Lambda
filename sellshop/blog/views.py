@@ -4,7 +4,7 @@ from django.db.models import Q
 from product.models import Brand, Category
 from django.views.generic import DetailView, ListView
 from blog.forms import CommentForm
-
+from django.core.paginator import Paginator
 
 def single_blog(request, pk):
     qs_one_blog = Blog.objects.get(pk=pk)
@@ -83,7 +83,7 @@ class BlogListView(ListView):
     template_name = 'blog.html'
 
     def get_blogs(self):
-        qs = Blog.objects.all()[0:3]
+        qs = Blog.objects.all()[0:6]
         return qs
 
     def get_context_data(self, **kwargs):
@@ -91,3 +91,19 @@ class BlogListView(ListView):
         context['title'] = 'Blog-list Sellshop'
         context['blogs'] = self.get_blogs()
         return context
+
+
+def BlogList(request):  #blogs
+    contact_list = Blog.objects.order_by('-created_at')
+
+    paginator = Paginator(contact_list, 2)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+
+    context = {
+        'title': 'Blog-list Sellshop',
+        'page_obj': page_obj,
+    }
+    return render(request, 'blog.html', context=context)
