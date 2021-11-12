@@ -52,7 +52,7 @@ function commentManager() {
                 <div class="author-des">
                 <h4><a href="#">${data['comments'][i]['user']['username']}</a></h4>
                 <span class="floatright"><a comment_id="${data['comments'][i]['id']}" class="replyButton" onmouseover="isReply()">Reply</a></span>
-                <span>${data['comments'][i]['created_at'].split('T')[0]} ${data['comments'][i]['created_at'].split('T')[1].split('+')[0].substring(0,8)}</span>
+                <span>${data['comments'][i]['created_at'].split('T')[0]} ${data['comments'][i]['created_at'].split('T')[1].split('+')[0].substring(0, 8)}</span>
                 <p>
                 ${data['comments'][i]['description']}                                   
                 </p>
@@ -70,7 +70,7 @@ function commentManager() {
                                         <div class="author-des">
                                             <h4><a href="#">${data['comments'][i]['replies'][j]['user']['username']}</a></h4>
                                             <span class="floatright"></span>
-                                            <span>${data['comments'][i]['replies'][j]['created_at'].split('T')[0]} ${data['comments'][i]['replies'][j]['created_at'].split('T')[1].split('+')[0].substring(0,8)}</span>
+                                            <span>${data['comments'][i]['replies'][j]['created_at'].split('T')[0]} ${data['comments'][i]['replies'][j]['created_at'].split('T')[1].split('+')[0].substring(0, 8)}</span>
                                             <p>${data['comments'][i]['replies'][j]['description']}
                                             </p>
                                         </div>
@@ -86,7 +86,7 @@ function commentManager() {
                 for (let i = 0; i < comment_length.length; i++) {
                     comment_length[i].innerText = `${total_comments} comments`
                 }
-            }else{
+            } else {
                 for (let i = 0; i < comment_length.length; i++) {
                     comment_length[i].innerText = `${total_comments} comment`
                 }
@@ -117,7 +117,7 @@ function isReply() {
     for (let i = 0; i < replyButton.length; i++) {
         replyButton[i].onclick = function () {
             for (let j = 0; j < replyButton.length; j++) {
-                replyButton[j].style.color = '#666'                
+                replyButton[j].style.color = '#666'
             }
             if (submit_comment.getAttribute('isMain') != 'False') {
                 replyButton[i].style.color = '#fe5858'
