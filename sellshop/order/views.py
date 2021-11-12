@@ -7,7 +7,7 @@ from django.conf import settings
 from django.http import JsonResponse
 
 from order.forms import ShippingAddressForm
-from order.models import Cart, Cart_Item, ShippingAddress, Wishlist
+from order.models import Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
 from product.models import ProductVersion
 
 
@@ -24,26 +24,24 @@ def checkout(request):
     # Cart.objects.get_or_create(user=request.user)
     if request.method == "POST":
         shipping = ShippingAddressForm(request.POST)
-        if shipping.is_valid():
-            shipping = ShippingAddress(
-                user=request.user,
-                company_name=request.POST.get('company_name'),
-                country=request.POST.get('country'),
-                state=request.POST.get('state'),
-                city=request.POST.get('city'),
-                address=request.POST.get('address'),
-            )
-            shipping.save()
-            Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
-                is_ordered=True, shipping_address=shipping)
-            user_cart = Cart.objects.filter(user=request.user).filter(
-                is_ordered=True).filter(shipping_address=shipping).first()
-            for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
-                quantity = Cart_Item.objects.filter(cart=user_cart)[
-                    i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
-                ProductVersion.objects.filter(id=Cart_Item.objects.filter(
-                    cart=user_cart)[i].product.id).update(quantity=quantity)
-            return redirect('checkout')
+        # if shipping.is_valid():
+        shipping = ShippingAddress(
+            user=request.user,
+            company_name=request.POST.get('company_name'),
+            country=Country.objects.get(id=request.POST.get('country')),
+            city=City.objects.get(id=request.POST.get('city')),
+            address=request.POST.get('address'),
+        )
+
+        shipping.save()
+        Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
+            is_ordered=True, shipping_address=shipping)
+        user_cart = Cart.objects.filter(user=request.user).filter(
+            is_ordered=True).filter(shipping_address=shipping).first()
+        for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
+            quantity = Cart_Item.objects.filter(cart=user_cart)[i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
+            ProductVersion.objects.filter(id=Cart_Item.objects.filter(cart=user_cart)[i].product.id).update(quantity=quantity)
+        return redirect('checkout')
     else:
         shipping = ShippingAddressForm()
 
@@ -108,10 +106,11 @@ class PaymentView(View):
                 'card',
             ],
             mode='payment',
-            success_url= domain + '/success/',
-            cancel_url= domain + '/cancel/',
+            success_url=domain + '/success/',
+            cancel_url=domain + '/cancel/',
         )
         return JsonResponse({'id': checkout_session.id})
+
 
 class ProductLandingPageView (TemplateView):
     template_name = 'landing.html'
@@ -123,8 +122,10 @@ class ProductLandingPageView (TemplateView):
         context['products'] = ProductVersion.objects.get(id=1)
         return context
 
+
 class SuccessView(TemplateView):
     template_name = 'success.html'
+
 
 class CancelView(TemplateView):
     template_name = 'cancel.html'

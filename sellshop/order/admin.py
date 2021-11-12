@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from order.models import Billing, Cart, Cart_Item, ShippingAddress, Wishlist
+from order.models import Billing, Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
 
 
 # class Wishlistadmin(admin.ModelAdmin):
@@ -31,4 +31,4 @@ class ShippingAddressAdmin(admin.ModelAdmin):
     list_filter = ('company_name', 'user', 'country')
 
 
-admin.site.register(Wishlist)
+admin.site.register([Wishlist, Country, City])

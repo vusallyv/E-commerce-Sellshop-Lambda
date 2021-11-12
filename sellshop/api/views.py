@@ -9,9 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from api.serializers import CartItemSerializer, CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
+from api.serializers import CartItemSerializer, CartSerializer, CountrySerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
 from blog.models import Blog, Comment
-from order.models import Cart, Cart_Item, Wishlist
+from order.models import Cart, Cart_Item, Country, Wishlist
 from user.models import User
 from product.models import Product, ProductVersion, Category, Review
 
@@ -283,6 +283,23 @@ class CartItemView(APIView):
         Cart.objects.get_or_create(user=request.user, is_ordered=False)
         obj = Cart_Item.objects.filter(
             cart=Cart.objects.get(user=request.user, is_ordered=False))
+        serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CountryView(APIView):
+    serializer_class = CountrySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        country = request.data.get("country")
+        obj = Country.objects.filter(country=country)
+        serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        country = request.data.get("country")
+        obj = Country.objects.filter(country=country)
         serializer = self.serializer_class(obj, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

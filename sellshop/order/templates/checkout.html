@@ -36,7 +36,16 @@
 								{{ shipping.country }}
 							</div>
 							{{ shipping.state }}
-							{{ shipping.city }}
+							<div class="custom-select">
+								<select name="city" required="" id="id_city" disabled>
+									<option value="" selected="">---------</option>
+									
+									<option value="1">AF</option>
+									
+									<option value="2">AZ</option>
+									
+								</select>
+							</div>
 
 							<div class="custom-mess">
 								{{ shipping.address }}

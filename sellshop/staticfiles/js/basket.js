@@ -1,4 +1,3 @@
-
 const BasketLogic = {
 	productManager(productId, quantity, template) {
 		fetch('http://127.0.0.1:8000/en/api/cart/', {
@@ -142,7 +141,6 @@ const WishlistLogic = {
 
 var add_to_wishlist = document.getElementsByClassName('add_to_wishlist');
 for (let i = 0; i < add_to_wishlist.length; i++) {
-	console.log(add_to_wishlist);
     add_to_wishlist[i].onclick = function () {
         console.log('salam');
         const productId = this.getAttribute('data');

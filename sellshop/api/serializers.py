@@ -5,7 +5,7 @@ from rest_framework import serializers
 from product.models import Color, Image, Product, ProductVersion, Category, Review, Size
 from user.models import User
 from blog.models import Blog, Comment
-from order.models import Cart, Cart_Item, Wishlist
+from order.models import Cart, Cart_Item, City, Country, Wishlist
 
 User = get_user_model()
 
@@ -118,6 +118,21 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = "__all__"
 
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        exclude = ('country',)
+
+class CountrySerializer(serializers.ModelSerializer):
+    city = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Country
+        fields = ("country", "city")
+
+    def get_city(self, obj):
+        qs = obj.City_Country.all()
+        return CitySerializer(qs, many=True).data
 
 class ProductVersionSerializer(serializers.ModelSerializer):
     product = ProductOverViewSerializer()

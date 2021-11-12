@@ -93,7 +93,7 @@ class ProductVersion(BaseModel):
     rating = models.DecimalField(
         verbose_name="Rating", max_digits=3, decimal_places=1, default=0)
     tag = models.ManyToManyField(
-        "product.Tag")
+        "product.Tag", blank=True, related_name="product_tag")
     is_main = models.BooleanField(verbose_name='Main', default=False)
 
     # @property

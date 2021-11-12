@@ -57,3 +57,33 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
+country = document.getElementsByName('country')[0]
+country.onchange = function () {
+    CityLogic.cityManager(country.options[country.selectedIndex].text)
+}
+
+
+var CityLogic = {
+    cityManager(country) {
+        fetch('http://127.0.0.1:8000/en/api/country/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                'country': country,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                city = document.getElementsByName('city')[0]
+                city.disabled = false
+                city.innerHTML = ''
+                for (let i = 0; i < data[0]['city'].length; i++) {
+                    city.innerHTML += `<option value="${data[0]['city'][i]['id']}">${data[0]['city'][i]['city']}</option>`
+                }
+            });
+    }
+}

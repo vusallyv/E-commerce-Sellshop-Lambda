@@ -22,17 +22,39 @@ class Billing(BaseModel):
         return f"{self.user}"
 
 
+class Country(BaseModel):
+    country = CountryField(
+        verbose_name="Country", max_length=255, null=False, blank=False)
+
+    def __str__(self) -> str:
+        return f"{self.country}"
+
+    class Meta:
+        verbose_name_plural = "Countries"
+
+
+class City(BaseModel):
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, verbose_name="Country", related_name="City_Country")
+    city = models.CharField(verbose_name="City",
+                            max_length=255, null=False, blank=False)
+
+    def __str__(self) -> str:
+        return f"{self.city}"
+
+    class Meta:
+        verbose_name_plural = "Cities"
+
+
 class ShippingAddress(BaseModel):
     user = models.ForeignKey(
         "user.User", related_name="User_Shipping", on_delete=models.CASCADE, verbose_name="User")
     company_name = models.CharField(
         verbose_name="Company name", max_length=255, help_text="Max 255 char.", null=True, blank=True)
-    country = CountryField(
-        verbose_name="Country", max_length=255, null=False, blank=False)
-    state = models.CharField(verbose_name="State",
-                             max_length=255, null=False, blank=False)
-    city = models.CharField(verbose_name="City",
-                            max_length=255, null=False, blank=False)
+    country = models.ForeignKey(Country,
+                                verbose_name="Country", on_delete=models.CASCADE, related_name="Shipping_Country")
+    city = models.ForeignKey(City, on_delete=models.CASCADE,
+                             verbose_name="City", related_name="Shipping_City")
     address = models.TextField(verbose_name="Address", null=False, blank=False)
 
     def __str__(self) -> str:
@@ -47,14 +69,6 @@ class Wishlist(BaseModel):
 
     def __str__(self):
         return f"{self.user}"
-    
-
-# class Wishlist_Item(BaseModel):
-#     wishlist = models.ForeignKey(Wishlist, on_delete=models.CASCADE, default="")
-#     product = models.ForeignKey("product.ProductVersion",on_delete=models.CASCADE , blank=True, null=True)
-    
-#     def __str__(self) -> str:
-#         return f"{self.product}"
 
 
 class Cart(BaseModel):
@@ -63,7 +77,8 @@ class Cart(BaseModel):
     product = models.ManyToManyField(
         "product.ProductVersion", blank=True)
     is_ordered = models.BooleanField(verbose_name="Is Ordered?", default=False)
-    shipping_address = models.OneToOneField(ShippingAddress, null=True, blank=True, verbose_name="Shipping Address", on_delete=models.CASCADE)
+    shipping_address = models.OneToOneField(
+        ShippingAddress, null=True, blank=True, verbose_name="Shipping Address", on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"{self.user}"
