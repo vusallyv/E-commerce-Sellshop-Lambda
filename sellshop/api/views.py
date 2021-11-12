@@ -287,11 +287,24 @@ class CartItemView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
 class WishlistAPIView(APIView):
     serializer_class = WishlistSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        obj = Wishlist.objects.get(user=request.user)
+        obj, created = Wishlist.objects.get_or_create(user=request.user)
         serializer = self.serializer_class(obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.data.get('product')
+        product = ProductVersion.objects.get(pk=product_id)
+        Wishlist.objects.get_or_create(user=request.user)
+        wishlist = Wishlist.objects.get(user=request.user)
+        if product and product not in wishlist.product.all():
+            wishlist.product.add(product)
+        else:
+            wishlist.product.remove(product)
+        message = {'success': True,
+                   'message': 'Product added to your wishlist.'}
+        return Response(message, status=status.HTTP_201_CREATED)

@@ -196,3 +196,12 @@ class CartItemSerializer(serializers.ModelSerializer):
     def get_is_ordered(self, obj):
         qs = obj.cart.is_ordered
         return qs
+
+
+class WishlistSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Wishlist
+        fields = '__all__'  
+        
+    

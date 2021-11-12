@@ -1,3 +1,4 @@
+
 const BasketLogic = {
 	productManager(productId, quantity, template) {
 		fetch('http://127.0.0.1:8000/en/api/cart/', {
@@ -113,4 +114,40 @@ function removeFromCart() {
 			BasketLogic.productManager(productId, quantity, template);
 		}
 	}
+}
+
+
+wishlistUrl = location.origin + '/en/api/wishlist/'
+const WishlistLogic = {
+	wishlistPostManager(productId) {
+		fetch(wishlistUrl, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			},
+			body: JSON.stringify({
+				'product': productId,
+			})
+		})
+			.then(response => response.json())
+			.then(data => {
+				
+			});
+	}
+}
+
+
+
+var add_to_wishlist = document.getElementsByClassName('add_to_wishlist');
+for (let i = 0; i < add_to_wishlist.length; i++) {
+	console.log(add_to_wishlist);
+    add_to_wishlist[i].onclick = function () {
+        console.log('salam');
+        const productId = this.getAttribute('data');
+        WishlistLogic.wishlistPostManager(productId);
+        console.log(productId);
+    }
+
 }

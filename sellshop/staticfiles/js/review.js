@@ -135,7 +135,6 @@ function reviewManager() {
                                 </div>
                 `;
             }
-            console.log(total_review / data['review'].length);
             if (data['review'].length == 0) {
                 data['review'].length = 1
             }

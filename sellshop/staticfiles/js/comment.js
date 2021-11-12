@@ -39,7 +39,7 @@ function commentManager() {
     })
         .then(response => response.json())
         .then(data => {
-            total_comments = 1
+            total_comments = 0
             var comments = document.getElementById('comments')
             let main_comments = ''
             comments.innerHTML = ''

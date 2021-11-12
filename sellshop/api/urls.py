@@ -54,7 +54,7 @@ urlpatterns = [
     path('cart-item/', views.CartItemView.as_view(), name='cart_item'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('wishlist/', views.WishlistAPIView.as_view(), name='wishlist'),
+    path('wishlist/', views.WishlistAPIView.as_view(), name='wishlist_api'),
 ]
 
 # urlpatterns += router.urls

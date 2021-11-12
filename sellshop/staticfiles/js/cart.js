@@ -30,9 +30,9 @@ var CartLogic = {
 let cart_body = document.getElementById("cart_body")
 let product_table = document.getElementById("product_table")
 
-
+url = location.origin + '/en/api/cart-item/';
 function cartItemManager() {
-    fetch('http://127.0.0.1:8000/en/api/cart-item/', {
+    fetch(url, {
         method: 'GET',
         credentials: 'include',
         headers: {

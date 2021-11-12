@@ -176,7 +176,7 @@ def PaginatorProductList(request):
     contact_list = ProductVersion.objects.filter(
         is_main=True).order_by('created_at')
 
-    paginator = Paginator(contact_list, 1)
+    paginator = Paginator(contact_list, 2)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
