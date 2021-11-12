@@ -9,9 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from api.serializers import CartItemSerializer, CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer
+from api.serializers import CartItemSerializer, CartSerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
 from blog.models import Blog, Comment
-from order.models import Cart, Cart_Item
+from order.models import Cart, Cart_Item, Wishlist
 from user.models import User
 from product.models import Product, ProductVersion, Category, Review
 
@@ -284,4 +284,14 @@ class CartItemView(APIView):
         obj = Cart_Item.objects.filter(
             cart=Cart.objects.get(user=request.user, is_ordered=False))
         serializer = self.serializer_class(obj, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class WishlistAPIView(APIView):
+    serializer_class = WishlistSerializer
+
+    def get(self, request, *args, **kwargs):
+        obj = Wishlist.objects.get(user=request.user)
+        serializer = self.serializer_class(obj)
         return Response(serializer.data, status=status.HTTP_200_OK)
