@@ -17,6 +17,7 @@ function wishlistManager() {
 		});
 }
 
+
 window.addEventListener('DOMContentLoaded', (event) => {
 	wishlistManager()
 });
