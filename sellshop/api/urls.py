@@ -23,6 +23,8 @@ urlpatterns = [
     path('categories/<int:pk>/update/', views.UpdateCategoryAPIView.as_view()),
     path('categories/<int:pk>/delete/', views.DeleteCategoryAPIView.as_view()),
     path('blogs/create/', views.CreateBlogAPIView.as_view()),
+    path('blogs/', views.BlogAPIView.as_view()),
+    path('blogs/<int:pk>/', views.BlogAPIView.as_view()),
     path('blogs/<int:pk>/update/', views.UpdateBlogAPIView.as_view()),
     path('blogs/<int:pk>/delete/', views.DeleteBlogAPIView.as_view()),
     path('products/', views.ProductAPIView.as_view(), name="products"),
@@ -31,6 +33,10 @@ urlpatterns = [
          views.ProductVersionAPIVIew.as_view(), name="product_versions"),
     path('products/<int:product>/versions/<int:pk>/',
          views.ProductVersionAPIVIew.as_view(), name="product_version"),
+    path('productversions/',
+         views.ProductVersionReviewAPIVIew.as_view(), name="productversions"),
+    path('productversions/<int:pk>/',
+         views.ProductVersionReviewAPIVIew.as_view(), name="productversion"),
     path('products/create/', views.ProductCreateAPIView.as_view(),
          name="product_create"),
     path('products/<int:pk>/destroy/',
@@ -48,6 +54,7 @@ urlpatterns = [
     path('cart-item/', views.CartItemView.as_view(), name='cart_item'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('wishlist/', views.WishlistAPIView.as_view(), name='wishlist'),
 ]
 
 # urlpatterns += router.urls

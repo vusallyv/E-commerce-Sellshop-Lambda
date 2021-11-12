@@ -5,11 +5,11 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="pages-title-text text-center">
-          <h2>fashion style fine arts drawing</h2>
+          <h2>{{ blog.title }}</h2>
           <ul class="text-left">
             <li><a href="{% url 'index' %}">Home </a></li>
             <li><span> // </span><a href="{% url 'blog' %}">blog </a></li>
-            <li><span> // </span>fashion style fine arts drawing</li>
+            <li><span> // </span>{{ blog.title }}</li>
           </ul>
         </div>
       </div>
@@ -40,19 +40,8 @@
                   <li>
                     <i class="pe-7s-like"></i><a href="#">{{ blog.like }} Likes</a><span>|</span>
                   </li>
-                  <li><i class="pe-7s-back"></i><a href="#">{{ comments|length }} Comments</a></li>
+                  <li><i class="pe-7s-back"></i><a href="#" class="comment_length"></a></li>
                 </ul>
-              </div>
-              <p>{{ blog.description }}</p>
-              <div class="italic">
-                <p>
-                  “The wise man therefore always holds in these matters to this
-                  principle of selection: he rejects pleasures to secure other
-                  greater pleasures, or else he endures pains to avoid worse
-                  pains. But I must explain to you how all this mistaken idea of
-                  denouncing pleasure and praising pain was born and I will give
-                  you a complete account of the system”,
-                </p>
               </div>
               <p>{{ blog.description }}</p>
               <div class="share-tag clearfix">
@@ -80,62 +69,56 @@
                   </li>
                 </ul>
               </div>
-
-              <h4 id="comment_length">{{ comments|length }}</h4>
-              
-              <div id="main_comments">
+              <h4 class="comment_length"></h4>
+              <div id="comments">
               </div>
-              <div id="replies"></div>
-              
+
             </div>
 
 
             <div class="leave-comment">
-              <h4>leave your review</h4>
-            {% if request.user.is_authenticated %}
+              <h4>leave your comment</h4>
+              {% if request.user.is_authenticated %}
               <form action="" method="post">
                 {% else %}
-              <form action="{% url 'login'%}">
-                {% endif %}
-                {% csrf_token %}
-                <div class="row">
-                  <div class="col-xs-12 col-sm-6">
-                    <div class="input-text">
-                      {% if request.user.is_authenticated %}
-                      <input type="text" name="name" placeholder="Name here" value="{{user.username }}" readonly />
-                      {% else %}
-                      <input type="text" name="name" placeholder="Name here" />
-                      {% endif %}
+                <form action="{% url 'login'%}">
+                  {% endif %}
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                      <div class="input-text">
+                        {% if not request.user.is_authenticated %}
+                        <input type="text" name="name" placeholder="Name here" />
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                      <div class="input-text">
+                        {% if not request.user.is_authenticated %}
+                        <input type="text" name="name" placeholder="Name here" />
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="input-text">
+                        {{form.description}}
+                      </div>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="submit-text">
+                        {% if request.user.is_authenticated %}
+                        <button id="submit_comment" type="button" value="submit form" isMain="True" data_id="{{blog}}">
+                          submit comments
+                        </button>
+                        {% else %}
+                        <button type="text" value="submit form">
+                          submit comments
+                        </button>
+                        {% endif %}
+                      </div>
                     </div>
                   </div>
-                  <div class="col-xs-12 col-sm-6">
-                    <div class="input-text">
-                      {% if request.user.is_authenticated %}
-                      <input type="text" name="name" placeholder="Name here" value="{{user.email }}" readonly />
-                      {% else %}
-                      <input type="text" name="name" placeholder="Name here" />
-                      {% endif %}</div>
-                  </div>
-                  <div class="col-xs-12">
-                    <div class="input-text">
-                      {{form.description}}
-                    </div>
-                  </div>
-                  <div class="col-xs-12">
-                    <div class="submit-text">
-                      {% if request.user.is_authenticated %}
-                      <button type="submit" value="submit form">
-                        submit comments
-                      </button> 
-                      {% else %}
-                      <button type="text" value="submit form">
-                        submit comments
-                      </button>
-                      {% endif %}
-                    </div>
-                  </div>
-                </div>
-              </form>
+                </form>
             </div>
           </div>
         </div>
@@ -143,6 +126,7 @@
       </div>
       <div class="col-xs-12 col-sm-4 col-md-3">
         <div class="sidebar left-sidebar">
+          {% comment 'categories and brands' %}
           <div class="s-side-text">
             <div class="sidebar-title clearfix">
               <h4 class="floatleft">Categories</h4>
@@ -197,17 +181,18 @@
                   <form method="GET">
                     <a href="#">
                       <button type="submit" name="brand" value="{{ brand.title }}"
-                        style="background-color: transparent; border: none">
-                        {{ brand.title }}
-                      </button>
-                    </a>
-                  </form>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
+                      style="background-color: transparent; border: none">
+                      {{ brand.title }}
+                    </button>
+                  </a>
+                </form>
+              </li>
+              {% endfor %}
+            </ul>
           </div>
-          <div class="s-side-text">
+        </div>
+        {% endcomment %}
+        <div class="s-side-text">
             <div class="sidebar-title clearfix">
               <h4 class="floatleft">recent post</h4>
             </div>
@@ -253,12 +238,12 @@
     <ul class="blog-row">
       <li>
         <div class="row">
-          {% for blog in relatedblogs %}
+          {% for blog in blogs %}
           {% if blog.product.product.category_id.title == urlblog.product.product.category_id.title %}
           <div class="col-sm-12">
             <div class="l-blog-text">
-              <div class="banner" >
-                <a href="{% url 'single_blog' blog.id %}"><img  src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
+              <div class="banner">
+                <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
               </div>
               <div class="s-blog-text">
                 <h4>
@@ -277,7 +262,7 @@
               </div>
             </div>
           </div>
-         {% endif %}
+          {% endif %}
           {% endfor %}
         </div>
       </li>
@@ -287,5 +272,5 @@
 <!-- related post section end -->
 
 <!-- all js here -->
-<script src="{% static 'js/comments.js' %}"></script>
+<script src="{% static 'js/comment.js' %}"></script>
 {% endblock %}

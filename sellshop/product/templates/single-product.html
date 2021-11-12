@@ -62,13 +62,7 @@
 						<div class="list-text">
 							<h3>{{ productversion.product.title }}</h3>
 							<span>{{ productversion.product.subtitle }}</span>
-							<div class="ratting floatright">
-								<p> {% if rating == None %} No {% else %} {{ rating }} {% endif %} Rating </p>
-								<i class="mdi mdi-star"></i>
-								<i class="mdi mdi-star"></i>
-								<i class="mdi mdi-star"></i>
-								<i class="mdi mdi-star-half"></i>
-								<i class="mdi mdi-star-outline"></i>
+							<div id="total_rating" class="ratting floatright">
 							</div>
 							<h5><del>${{ productversion.product.ex_price }}</del> $
 								{{ productversion.product.price }}</h5>
@@ -78,18 +72,11 @@
 									<h5>Color</h5>
 									<div class="color-select clearfix">
 										{% for version in product_color %}
-										{% if version.product.id == productversion.product.id %}
-										{% if version.id == productversion.id %}
-										<a href="{% url 'single_product' version.id %}"><input style="outline: 1px solid #fe5858; outline-offset: 2px;" type="color" value="#{{version.color.hex_code}}" disabled name="" id=""></a>
-										{% else %}
-										<a href="{% url 'single_product' version.id %}"><input type="color" value="#{{version.color.hex_code}}" disabled name="" id=""></a>
-										{% endif %}
+										{% if version.product.id == productversion.product.id and version.size == productversion.size %}
+										<a href="{% url 'single_product' version.id %}"><input type="color"
+												value="#{{version.color.hex_code}}" disabled name="" id=""></a>
 										{% endif %}
 										{% endfor %}
-										<!-- <span></span>
-										<span class="outline"></span>
-										<span></span>
-										<span></span> -->
 									</div>
 								</div>
 								<div class="s-shoose">
@@ -104,8 +91,9 @@
 											</button>
 											<ul class="dropdown-menu">
 												{% for version in product_color %}
-												{% if version.product.id == productversion.product.id %}
-												<li><a href="{% url 'single_product' version.id %}">{{version.size}}</a></li>
+												{% if version.product.id == productversion.product.id and version.color == productversion.color %}
+												<li><a href="{% url 'single_product' version.id %}">{{version.size}}</a>
+												</li>
 												{% endif %}
 												{% endfor %}
 											</ul>
@@ -117,7 +105,8 @@
 									<form action="#" method="POST">
 										<div class="plus-minus">
 											<a class="dec qtybutton">-</a>
-											<input type="text" value="1" max="{{productversion.quantity}}" name="qtybutton" id="quantity" class="plus-minus-box">
+											<input type="text" value="1" max="{{productversion.quantity}}"
+												name="qtybutton" id="quantity" class="plus-minus-box">
 											<a class="inc qtybutton">+</a>
 										</div>
 									</form>
@@ -160,35 +149,9 @@
 						<div class="info-reviews moreinfo tab-pane fade in" id="moreinfo">
 							<p>{{ productversion.product.description }}</p>
 						</div>
-						{% for review in reviews %}
-						<div class="info-reviews review-text tab-pane fade in active" id="reviews">
-							<div class="about-author">
-
-								<div class="autohr-text">
-									{% if review.user.image == 'staticfiles/img/blog/author1.png' %}
-									<img style="width: 90px; height: 100px;" src="{% static 'img/blog/author1.png' %}"
-										alt="" />
-									{% else %}
-									<img style="width: 90px; height: 100px;" src="{{ review.user.image.url }}" alt="" />
-									{% endif %}
-
-									<div class="author-des">
-										<h4><a href="#">{{ review.user.username }}</a></h4>
-										<span class="floatright ratting">
-											<i class="mdi mdi-star"></i>
-											<i class="mdi mdi-star"></i>
-											<i class="mdi mdi-star"></i>
-											<i class="mdi mdi-star-half"></i>
-											<i class="mdi mdi-star-outline"></i>
-										</span>
-										<span>{{ review.created_at }}</span>
-										<p>{{ review.review }}</p>
-									</div>
-								</div>
-							</div>
-							<hr />
+						<div id="reviews">
+							
 						</div>
-						{% endfor %}
 						<div class="your-rating log-title">
 							<h3>leave your review</h3>
 							<h5>Your rating</h5>
@@ -203,29 +166,29 @@
 									{% csrf_token %}
 									<div class="rating clearfix">
 										<ul>
-											<li>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<span>|</span>
 											</li>
-											<li>
-												<i class="mdi mdi-star-outline"></i>
-												<i class="mdi mdi-star-outline"></i>
-												<span>|</span>
-											</li>
-											<li>
-												<i class="mdi mdi-star-outline"></i>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<span>|</span>
 											</li>
-											<li>
-												<i class="mdi mdi-star-outline"></i>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<span>|</span>
 											</li>
-											<li>
+											<li class="mdi-stars">
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li class="mdi-stars">
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
 												<i class="mdi mdi-star-outline"></i>
@@ -234,24 +197,23 @@
 											</li>
 										</ul>
 									</div>
-									<div>
-										{{form.rating}}
-									</div>
-									<div class="row">
-										
+									<div class="row">                        
+										{% if not request.user.is_authenticated %}
 										<div class="col-sm-6">
 											<div class="input-mail">
 												<input type="text" name="name" placeholder="{{user.username }}"
-													value="{{user.username }}" readonly />
+												value="{{user.username }}" readonly />
 											</div>
 										</div>
+										{% endif %}
+										{% if not request.user.is_authenticated %}
 										<div class="col-sm-6">
 											<div class="input-mail">
 												<input type="text" name="email" placeholder="{{user.email}}"
-													value="{{user.email}}" readonly />
+												value="{{user.email}}" readonly />
 											</div>
-											
 										</div>
+										{% endif %}
 										<div class="col-xs-12">
 											<div class="custom-mess">
 												{{ form.review }}
@@ -260,7 +222,7 @@
 										<div class="col-xs-12">
 											<div class="submit-text">
 												{% if request.user.is_authenticated %}
-												<button type="submit">submit review</button>
+												<button type="button" data_id="{{productversion.id}}" id="submit_review">submit review</button>
 												{% else %}
 												<button type="text">submit review</button>
 												{% endif %}
@@ -300,7 +262,7 @@
 					<div class="product-img">
 						<a href="#"><img src="{% static 'img/products/4.jpg' %}" alt="Product Title" /></a>
 						<div class="actions-btn">
-							<a><i data="{{relatedproduct.product.id}}" class="mdi mdi-cart add_to_cart "></i></a>	
+							<a><i data="{{relatedproduct.id}}" class="mdi mdi-cart add_to_cart "></i></a>
 							<a href="#" data-toggle="modal" data-target="#quick-view"><i class="mdi mdi-eye"></i></a>
 							<a href="#"><i class="mdi mdi-heart"></i></a>
 						</div>
@@ -375,7 +337,8 @@
 													<i class="mdi mdi-star-half"></i>
 													<i class="mdi mdi-star-outline"></i>
 												</div>
-												<h5><del>${{ productversion.product.ex_price }}</del> ${{ productversion.product.price }}</h5>
+												<h5><del>${{ productversion.product.ex_price }}</del> ${{
+													productversion.product.price }}</h5>
 												<p>{{ productversion.product.description }}</p>
 												<div class="all-choose">
 													<div class="s-shoose">
@@ -417,7 +380,8 @@
 														<form action="#" method="POST">
 															<div class="plus-minus">
 																<a class="dec qtybutton">-</a>
-																<input type="number" value="1" max="{{productversion.quantity}}" name="qtybutton"
+																<input type="number" value="1"
+																	max="{{productversion.quantity}}" name="qtybutton"
 																	class="plus-minus-box">
 																<a class="inc qtybutton">+</a>
 															</div>
@@ -456,4 +420,5 @@
 </div>
 <!-- quick view end -->
 <!-- all js here -->
+<script src="{% static 'js/review.js' %}"></script>
 {% endblock %}

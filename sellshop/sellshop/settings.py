@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_beat',
+    'django_countries',
     # 'django.contrib.flatpages',
     # 'django.contrib.sites',
 
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     "corsheaders",
+    'paypal.standard.ipn',
 
     # custom apps
     'user',
