@@ -39,9 +39,6 @@ class ProductListView(ListView):
 
         if request.GET:
             qs_productversion_all = ProductVersion.objects.all()
-            if request.GET.get("search_name"):
-                qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
-                    product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
             if request.GET.get("category_name"):
                 qs_productversion_all = ProductVersion.objects.filter(
                     product__category__parent__title=request.GET.get("category_name"))
@@ -87,11 +84,10 @@ def PaginatorProductList(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    if request.GET.get("search_name"):
-        qs = ProductVersion.objects.filter(Q(product__title__icontains=request.GET.get("search_name")) | Q(
-            product__subtitle__icontains=request.GET.get("search_name")) | Q(product__description__icontains=request.GET.get("search_name")))
+    if request.GET:
+        product_list = ProductVersion.objects.all()
         if request.GET.get("category_name"):
-            product_list = ProductVersion.objects.filter(
+            product_list = product_list.filter(
                 product__category__parent__title=request.GET.get("category_name"))
         if request.GET.get("subcategory_name"):
             product_list = product_list.filter(
@@ -102,6 +98,9 @@ def PaginatorProductList(request):
         if request.GET.get("brand"):
             product_list = product_list.filter(
                 product__brand__title=request.GET.get("brand"))
+        if request.GET.get("color"):
+            product_list = product_list.filter(
+                color__title=request.GET.get("color"))
         if request.GET.get("min_price"):
             product_list = product_list.filter(
                 product__price__gte=request.GET.get("min_price"))
