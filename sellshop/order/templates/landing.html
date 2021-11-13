@@ -17,7 +17,7 @@
                 <h5>${{products.product.price}}</h5>
             </div>
         </div>
-        <form action="http://127.0.0.1:8000/en/order/payment/" method="POST">
+        <form action="{% url 'payment' %}" method="POST">
             {% csrf_token %}
             <button type="submit" id="checkout-button">Checkout</button>
         </form>

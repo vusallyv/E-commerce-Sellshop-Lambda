@@ -52,10 +52,11 @@ class CartAdmin(admin.ModelAdmin):
                 <thead class="thead-dark">
                     <tr>
                     <th scope="col">Title</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Unit Price</th>
                     <th scope="col">Color</th>
                     <th scope="col">Size</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Total Price</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,7 @@ class CartAdmin(admin.ModelAdmin):
                         <td>{item.product.color.title}</td>
                         <td>{item.product.size.title}</td>
                         <td>{item.quantity}</td>
+                        <td>{item.quantity*item.product.product.price}</td>
                     </tr>
                 
             '''

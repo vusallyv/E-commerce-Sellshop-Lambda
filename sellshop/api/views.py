@@ -282,7 +282,7 @@ class CartItemView(APIView):
     def get(self, request, *args, **kwargs):
         Cart.objects.get_or_create(user=request.user, is_ordered=False)
         obj = Cart_Item.objects.filter(
-            cart=Cart.objects.get(user=request.user, is_ordered=False))
+            cart=Cart.objects.get(user=request.user, is_ordered=False)).order_by('created_at')
         serializer = self.serializer_class(obj, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
