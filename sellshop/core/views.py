@@ -79,8 +79,8 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Home Sellshop'
-        # context['mostreview'] = ProductVersion.objects.annotate(
-        #     num_rev=Count('rating')).order_by('-num_rev')[:5],
+        context['mostreview'] = ProductVersion.objects.annotate(
+            num_rev=Count('product_reviews')).order_by('-num_rev')[:5],
         context['new_arrivals'] = ProductVersion.objects.order_by("created_at")[
             0:12],
         context['latest_blog'] = Blog.objects.order_by("-created_at")[0:3],

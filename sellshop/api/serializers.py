@@ -157,7 +157,7 @@ class ProductVersionSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("first_name", "email",
+        fields = ("username", "email",
                   "phone_number", "password", 'password_confirmation')
         extra_kwargs = {
             'password': {'write_only': True},
@@ -178,10 +178,10 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password')
-        random_number = random.randint(0, 10000)
-        while User.objects.filter(username=f"Guest_{random_number}"):
-            random_number = random.randint(0, 1000000)
-        validated_data['username'] = f"Guest_{random_number}"
+        # random_number = random.randint(0, 10000)
+        # while User.objects.filter(username=f"Guest_{random_number}"):
+        #     random_number = random.randint(0, 1000000)
+        # validated_data['username'] = f"Guest_{random_number}"
         user = super().create(validated_data=validated_data)
         user.set_password(password)
         user.save()
