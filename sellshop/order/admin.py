@@ -6,9 +6,6 @@ from django.utils.html import format_html
 from order.models import Billing, Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
 
 
-# class Wishlistadmin(admin.ModelAdmin):
-#     search_fields = ['user_id']
-
 @admin.register(Billing)
 class BillingAdmin(admin.ModelAdmin):
     list_display = ('user', 'company_name', 'country',)
@@ -26,8 +23,6 @@ class CartAdmin(admin.ModelAdmin):
             'get_shipping_company', 'get_shipping_country', 'get_shipping_city', 'get_shipping_address',)}),
         ('Product information', {
          'fields': ('get_product',)}),
-        # ('Different information', {
-        #  'fields': ('additional_info', 'is_staff', 'is_active', 'is_superuser')}),
     )
     readonly_fields = ('get_user_username', 'get_shipping_address',
                        'get_shipping_country', 'get_shipping_city', 'get_product', 'get_shipping_company')

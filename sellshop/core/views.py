@@ -79,9 +79,10 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Home Sellshop'
-        context['mostreview'] = ProductVersion.objects.annotate(
-            num_rev=Count('rating')).order_by('-num_rev')[:5],
-        context['new_arrivals'] = ProductVersion.objects.order_by("created_at")[0:12],
+        # context['mostreview'] = ProductVersion.objects.annotate(
+        #     num_rev=Count('rating')).order_by('-num_rev')[:5],
+        context['new_arrivals'] = ProductVersion.objects.order_by("created_at")[
+            0:12],
         context['latest_blog'] = Blog.objects.order_by("-created_at")[0:3],
         context['latest_blog2'] = Blog.objects.order_by("-created_at")[3:6],
         return context
@@ -89,13 +90,9 @@ class HomeView(TemplateView):
 
 def change_language(request):
     if request.GET.get('lang') == 'en' or request.GET.get('lang') == 'az' or request.GET.get('lang') == 'ru':
-        # print(request.META.get('HTTP_REFERER'))
         path_list = request.META.get('HTTP_REFERER').split('/')
-        # print(path_list)
         path_list[3] = request.GET.get('lang')
         path = '/'.join(path_list)
-        # print(path)
-
         response = HttpResponseRedirect(path)
         response.set_cookie('django_language', request.GET['lang'])
         return response

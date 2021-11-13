@@ -17,6 +17,7 @@ const BasketLogic = {
 			.then(data => {
 				if (data.success) {
 					cartManager()
+					// cartItemManager()
 				} else {
 					alert(data.message);
 				}
@@ -29,24 +30,37 @@ const addToBasket = document.querySelectorAll('.add_to_cart');
 addToBasket.forEach(item => {
 	item.onclick = function () {
 		if (item.classList.contains('disabled') == false) {
+			if (item.tagName == 'A') {
+				item.style.backgroundColor = "green";
+				item.style.color = "white";
+				item.innerText = "Added to cart"
+				item.classList.add('disabled')
+				setTimeout(() => {
+					item.style.background = "";
+					item.style.color = "";
+					item.innerText = "Add to cart"
+					item.classList.remove('disabled')
+				}, 1000);
+			} else {
+				item.parentElement.style.backgroundColor = "green";
+				item.style.color = "white";
+				item.classList.add('disabled')
+				setTimeout(() => {
+					item.parentElement.style.background = "";
+					item.style.color = "";
+					item.classList.remove('disabled')
+				}, 1000);
+			}
 			const productId = this.getAttribute('data');
 			template = "product_list.html"
-			item.style.backgroundColor = "green";
-			item.style.color = "white";
-			item.innerText = "Added to cart"
-			item.classList.add('disabled')
-			setTimeout(() => {
-				item.style.background = "";
-				item.style.color = "";
-				item.innerText = "Add to cart"
-				item.classList.remove('disabled')
-			}, 1000);
 			try {
 				quantity = document.getElementById('quantity').value;
 			} catch {
 				quantity = 1
 			}
 			BasketLogic.productManager(productId, quantity, template);
+
+
 		}
 	}
 })
@@ -161,3 +175,4 @@ for (let i = 0; i < add_to_wishlist.length; i++) {
 	}
 
 }
+

@@ -46,7 +46,12 @@
             var $button = $(this);
             var oldValue = $button.parent().find("input").val();
             if ($button.text() == "+") {
-                var newVal = parseFloat(oldValue) + 1;
+                var quantity = document.getElementById("quantity").getAttribute("max");
+                if (oldValue < parseInt(quantity)) {
+                    var newVal = parseFloat(oldValue) + 1;
+                }else{
+                    var newVal = parseFloat(oldValue);
+                }
             } else {
                 // Don't allow decrementing below zero
                 if (oldValue > 0) {

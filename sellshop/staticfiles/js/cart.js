@@ -68,7 +68,7 @@ function cartItemManager() {
             <form action="#" method="POST">
             <div class="plus-minus" onmouseover="quantityInputChange()">
             <a class="dec qtybutton">-</a>
-            <input type="number" onmouseover="quantityChange()" data="${data[i]['product']['id']}" min="1" max="${data[i]['product']['quantity']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
+            <input type="number" onmouseover="quantityChange()" data="${data[i]['product']['id']}" min="1" max="${data[i]['product']['quantity']}" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
             <a class="inc qtybutton">+</a>
             </div>
             </form>
@@ -83,20 +83,24 @@ function cartItemManager() {
             }
             cart_body.innerHTML = html
             total_products.children[0].innerHTML = `
-                    <tr>
-                        <th>Shipping and Handing</th>
-                        <td>$15.00</td>
-                    </tr>
-                    <tr>
-                        <th>Cart Subtotal</th>
-                        <td>$${total_price.toFixed(2)}</td>
-                    </tr>
-                    `
+                        <tr>
+                            <th>Shipping and Handing</th>
+                            <td>$15.00</td>
+                        </tr>
+                        <tr>
+                            <th>Cart Subtotal</th>
+                            <td>$${total_price.toFixed(2)}</td>
+                        </tr>
+                        `
             total_products.children[1].innerHTML = `
-            <tr>
-                <th class="tfoot-padd">Order total</th>
-                <td class="tfoot-padd">$${(total_price + 15).toFixed(2)}</td>
-            </tr>`
+                <tr>
+                    <th class="tfoot-padd">Order total</th>
+                    <td class="tfoot-padd">$${(total_price + 15).toFixed(2)}</td>
+                </tr>`
+            if (data.length == 0) {
+                total_products.style.display = 'none'
+            } 
+
         });
 }
 
@@ -135,7 +139,7 @@ function quantityInputChange() {
     }
     for (let j = 0; j < inc.length; j++) {
         inc[j].onclick = function () {
-            if (qtybutton[j].value < qtybutton[j].getAttribute('max')) {
+            if (qtybutton[j].value < parseInt(qtybutton[j].getAttribute('max'))) {
                 qtybutton[j].value++;
                 const productId = qtybutton[j].getAttribute('data');
                 quantity = qtybutton[j].value;
