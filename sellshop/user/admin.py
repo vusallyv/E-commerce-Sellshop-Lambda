@@ -17,14 +17,14 @@ class UserAdmin(admin.ModelAdmin):
     # search_fields = ('first_name', )
     # fields = ['first_name', 'city',]
     # readonly_fields = ()
-    # fieldsets = (
-    #     ('General information', {'fields': ('first_name', 'last_name')}),
-    #     ('Location information', {'fields': ('country', 'city')}),
-    #     ('Online information', {
-    #      'fields': ('username', 'email', 'phone_number', 'password',)}),
-    #     ('Different information', {
-    #      'fields': ('additional_info', 'is_staff', 'is_active', 'is_superuser)}),
-    # )
+    fieldsets = (
+        ('General information', {'fields': ('first_name', 'last_name')}),
+        ('Location information', {'fields': ('country', 'city')}),
+        ('Online information', {
+         'fields': ('username', 'email', 'phone_number', 'password',)}),
+        ('Different information', {
+         'fields': ('additional_info', 'is_staff', 'is_active', 'is_superuser')}),
+    )
 
 
 # class UserAdmin(admin.ModelAdmin):

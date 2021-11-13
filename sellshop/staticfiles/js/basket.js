@@ -28,14 +28,26 @@ const BasketLogic = {
 const addToBasket = document.querySelectorAll('.add_to_cart');
 addToBasket.forEach(item => {
 	item.onclick = function () {
-		const productId = this.getAttribute('data');
-		template = "product_list.html"
-		try {
-			quantity = document.getElementById('quantity').value;
-		} catch {
-			quantity = 1
+		if (item.classList.contains('disabled') == false) {
+			const productId = this.getAttribute('data');
+			template = "product_list.html"
+			item.style.backgroundColor = "green";
+			item.style.color = "white";
+			item.innerText = "Added to cart"
+			item.classList.add('disabled')
+			setTimeout(() => {
+				item.style.background = "";
+				item.style.color = "";
+				item.innerText = "Add to cart"
+				item.classList.remove('disabled')
+			}, 1000);
+			try {
+				quantity = document.getElementById('quantity').value;
+			} catch {
+				quantity = 1
+			}
+			BasketLogic.productManager(productId, quantity, template);
 		}
-		BasketLogic.productManager(productId, quantity, template);
 	}
 })
 
@@ -94,7 +106,7 @@ function cartManager() {
 			}
 			try {
 				checkoutManager()
-			} catch  {
+			} catch {
 			}
 		});
 }
@@ -132,7 +144,7 @@ const WishlistLogic = {
 		})
 			.then(response => response.json())
 			.then(data => {
-				
+
 			});
 	}
 }
@@ -141,11 +153,11 @@ const WishlistLogic = {
 
 var add_to_wishlist = document.getElementsByClassName('add_to_wishlist');
 for (let i = 0; i < add_to_wishlist.length; i++) {
-    add_to_wishlist[i].onclick = function () {
-        console.log('salam');
-        const productId = this.getAttribute('data');
-        WishlistLogic.wishlistPostManager(productId);
-        console.log(productId);
-    }
+	add_to_wishlist[i].onclick = function () {
+		console.log('salam');
+		const productId = this.getAttribute('data');
+		WishlistLogic.wishlistPostManager(productId);
+		console.log(productId);
+	}
 
 }

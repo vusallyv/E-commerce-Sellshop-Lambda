@@ -70,7 +70,6 @@
                 }
             }
             url_arr = url_arr.sort();
-            console.log((url_arr));
         }catch{
             
         }

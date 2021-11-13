@@ -90,8 +90,6 @@ class ProductVersion(BaseModel):
         Color, default=1, verbose_name='Color', on_delete=models.CASCADE, related_name='product_color')
     size = models.ForeignKey(Size, on_delete=models.CASCADE,
                              default=1, verbose_name='Size')
-    rating = models.DecimalField(
-        verbose_name="Rating", max_digits=3, decimal_places=1, default=0)
     tag = models.ManyToManyField(
         "product.Tag", blank=True, related_name="product_tag")
     is_main = models.BooleanField(verbose_name='Main', default=False)

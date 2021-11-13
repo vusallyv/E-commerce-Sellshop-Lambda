@@ -16,7 +16,12 @@ var CartLogic = {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert("Product quantity changed")
+                    quantityAlert = document.getElementById('quantityAlert')
+                    quantityAlert.style.display = 'block'
+                    quantityAlert.innerHTML = 'Product quantity changed'
+                    setTimeout(() => {
+                        quantityAlert.style.display = 'none'
+                    }, 1000);
                     cartManager()
                     cartItemManager()
                 } else {
@@ -43,8 +48,11 @@ function cartItemManager() {
         .then(response => response.json())
         .then(data => {
             let html = ''
+            total_price = 0
+            total_products = document.getElementById("total_products")
             for (let i = 0; i < data.length; i++) {
                 if (data[i]['quantity'] > 0 && data[i]['is_ordered'] == false) {
+                    total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
                     html += `
             <tr>
             <td class="td-img text-left">
@@ -58,7 +66,7 @@ function cartItemManager() {
             <td>$${parseFloat(data[i]['product']['product']['price']).toFixed(2)}</td>
             <td>
             <form action="#" method="POST">
-            <div class="plus-minus">
+            <div class="plus-minus" onmouseover="quantityInputChange()">
             <a class="dec qtybutton">-</a>
             <input type="number" onmouseover="quantityChange()" data="${data[i]['product']['id']}" min="1" max="${data[i]['product']['quantity']}" id="quantityItem" value="${data[i]['quantity']}" name="qtybutton" class="plus-minus-box">
             <a class="inc qtybutton">+</a>
@@ -74,6 +82,21 @@ function cartItemManager() {
                 }
             }
             cart_body.innerHTML = html
+            total_products.children[0].innerHTML = `
+                    <tr>
+                        <th>Shipping and Handing</th>
+                        <td>$15.00</td>
+                    </tr>
+                    <tr>
+                        <th>Cart Subtotal</th>
+                        <td>$${total_price.toFixed(2)}</td>
+                    </tr>
+                    `
+            total_products.children[1].innerHTML = `
+            <tr>
+                <th class="tfoot-padd">Order total</th>
+                <td class="tfoot-padd">$${(total_price + 15).toFixed(2)}</td>
+            </tr>`
         });
 }
 
@@ -95,3 +118,31 @@ function quantityChange() {
 }
 
 
+function quantityInputChange() {
+    dec = document.getElementsByClassName("dec")
+    inc = document.getElementsByClassName("inc")
+    qtybutton = document.getElementsByName("qtybutton")
+    for (let i = 0; i < dec.length; i++) {
+        dec[i].onclick = function () {
+            if (qtybutton[i].value > 1) {
+                qtybutton[i].value--;
+                const productId = qtybutton[i].getAttribute('data');
+                quantity = qtybutton[i].value;
+                template = "cart.html"
+                CartLogic.productManager(productId, quantity, template);
+            }
+        }
+    }
+    for (let j = 0; j < inc.length; j++) {
+        inc[j].onclick = function () {
+            if (qtybutton[j].value < qtybutton[j].getAttribute('max')) {
+                qtybutton[j].value++;
+                const productId = qtybutton[j].getAttribute('data');
+                quantity = qtybutton[j].value;
+                template = "cart.html"
+                CartLogic.productManager(productId, quantity, template);
+            }
+        }
+    }
+
+}
