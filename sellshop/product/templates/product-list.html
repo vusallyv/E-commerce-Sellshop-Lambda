@@ -75,14 +75,7 @@
                                         data-target="#collapse{{ category.id }}">
                                         <form method="GET">
                                             <div class="medium-a">
-                                                <a name="category_name" style="text-transform: capitalize; {%if "?" in request.get_full_path and category.title not in request.get_full_path %}
-                                                    href="{{ request.get_full_path }}&category={{category.title}}">
-                                                    {% elif category.title in request.get_full_path %}
-                                                    color: #fe5858;" class="active">
-                                                    {% else %}
-                                                    href="{{ request.get_full_path }}?category={{category.title}}">
-                                                    {% endif %}
-                                                    {{ category.title }}</a>
+                                                <a name="category_name" style="text-transform: capitalize;">{{ category.title }} </a>
                                             </div>
                                         </form>
                                     </div>
@@ -91,14 +84,7 @@
                                         {% for child in category.parent_category.all %}
                                         <form method="GET">
                                             <div class="normal-a">
-                                                <a name="subcategory_name" style="text-transform: capitalize; {%if "?" in request.get_full_path and child.title not in request.get_full_path %}
-                                                    href="{{ request.get_full_path }}&subcategory={{child.title}}">
-                                                    {% elif child.title in request.get_full_path %}
-                                                    color: #fe5858;" class="active">
-                                                    {% else %}
-                                                    href="{{ request.get_full_path }}?subcategory={{child.title}}">
-                                                    {% endif %}
-                                                    {{ child.title }}</a>
+                                                <a name="subcategory_name" style="text-transform: capitalize;">{{ child.title }}</a>
                                             </div>
                                         </form>
                                         <div class="medium-a"></div>
@@ -129,12 +115,7 @@
                         <div class="size-select clearfix">
                             <form method="GET">
                                 {% for size in sizes %}
-                                <a name="size" {%if "?" in request.get_full_path and size.title not in request.get_full_path %} href="{{ request.get_full_path }}&size={{size.title}}">
-                                    {% elif size.title in request.get_full_path %}
-                                    class="active">
-                                    {% else %}
-                                    href="{{ request.get_full_path }}?size={{size.title}}">
-                                    {% endif %}
+                                <a name="size">
                                     {{ size.title }}</a> {% endfor %}
                             </form>
                         </div>
@@ -147,11 +128,9 @@
                         <div class="color-select clearfix">
                             <form method="GET">
                                 {% for color in colors %}
-                                <a style="margin-right: 11.58px;" name="color" {%if "?" in request.get_full_path and color.hex_code not in request.get_full_path %} href="{{ request.get_full_path }}&color={{color.hex_code}}"><span
-                                    {% elif color.hex_code in request.get_full_path %}
-                                            ><span class="outline"
-                                    {% else %}
-                                    href="{{ request.get_full_path }}?color={{color.hex_code}}"><span 
+                                <a style="margin-right: 11.58px;" name="color" color="{{color.title}}" ><span
+                                    {% if color.title in request.get_full_path %}
+                                             class="outline"
                                     {% endif %}
                                     style="background: #{{color.hex_code}} none repeat scroll 0 0; margin-right: 11.58px; border: 1px black solid;"></span>
                                 </a>
@@ -169,13 +148,7 @@
                                 {% for brand in brands %}
                                 <li>
                                     <form method="GET">
-                                        <a name="brand" {%if "?" in request.get_full_path and brand.title not in request.get_full_path %} href="{{ request.get_full_path }}&brand={{brand.title}}">
-                                            {% elif brand.title in request.get_full_path %}
-                                            class="active" style="color: #fe5858;">
-                                            {% else %}
-                                            href="{{ request.get_full_path }}?brand={{brand.title}}">
-                                            {% endif %}
-                                            {{ brand.title }}</a>
+                                        <a name="brand">{{ brand.title }}</a>
                                     </form>
                                 </li>
                                 {% endfor %}
@@ -318,26 +291,26 @@
                         <div class="col-sm-12">
                             <div class="pagnation-ul">
                                 <ul class="clearfix">
+                                    {% if page_obj.has_previous %}
                                     <li>
-                                        {% if page_obj.has_previous %}
-                                        <a href="?page=1"><i class="mdi mdi-menu-left"></i>First</a>
-                                        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                                        {% endif %}
+                                        <a class="first-last" page="1"><i class="mdi mdi-menu-left"></i>First</a>
+                                        <a id="previous" page="{{ page_obj.previous_page_number }}">Previous</a>
                                     </li>
+                                    {% endif %}
                                     {% for page in page_obj.paginator.page_range %}
                                     <li>
                                          
-                                        <a class=" btn " href="?page={{ page }}">{{page}}</a>
+                                        <a class="btn page_num">{{page}}</a>
                             
                                     </li>
                                     {% endfor %}
                             
+                                    {% if page_obj.has_next %}
                                     <li>
-                                        {% if page_obj.has_next %}
-                                        <a href="?page={{ page_obj.next_page_number }}">Next</a>
-                                        <a href="?page={{ page_obj.paginator.num_pages }}">Last<i class="mdi mdi-menu-right"></i></a>
-                                        {% endif %}
+                                        <a id="next" page="{{ page_obj.next_page_number }}">Next</a>
+                                        <a class="first-last" page="{{ page_obj.paginator.num_pages }}">Last<i class="mdi mdi-menu-right"></i></a>
                                     </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
@@ -546,5 +519,5 @@
 
 <!-- quick view end -->
 <!-- all js here -->
-
+<script src="{% static 'js/filter.js' %}"></script>
 {% endblock %}

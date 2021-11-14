@@ -1,5 +1,5 @@
 function wishlistManager() {
-	fetch(`http://127.0.0.1:8000//en/api/wishlist/`, {
+	fetch(`http://127.0.0.1:8000/en/api/wishlist/`, {
 		method: 'GET',
 		credentials: 'include',
 		headers: {

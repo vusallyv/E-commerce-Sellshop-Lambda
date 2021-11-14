@@ -75,11 +75,10 @@ class ProductListView(ListView):
 
 
 def PaginatorProductList(request):
-    qs = None
     product_list = ProductVersion.objects.filter(
         is_main=True).order_by('created_at')
 
-    paginator = Paginator(product_list, 2)
+    paginator = Paginator(product_list, 1)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -107,18 +106,18 @@ def PaginatorProductList(request):
         if request.GET.get("max_price"):
             product_list = product_list.filter(
                 product__price__lte=request.GET.get("max_price"))
+        paginator = Paginator(product_list, 1)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
     context = {
         'page_obj': page_obj,
-        'allproductversions': product_list,
         'title': 'Product-list Sellshop',
-        'productversions': qs,
         'images': Image.objects.filter(is_main=True),
-        'allproductversions': product_list,
         'sizes': Size.objects.all(),
         'categories': Category.objects.all(),
         'brands': Brand.objects.all(),
         'colors': Color.objects.all(),
-        'products': Product.objects.order_by('price')[0:6],
     }
     return render(request, 'product-list.html', context=context)
 

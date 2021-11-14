@@ -168,11 +168,8 @@ const WishlistLogic = {
 var add_to_wishlist = document.getElementsByClassName('add_to_wishlist');
 for (let i = 0; i < add_to_wishlist.length; i++) {
 	add_to_wishlist[i].onclick = function () {
-		console.log('salam');
 		const productId = this.getAttribute('data');
 		WishlistLogic.wishlistPostManager(productId);
-		console.log(productId);
 	}
-
 }
 
