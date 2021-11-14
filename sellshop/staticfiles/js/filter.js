@@ -145,30 +145,69 @@ if (next) {
         }
     })
 }
-
-filterURL = window.location.href.split('?')[1].split('&')
-for (let i = 0; i < filterURL.length; i++) {
-    if (window.location.href.includes(filterURL[i])) {
-        for (let j = 0; j < category_name.length; j++) {
-            if (category_name[j].innerText == filterURL[i].split('=')[1]) {
-                category_name[j].style.color = '#fe5858';
+try {
+    filterURL = window.location.href.split('?')[1].split('&')
+    for (let i = 0; i < filterURL.length; i++) {
+        if (window.location.href.includes(filterURL[i])) {
+            console.log(filterURL[i]);
+            for (let j = 0; j < category_name.length; j++) {
+                if (category_name[j].innerText == filterURL[i].split('=')[1]) {
+                    category_name[j].style.color = '#fe5858';
+                }
             }
-        }
-        for (let j = 0; j < subcategory_name.length; j++) {
-            if (subcategory_name[j].innerText == filterURL[i].split('=')[1]) {
-                subcategory_name[j].style.color = '#fe5858';
+            for (let j = 0; j < subcategory_name.length; j++) {
+                if (subcategory_name[j].innerText == filterURL[i].split('=')[1]) {
+                    subcategory_name[j].style.color = '#fe5858';
+                }
             }
-        }
-        for (let j = 0; j < brand.length; j++) {
-            if (brand[j].innerText == filterURL[i].split('=')[1]) {
-                brand[j].style.color = '#fe5858';
+            for (let j = 0; j < brand.length; j++) {
+                if (brand[j].innerText == filterURL[i].split('=')[1]) {
+                    brand[j].style.color = '#fe5858';
+                }
             }
-        }
-        for (let j = 0; j < size.length; j++) {
-            if (size[j].innerText == filterURL[i].split('=')[1]) {
-                size[j].style.color = '#ffffff';
-                size[j].style.background = '#fe5858 none repeat scroll 0 0';
+            for (let j = 0; j < size.length; j++) {
+                if (size[j].innerText == filterURL[i].split('=')[1]) {
+                    size[j].style.color = '#ffffff';
+                    size[j].style.background = '#fe5858 none repeat scroll 0 0';
+                }
+            }
+            if (filterURL[i].split('=')[0] == 'min_price') {
+                min_price.value = filterURL[i].split('=')[1]
+            }
+            if (filterURL[i].split('=')[0] == 'max_price') {
+                max_price.value = filterURL[i].split('=')[1]
             }
         }
     }
+} catch (error) {
 }
+
+
+
+min_price = document.getElementById('min_price')
+min_price.addEventListener('change', function () {
+    console.log('salam');
+    if (window.location.href.includes('min_price') == false) {
+        if (window.location.href.includes('?')) {
+            window.location.href += `&min_price=${min_price.value}`;
+        } else {
+            window.location.href += `?min_price=${min_price.value}`;
+        }
+    } else {
+        window.location.href = window.location.href.replace(/min_price=.*?(&|$)/, `min_price=${min_price.value}$1`);
+    }
+})
+
+
+max_price = document.getElementById('max_price')
+max_price.addEventListener('change', function () {
+    if (window.location.href.includes('max_price') == false) {
+        if (window.location.href.includes('?')) {
+            window.location.href += `&max_price=${max_price.value}`;
+        } else {
+            window.location.href += `?max_price=${max_price.value}`;
+        }
+    } else {
+        window.location.href = window.location.href.replace(/max_price=.*?(&|$)/, `max_price=${max_price.value}$1`);
+    }
+})

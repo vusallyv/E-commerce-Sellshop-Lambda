@@ -100,10 +100,13 @@
                             <h4>price</h4>
                         </div>
                         <div class="range-slider clearfix">
-                            <form action="#" method="get">
-                                <label id="price"><span>You range</span>
-                                    <input type="text" id="amount" name="price" readonly /></label>
-                                <div id="slider-range"></div>
+                            <form action="#" method="get" style="margin-top: 10%;">
+                                <div class="input-group mb-3">
+                                    <input type="number" min="1" class="form-control" id="min_price" placeholder="min price" aria-label="Amount (to the nearest dollar)">
+                                  </div>
+                                  <div class="input-group" style="margin-top: 5%;">
+                                    <input type="number" min="1" class="form-control" id="max_price" placeholder="max price" aria-label="Amount (to the nearest dollar)">
+                                  </div>
                             </form>
                         </div>
                     </div>
@@ -187,7 +190,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="sort-by floatright">Showing 1-9 of 89 Results</li>
+                                    <li class="sort-by floatright">Showing 1-9 of {{product_len}} Results</li>
                                 </ul>
                             </div>
                         </div>

@@ -77,6 +77,7 @@ class ProductListView(ListView):
 def PaginatorProductList(request):
     product_list = ProductVersion.objects.filter(
         is_main=True).order_by('created_at')
+    product_len = ProductVersion.objects.filter(is_main=True).count()
 
     paginator = Paginator(product_list, 1)
 
@@ -118,6 +119,7 @@ def PaginatorProductList(request):
         'categories': Category.objects.all(),
         'brands': Brand.objects.all(),
         'colors': Color.objects.all(),
+        'product_len': product_len
     }
     return render(request, 'product-list.html', context=context)
 
