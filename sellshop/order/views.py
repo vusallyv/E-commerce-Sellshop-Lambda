@@ -43,7 +43,6 @@ def checkout(request):
                     i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
                 ProductVersion.objects.filter(id=Cart_Item.objects.filter(
                     cart=user_cart)[i].product.id).update(quantity=quantity)
-            return redirect('checkout')
     else:
         shipping = ShippingAddressForm()
 
@@ -84,57 +83,54 @@ def wishlist(request):
     return render(request, "error-404.html", context=context)
 
 
-# class PaymentView(View):
-#     def post(self, request, *args, **kwargs):
-#         product = ProductVersion.objects.get(id=1)
-#         domain = 'http://127.0.0.1:8000/en/order'
-#         stripe.api_key = settings.STRIPE_SECRET_KEY
-#         checkout_session = stripe.checkout.Session.create(
-#             line_items=[
-#                 {
-#                     'price_data': {
-#                         'currency': 'usd',
-#                         'unit_amount': int(product.product.price)*1000,
-#                         'product_data': {
-#                             'name': product.product.title,
-#                             # 'images': ['https://i.imgur.com/EHyR2nP.png'],
-#                         },
-#                     },
-#                     'quantity': 1,
-#                 },
-#             ],
-#             payment_method_types=[
-#                 'card',
-#             ],
-#             mode='payment',
-#             success_url=domain + '/success/',
-#             cancel_url=domain + '/cancel/',
-#         )
-#         return redirect(f'https://checkout.stripe.com/pay/{checkout_session.id}')
-#         return JsonResponse({'id': checkout_session.id})
+
+class SuccessView(TemplateView):
+    template_name = 'success.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
 
-# class ProductLandingPageView (TemplateView):
-#     template_name = 'landing.html'
+class CancelView(TemplateView):
+    template_name = 'cancel.html'
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['STRIPE_SECRET_KEY'] = settings.STRIPE_SECRET_KEY
-#         # context['products'] = Cart_Item.objects.filter(cart=Cart.objects.get(user=self.request.user, is_ordered=False))
-#         context['products'] = ProductVersion.objects.get(id=1)
-#         return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
 
-# class SuccessView(TemplateView):
-#     template_name = 'success.html'
+class PaymentView(View):
+    def post(self, request, *args, **kwargs):
+        arr = []
+        for i in range(len(Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False)))):
+            arr.append(Cart_Item.objects.filter(cart=Cart.objects.get(
+                user=request.user, is_ordered=False))[i].product)
+        print(arr)
+        domain = 'http://127.0.0.1:8000/en/order'
+        stripe.api_key = 'sk_test_51JvSjvJQqk33RMYtOTXJxE01aMel2Zd6TuCmshYksdWQuzUsl9oH05xCfOI9NhkX8c1aM7MBNfuiYqTjYGy2Rdw200LrGFS4Rv'
+        line_items = []
+        for i in range(len(arr)):
+            line_items.append(
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': int(arr[i].product.price)*100,
+                        'product_data': {
+                            'name': arr[i].product.title,
+                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                        },
+                    },
+                    'quantity': Cart_Item.objects.filter(cart=Cart.objects.get(
+                        user=request.user, is_ordered=False))[i].quantity,
+                }
+            )
 
-
-# class CancelView(TemplateView):
-#     template_name = 'cancel.html'
-
-
-def sync_products(request):
-    stripe.api_key = 'sk_test_51JvSjvJQqk33RMYtOTXJxE01aMel2Zd6TuCmshYksdWQuzUsl9oH05xCfOI9NhkX8c1aM7MBNfuiYqTjYGy2Rdw200LrGFS4Rv'
-    products = stripe.Product.list()
-    prices = stripe.Price.list()
-    return JsonResponse({'products': products.data, 'prices': prices.data})
+        checkout_session = stripe.checkout.Session.create(
+            line_items=line_items,
+            payment_method_types=[
+                'card',
+            ],
+            mode='payment',
+            success_url=domain + '/success/',
+            cancel_url=domain + '/cancel/',
+        )
+        return redirect(checkout_session.url, code=303)

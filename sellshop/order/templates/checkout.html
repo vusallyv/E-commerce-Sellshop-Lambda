@@ -109,9 +109,11 @@
 										</div>
 									</li>
 								</ul>
-								<div class="submit-text">
-									<button form="checkoutForm" value="submit form" {% if cart_products > 0 %} type="submit" {% else %} disabled {% endif %} style="background-color: black; border: none; float: right;"> place
-										order</button>
+								<div>
+									<form action="{% url 'payment' %}" method="POST" class="submit-text">
+										{% csrf_token %}
+										<button orm="checkoutForm" value="submit form" {% if cart_products > 0 %} type="submit" {% else %} disabled {% endif %} style="background-color: black; border: none; float: right;" id="checkout-button">Place Order</button>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -124,4 +126,35 @@
 
 <!-- all js here -->
 <script src="{% static 'js/checkout.js' %}"></script>
+<script>
+
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+var stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+var checkoutButton = document.getElementById("checkout-button");
+checkoutButton.addEventListener("click", function () {
+    fetch("{% url 'payment' %}", {
+        method: "POST",
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+    })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (session) {
+            return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+            // If redirectToCheckout fails due to a browser or network
+            // error, you should display the localized error message to your
+            // customer using error.message.
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function (error) {
+            console.error("Error:", error);
+        });
+});
+</script>
 {% endblock %}
