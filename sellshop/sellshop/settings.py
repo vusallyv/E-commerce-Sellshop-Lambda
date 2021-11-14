@@ -267,9 +267,15 @@ CELERY_TIMEZONE = 'Asia/Baku'
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
     "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    'http://127.0.0.1:8000',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+ALLOWED_HOSTS = ['*']
+
+CORS_ALLOW_CREDENTIALS = True
 
 
 CORS_ALLOW_METHODS = [
@@ -279,6 +285,18 @@ CORS_ALLOW_METHODS = [
     "PATCH",
     "POST",
     "PUT",
+    "FETCH"
+]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
 

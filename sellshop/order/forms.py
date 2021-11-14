@@ -21,8 +21,6 @@ class ShippingAddressForm(forms.ModelForm):
         exclude = ('user',)
         widgets = {
             'company_name': forms.TextInput(attrs={'placeholder': 'Company name here...'}),
-            'state': forms.TextInput(attrs={'placeholder': 'State'}),
-            'city': forms.TextInput(attrs={'placeholder': 'City'}),
             'address': forms.TextInput(attrs={'placeholder': 'Address'}),
         }
         

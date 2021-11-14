@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from api.serializers import CartItemSerializer, CartSerializer, CountrySerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
 from blog.models import Blog, Comment
-from order.models import Cart, Cart_Item, Country, Wishlist
+from order.models import Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
 from user.models import User
 from product.models import Product, ProductVersion, Category, Review
 
@@ -324,4 +324,27 @@ class WishlistAPIView(APIView):
             wishlist.product.remove(product)
         message = {'success': True,
                    'message': 'Product added to your wishlist.'}
+        return Response(message, status=status.HTTP_201_CREATED)
+
+
+class CheckoutAPIView(APIView):
+    serializer_class = CartSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        company_name = request.data.get('company_name')
+        address = request.data.get('address')
+        country = request.data.get('country')
+        print(country)
+        shipping = ShippingAddress(
+            user=request.user,
+            company_name=company_name,
+            country=Country.objects.get(country=country),
+            city=City.objects.get(city=request.data.get('city')),
+            address=address,
+        )
+        shipping.save()
+        
+        message = {'success': True,
+                   'message': 'Your order has been placed.'}
         return Response(message, status=status.HTTP_201_CREATED)

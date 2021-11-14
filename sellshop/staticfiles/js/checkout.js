@@ -89,4 +89,62 @@ var CityLogic = {
 }
 
 
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+// var stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+var checkoutButton = document.getElementById("checkout-button");
+checkoutButton.addEventListener("click", function () {
+    company_name = document.getElementById("id_company_name").value;
+    country = document.getElementById("id_country").options[country.selectedIndex].text;
+    city = document.getElementById("id_city")
+    city = city.options[city.selectedIndex].text;
+    address = document.getElementById("id_address").value;
+    CheckoutLogic.checkoutPostManager(company_name, country, city, address)
+});
 
+const CheckoutLogic = {
+    checkoutPostManager(company_name, country, city, address) {
+        fetch(`${location.origin}/en/api/checkout/`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                'company_name': company_name,
+                'country': country,
+                'city': city,
+                'address': address
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // window.location.href = 'https://checkout.stripe.com/pay/cs_test_a1XIJK0w127JUygn3OKd4zc17fwrnF6M8l6gv5HuEKMWWb9T0t7TwMNneJ#fidkdWxOYHwnPyd1blpxYHZxWjA0T3NWb3NPVHRuNjZXSFxxdmFNNEp9Q05DZml0aHVwMm5yMXNDZ2hNUnZNfHAyMW0xbGs3Smx3SWtcUUdNc3dPUGZOdnNMa25xbXNKdkRffGN8N21gPU5cNTVWfzdBYVFiUicpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl'
+                fetch("http://127.0.0.1:8000/en/order/payment/", {
+                    method: "POST",
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'Access-Control-Allow-Origin': 'http://127.0.0.1:8000',
+                        'Access-Control-Allow-Credentials': true,
+                    }
+                })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (session) {
+                        return stripe.redirectToCheckout({ sessionId: session.id });
+                    })
+                    .then(function (result) {
+                        // If redirectToCheckout fails due to a browser or network
+                        // error, you should display the localized error message to your
+                        // customer using error.message.
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error("Error:", error);
+                    });
+            });
+    }
+}
