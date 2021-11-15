@@ -77,12 +77,13 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # "sellshop.middleware.RequestLogMiddleware",
+    # 'sellshop.middleware.RequestLogMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'sellshop.middleware.IPAddressMiddleware'
 ]
@@ -169,18 +170,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-CORS_ORIGIN_ALLOW_ALL = True
-
-CORS_ALLOWED_ORIGINS = [
-]
-
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "http://localhost:8080",
-]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8080",
+    "http://localhost:8000",
     "http://127.0.0.1:8000",
 ]
 
@@ -263,42 +255,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Baku'
 
-
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8000",
-    'http://127.0.0.1:8000',
-]
-
-CORS_ALLOW_ALL_ORIGINS = True
-
 ALLOWED_HOSTS = ['*']
-
-CORS_ALLOW_CREDENTIALS = True
-
-
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-    "FETCH"
-]
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=30),

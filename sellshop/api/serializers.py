@@ -118,10 +118,12 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = "__all__"
 
+
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
         exclude = ('country',)
+
 
 class CountrySerializer(serializers.ModelSerializer):
     city = serializers.SerializerMethodField()
@@ -133,6 +135,7 @@ class CountrySerializer(serializers.ModelSerializer):
     def get_city(self, obj):
         qs = obj.City_Country.all()
         return CitySerializer(qs, many=True).data
+
 
 class ProductVersionSerializer(serializers.ModelSerializer):
     product = ProductOverViewSerializer()
@@ -214,9 +217,12 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class WishlistSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField()
 
     class Meta:
         model = Wishlist
-        fields = '__all__'  
-        
-    
+        fields = '__all__'
+
+    def get_product(self, obj):
+        qs = obj.product.all()
+        return ProductVersionSerializer(qs, many=True).data

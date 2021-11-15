@@ -122,11 +122,14 @@ const CheckoutLogic = {
                 // window.location.href = 'https://checkout.stripe.com/pay/cs_test_a1XIJK0w127JUygn3OKd4zc17fwrnF6M8l6gv5HuEKMWWb9T0t7TwMNneJ#fidkdWxOYHwnPyd1blpxYHZxWjA0T3NWb3NPVHRuNjZXSFxxdmFNNEp9Q05DZml0aHVwMm5yMXNDZ2hNUnZNfHAyMW0xbGs3Smx3SWtcUUdNc3dPUGZOdnNMa25xbXNKdkRffGN8N21gPU5cNTVWfzdBYVFiUicpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl'
                 fetch("http://127.0.0.1:8000/en/order/payment/", {
                     method: "POST",
+                    credentials: 'include',
                     headers: {
                         'X-CSRFToken': csrftoken,
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        'Content-Type': 'application/json',
                         'Access-Control-Allow-Origin': 'http://127.0.0.1:8000',
                         'Access-Control-Allow-Credentials': true,
-                    }
+            },
                 })
                     .then(function (response) {
                         return response.json();

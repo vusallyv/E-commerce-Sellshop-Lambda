@@ -23,29 +23,29 @@ def card(request):
 
 
 def checkout(request):
-#     if request.method == "POST":
-#         shipping = ShippingAddressForm(request.POST)
-#         if shipping.is_valid():
-#             shipping = ShippingAddress(
-#                 user=request.user,
-#                 company_name=request.POST.get('company_name'),
-#                 country=Country.objects.get(id=request.POST.get('country')),
-#                 city=City.objects.get(id=request.POST.get('city')),
-#                 address=request.POST.get('address'),
-#             )
+    #     if request.method == "POST":
+    #         shipping = ShippingAddressForm(request.POST)
+    #         if shipping.is_valid():
+    #             shipping = ShippingAddress(
+    #                 user=request.user,
+    #                 company_name=request.POST.get('company_name'),
+    #                 country=Country.objects.get(id=request.POST.get('country')),
+    #                 city=City.objects.get(id=request.POST.get('city')),
+    #                 address=request.POST.get('address'),
+    #             )
 
-#             shipping.save()
-#             Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
-#                 is_ordered=True, shipping_address=shipping)
-#             user_cart = Cart.objects.filter(user=request.user).filter(
-#                 is_ordered=True).filter(shipping_address=shipping).first()
-#             for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
-#                 quantity = Cart_Item.objects.filter(cart=user_cart)[
-#                     i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
-#                 ProductVersion.objects.filter(id=Cart_Item.objects.filter(
-#                     cart=user_cart)[i].product.id).update(quantity=quantity)
-#     else:
-#         shipping = ShippingAddressForm()
+    #             shipping.save()
+    #             Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
+    #                 is_ordered=True, shipping_address=shipping)
+    #             user_cart = Cart.objects.filter(user=request.user).filter(
+    #                 is_ordered=True).filter(shipping_address=shipping).first()
+    #             for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
+    #                 quantity = Cart_Item.objects.filter(cart=user_cart)[
+    #                     i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
+    #                 ProductVersion.objects.filter(id=Cart_Item.objects.filter(
+    #                     cart=user_cart)[i].product.id).update(quantity=quantity)
+    #     else:
+    #         shipping = ShippingAddressForm()
 
     try:
         cart = len(Cart_Item.objects.filter(
@@ -82,7 +82,6 @@ def wishlist(request):
     if request.user.is_authenticated:
         return render(request, "wishlist.html", context=context)
     return render(request, "error-404.html", context=context)
-
 
 
 class SuccessView(TemplateView):
