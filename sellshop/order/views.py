@@ -23,30 +23,7 @@ def card(request):
 
 
 def checkout(request):
-    #     if request.method == "POST":
-    #         shipping = ShippingAddressForm(request.POST)
-    #         if shipping.is_valid():
-    #             shipping = ShippingAddress(
-    #                 user=request.user,
-    #                 company_name=request.POST.get('company_name'),
-    #                 country=Country.objects.get(id=request.POST.get('country')),
-    #                 city=City.objects.get(id=request.POST.get('city')),
-    #                 address=request.POST.get('address'),
-    #             )
-
-    #             shipping.save()
-    #             Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
-    #                 is_ordered=True, shipping_address=shipping)
-    #             user_cart = Cart.objects.filter(user=request.user).filter(
-    #                 is_ordered=True).filter(shipping_address=shipping).first()
-    #             for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
-    #                 quantity = Cart_Item.objects.filter(cart=user_cart)[
-    #                     i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
-    #                 ProductVersion.objects.filter(id=Cart_Item.objects.filter(
-    #                     cart=user_cart)[i].product.id).update(quantity=quantity)
-    #     else:
-    #         shipping = ShippingAddressForm()
-
+    shipping = ShippingAddressForm()
     try:
         cart = len(Cart_Item.objects.filter(
             cart=Cart.objects.get(user=request.user, is_ordered=False)))
@@ -55,7 +32,7 @@ def checkout(request):
 
     context = {
         'title': 'Checkout Sellshop',
-        'shipping': ShippingAddressForm(),
+        'shipping': shipping,
         'cart_products': cart,
     }
     if request.user.is_authenticated:
@@ -100,46 +77,57 @@ class CancelView(TemplateView):
 
 class PaymentView(View):
     def post(self, request, *args, **kwargs):
-        arr = []
-        for i in range(len(Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False)))):
-            arr.append(Cart_Item.objects.filter(cart=Cart.objects.get(
-                user=request.user, is_ordered=False))[i].product)
-        print(arr)
-        domain = 'http://127.0.0.1:8000/en/order'
-        stripe.api_key = 'sk_test_51JvSjvJQqk33RMYtOTXJxE01aMel2Zd6TuCmshYksdWQuzUsl9oH05xCfOI9NhkX8c1aM7MBNfuiYqTjYGy2Rdw200LrGFS4Rv'
-        line_items = []
-        for i in range(len(arr)):
-            line_items.append(
-                {
-                    'price_data': {
-                        'currency': 'usd',
-                        'unit_amount': int(arr[i].product.price)*100,
-                        'product_data': {
-                            'name': arr[i].product.title,
-                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
-                        },
-                    },
-                    'quantity': Cart_Item.objects.filter(cart=Cart.objects.get(
-                        user=request.user, is_ordered=False))[i].quantity,
-                }
+        if request.method == "POST":
+            shipping = ShippingAddressForm(request.POST)
+            # if shipping.is_valid():
+            print(request.POST.get('company_name'))
+            shipping = ShippingAddress(
+                user=request.user,
+                company_name=request.POST.get('company_name'),
+                country=Country.objects.get(id=1),
+                city=City.objects.get(id=1),
+                address='Baku',
             )
-        Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
-            is_ordered=True, shipping_address=ShippingAddress.objects.filter(user=request.user).last())
-        user_cart = Cart.objects.filter(user=request.user).filter(
-            is_ordered=True).filter(shipping_address=ShippingAddress.objects.filter(user=request.user).last()).first()
-        for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
-            quantity = Cart_Item.objects.filter(cart=user_cart)[
-                i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
-            ProductVersion.objects.filter(id=Cart_Item.objects.filter(
-                cart=user_cart)[i].product.id).update(quantity=quantity)
-        checkout_session = stripe.checkout.Session.create(
-            line_items=line_items,
-            payment_method_types=[
-                'card',
-            ],
-            mode='payment',
-            success_url=domain + '/success/',
-            cancel_url=domain + '/cancel/',
-        )
-        Cart.objects.get_or_create(user=request.user, is_ordered=False)
-        return redirect(checkout_session.url, code=303)
+            shipping.save()
+            arr = []
+            for i in range(len(Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False)))):
+                arr.append(Cart_Item.objects.filter(cart=Cart.objects.get(
+                    user=request.user, is_ordered=False))[i].product)
+            domain = 'http://127.0.0.1:8000/en/order'
+            stripe.api_key = 'sk_test_51JvSjvJQqk33RMYtOTXJxE01aMel2Zd6TuCmshYksdWQuzUsl9oH05xCfOI9NhkX8c1aM7MBNfuiYqTjYGy2Rdw200LrGFS4Rv'
+            line_items = []
+            for i in range(len(arr)):
+                line_items.append(
+                    {
+                        'price_data': {
+                            'currency': 'usd',
+                            'unit_amount': int(arr[i].product.price)*100,
+                            'product_data': {
+                                'name': arr[i].product.title,
+                                # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                            },
+                        },
+                        'quantity': Cart_Item.objects.filter(cart=Cart.objects.get(
+                            user=request.user, is_ordered=False))[i].quantity,
+                    }
+                )
+            checkout_session = stripe.checkout.Session.create(
+                line_items=line_items,
+                payment_method_types=[
+                    'card',
+                ],
+                mode='payment',
+                success_url=domain + '/success/',
+                cancel_url=domain + '/cancel/',
+            )
+            Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
+                is_ordered=True, shipping_address=shipping)
+            user_cart = Cart.objects.filter(user=request.user).filter(
+                is_ordered=True).filter(shipping_address=shipping).first()
+            for i in range(len(Cart_Item.objects.filter(cart=user_cart))):
+                quantity = Cart_Item.objects.filter(cart=user_cart)[
+                    i].product.quantity - Cart_Item.objects.filter(cart=user_cart)[i].quantity
+                ProductVersion.objects.filter(id=Cart_Item.objects.filter(
+                    cart=user_cart)[i].product.id).update(quantity=quantity)
+            Cart.objects.get_or_create(user=request.user, is_ordered=False)
+            return redirect(checkout_session.url, code=303)

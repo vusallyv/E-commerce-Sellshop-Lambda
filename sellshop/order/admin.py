@@ -81,20 +81,20 @@ class CartAdmin(admin.ModelAdmin):
     get_product.short_description = 'Products'
 
 
-# @admin.register(Cart_Item)
-# class Cart_ItemAdmin(admin.ModelAdmin):
-#     list_display = ('cart', 'product', 'quantity', 'get_cart_detail')
-#     list_editable = ('quantity',)
+@admin.register(Cart_Item)
+class Cart_ItemAdmin(admin.ModelAdmin):
+    list_display = ('cart', 'product', 'quantity', 'get_cart_detail')
+    list_editable = ('quantity',)
 
-#     def get_cart_detail(self, obj):
-#         return obj.cart.is_ordered
-#     get_cart_detail.short_description = 'Is Ordered?'
+    def get_cart_detail(self, obj):
+        return obj.cart.is_ordered
+    get_cart_detail.short_description = 'Is Ordered?'
 
 
-# @admin.register(ShippingAddress)
-# class ShippingAddressAdmin(admin.ModelAdmin):
-#     list_display = ('user', 'company_name', 'country',)
-#     list_filter = ('company_name', 'user', 'country')
+@admin.register(ShippingAddress)
+class ShippingAddressAdmin(admin.ModelAdmin):
+    list_display = ('user', 'company_name', 'country',)
+    list_filter = ('company_name', 'user', 'country')
 
 
 admin.site.register([Wishlist, Country, City])

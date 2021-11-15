@@ -158,7 +158,10 @@ const WishlistLogic = {
 		})
 			.then(response => response.json())
 			.then(data => {
-				wishlistManager()
+				try {
+					wishlistManager()
+				}catch{
+				}
 			});
 	}
 }

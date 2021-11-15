@@ -335,16 +335,15 @@ class CheckoutAPIView(APIView):
         company_name = request.data.get('company_name')
         address = request.data.get('address')
         country = request.data.get('country')
-        print(country)
+        city = request.data.get('city')
         shipping = ShippingAddress(
             user=request.user,
             company_name=company_name,
             country=Country.objects.get(country=country),
-            city=City.objects.get(city=request.data.get('city')),
+            city=City.objects.get(city=city),
             address=address,
         )
         shipping.save()
-        
         message = {'success': True,
                    'message': 'Your order has been placed.'}
         return Response(message, status=status.HTTP_201_CREATED)

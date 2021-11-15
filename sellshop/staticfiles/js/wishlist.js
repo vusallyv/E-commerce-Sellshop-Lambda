@@ -9,7 +9,6 @@ function wishlistManager() {
 	})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
 			wishlist_tbody = document.getElementById('wishlist_tbody');
 			wishlist_tbody.innerHTML = '';
 			for (let i = 0; i < data['product'].length; i++) {
