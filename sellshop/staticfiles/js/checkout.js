@@ -11,6 +11,7 @@ function checkoutManager() {
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             let subtotal = 0
             let html = ''
             product_table.innerHTML = `
@@ -26,7 +27,8 @@ function checkoutManager() {
                 for (let i = 0; i < data.length; i++) {
                     html += `
                     <tr>
-                    <th>${data[i]['quantity']} x Black Men's T-Shirt S</th>
+                    ${data[i]['product']['quantity'] == 0 ? `
+                    <th><span style="text-decoration: line-through">${data[i]['quantity']} x Black Men's T-Shirt S</span> Expired </th>` : `<th>${data[i]['quantity']} x Black Men's T-Shirt S</th>`}
                     <td>$${parseFloat(data[i]['quantity'] * data[i]['product']['product']['price']).toFixed(2)}</td>
                     </tr>`
                     subtotal += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
@@ -87,10 +89,3 @@ var CityLogic = {
             });
     }
 }
-
-// company_name = document.getElementById("id_company_name").value
-// country = document.getElementById("id_country")
-// country = country.options[country.selectedIndex].text
-// city = document.getElementById("id_city")
-// city = city.options[city.selectedIndex].text
-// address = document.getElementById("id_address").value
