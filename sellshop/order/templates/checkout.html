@@ -110,9 +110,9 @@
 								</li>
 							</ul>
 							<div>
-								<form action="{% url 'payment' %}" method="POST" class="submit-text">
+								<form action="" method="POST" class="submit-text">
 									{% csrf_token %}
-									<button orm="checkoutForm" type="submit" value="submit form" {% if cart_products > 0 %}
+									<button form="checkoutForm" type="submit" value="submit form" {% if cart_products > 0 %}
 										type="submit" {% else %} disabled {% endif %} style="background-color: black;
 										border: none; float: right;" id="checkout-button">Place Order</button>
 								</form>

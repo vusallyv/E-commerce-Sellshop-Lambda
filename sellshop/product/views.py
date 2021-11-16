@@ -85,7 +85,7 @@ def PaginatorProductList(request):
     page_obj = paginator.get_page(page_number)
 
     if request.GET:
-        product_list = ProductVersion.objects.all()
+        product_list = ProductVersion.objects.order_by('created_at')
         if request.GET.get("category_name"):
             product_list = product_list.filter(
                 product__category__parent__title=request.GET.get("category_name"))

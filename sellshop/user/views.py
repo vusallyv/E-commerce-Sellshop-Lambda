@@ -129,7 +129,6 @@ def login(request):
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
         # if form.is_valid():
-        print(request.POST.get('rememberme'))
         # random_number = random.randint(0, 10000)
         # while User.objects.filter(username=f"Guest_{random_number}"):
         #     random_number = random.randint(0, 1000000)
