@@ -11,7 +11,6 @@ function checkoutManager() {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             let subtotal = 0
             let html = ''
             product_table.innerHTML = `
@@ -61,7 +60,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 country = document.getElementsByName('country')[0]
 country.onchange = function () {
-    CityLogic.cityManager(country.options[country.selectedIndex].text)
+    if (country.value != '') {
+        CityLogic.cityManager(country.options[country.selectedIndex].text)
+    } else {
+        document.getElementById('id_city').innerHTML = ''
+    }
 }
 
 

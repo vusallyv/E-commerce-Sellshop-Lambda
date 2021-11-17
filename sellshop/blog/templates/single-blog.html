@@ -37,9 +37,6 @@
                   <li>
                     <i class="pe-7s-comment"></i><a href="#">{{ blog.create_at }}</a><span>|</span>
                   </li>
-                  <li>
-                    <i class="pe-7s-like"></i><a href="#">{{ blog.like }} Likes</a><span>|</span>
-                  </li>
                   <li><i class="pe-7s-back"></i><a href="#" class="comment_length"></a></li>
                 </ul>
               </div>
@@ -249,8 +246,7 @@
                 <h4>
                   <a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a>
                 </h4>
-                <span>By : <a href="{% url 'single_blog' blog.id %}">{{ blog.creator }}</a> | <a
-                    href="{% url 'single_blog' blog.id %}">{{ blog.like }} Like</a> |
+                <span>By : <a href="{% url 'single_blog' blog.id %}">{{ blog.creator }}</a> |
                   <a href="{% url 'single_blog' blog.id %}">{{ comments|length }} Comments</a></span>
                 <p>
                   {{ blog.description }}

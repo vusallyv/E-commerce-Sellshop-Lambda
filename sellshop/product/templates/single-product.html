@@ -114,7 +114,7 @@
 							</div>
 							<div class="list-btn">
 								<a data="{{productversion.id}}" class="add_to_cart">add to cart</a>
-								<a href="#">wishlist</a>
+								<a data="{{productversion.id}}" class="add_to_wishlist">wishlist</a>
 								<a href="#" data-toggle="modal" data-target="#quick-view">zoom</a>
 							</div>
 							<div class="share-tag clearfix">
@@ -420,5 +420,7 @@
 </div>
 <!-- quick view end -->
 <!-- all js here -->
-<script src="{% static 'js/review.js' %}"></script>
+	{% if request.user.is_authenticated %}
+		<script src="{% static 'js/review.js' %}"></script>
+	{% endif %}
 {% endblock %}

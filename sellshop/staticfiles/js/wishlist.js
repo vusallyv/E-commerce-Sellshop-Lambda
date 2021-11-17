@@ -10,36 +10,62 @@ function wishlistManager() {
 		.then(response => response.json())
 		.then(data => {
 			wishlist_tbody = document.getElementById('wishlist_tbody');
-			wishlist_tbody.innerHTML = '';
+			if (wishlist_tbody) {
+				wishlist_tbody.innerHTML = '';
+			}
+			id_arr = []
 			for (let i = 0; i < data['product'].length; i++) {
-				wishlist_tbody.innerHTML += `
-				<tr>
-				<td class="td-img text-left">
+				id_arr.push(data['product'][i]['id'])
+				if (wishlist_tbody) {
+
+					wishlist_tbody.innerHTML += `
+						<tr>
+					<td class="td-img text-left">
 					<a href="#"><img style="width: 83px; height: 108px;" src="${data['product'][i]['images']['image']}" alt="Add Product" /></a>
 					<div class="items-dsc">
-						<h5><a href="#">${data['product'][i]['product']['title']}</a></h5>
-						<p class="itemcolor">Color : <span>${data['product'][i]['color']['title']}</span></p>
-						<p class="itemcolor">Size   : <span>${data['product'][i]['size']['title']}</span></p>
+					<h5><a href="#">${data['product'][i]['product']['title']}</a></h5>
+					<p class="itemcolor">Color : <span>${data['product'][i]['color']['title']}</span></p>
+					<p class="itemcolor">Size   : <span>${data['product'][i]['size']['title']}</span></p>
 					</div>
-				</td>
-				<td>$ ${data['product'][i]['product']['price']}</td>
-				<td>${data['product'][i]['quantity'] > 0 ? `In Stock` : 'Expired'}</td>
-				<td>
+					</td>
+					<td>$ ${data['product'][i]['product']['price']}</td>
+					<td>${data['product'][i]['quantity'] > 0 ? `In Stock` : 'Expired'}</td>
+					<td>
 					<div class="submit-text">
-						<a data="${data['product'][i]['id']}" onmouseover="addtoCartFromWishlist()" class="add_to_cart">add to cart</a>
+					<a data="${data['product'][i]['id']}" onmouseover="addtoCartFromWishlist()" class="add_to_cart">add to cart</a>
 					</div>
-				</td>
-				<td><i class="mdi mdi-close removeFromWishlist" data="${data['product'][i]['id']}" onmouseover="removeFromWishlist()" title="Remove this product"></i></td>
-			</tr>
-				`;
+					</td>
+					<td><i class="mdi mdi-close removeFromWishlist" data="${data['product'][i]['id']}" onmouseover="removeFromWishlist()" title="Remove this product"></i></td>
+					</tr>
+					`;
+				}
 			}
+			for (let i = 0; i < add_to_wishlist.length; i++) {
+				if (id_arr.includes(parseInt(add_to_wishlist[i].getAttribute('data')))) {
+					if (add_to_wishlist[i].parentElement.tagName == 'DIV') {
+						add_to_wishlist[i].style.backgroundColor = "green";
+						add_to_wishlist[i].style.color = "white";
+					} else {
+						add_to_wishlist[i].parentElement.style.backgroundColor = "green";
+						add_to_wishlist[i].parentElement.style.color = "white";
+					}
+				} else {
+					if (add_to_wishlist[i].parentElement.tagName == 'DIV') {
+						add_to_wishlist[i].style.backgroundColor = "";
+						add_to_wishlist[i].style.color = "";
+					} else {
+						add_to_wishlist[i].parentElement.style.backgroundColor = "";
+						add_to_wishlist[i].parentElement.style.color = "";
+					}
+				}
+			}
+
 		});
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
 	wishlistManager()
 });
-
 
 function addtoCartFromWishlist() {
 	const addToBasket = document.querySelectorAll('.add_to_cart');
