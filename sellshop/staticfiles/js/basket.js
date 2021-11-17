@@ -176,3 +176,4 @@ for (let i = 0; i < add_to_wishlist.length; i++) {
 	}
 }
 
+

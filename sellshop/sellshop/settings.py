@@ -147,8 +147,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-# from django.utils.translation import ugettext_lazy as _
-
 
 LANGUAGES = (
     ('en', _('English')),

@@ -79,7 +79,7 @@ def PaginatorProductList(request):
         is_main=True).order_by('created_at')
     product_len = ProductVersion.objects.filter(is_main=True).count()
 
-    paginator = Paginator(product_list, 1)
+    paginator = Paginator(product_list, 2)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -107,7 +107,7 @@ def PaginatorProductList(request):
         if request.GET.get("max_price"):
             product_list = product_list.filter(
                 product__price__lte=request.GET.get("max_price"))
-        paginator = Paginator(product_list, 1)
+        paginator = Paginator(product_list, 2)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 

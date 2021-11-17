@@ -150,11 +150,6 @@ try {
     for (let i = 0; i < filterURL.length; i++) {
         if (window.location.href.includes(filterURL[i])) {
             console.log(filterURL[i]);
-            for (let j = 0; j < category_name.length; j++) {
-                if (category_name[j].innerText == filterURL[i].split('=')[1]) {
-                    category_name[j].style.color = '#fe5858';
-                }
-            }
             for (let j = 0; j < subcategory_name.length; j++) {
                 if (subcategory_name[j].innerText == filterURL[i].split('=')[1]) {
                     subcategory_name[j].style.color = '#fe5858';

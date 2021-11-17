@@ -19,7 +19,7 @@
 <!-- pages-title-end -->
 <!-- collection section start -->
 <section class="collection-area collection-area2 section-padding">
-    <div class="container">
+    <!-- <div class="container">
         <div class="row">
             <div class="col-sm-4">
                 <div class="single-colect banner collect-one">
@@ -52,7 +52,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
 <!-- collection section end -->
 <!-- product-list-view content section start -->
@@ -64,7 +64,7 @@
                     <div class="s-side-text">
                         <div class="sidebar-title clearfix">
                             <h4 class="floatleft">Categories</h4>
-                            <h5 class="floatright"><a href="#">All</a></h5>
+                            <!-- <h5 class="floatright"><a href="#">All</a></h5> -->
                         </div>
                         <div class="categories left-right-p">
                             <ul id="accordion" class="panel-group clearfix">
@@ -113,7 +113,7 @@
                     <div class="s-side-text">
                         <div class="sidebar-title clearfix">
                             <h4 class="floatleft">size</h4>
-                            <h5 class="floatright"><a href="#">All</a></h5>
+                            <!-- <h5 class="floatright"><a href="#">All</a></h5> -->
                         </div>
                         <div class="size-select clearfix">
                             <form method="GET">
@@ -126,10 +126,10 @@
                     <div class="s-side-text">
                         <div class="sidebar-title clearfix">
                             <h4 class="floatleft">color</h4>
-                            <h5 class="floatright"><a href="#">All</a></h5>
+                            <!-- <h5 class="floatright"><a href="#">All</a></h5> -->
                         </div>
                         <div class="color-select clearfix">
-                            <form method="GET">
+                            <form method="GET" style="display: flex;">
                                 {% for color in colors %}
                                 <a style="margin-right: 11.58px;" name="color" color="{{color.title}}" ><span
                                     {% if color.title in request.get_full_path %}
@@ -144,7 +144,7 @@
                     <div class="s-side-text">
                         <div class="sidebar-title clearfix">
                             <h4 class="floatleft">brands</h4>
-                            <h5 class="floatright"><a href="#">All</a></h5>
+                            <!-- <h5 class="floatright"><a href="#">All</a></h5> -->
                         </div>
                         <div class="brands-select clearfix">
                             <ul>
@@ -190,7 +190,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="sort-by floatright">Showing 1-9 of {{product_len}} Results</li>
+                                    <li class="sort-by floatright">Showing 2 of {{product_len}} Results</li>
                                 </ul>
                             </div>
                         </div>

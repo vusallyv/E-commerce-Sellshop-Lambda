@@ -99,7 +99,7 @@ msgstr "Блог"
 
 #: core/templates/base.html:197
 msgid "About"
-msgstr "Pro"
+msgstr "O нас"
 
 #: core/templates/base.html:198
 msgid "Contact"

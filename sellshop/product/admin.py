@@ -12,16 +12,16 @@ from django.utils.translation import gettext_lazy as _
 
 @admin.register(ProductVersion)
 class ProductVersionAdmin(admin.ModelAdmin):
-    list_display = ('product', 'quantity', 'color', 'get_image', 'size', 'is_main')
+    list_display = ('product', 'quantity', 'color', 'size', 'is_main')
     list_editable = ('quantity','is_main')
     search_fields = ['product']
 
-    def get_image(self, obj):
-        if obj.version_images:
-            img = '<img src="{}" width="100" height="100" />'.format(
-                obj.version_images)
-            return format_html(img)
-        return 'No Image'
+    # def get_image(self, obj):
+    #     if obj.version_images:
+    #         img = '<img src="{}" width="100" height="100" />'.format(
+    #             obj.version_images)
+    #         return format_html(img)
+    #     return 'No Image'
 
     # autocomplete_fields = ['wishlist']
 
@@ -51,8 +51,19 @@ class ReviewAdmin(admin.ModelAdmin):
     get_user_details.short_description = 'Username'
 
 
-admin.site.register([Color, Category, Brand, Size, Image])
+admin.site.register([Color, Category, Brand, Size])
 # admin.site.unregister(FlatPage)
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ('image_tag', 'productversion', 'is_main')
+    list_editable = ('is_main',)
+
+    def image_tag(self, obj):
+        return format_html('<img src="{}" width="100" height="100" />'.format(obj.image.url))
+    image_tag.short_description = 'Image'
+
 
 # @admin.register(FlatPage)
 # class FlatPageAdmin(admin.ModelAdmin):

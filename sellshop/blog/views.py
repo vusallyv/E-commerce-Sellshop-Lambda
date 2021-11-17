@@ -56,7 +56,7 @@ class BlogListView(ListView):
 
 def BlogList(request):
     blog_list = Blog.objects.order_by('-created_at')
-    paginator = Paginator(blog_list, 2)
+    paginator = Paginator(blog_list, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

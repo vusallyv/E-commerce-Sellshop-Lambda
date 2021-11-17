@@ -8,3 +8,4 @@ urlpatterns = [
     path("wishlist/", views.wishlist, name="wishlist"),
     path("success/", views.SuccessView.as_view(), name="success"),
 ]
+
