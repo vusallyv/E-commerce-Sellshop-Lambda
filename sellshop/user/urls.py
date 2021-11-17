@@ -5,7 +5,6 @@ from . import views
 
 urlpatterns = [
     path("contact/", views.contact, name="contact"),
-    # path("contact/", views.ContactView.as_view(), name="contact"),
     path("login/", views.login, name="login"),
     path("my-account/", views.my_account, name="my_account"),
     path('logout/', views.logout, name="logout"),
@@ -18,8 +17,8 @@ urlpatterns = [
          name="password_reset_confirm"),
     path('password_reset/complete', auth_views.PasswordResetCompleteView.as_view(template_name="password_reset_complete.html"),
          name="password_reset_complete"),
-    path("password_change/", auth_views.PasswordChangeView.as_view(template_name='change-password.html')),
-#     path("password/", views.PasswordsChangeView.as_view(template_name='change-password.html')),
+    path("password_change/",
+         auth_views.PasswordChangeView.as_view(template_name='change-password.html')),
+    # path("password/", views.PasswordsChangeView.as_view(template_name='change-password.html')),
     path('password_change/done/', views.password_success, name="password_success"),
-    path("contact/", views.ContactSubscripView.as_view(), name="contact"),
 ]

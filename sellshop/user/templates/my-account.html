@@ -31,6 +31,15 @@
 							<div class="log-title">
 								<h3><strong>My Account</strong></h3>
 							</div>
+							{% if message %}
+								{% if success %}
+								<div class="alert alert-success" role="alert">
+								{% else %}
+								<div class="alert alert-danger" role="alert">
+								{% endif %}
+									{{message}}
+								</div>
+							{% endif %}
 							<div class="prament-area main-input">
 								<ul class="panel-group" id="accordion">
 									<li class="panel">
@@ -44,44 +53,23 @@
 											<div class="single-log-info">
 												<div class="bulling-title">
 													<h5>Billing Address</h5>
-													<p>To add a new address, please fill out the form below.</p>
+													<p>To add or update address, please fill out the form below.</p>
 												</div>
 												<div class="custom-input">
-													<form action="" method="post" name="my_account">
+													<form action="" method="post" name="billing">
 														{% csrf_token %}
-														<div class="row">
-															<div class="col-md-6">
-														<input type="text" name="name" placeholder="First Name" value="" />
-															</div>
-															<div class="col-md-6">
-																<input type="text" name="name" placeholder="Last Name" value="{{user.last_name}}" />
-															</div>
+														<div class="custom-select">
+															{{billing.company_name}}
 														</div>
-														<input type="text" name="email" placeholder="Email Address" value="{{user.email}}" />
 														<div class="custom-select">
 															{{billing.country}}
 														</div>
 														<div class="custom-select">
-															{{billing.state}}
-														</div>
-														<div class="custom-select">
 															{{billing.city}}
 														</div>
-														<div class="custom-select">
-															{{billing.company_name}}
-														</div>
 														{{billing.address}}
-														<p class="red-color">** You must register at least one phone number.</p>
-														<input type="text" name="text" placeholder="Mobile Phone" value="{% if user.phone_number == None %} {% else %} {{user.phone_number}} {%endif%}" />
-														<!-- <div class="custom-mess">
-															<textarea rows="2" placeholder="Additional information" name="message"></textarea>
-														</div>
-														<label>Please assign an address title for future reference.<sup>*</sup></label>
-														<div class="input-text">
-															<input type="text" name="refrence" value="" />
-														</div> -->
 														<div class="submit-text">
-															<button type="submit" name="my_account">Save</button>
+															<button type="submit" name="billing">Save</button>
 														</div>
 													</form>
 												</div>
@@ -101,7 +89,43 @@
 													<h5>Order history</h5>
 												</div>
 												<p>Here are the orders you've placed since your account was created.</p>
+												{% if orders|length > 0 %}
+												<span>
+													<table class="table">
+														<thead class="thead-dark">
+															<tr>
+																<th scope="col">Date</th>
+																<th scope="col">Product</th>
+																<th scope="col">Quantity</th>
+															</tr>
+														</thead>
+														<tbody>
+															{% for order in orders %}
+															<tr>
+																<td>{{ order.ordered_at | date:"d/m/Y" }}</td>
+																<td>
+																		{% for product in order.User_Cart.all %}
+																		<p style="color: white;">
+																			{{product.product}}
+																		</p>
+																		{% endfor %}
+																	</td>
+																	<td>
+																		{% for product in order.User_Cart.all %}
+																		<p style="color: white;">
+																			{{product.quantity}}
+																		</p>
+																		{% endfor %}
+																	</td>
+																</tr>
+															{% endfor %}
+														</tbody>
+													  </table>
+
+												</span>
+												{% else %}
 												<span>You have not placed any orders.</span>
+												{% endif %}
 											</div>
 										</div>
 									</li>
@@ -118,7 +142,7 @@
 													<h5>Your personal information</h5>
 													<p>Please be sure to update your personal information if it has changed</p>
 												</div>
-												<div class="mr-mrs">
+												<!-- <div class="mr-mrs">
 													<label class="social-label">
 														<sup>*</sup> Social title
 													</label>
@@ -130,128 +154,17 @@
 														<input type="radio" value="forever" name="rememberme"/>
 														Msr.
 													</label>
-												</div>
+												</div> -->
 												<div class="custom-input">
-													<form action="mail.php" method="post">
-														<input type="text" name="name" placeholder="Your Full Name" />
-														<input type="text" name="email" placeholder="Email Address" />
-														<div class="row">
-															<div class="col-xs-12">
-															<label>Date of Birth</label>
-																<div class="row">
-																	<div class="col-sm-4">
-																		<div class="custom-select">
-																			<select class="form-control">
-																				<option>1</option>
-																				<option>2</option>
-																				<option>3</option>
-																				<option>4</option>
-																				<option>5</option>
-																				<option>6</option>
-																				<option>7</option>
-																				<option>8</option>
-																				<option>9</option>
-																				<option>10</option>
-																				<option>11</option>
-																				<option>12</option>
-																				<option>13</option>
-																				<option>14</option>
-																				<option>15</option>
-																				<option>16</option>
-																				<option>17</option>
-																				<option>18</option>
-																				<option>19</option>
-																				<option>20</option>
-																				<option>21</option>
-																				<option>22</option>
-																				<option>23</option>
-																				<option>24</option>
-																				<option>25</option>
-																				<option>26</option>
-																				<option>27</option>
-																				<option>28</option>
-																				<option>29</option>
-																				<option>30</option>
-																			</select>
-																		</div>
-																	</div>
-																	<div class="col-sm-4">
-																		<div class="custom-select">
-																			<select class="form-control">
-																				<option>January</option>
-																				<option>February </option>
-																				<option>March </option>
-																				<option>April </option>
-																				<option>May </option>
-																				<option>June </option>
-																				<option>July </option>
-																				<option>August </option>
-																				<option>September </option>
-																				<option>October </option>
-																				<option>November </option>
-																				<option>December </option>
-																			</select>
-																		</div>
-																	</div>
-																	<div class="col-sm-4">
-																		<div class="custom-select">
-																			<select class="form-control">
-																				<option>1990</option>
-																				<option>1991</option>
-																				<option>1992</option>
-																				<option>1993</option>
-																				<option>1994</option>
-																				<option>1995</option>
-																				<option>1996</option>
-																				<option>1997</option>
-																				<option>1998</option>
-																				<option>1999</option>
-																				<option>2000</option>
-																				<option>2001</option>
-																				<option>2002</option>
-																				<option>2003</option>
-																				<option>2004</option>
-																				<option>2005</option>
-																				<option>2006</option>
-																				<option>2007</option>
-																				<option>2008</option>
-																				<option>2009</option>
-																				<option>2010</option>
-																				<option>2011</option>
-																				<option>2012</option>
-																				<option>2013</option>
-																				<option>2014</option>
-																				<option>2016</option>
-																				<option>2016</option>
-																				<option>2017</option>
-																				<option>2018</option>
-																				<option>2019</option>
-																				<option>2020</option>
-																			</select>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<input type="password" placeholder="Current Password" name="password" value="" />
-														<input type="password" placeholder="New Password" name="password" value="" />
-														<input type="password" placeholder="Confirmation" name="password" value="" />
-														<div class="row">
-															<div class="col-xs-12">
-																<div class="sing-checkbox">
-																	<label>
-																		<input type="checkbox" name="rememberme"/>
-																		Sign up for our newsletter! 
-																	</label>
-																	<label>
-																		<input type="checkbox" name="rememberme"/>
-																		Receive special offers from our partners! 
-																	</label>
-																</div>
-															</div>
-														</div>
+													<form action="" method="post" name="account_info">
+														{% csrf_token %}
+														{{user_info.first_name}}
+														{{user_info.last_name}}
+														{{user_info.email}}
+														{{user_info.birth}}
+														{{user_info.phone_number}}
 														<div class="submit-text text-left">
-															<button type="submit" value="submit form">Save</button>
+															<button type="submit" value="submit form" name="account_info">Save</button>
 														</div>
 													</form>
 												</div>
@@ -273,5 +186,6 @@
 		<!-- my account content section end -->
         
 		<!-- all js here -->
+		<script src="{% static 'js/checkout.js' %}"></script>
 		{% endblock %} 
  

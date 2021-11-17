@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db.models.aggregates import Avg
 from django.shortcuts import redirect, render
 from django.db.models import Q, F
@@ -119,7 +120,8 @@ def PaginatorProductList(request):
         'categories': Category.objects.all(),
         'brands': Brand.objects.all(),
         'colors': Color.objects.all(),
-        'product_len': product_len
+        'product_len': product_len,
+        'now': datetime.now(),
     }
     return render(request, 'product-list.html', context=context)
 

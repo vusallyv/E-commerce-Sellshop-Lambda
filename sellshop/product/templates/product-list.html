@@ -243,7 +243,10 @@
                                                 <div class="list-img">
                                                     <div class="product-img">
                                                         <div class="pro-type">
+                                                            {{ productversion.created_at|date:"d/m/Y" }}
+                                                            {% if productversion.created_at > now  %}
                                                             <span>new</span>
+                                                            {% endif %}
                                                         </div>
                                                         {% for image in images %} {% if image.productversion == productversion %}
                                                         <a href="{% url 'single_product' productversion.id %}">
@@ -260,6 +263,7 @@
                                                     <span>{{ productversion.product.subtitle }}</span>
                                                     <div class="ratting floatright">
                                                         <p>
+                                                            {{product_review}}
                                                             ( {{ productversion.product.rating }} Rating )
                                                         </p>
                                                         <i class="mdi mdi-star"></i>

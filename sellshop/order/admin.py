@@ -18,7 +18,7 @@ class CartAdmin(admin.ModelAdmin):
     list_editable = ('is_ordered',)
 
     fieldsets = (
-        ('Cart information', {'fields': ('get_user_username', 'is_ordered')}),
+        ('Cart information', {'fields': ('get_user_username', 'is_ordered', 'ordered_at')}),
         ('Shipping information', {'fields': (
             'get_shipping_company', 'get_shipping_country', 'get_shipping_city', 'get_shipping_address',)}),
         ('Product information', {

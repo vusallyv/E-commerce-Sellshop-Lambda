@@ -13,14 +13,17 @@ function checkoutManager() {
         .then(data => {
             let subtotal = 0
             let html = ''
-            product_table.innerHTML = `
-            <thead>
+            if (product_table) {
+                
+                product_table.innerHTML = `
+                <thead>
                 <tr>
-                    <th>Product</th>
-                    <td>Total</td>
+                <th>Product</th>
+                <td>Total</td>
                 </tr>
-            </thead>
-            `
+                </thead>
+                `
+            }
             if (data.length > 0 && data[0]['is_ordered'] == false) {
 
                 for (let i = 0; i < data.length; i++) {

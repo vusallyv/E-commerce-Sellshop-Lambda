@@ -1,3 +1,5 @@
+from django.db.models.expressions import F
+from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
@@ -7,8 +9,8 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView, View
 from order.forms import BillingForm
-from order.models import Billing
-from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm
+from order.models import Billing, Cart, City, Country
+from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm, UserForm
 from user.models import User, Contact, Subscriber
 from django.contrib import auth
 from django.views.generic import CreateView, DetailView
@@ -29,74 +31,6 @@ class PasswordsChangeView(PasswordChangeView):
 
 def password_success(request):
     return render(request, 'password_success.html', {})
-
-
-class ContactSubscripView(View):
-    def get(self, request, *args, **kwargs):
-        context = {
-            'title': 'Single-blog Sellshop',
-            'form': SubscriberForm,
-            'form2': ContactForm,
-        }
-        return render(request, 'contact.html', context=context)
-
-    def post(self, request, *args, **kwargs):
-        context = {
-            'title': 'Single-blog Sellshop',
-            'form': SubscriberForm,
-            'form2': ContactForm,
-        }
-        if 'form' in request.POST:
-            form = SubscriberForm(request.POST, request.FILES)
-            if form.is_valid():
-                comment = Subscriber(
-                    email=request.POST.get('email'),
-                )
-                comment.save()
-                return render(request, 'contact.html', context=context)
-            else:
-                form = SubscriberForm()
-                return render(request, 'contact.html', context=context)
-
-        if 'form2' in request.POST:
-            form = ContactForm(request.POST, request.FILES)
-            if form.is_valid():
-                comment = Contact(
-                    name=request.POST.get('name'),
-                    email=request.POST.get('email'),
-                    message=request.POST.get('message'),
-                )
-                comment.save()
-                return render(request, 'contact.html', context=context)
-            else:
-                form = ContactForm()
-                return render(request, 'contact.html', context=context)
-
-    def post(self, request, *args, **kwargs):
-        if request.method == 'POST' and "contact" in request.POST:
-            form = ContactForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('contact')
-        else:
-            form = ContactForm()
-
-        if request.method == 'POST' and 'subscribe' in request.POST:
-            subscribe = SubscriberForm(request.POST)
-            if subscribe.is_valid():
-                subscribe.save()
-                return redirect('contact')
-        else:
-            subscribe = SubscriberForm()
-
-    def get(self, request, *args, **kwargs):
-        super().post(request, *args, **kwargs)
-        context = {
-            'title':  'Contact Us Sellshop',
-            # 'contactform': form,
-            # 'subscribeform': subscribe,
-        }
-        return render(request, 'contact.html', context=context)
 
 
 def contact(request):
@@ -128,10 +62,6 @@ def login(request):
     auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
-        # if form.is_valid():
-        # random_number = random.randint(0, 10000)
-        # while User.objects.filter(username=f"Guest_{random_number}"):
-        #     random_number = random.randint(0, 1000000)
         user = User(
             first_name=request.POST.get('first_name'),
             email=request.POST.get('email').lower(),
@@ -188,34 +118,61 @@ def logout(request):
         return redirect('login')
 
 
-# @login_required(login_url='/account/my-account/')
 def my_account(request):
-    if request.method == "POST" and "my_account" in request.POST:
+    message = ''
+    success = False
+    if request.method == "POST" and "billing" in request.POST:
         billing = BillingForm(request.POST)
         if billing.is_valid():
-            if Billing.objects.filter(user=request.user).exists == False:
+            if Billing.objects.filter(user=request.user).exists() == False:
                 billing = Billing(
                     user=request.user,
                     company_name=request.POST.get('company_name'),
-                    country=request.POST.get('country'),
-                    state=request.POST.get('state'),
-                    city=request.POST.get('city'),
+                    country=Country.objects.get(
+                        id=request.POST.get('country')),
+                    city=City.objects.get(id=request.POST.get('city')),
                     address=request.POST.get('address'),
                 )
                 billing.save()
+                message = 'Billing information added successfully'
             else:
                 Billing.objects.filter(user=request.user).update(
                     company_name=request.POST.get('company_name'),
-                    country=request.POST.get('country'),
-                    state=request.POST.get('state'),
-                    city=request.POST.get('city'),
+                    country=Country.objects.get(
+                        id=request.POST.get('country')),
+                    city=City.objects.get(id=request.POST.get('city')),
                     address=request.POST.get('address')
                 )
+                message = 'Billing information updated successfully'
+            success = True
+        else:
+            message = 'Invalid Billing information'
     else:
         billing = BillingForm()
+
+    if request.method == "POST" and "account_info" in request.POST:
+        user_info = UserForm(request.POST)
+        if user_info.is_valid():
+            request.user.first_name = request.POST.get('first_name')
+            request.user.last_name = request.POST.get('last_name')
+            request.user.email = request.POST.get('email')
+            request.user.phone_number = request.POST.get('phone_number')
+            request.user.birth = request.POST.get('birth')
+            request.user.save()
+            message = 'Account information updated successfully'
+            success = True
+        else:
+            message = 'Invalid account information'
+    else:
+        user_info = UserForm()
     context = {
         'title':  'My-account Sellshop',
-        'billing': billing
+        'billing': billing,
+        'user_info': user_info,
+        'orders': Cart.objects.filter(Q(user=request.user) & Q(
+            is_ordered=True)),
+        'message': message,
+        'success': success,
     }
     if request.user.is_authenticated:
         return render(request, "my-account.html", context=context)

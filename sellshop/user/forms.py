@@ -16,6 +16,18 @@ class SubscriberForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'placeholder': 'Enter your email...', "style": "width: 100% !important;"})
         }
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'birth']
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Email address'}),
+            'phone_number': forms.NumberInput(attrs={'placeholder': 'Phone number: 0123456789'}),
+            'birth': forms.DateInput(attrs={'type': 'date'})
+        }
 
 class ContactForm(forms.ModelForm):
     class Meta:

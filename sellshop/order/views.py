@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db.models.expressions import F
 from django.http.response import JsonResponse
 from django.views.generic import View, TemplateView
@@ -75,7 +76,7 @@ def checkout(request):
                 cancel_url=domain + '/checkout/',
             )
             Cart.objects.filter(is_ordered=False).filter(user=request.user).update(
-                is_ordered=True, shipping_address=shipping)
+                is_ordered=True, shipping_address=shipping, ordered_at=datetime.now())
             user_cart = Cart.objects.filter(user=request.user).filter(
                 is_ordered=True).filter(shipping_address=shipping).first()
             for i in range(len(Cart_Item.objects.filter(cart=user_cart))):

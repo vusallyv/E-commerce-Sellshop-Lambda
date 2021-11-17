@@ -5,23 +5,6 @@ from sellshop.utils.base_models import BaseModel
 from django_countries.fields import CountryField
 
 
-class Billing(BaseModel):
-    user = models.OneToOneField(
-        "user.User", related_name="User_Billing", on_delete=models.CASCADE, verbose_name="User")
-    company_name = models.CharField(
-        verbose_name="Company name", max_length=255, help_text="Max 255 char.", null=False, blank=False)
-    country = CountryField(
-        verbose_name="Country", max_length=255, null=False, blank=False)
-    state = models.CharField(verbose_name="State",
-                             max_length=255, null=False, blank=False)
-    city = models.CharField(verbose_name="City",
-                            max_length=255, null=False, blank=False)
-    address = models.TextField(verbose_name="Address", null=False, blank=False)
-
-    def __str__(self) -> str:
-        return f"{self.user}"
-
-
 class Country(BaseModel):
     country = CountryField(
         verbose_name="Country", max_length=255, null=False, blank=False)
@@ -44,6 +27,21 @@ class City(BaseModel):
 
     class Meta:
         verbose_name_plural = "Cities"
+
+
+class Billing(BaseModel):
+    user = models.OneToOneField(
+        "user.User", related_name="User_Billing", on_delete=models.CASCADE, verbose_name="User")
+    company_name = models.CharField(
+        verbose_name="Company name", max_length=255, help_text="Max 255 char.", null=True, blank=True)
+    country = models.ForeignKey(Country,
+                                verbose_name="Country", on_delete=models.CASCADE, related_name="Billing_Country")
+    city = models.ForeignKey(City, on_delete=models.CASCADE,
+                             verbose_name="City", related_name="Billing_City")
+    address = models.TextField(verbose_name="Address", null=False, blank=False)
+
+    def __str__(self) -> str:
+        return f"{self.user}"
 
 
 class ShippingAddress(BaseModel):
@@ -77,6 +75,8 @@ class Cart(BaseModel):
     product = models.ManyToManyField(
         "product.ProductVersion", blank=True)
     is_ordered = models.BooleanField(verbose_name="Is Ordered?", default=False)
+    ordered_at = models.DateTimeField(
+        verbose_name="Ordered at", null=True, blank=True)
     shipping_address = models.OneToOneField(
         ShippingAddress, null=True, blank=True, verbose_name="Shipping Address", on_delete=models.CASCADE)
 
@@ -93,4 +93,3 @@ class Cart_Item(BaseModel):
 
     def __str__(self) -> str:
         return f"{self.cart}"
-

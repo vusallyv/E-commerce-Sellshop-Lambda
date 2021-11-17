@@ -5,14 +5,11 @@ from order.models import Billing, ShippingAddress
 class BillingForm(forms.ModelForm):
     class Meta:
         model = Billing
-        exclude = ('user',),
+        exclude = ('user',)
         widgets = {
-            'company_name': forms.TextInput(attrs={'placeholder':'Company name here...'}),
-            'state': forms.TextInput(attrs={'placeholder':'State'}),
-            'city': forms.TextInput(attrs={'placeholder':'City'}),
-            'address': forms.TextInput(attrs={'placeholder':'Address'}),
+            'company_name': forms.TextInput(attrs={'placeholder': 'Company name here...'}),
+            'address': forms.TextInput(attrs={'placeholder': 'Address'}),
         }
-        
 
 
 class ShippingAddressForm(forms.ModelForm):
@@ -23,4 +20,3 @@ class ShippingAddressForm(forms.ModelForm):
             'company_name': forms.TextInput(attrs={'placeholder': 'Company name here...'}),
             'address': forms.TextInput(attrs={'placeholder': 'Address'}),
         }
-        
