@@ -49,7 +49,6 @@ def login(request):
             email=request.POST.get('email').lower(),
             phone_number=request.POST.get('phone_number'),
             username=request.POST.get('username').lower(),
-            rememberme=request.POST.get('rememberme'),
         )
         user.set_password(request.POST.get('password')),
         user.save()

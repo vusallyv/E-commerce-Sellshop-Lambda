@@ -28,8 +28,6 @@ class User(AbstractUser):
         verbose_name="Additional Info", default="", null=True, blank=True)
     image = models.ImageField(
         verbose_name="User Image", upload_to="users/", default="staticfiles/img/blog/author1.png")
-    rememberme = models.BooleanField(
-        verbose_name="Remember me", default=False)
 
     def __str__(self) -> str:
         return f"{self.username}"

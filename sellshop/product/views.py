@@ -140,5 +140,6 @@ class SearchView(ListView):
             'title': 'Product-list Sellshop',
             'productversions': qs,
             'images': Image.objects.filter(is_main=True),
+            'word' : request.GET.get("search_name"),
         }
         return render(request, 'search.html', context=context)

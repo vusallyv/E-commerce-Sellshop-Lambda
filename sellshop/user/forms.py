@@ -68,9 +68,6 @@ class RegisterForm(forms.Form):
         attrs={'placeholder': 'Password', "id": "password"}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(
         attrs={'placeholder': 'Confirm Password'}))
-    CHOICES = [('1', 'Sign up for our newsletter!'), ]
-    rememberme = forms.ChoiceField(
-        choices=CHOICES, widget=forms.RadioSelect)
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

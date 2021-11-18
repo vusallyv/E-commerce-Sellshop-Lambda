@@ -8,7 +8,6 @@ class Blog(BaseModel):
     title = models.CharField("Title", max_length=30, help_text="Max 30 char.")
     description = models.TextField(verbose_name="Description")
     creator = models.ForeignKey("user.User", on_delete=models.CASCADE)
-    like = models.PositiveIntegerField(verbose_name="Like")
     product = models.ForeignKey(
         "product.ProductVersion", on_delete=models.CASCADE, default="")
     image = models.ImageField(verbose_name="Image", upload_to="blogs/")
