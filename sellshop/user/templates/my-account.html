@@ -163,6 +163,7 @@
 														{{user_info.email}}
 														{{user_info.birth}}
 														{{user_info.phone_number}}
+														{{user_info.image}}
 														<div class="submit-text text-left">
 															<button type="submit" value="submit form" name="account_info">Save</button>
 														</div>
@@ -177,7 +178,8 @@
 					</div>
 					<div class="col-xs-12 col-sm-6">
 						<div class="my-right-side">
-							<a href="{% url 'wishlist' %}">My wishlists</a>
+							<a href="{% url 'wishlist' %}">My wishlist</a>
+							<a href="{% url 'cart' %}">My cart</a>
 						</div>
 					</div>
 				</div>

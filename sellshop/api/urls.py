@@ -57,6 +57,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('wishlist/', views.WishlistAPIView.as_view(), name='wishlist_api'),
     path('country/', views.CountryView.as_view(), name='country'),
+    path('subscriber/', views.SubscriberAPIVIew.as_view(), name='subscriber'),
 ]
 
 # urlpatterns += router.urls

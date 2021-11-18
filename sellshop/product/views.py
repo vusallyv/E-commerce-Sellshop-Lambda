@@ -121,7 +121,6 @@ def PaginatorProductList(request):
         'brands': Brand.objects.all(),
         'colors': Color.objects.all(),
         'product_len': product_len,
-        'now': datetime.now(),
     }
     return render(request, 'product-list.html', context=context)
 

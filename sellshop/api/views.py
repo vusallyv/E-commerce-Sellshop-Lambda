@@ -9,10 +9,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from api.serializers import CartItemSerializer, CartSerializer, CountrySerializer, ProductSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
+from api.serializers import CartItemSerializer, CartSerializer, CountrySerializer, ProductSerializer, SubscriberSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
 from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
-from user.models import User
+from user.models import Subscriber, User
 from product.models import Product, ProductVersion, Category, Review
 
 User = get_user_model()
@@ -347,3 +347,17 @@ class CheckoutAPIView(APIView):
         message = {'success': True,
                    'message': 'Your order has been placed.'}
         return Response(message, status=status.HTTP_201_CREATED)
+
+
+class SubscriberAPIVIew(APIView):
+    serializer_class = SubscriberSerializer
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        if email and Subscriber.objects.filter(email=email).exists() == False:
+            Subscriber.objects.create(email=email)
+            message = {'success': True,
+                       'message': 'Subscriber added.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message': 'Subscriber already exists.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)

@@ -12,6 +12,8 @@
 					<ul class="text-left">
 						<li><a href="{% url 'index' %}">Home </a></li>
 						<li><span> // </span>About</li>
+
+				
 					</ul>
 				</div>
 			</div>
@@ -180,9 +182,19 @@
 						<form method="post" name="subscribe">
 							{% csrf_token %}
 							<p style="margin-bottom: 3%;">
-								{{ subscribeform.email }}
+								<input type="email" name="email" placeholder="Enter your email..." style="width: 100% !important;" maxlength="254" required="" id="id_email">
 							</p>
-							<input type="submit" name="subscribe" value="subscribe" />
+							<!-- <input type="submit" id="subscriber_form" name="subscribe" value="subscribe"> -->
+							<button disabled style="
+							color: #666;
+							font-weight: 400;
+							margin-left: 7px;
+							text-transform: uppercase;
+							width: auto;
+							border: 0 none;
+							line-height: 40px;
+							padding: 0 20px;" type="button" id="subscriber_form" name="subscribe" value="subscribe" class="btn btn-outline-danger">Subscribe</button>
+							<div id="quantityAlert" class="alert alert-success" role="alert" style="position: fixed; top: 9%; text-align: center; display: none; right: 4%;"></div>
 						</form>
 					</div>
 					<div class="social-icons">
@@ -198,10 +210,10 @@
 						<h3>get in touch</h3>
 						<form method="post" name="contact">
 							{% csrf_token %}
-							{{ contactform.name }}
-							{{ contactform.email }}
-							{{ contactform.message }}
-							<input type="submit" name="contact" value="send your message" />
+							<input type="text" name="name" placeholder="Enter your Name..." maxlength="50" required="" id="id_name">
+							<input type="text" name="email" placeholder="Enter your email..." id="contactEmail" maxlength="254" required="">
+							<textarea name="message" cols="40" rows="2" placeholder="Enter your message...." maxlength="1000" required="" id="id_message"></textarea>
+							<input type="submit" name="contact" value="send your message">
 						</form>
 					</div>
 				</div>
@@ -210,4 +222,5 @@
 	</div>
 	<!-- social media section end -->
 	<!-- all js here -->
+	<script src="{% static 'js/subscribe.js' %}"></script>
 	{% endblock %}

@@ -34,26 +34,8 @@ def password_success(request):
 
 
 def contact(request):
-    if request.method == 'POST' and "contact" in request.POST:
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('contact')
-    else:
-        form = ContactForm()
-
-    if request.method == 'POST' and 'subscribe' in request.POST:
-        subscribe = SubscriberForm(request.POST)
-        if subscribe.is_valid():
-            subscribe.save()
-            return redirect('contact')
-    else:
-        subscribe = SubscriberForm()
-
     context = {
         'title':  'Contact Us Sellshop',
-        'contactform': form,
-        'subscribeform': subscribe,
     }
     return render(request, "contact.html", context=context)
 
@@ -86,27 +68,11 @@ def login(request):
     else:
         form1 = LoginForm()
 
-    if request.method == 'POST' and "contact" in request.POST:
-        contactform = ContactForm(request.POST)
-        if contactform.is_valid():
-            contactform.save()
-            return redirect('contact')
-    else:
-        contactform = ContactForm()
-
-    if request.method == 'POST' and 'subscribe' in request.POST:
-        subscribe = SubscriberForm(request.POST)
-        if subscribe.is_valid():
-            subscribe.save()
-            return redirect('contact')
-    else:
-        subscribe = SubscriberForm()
-
     context = {
         'title':  'Login Sellshop',
         'login':  form1,
-        'contactform': contactform,
-        'subscribeform': subscribe,
+        'contactform': ContactForm,
+        'subscribeform': SubscriberForm,
         'register':  form,
     }
     return render(request, "login.html", context=context)
@@ -158,6 +124,7 @@ def my_account(request):
             request.user.email = request.POST.get('email')
             request.user.phone_number = request.POST.get('phone_number')
             request.user.birth = request.POST.get('birth')
+            request.user.image = request.POST.get('image')
             request.user.save()
             message = 'Account information updated successfully'
             success = True

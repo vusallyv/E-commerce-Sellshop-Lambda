@@ -19,7 +19,7 @@ class SubscriberForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'birth']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'birth', 'image']
 
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),

@@ -309,7 +309,11 @@
 									<li><a href="{% url 'wishlist' %}"><i class="mdi mdi-menu-right"></i>My Wishlist</a>
 									</li>
 									<li><a href="{% url 'cart' %}"><i class="mdi mdi-menu-right"></i>My Cart</a></li>
+									{% if request.user.is_authenticated %}
+									<li><a href="{% url 'logout' %}"><i class="mdi mdi-menu-right"></i>Log out</a></li>
+									{% else %}
 									<li><a href="{% url 'login' %}"><i class="mdi mdi-menu-right"></i>Sign In</a></li>
+									{% endif %}
 									<li><a href="{% url 'checkout' %}"><i class="mdi mdi-menu-right"></i>Check out</a>
 									</li>
 									<li><a href="#"><i class="mdi mdi-menu-right"></i>Track My Order</a></li>
