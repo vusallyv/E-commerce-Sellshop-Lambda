@@ -175,12 +175,20 @@
 				<div class="col-sm-6 col-md-offset-1 col-md-5">
 					<div class="newsletter get-touch">
 						<h3>get in touch</h3>
-						<form  method="post" name="contact">
+						<form method="post" name="contact">
 							{% csrf_token %}
-							{{ contactform.name }}
-							{{ contactform.email }}
-							{{ contactform.message }}
-							<input type="submit" name="contact" value="send your message"/>
+							<input type="text" name="name" placeholder="Enter your Name..." maxlength="50" required="" id="id_name">
+							<input type="text" name="email" placeholder="Enter your email..." id="contactEmail" maxlength="254" required="">
+							<textarea name="message" cols="40" rows="2" placeholder="Enter your message...." maxlength="1000" required="" id="id_message"></textarea>
+							<button style="
+							color: #666;
+							font-weight: 400;
+							margin-left: 7px;
+							text-transform: uppercase;
+							width: auto;
+							border: 0 none;
+							line-height: 40px;
+							padding: 0 20px;" type="button" id="contact_form" name="contact" value="contact" class="btn btn-outline-danger">Send your message</button>
 						</form>
 					</div>
 				</div>

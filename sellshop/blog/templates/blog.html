@@ -33,15 +33,14 @@
 									src="{{ blog.image.url }}" style="width: 370px; height: 255px;" alt="" /></a></div>
 						<div class="s-blog-text">
 							<h4><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h4>
-							<span>By : <a href="#">{{blog.creator}}</a> | <a
-									href="#">{{blog.comments}} {% translate 'Comments' %}</a></span>
+							<span>By : <a>{{blog.creator}}</a> | <a> {{blog.blogs_comment.count}} {% translate 'Comments' %}</a></span>
 
 							<div>
 								<p>{{ blog.description }}</p>
 							</div>
 						</div>
 						<div class="date-read clearfix">
-							<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
+							<a><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.y" }}</a>
 							<a href="{% url 'single_blog' blog.id %}">{% translate 'read more' %}</a>
 						</div>
 					</div>

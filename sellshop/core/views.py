@@ -1,46 +1,19 @@
 from django.shortcuts import redirect, render
 from blog.models import Blog
 from django.db.models import Count, Q
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.http import HttpResponseRedirect
-from product.models import ProductVersion
+from product.models import Color, Image, ProductVersion
 
 from user.forms import ContactForm, SubscriberForm
 # Create your views here.
 
 
 def about(request):
-    if request.method == 'POST' and "contact" in request.POST:
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('contact')
-    else:
-        form = ContactForm()
-
-    if request.method == 'POST' and 'subscribe' in request.POST:
-        subscribe = SubscriberForm(request.POST)
-        if subscribe.is_valid():
-            subscribe.save()
-            return redirect('contact')
-    else:
-        subscribe = SubscriberForm()
-
     context = {
         'title':  'About Sellshop',
-        'contactform': form,
-        'subscribeform': subscribe,
     }
     return render(request, "about.html", context=context)
-
-
-class BaseView(TemplateView):
-    template_name = "base.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        return context
 
 
 class AboutView(TemplateView):
@@ -55,11 +28,23 @@ class AboutView(TemplateView):
 def index(request):
     new_arrivals = ProductVersion.objects.order_by("-created_at")
     mostreview = ProductVersion.objects.annotate(
-        num_rev=Count('review')).order_by('-num_rev')[:5]
+        num_rev=Count('product_reviews')).order_by('-num_rev')[:6]
+    bestseller = ProductVersion.objects.annotate(
+        mostsold=Count('Product_Cart')).order_by('-mostsold')[1:8]
+    firstbestseller = ProductVersion.objects.annotate(
+        mostsold=Count('Product_Cart')).order_by('-mostsold')[0]
+    latest_blog = Blog.objects.order_by("-created_at")[:3]
+    images = Image.objects.filter(is_main=True)
+    productversions = ProductVersion.objects.all()
     context = {
         'title': 'Home Sellshop',
         'mostreview': mostreview,
         'new_arrivals': new_arrivals,
+        'latest_blog': latest_blog,
+        'images': images,
+        'bestseller': bestseller,
+        'firstbestseller': firstbestseller,
+        'productversions': productversions,
     }
     return render(request, 'index.html', context=context)
 
@@ -70,21 +55,6 @@ class ErrorView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Error Sellshop'
-        return context
-
-
-class HomeView(TemplateView):
-    template_name = 'index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Home Sellshop'
-        context['mostreview'] = ProductVersion.objects.annotate(
-            num_rev=Count('product_reviews')).order_by('-num_rev')[:5],
-        context['new_arrivals'] = ProductVersion.objects.order_by("created_at")[
-            0:12],
-        context['latest_blog'] = Blog.objects.order_by("-created_at")[0:3],
-        context['latest_blog2'] = Blog.objects.order_by("-created_at")[3:6],
         return context
 
 

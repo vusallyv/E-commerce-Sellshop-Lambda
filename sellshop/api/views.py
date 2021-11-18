@@ -9,10 +9,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from api.serializers import CartItemSerializer, CartSerializer, CountrySerializer, ProductSerializer, SubscriberSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
+from api.serializers import CartItemSerializer, CartSerializer, ContactSerializer, CountrySerializer, ProductSerializer, SubscriberSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
 from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
-from user.models import Subscriber, User
+from user.models import Contact, Subscriber, User
 from product.models import Product, ProductVersion, Category, Review
 
 User = get_user_model()
@@ -360,4 +360,20 @@ class SubscriberAPIVIew(APIView):
                        'message': 'Subscriber added.'}
             return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Subscriber already exists.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ContactAPIVIew(APIView):
+    serializer_class = ContactSerializer
+
+    def post(self, request, *args, **kwargs):
+        name = request.data.get('name')
+        email = request.data.get('email')
+        message = request.data.get('message')
+        if email and name and message:
+            Contact.objects.create(name=name, email=email, message=message)
+            message = {'success': True,
+                       'message': 'Your message sent.'}
+            return Response(message, status=status.HTTP_201_CREATED)
+        message = {'success': False, 'message': 'Invalid message.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)

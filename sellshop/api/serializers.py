@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import fields
 from rest_framework import serializers
 from product.models import Color, Image, Product, ProductVersion, Category, Review, Size
-from user.models import User, Subscriber
+from user.models import Contact, User, Subscriber
 from blog.models import Blog, Comment
 from order.models import Cart, Cart_Item, City, Country, Wishlist
 
@@ -120,10 +120,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class SubscriberSerializer(serializers.ModelSerializer):
-    user = UserInfoSerializer()
-
     class Meta:
         model = Subscriber
+        fields = "__all__"
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
         fields = "__all__"
 
 

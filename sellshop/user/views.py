@@ -71,8 +71,6 @@ def login(request):
     context = {
         'title':  'Login Sellshop',
         'login':  form1,
-        'contactform': ContactForm,
-        'subscribeform': SubscriberForm,
         'register':  form,
     }
     return render(request, "login.html", context=context)
