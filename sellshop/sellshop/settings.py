@@ -232,7 +232,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-SITE_ID = 4
+SITE_ID = 5
 
 LOGIN_REDIRECT_URL = 'core/index/'
 LOGOUT_REDIRECT_URL = 'core/index/'
