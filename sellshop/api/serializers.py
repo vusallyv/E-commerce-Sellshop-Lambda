@@ -5,7 +5,7 @@ from rest_framework import serializers
 from product.models import Color, Image, Product, ProductVersion, Category, Review, Size
 from user.models import Contact, User, Subscriber
 from blog.models import Blog, Comment
-from order.models import Cart, Cart_Item, City, Country, Wishlist
+from order.models import Cart, Cart_Item, City, Country, Coupon, Wishlist
 
 User = get_user_model()
 
@@ -90,6 +90,12 @@ class ProductOverViewSerializer(serializers.ModelSerializer):
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Color
+        fields = "__all__"
+
+
+class CouponSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coupon
         fields = "__all__"
 
 
@@ -218,14 +224,22 @@ class CartSerializer(serializers.ModelSerializer):
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductVersionSerializer()
     is_ordered = serializers.SerializerMethodField()
+    coupon_discount = serializers.SerializerMethodField()
 
     class Meta:
         model = Cart_Item
-        fields = ("product", "quantity", "is_ordered")
+        fields = ("product", "quantity", "is_ordered", "coupon_discount")
 
     def get_is_ordered(self, obj):
         qs = obj.cart.is_ordered
         return qs
+    
+    def get_coupon_discount(self, obj):
+        if obj.cart.coupon:
+            qs = obj.cart.coupon.discount
+            return qs
+        return 0
+            
 
 
 class WishlistSerializer(serializers.ModelSerializer):

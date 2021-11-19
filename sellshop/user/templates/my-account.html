@@ -97,27 +97,34 @@
 																<th scope="col">Date</th>
 																<th scope="col">Product</th>
 																<th scope="col">Quantity</th>
+																<th scope="col">Shipping Address</th>
 															</tr>
 														</thead>
 														<tbody>
 															{% for order in orders %}
 															<tr>
-																<td>{{ order.ordered_at | date:"d/m/Y" }}</td>
+																<td>{{ order.ordered_at | date:"d/m/Y m:h" }}</td>
 																<td>
-																		{% for product in order.User_Cart.all %}
-																		<p style="color: white;">
-																			{{product.product}}
-																		</p>
-																		{% endfor %}
-																	</td>
-																	<td>
-																		{% for product in order.User_Cart.all %}
-																		<p style="color: white;">
-																			{{product.quantity}}
-																		</p>
-																		{% endfor %}
-																	</td>
-																</tr>
+																	{% for product in order.User_Cart.all %}
+																	<p style="color: white;">
+																		{{product.product}}
+																	</p>
+																	{% endfor %}
+																</td>
+																<td>
+																	{% for product in order.User_Cart.all %}
+																	<p style="color: white;">
+																		{{product.quantity}}
+																	</p>
+																	{% endfor %}
+																</td>
+																<td>
+																	<p style="color: white;">{{ order.shipping_address.company_name }}</p>
+																	<p style="color: white;">{{ order.shipping_address.country }}</p>
+																	<p style="color: white;">{{ order.shipping_address.city }}</p>
+																	<p style="color: white;">{{ order.shipping_address.address }}</p>
+																</td>
+															</tr>
 															{% endfor %}
 														</tbody>
 													  </table>

@@ -31,6 +31,47 @@ var CartLogic = {
     }
 }
 
+var CouponLogic = {
+    couponManager(code) {
+        fetch('http://127.0.0.1:8000/en/api/coupon/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                'code': code,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                quantityAlert = document.getElementById('quantityAlert')
+                quantityAlert.style.display = 'block'
+                quantityAlert.innerHTML = data.message
+                if (data.success) {
+                    quantityAlert.classList.add('alert-success')
+                    quantityAlert.classList.remove('alert-danger')
+                } else {
+                    quantityAlert.classList.add('alert-danger')
+                    quantityAlert.classList.remove('alert-success')
+                }
+                setTimeout(() => {
+                    quantityAlert.style.display = 'none'
+                }, 1000);
+                cartManager()
+                cartItemManager()
+            });
+    }
+}
+
+coupon_button = document.getElementById('coupon_button')
+coupon_button.onclick = function () {
+    coupon_code = document.getElementById('coupon_code').value
+    CouponLogic.couponManager(coupon_code)
+}
+
+
 
 let cart_body = document.getElementById("cart_body")
 let product_table = document.getElementById("product_table")
@@ -47,12 +88,19 @@ function cartItemManager() {
     })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             let html = ''
+            cont_ship = document.getElementById('cont_ship')
+            if (data.length > 0) {
+                cont_ship.style.display = 'block'
+            } else {
+                cont_ship.style.display = 'none'
+            }
             total_price = 0
             total_products = document.getElementById("total_products")
             for (let i = 0; i < data.length; i++) {
                 if (data[i]['quantity'] > 0 && data[i]['is_ordered'] == false) {
-                    total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
+                    total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'] * (100 - data[i]['coupon_discount']) / 100)
                     html += `
             <tr>
             <td class="td-img text-left">
@@ -63,7 +111,7 @@ function cartItemManager() {
             <p class="itemcolor">Size   : <span>${data[i]['product']['size']['title']}</span></p>
             </div>
             </td>
-            <td>$${parseFloat(data[i]['product']['product']['price']).toFixed(2)}</td>
+            <td>$${(parseFloat(data[i]['product']['product']['price'] * parseFloat((100 - data[i]['coupon_discount'])) / 100)).toFixed(2)}</td>
             <td>
             <form action="#" method="POST">
             <div class="plus-minus" onmouseover="quantityInputChange()">
@@ -74,7 +122,7 @@ function cartItemManager() {
             </form>
             </td>
             <td>
-            <strong>$${parseFloat(data[i]['product']['product']['price'] * data[i]['quantity']).toFixed(2)}</strong>
+            <strong>$${(parseFloat(data[i]['product']['product']['price'] * data[i]['quantity'] * parseFloat((100 - data[i]['coupon_discount']))) / 100).toFixed(2)}</strong>
             </td>
             <td><i data="${data[i]['product']['id']}" class="mdi mdi-close remove_from_cart" onmouseover="removeFromCart()" title="Remove this product"></i></td>
             </tr>
@@ -99,7 +147,7 @@ function cartItemManager() {
                 </tr>`
             if (data.length == 0) {
                 total_products.style.display = 'none'
-            } 
+            }
 
         });
 }

@@ -32,16 +32,19 @@
 								<div class="product-img tab-content">
 
 									{% for image in images %}
+									{% if image.is_main %}
+									<div class="simpleLens-container tab-pane active fade in" id="sin-{{image.id}}">
+									{% else %}
 									<div class="simpleLens-container tab-pane fade in" id="sin-{{image.id}}">
+									{% endif %}
 										<div class="pro-type">
-											<span>new</span>
+											<span>{{productversion.created_at | date:"d.m.y"}}</span>
 										</div>
 										<a class="simpleLens-image" data-lens-image="{{ image.image.url }}"
 											href="#"><img style="width: 360px; height: 467px;"
 												src="{{ image.image.url }}" alt="" class="simpleLens-big-image"></a>
 									</div>
 									{% endfor %}
-
 								</div>
 							</div>
 						</div>

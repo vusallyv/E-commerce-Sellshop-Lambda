@@ -91,9 +91,12 @@ function commentManager() {
                     comment_length[i].innerText = `${total_comments} comment`
                 }
             }
-            submit_comment.setAttribute('isMain', 'True');
-            submit_comment.removeAttribute('replyId');
-            document.getElementById('id_description').value = ''
+            const submit_comment = document.getElementById("submit_comment")
+            if (submit_comment) {
+                submit_comment.setAttribute('isMain', 'True');
+                submit_comment.removeAttribute('replyId');
+                document.getElementById('id_description').value = ''
+            }
         });
 }
 
@@ -103,13 +106,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
 const submit_comment = document.getElementById("submit_comment")
-
-submit_comment.onclick = function () {
-    let description = document.getElementById('id_description').value
-    const blogId = this.getAttribute('data_id');
-    let isMain = this.getAttribute('isMain');
-    let replyId = this.getAttribute('replyId');
-    CommentLogic.commentPostManager(blogId, description, isMain, replyId);
+if (submit_comment) {
+    submit_comment.onclick = function () {
+        let description = document.getElementById('id_description').value
+        const blogId = this.getAttribute('data_id');
+        let isMain = this.getAttribute('isMain');
+        let replyId = this.getAttribute('replyId');
+        CommentLogic.commentPostManager(blogId, description, isMain, replyId);
+    }
 }
 
 function isReply() {

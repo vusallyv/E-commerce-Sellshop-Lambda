@@ -3,7 +3,7 @@ from django.utils.html import format_html
 
 # Register your models here.
 
-from order.models import Billing, Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
+from order.models import Billing, Cart, Cart_Item, City, Country, Coupon, ShippingAddress, Wishlist
 
 
 @admin.register(Billing)
@@ -18,18 +18,29 @@ class CartAdmin(admin.ModelAdmin):
     list_editable = ('is_ordered',)
 
     fieldsets = (
-        ('Cart information', {'fields': ('get_user_username', 'is_ordered', 'ordered_at')}),
+        ('Cart information', {
+         'fields': ('get_user_username', 'is_ordered', 'ordered_at')}),
         ('Shipping information', {'fields': (
             'get_shipping_company', 'get_shipping_country', 'get_shipping_city', 'get_shipping_address',)}),
         ('Product information', {
          'fields': ('get_product',)}),
+        ('Coupon information', {
+            'fields': ('get_coupon', 'get_coupon_discount')}),
     )
     readonly_fields = ('get_user_username', 'get_shipping_address',
-                       'get_shipping_country', 'get_shipping_city', 'get_product', 'get_shipping_company')
+                       'get_shipping_country', 'get_shipping_city', 'get_product', 'get_shipping_company', 'get_coupon', 'get_coupon_discount')
 
     def get_user_username(self, obj):
         return obj.user.username
     get_user_username.short_description = 'Username'
+
+    def get_coupon(self, obj):
+        return obj.coupon.code
+    get_coupon.short_description = 'Coupon'
+
+    def get_coupon_discount(self, obj):
+        return f"{obj.coupon.discount}%"
+    get_coupon_discount.short_description = 'Discount'
 
     def get_shipping_company(self, obj):
         return obj.shipping_address.company_name
@@ -95,6 +106,12 @@ class Cart_ItemAdmin(admin.ModelAdmin):
 class ShippingAddressAdmin(admin.ModelAdmin):
     list_display = ('user', 'company_name', 'country',)
     list_filter = ('company_name', 'user', 'country')
+
+
+@admin.register(Coupon)
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('code', 'discount',)
+    list_filter = ('code', 'discount')
 
 
 admin.site.register([Wishlist, Country, City])

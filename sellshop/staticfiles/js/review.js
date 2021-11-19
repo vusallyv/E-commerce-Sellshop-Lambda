@@ -193,7 +193,7 @@ function reviewManager() {
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
             <i class="mdi mdi-star"></i>
-            <i class="mdi mdi-star"></i>
+            <i class="mdi mdi-star-outline"></i>
             <i class="mdi mdi-star-outline"></i></span>` : ''}
         ${total_review / data['review'].length >= 3.5 && total_review / data['review'].length < 4 ? `
             <span class="floatright ratting">

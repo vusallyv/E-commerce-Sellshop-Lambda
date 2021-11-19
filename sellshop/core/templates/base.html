@@ -71,8 +71,12 @@
 										<li><a href="{% url 'login' %}">{% translate "Login" %}</a></li>
 										<li><a href="{% url 'login' %}">{% translate "Register" %}</a></li>
 										{% endif %}
+										{% if request.user.is_authenticated %}
 										<li><a href="{% url 'my_account' %}">{% translate "My Account" %}</a></li>
 										<li><a href="{% url 'password_change' %}">{% translate "Change Password" %}</a></li>
+										{% else %}
+										<li><a href="{% url 'password_reset' %}">{% translate "Forget your password?" %}</a></li>
+										{% endif %}
 									</ul>
 								</li>
 								<li>

@@ -47,15 +47,14 @@ def login(request):
         form = RegisterForm(request.POST)
         with transaction.atomic():
             user = User(
-                username=form.cleaned_data.get('username').lower(),
-                email=form.cleaned_data.get('email').lower(),
-                first_name=form.cleaned_data.get('first_name'),
-                phone_number=form.cleaned_data.get('phone_number'),
+                username=request.POST.get('username').lower(),
+                email=request.POST.get('email').lower(),
+                first_name=request.POST.get('first_name'),
+                phone_number=request.POST.get('phone_number'),
             )
-            user.set_password(form.cleaned_data.get('password'))
+            user.set_password(request.POST.get('password'))
             user.save()
-        user.set_password(request.POST.get('password')),
-        user.save()
+
         auth.login(request, user)
         return redirect('my_account')
     else:

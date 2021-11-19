@@ -59,6 +59,7 @@ urlpatterns = [
     path('country/', views.CountryView.as_view(), name='country'),
     path('subscriber/', views.SubscriberAPIVIew.as_view(), name='subscriberapi'),
     path('contact/', views.ContactAPIVIew.as_view(), name='contactapi'),
+    path('coupon/', views.CouponAPIVIew.as_view(), name='couponapi'),
 ]
 
 # urlpatterns += router.urls

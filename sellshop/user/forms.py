@@ -71,27 +71,14 @@ class RegisterForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Email already in use")
+            raise forms.ValidationError('The email is already in use.')
         return email
 
-    def clean_phone_number(self):
-        phone_number = self.cleaned_data.get('phone_number')
-        if User.objects.filter(phone_number=phone_number).exists():
-            raise forms.ValidationError("Phone number already in use")
-        elif len(str(phone_number)) > 10:
-            raise forms.ValidationError("Invalid phone number")
-        return phone_number
-
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if User.objects.filter(username=username).exists():
-            raise forms.ValidationError("Username already in use")
-        return username
-    
-    # def clean_password(self):
-    #     password = self.cleaned_data.get('password')
-    #     password_confirm = self.cleaned_data.get('confirm_password')
-    #     if not (password == password_confirm):
-    #         raise forms.ValidationError("Password confirmation does not match")
-    #     return password
+    def clean(self):
+        data = super(RegisterForm, self).clean()
+        password = data['password']
+        confirm_password = data['confirm_password']
+        if password != confirm_password:
+            raise forms.ValidationError('Password confirmation does not match.')
+        return data
 

@@ -54,9 +54,9 @@
 							<div class="cart-form-text custom-input">
 								<p>Enter your coupon code if you have one!</p>
 								<form action="mail.php" method="post">
-									<input type="text" name="subject" placeholder="Enter your code here..." />
+									<input id="coupon_code" type="text" name="subject" placeholder="Enter your code here..." />
 									<div class="submit-text coupon">
-										<button type="submit">apply coupon </button>
+										<button id="coupon_button" type="button">apply coupon </button>
 									</div>
 								</form>
 							</div>
@@ -75,7 +75,7 @@
 									</tfoot>
 								</table>
 							</div>
-							<div style="float: right; margin: 16% 0 0 16%;" class="submit-text coupon">
+							<div id="cont_ship" style="float: right; margin: 16% 0 0 16%;" class="submit-text coupon">
 								<a href="{% url 'checkout' %}">continue shopping </a>
 							</div>
 						</div>

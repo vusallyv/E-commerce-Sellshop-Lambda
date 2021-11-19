@@ -9,9 +9,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from api.serializers import CartItemSerializer, CartSerializer, ContactSerializer, CountrySerializer, ProductSerializer, SubscriberSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
+from api.serializers import CartItemSerializer, CartSerializer, ContactSerializer, CountrySerializer, CouponSerializer, ProductSerializer, SubscriberSerializer, UserSerializer, ProductVersionSerializer, UserSerializer, CategorySerializer, BlogSerializer, WishlistSerializer
 from blog.models import Blog, Comment
-from order.models import Cart, Cart_Item, City, Country, ShippingAddress, Wishlist
+from order.models import Cart, Cart_Item, City, Country, Coupon, ShippingAddress, Wishlist
 from user.models import Contact, Subscriber, User
 from product.models import Product, ProductVersion, Category, Review
 
@@ -376,4 +376,24 @@ class ContactAPIVIew(APIView):
                        'message': 'Your message sent.'}
             return Response(message, status=status.HTTP_201_CREATED)
         message = {'success': False, 'message': 'Invalid message.'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CouponAPIVIew(APIView):
+    serializer_class = CouponSerializer
+
+    def post(self, request, *args, **kwargs):
+        code = request.data.get('code')
+        if code:
+            if Cart.objects.filter(user=request.user, is_ordered=False, coupon=None).exists():
+                obj, created = Cart.objects.get_or_create(
+                    user=request.user, is_ordered=False)
+                obj.coupon = Coupon.objects.get(code=code)
+                obj.save()
+                message = {'success': True,
+                           'message': 'Coupon applied.'}
+                return Response(message, status=status.HTTP_201_CREATED)
+            message = {'success': False, 'message': 'Coupon already applied to this cart.'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        message = {'success': False, 'message': 'Coupon not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)

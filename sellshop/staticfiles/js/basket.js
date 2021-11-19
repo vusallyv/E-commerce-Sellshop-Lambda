@@ -86,7 +86,7 @@ function cartManager() {
 			let count = 0
 			if (data.length > 0 && data[0]['is_ordered'] == false) {
 				for (let i = 0; i < data.length; i++) {
-					total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
+					total_price += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'] * (100 - data[i]['coupon_discount']) / 100)
 					if (data[i]['quantity'] > 0) {
 						count += 1
 						html += `
@@ -100,7 +100,7 @@ function cartManager() {
 					</a>
 					<span>Color : ${data[i]['product']['color']['title']}</span>
 					<span>Size : ${data[i]['product']['size']['title']}</span>
-					<strong>$${parseFloat(data[i]['quantity'] * data[i]['product']['product']['price']).toFixed(2)}</strong>
+					<strong>$${parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'] * (100 - data[i]['coupon_discount']) / 100).toFixed(2)}</strong>
 					</div>
 					</div>
 					`

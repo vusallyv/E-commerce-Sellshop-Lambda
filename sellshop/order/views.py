@@ -51,12 +51,17 @@ def checkout(request):
             domain = 'http://127.0.0.1:8000/en/order'
             stripe.api_key = 'sk_test_51JvSjvJQqk33RMYtOTXJxE01aMel2Zd6TuCmshYksdWQuzUsl9oH05xCfOI9NhkX8c1aM7MBNfuiYqTjYGy2Rdw200LrGFS4Rv'
             line_items = []
+            try:
+                discount = Cart.objects.get(user=request.user, is_ordered=False).coupon.discount
+                discount = int(discount)
+            except:
+                discount = int(0)   
             for i in range(len(arr)):
                 line_items.append(
                     {
                         'price_data': {
                             'currency': 'usd',
-                            'unit_amount': int(arr[i].product.price)*100,
+                            'unit_amount': int(arr[i].product.price*100*(100 - discount)/100),
                             'product_data': {
                                 'name': arr[i].product.title,
                                 # 'images': ['https://i.imgur.com/EHyR2nP.png'],

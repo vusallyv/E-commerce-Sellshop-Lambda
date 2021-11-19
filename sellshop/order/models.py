@@ -68,6 +68,12 @@ class Wishlist(BaseModel):
     def __str__(self):
         return f"{self.user}"
 
+class Coupon(BaseModel):
+    code = models.CharField(max_length=255, unique=True)
+    discount = models.FloatField(default=0.00)
+
+    def __str__(self):
+        return f"{self.code}"
 
 class Cart(BaseModel):
     user = models.ForeignKey(
@@ -79,6 +85,8 @@ class Cart(BaseModel):
         verbose_name="Ordered at", null=True, blank=True)
     shipping_address = models.OneToOneField(
         ShippingAddress, null=True, blank=True, verbose_name="Shipping Address", on_delete=models.CASCADE)
+    coupon = models.ForeignKey(
+        Coupon, null=True, blank=True, verbose_name="Coupon", on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"{self.user}"
