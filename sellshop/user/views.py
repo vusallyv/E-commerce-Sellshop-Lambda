@@ -3,6 +3,7 @@ from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
+from django.db import transaction
 
 # Create your views here.
 
@@ -17,7 +18,7 @@ from django.views.generic import CreateView, DetailView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm
 import random
-from user.tasks import send_mail_to_subscribers
+from user.tasks import send_mail_to_users
 
 from datetime import datetime
 
@@ -44,12 +45,15 @@ def login(request):
     auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
-        user = User(
-            first_name=request.POST.get('first_name'),
-            email=request.POST.get('email').lower(),
-            phone_number=request.POST.get('phone_number'),
-            username=request.POST.get('username').lower(),
-        )
+        with transaction.atomic():
+            user = User(
+                username=form.cleaned_data.get('username').lower(),
+                email=form.cleaned_data.get('email').lower(),
+                first_name=form.cleaned_data.get('first_name'),
+                phone_number=form.cleaned_data.get('phone_number'),
+            )
+            user.set_password(form.cleaned_data.get('password'))
+            user.save()
         user.set_password(request.POST.get('password')),
         user.save()
         auth.login(request, user)
@@ -118,10 +122,9 @@ def my_account(request):
         if user_info.is_valid():
             request.user.first_name = request.POST.get('first_name')
             request.user.last_name = request.POST.get('last_name')
-            request.user.email = request.POST.get('email')
             request.user.phone_number = request.POST.get('phone_number')
             request.user.birth = request.POST.get('birth')
-            request.user.image = request.POST.get('image')
+            request.user.image = f"users/{request.POST.get('image')}"
             request.user.save()
             message = 'Account information updated successfully'
             success = True

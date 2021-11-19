@@ -14,7 +14,7 @@ function checkoutManager() {
             let subtotal = 0
             let html = ''
             if (product_table) {
-                
+
                 product_table.innerHTML = `
                 <thead>
                 <tr>
@@ -35,8 +35,10 @@ function checkoutManager() {
                     </tr>`
                     subtotal += parseFloat(data[i]['quantity'] * data[i]['product']['product']['price'])
                 }
-                product_table.innerHTML += html
-                product_table.innerHTML += `
+                if (product_table) {
+
+                    product_table.innerHTML += html
+                    product_table.innerHTML += `
                 <tr>
                 <th>Cart Subtotal</th>
                 <td>$${subtotal.toFixed(2)}</td>
@@ -52,6 +54,7 @@ function checkoutManager() {
                 </tr>
                 </tfoot>
                 `
+                }
             }
         });
 }

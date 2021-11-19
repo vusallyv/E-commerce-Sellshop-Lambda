@@ -22,6 +22,11 @@
             <div class="col-xs-12">
                 <div class="section-title text-center">
                     <h2>You have searched for <span style="color: red; font-weight: bold;"> "{{word}}"</span>.</h2>
+                    <br>
+                    {% if quantity == 0 %}
+                    <h2><span style="color: red; font-weight: bold;"> Product not found.</span></h2>
+                    {% endif %}
+                    
                 </div>
             </div>
         </div>

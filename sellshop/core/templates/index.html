@@ -283,7 +283,7 @@
 										<div class="s-blog-text">
 											<h4><a href="/single-blog.html">{{blog.title}}</a></h4>
 											<span>By : <a href="#">{{blog.creator}}</a> | <a href="#">{{blog.blogs_comment.count}} Comments</a></span>
-											<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour....</p>
+											<p>{{blog.description}}</p>
 										</div>
 										<div class="date-read clearfix">
 											<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.Y" }}</a>

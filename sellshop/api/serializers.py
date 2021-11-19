@@ -41,7 +41,7 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = ("id", "title", "description",
-                  "creator", "like", "product", "comments")
+                  "creator", "product", "comments")
 
     def get_comments(self, obj):
         qs = obj.blogs_comment.filter(is_main=True)

@@ -160,11 +160,11 @@
                     </div>
                     <div class="s-side-text">
                         <div class="banner clearfix">
-                            <a href="#"><img src="{% static 'img/products/banner.jpg' %}" alt="" /></a>
+                            {% for image in images %} {% if image.productversion == best %}
+                            <a href="{% url 'single_product' best.id %}"><img src="{{image.image.url}}" alt="" /></a>
+                            {% endif %} {% endfor %}
                             <div class="banner-text">
-                                <h2>best</h2>
-                                <br />
-                                <h2 class="banner-brand">brand</h2>
+                                <h2>{{best.product.title}}</h2>
                             </div>
                         </div>
                     </div>

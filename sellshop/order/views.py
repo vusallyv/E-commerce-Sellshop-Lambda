@@ -66,6 +66,19 @@ def checkout(request):
                             user=request.user, is_ordered=False))[i].quantity,
                     }
                 )
+            line_items.append(
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': 15*100,
+                        'product_data': {
+                            'name': 'Shipping and Handling',
+                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                        },
+                    },
+                    'quantity': 1
+                }
+            )
             checkout_session = stripe.checkout.Session.create(
                 line_items=line_items,
                 payment_method_types=[
@@ -122,5 +135,3 @@ class SuccessView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
-

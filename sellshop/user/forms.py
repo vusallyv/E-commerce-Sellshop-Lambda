@@ -19,13 +19,12 @@ class SubscriberForm(forms.ModelForm):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'birth', 'image']
+        fields = ['first_name', 'last_name', 'phone_number', 'birth', 'image']
 
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last name'}),
-            'email': forms.EmailInput(attrs={'placeholder': 'Email address'}),
-            'phone_number': forms.NumberInput(attrs={'placeholder': 'Phone number: 0123456789'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Phone number: 0123456789'}),
             'birth': forms.DateInput(attrs={'type': 'date'})
         }
 

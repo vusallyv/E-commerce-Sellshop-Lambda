@@ -123,6 +123,8 @@ function isReply() {
                 replyButton[i].style.color = '#fe5858'
                 submit_comment.setAttribute('isMain', 'False')
                 submit_comment.setAttribute('replyId', this.getAttribute('comment_id'))
+                id_description = document.getElementById("id_description")
+                id_description.scrollIntoView({ behavior: 'smooth', block: 'center' })
             } else {
                 replyButton[i].style.color = '#666'
                 submit_comment.setAttribute('isMain', 'True')

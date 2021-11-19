@@ -59,7 +59,7 @@
 													<form action="" method="post" name="billing">
 														{% csrf_token %}
 														<div class="custom-select">
-															{{billing.company_name}}
+															<input type="text" name="company_name" placeholder="Company name here..." value="{{request.user.User_Billing.company_name}}" maxlength="255" id="id_company_name">
 														</div>
 														<div class="custom-select">
 															{{billing.country}}
@@ -67,7 +67,7 @@
 														<div class="custom-select">
 															{{billing.city}}
 														</div>
-														{{billing.address}}
+														<input type="text" name="address" placeholder="Address" value="{{request.user.User_Billing.address}}" required="" id="id_address">
 														<div class="submit-text">
 															<button type="submit" name="billing">Save</button>
 														</div>
@@ -142,27 +142,13 @@
 													<h5>Your personal information</h5>
 													<p>Please be sure to update your personal information if it has changed</p>
 												</div>
-												<!-- <div class="mr-mrs">
-													<label class="social-label">
-														<sup>*</sup> Social title
-													</label>
-													<label>
-														<input type="radio" value="forever" name="rememberme"/>
-														Mr.
-													</label>
-													<label>
-														<input type="radio" value="forever" name="rememberme"/>
-														Msr.
-													</label>
-												</div> -->
 												<div class="custom-input">
 													<form action="" method="post" name="account_info">
 														{% csrf_token %}
-														{{user_info.first_name}}
-														{{user_info.last_name}}
-														{{user_info.email}}
-														{{user_info.birth}}
-														{{user_info.phone_number}}
+														<input type="text" name="first_name" value="{{request.user.first_name}}" placeholder="First name" maxlength="150" id="id_first_name">
+														<input type="text" name="last_name" value="{{request.user.last_name}}" placeholder="Last name" maxlength="150" id="id_last_name">
+														<input type="date" name="birth" value="{{request.user.birth | date:'Y-m-d'}}" required="" id="id_birth">
+														<input type="text" name="phone_number" value="{{request.user.phone_number}}" placeholder="Phone number: 0123456789" id="id_phone_number">
 														{{user_info.image}}
 														<div class="submit-text text-left">
 															<button type="submit" value="submit form" name="account_info">Save</button>

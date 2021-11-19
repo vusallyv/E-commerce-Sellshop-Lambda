@@ -10,14 +10,15 @@ from datetime import timedelta
 
 
 @shared_task
-def send_mail_to_subscribers():
-    check_last_login = timezone.now() - timedelta(days=30)
+def send_mail_to_users():
+    startdate = timezone.now()
+    enddate = startdate - timedelta(days=30)
     allproductversions = ProductVersion.objects.annotate(
         num_rev=Count('product_reviews')).order_by('-num_rev')[:5]
     images = Image.objects.filter(is_main=True)
     users = User.objects.all()
     for user in users:
-        if user.last_login > check_last_login:
+        if user.last_login < enddate:
             body = render_to_string('subscriber_mail.html', context={
                 'email': user.email,
                 'allproductversions': allproductversions,

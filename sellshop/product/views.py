@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.db.models.aggregates import Avg
+from django.db.models.aggregates import Avg, Count
 from django.shortcuts import redirect, render
 from django.db.models import Q, F
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -75,6 +75,7 @@ class ProductListView(ListView):
         return render(request, 'product-list.html', context=context)
 
 
+
 def PaginatorProductList(request):
     product_list = ProductVersion.objects.filter(
         is_main=True).order_by('created_at')
@@ -121,6 +122,8 @@ def PaginatorProductList(request):
         'brands': Brand.objects.all(),
         'colors': Color.objects.all(),
         'product_len': product_len,
+        'best': ProductVersion.objects.annotate(
+        mostsold=Count('Product_Cart')).order_by('-mostsold')[0]
     }
     return render(request, 'product-list.html', context=context)
 
@@ -140,6 +143,7 @@ class SearchView(ListView):
             'title': 'Product-list Sellshop',
             'productversions': qs,
             'images': Image.objects.filter(is_main=True),
-            'word' : request.GET.get("search_name"),
+            'word': request.GET.get("search_name"),
+            'quantity': len(qs)
         }
         return render(request, 'search.html', context=context)
