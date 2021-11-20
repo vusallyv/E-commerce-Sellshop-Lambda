@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.core.mail import message
 from django.db.models.expressions import F
 from django.http.response import JsonResponse
 from django.views.generic import View, TemplateView
@@ -33,6 +34,7 @@ def checkout(request):
                 counter += 1
     except:
         counter = 0
+    message = ""
     if request.method == "POST":
         form = ShippingAddressForm(request.POST)
         if form.is_valid() and counter > 0:
@@ -104,6 +106,8 @@ def checkout(request):
                     cart=user_cart)[i].product.id).update(quantity=quantity)
             Cart.objects.get_or_create(user=request.user, is_ordered=False)
             return redirect(checkout_session.url, code=303)
+        else:   
+            message = 'Product expired'
     else:
         form = ShippingAddressForm()
 
@@ -111,6 +115,7 @@ def checkout(request):
         'title': 'Checkout Sellshop',
         'shipping': form,
         'cart_products': counter,
+        'message': message,
     }
     if request.user.is_authenticated:
         return render(request, "checkout.html", context=context)

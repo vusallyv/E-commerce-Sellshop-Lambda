@@ -22,6 +22,11 @@
 <!-- Checkout content section start -->
 <section class="pages checkout section-padding">
 	<div class="container">
+		{% if message %}
+		<div class="alert alert-danger text-center" role="alert">
+			{{message}}
+		  </div>
+		{% endif %}
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="main-input single-cart-form padding60">
@@ -69,32 +74,6 @@
 						</div>
 						<div class="categories">
 							<ul id="accordion" class="panel-group clearfix">
-								<!-- <li class="panel">
-									<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse1">
-										<div class="medium-a">
-											direct bank transfer
-										</div>
-									</div>
-									<div class="panel-collapse collapse in" id="collapse1">
-										<div class="normal-a">
-											<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-												industry. Lorem Ipsum has been the industry.</p>
-										</div>
-									</div>
-								</li>
-								<li class="panel">
-									<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse2">
-										<div class="medium-a">
-											cheque payment
-										</div>
-									</div>
-									<div class="paypal-dsc panel-collapse collapse" id="collapse2">
-										<div class="normal-a">
-											<p>Lorem Ipsum is simply in dummy text of the printing and typesetting
-												industry. Lorem Ipsum has been the industry.</p>
-										</div>
-									</div>
-								</li> -->
 								<li class="panel">
 									<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
 										<div class="medium-a">

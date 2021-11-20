@@ -6,8 +6,8 @@
 			<div id="wrapper">
 				<div class="slider-wrapper">
 					<div id="mainSlider" class="nivoSlider">
-						<img src="{% static 'img/slider/home2/1.jpg' %}" alt="main slider" title="#htmlcaption"/>
-						<img src="{% static 'img/slider/home2/2.jpg' %}" alt="main slider" title="#htmlcaption2"/>
+						<img src="https://wallpaperaccess.com/full/2483962.jpg" alt="main slider" title="#htmlcaption"/>
+						<img src="https://wallpaperaccess.com/full/2593118.jpg" alt="main slider" title="#htmlcaption2"/>
 					</div>
 					<div id="htmlcaption" class="nivo-html-caption slider-caption">
 						<div class="container">
@@ -17,7 +17,7 @@
 									<h1>Men’s Fashion 2016</h1>
 								</div>
 								<div class="animated slider-btn fadeInUpBig">
-									<a class="shop-btn" href="shop.html">Shop now</a>
+									<a class="shop-btn" href="{% url 'product_list' %}">Shop now</a>
 								</div>
 							</div>
 						</div>
@@ -34,7 +34,7 @@
 									<p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum".</p>
 								</div>
 								<div class="animated slider-btn fadeInUpBig">
-									<a class="shop-btn" href="shop.html">Shop now</a>
+									<a class="shop-btn" href="{% url 'product_list' %}">Shop now</a>
 								</div>
 							</div>
 						</div>
@@ -283,7 +283,7 @@
 										<div class="s-blog-text">
 											<h4><a href="/single-blog.html">{{blog.title}}</a></h4>
 											<span>By : <a href="#">{{blog.creator}}</a> | <a href="#">{{blog.blogs_comment.count}} Comments</a></span>
-											<p>{{blog.description}}</p>
+											<p>{{blog.description|truncatewords:17}}</p>
 										</div>
 										<div class="date-read clearfix">
 											<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.Y" }}</a>

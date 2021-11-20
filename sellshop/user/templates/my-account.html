@@ -96,8 +96,9 @@
 															<tr>
 																<th scope="col">Date</th>
 																<th scope="col">Product</th>
-																<th scope="col">Quantity</th>
+																<th scope="col">Total Price</th>
 																<th scope="col">Shipping Address</th>
+																<th scope="col">Applied Coupon</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -114,7 +115,7 @@
 																<td>
 																	{% for product in order.User_Cart.all %}
 																	<p style="color: white;">
-																		{{product.quantity}}
+																		{{product.quantity}} * {{product.product.product.price}}
 																	</p>
 																	{% endfor %}
 																</td>
@@ -123,6 +124,14 @@
 																	<p style="color: white;">{{ order.shipping_address.country }}</p>
 																	<p style="color: white;">{{ order.shipping_address.city }}</p>
 																	<p style="color: white;">{{ order.shipping_address.address }}</p>
+																</td>
+																<td>
+																	<p style="color: white;">{% if order.coupon %}
+																		{{order.coupon}}
+																		{{order.coupon.discount}}
+																	{% else %}
+																		No Coupon
+																		{% endif %}</p>
 																</td>
 															</tr>
 															{% endfor %}

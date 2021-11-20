@@ -45,18 +45,17 @@ def login(request):
     auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
-        with transaction.atomic():
+        if form.is_valid():
             user = User(
-                username=request.POST.get('username').lower(),
-                email=request.POST.get('email').lower(),
-                first_name=request.POST.get('first_name'),
-                phone_number=request.POST.get('phone_number'),
+                username=form.cleaned_data.get('username'),
+                first_name=form.cleaned_data.get('first_name'),
+                email=form.cleaned_data.get('email'),
+                phone_number=form.cleaned_data.get('phone_number'),
             )
-            user.set_password(request.POST.get('password'))
+            user.set_password(form.cleaned_data.get('password'))
             user.save()
-
-        auth.login(request, user)
-        return redirect('my_account')
+            auth.login(request, user)
+            return redirect('my_account')
     else:
         form = RegisterForm()
 
@@ -147,5 +146,5 @@ def my_account(request):
 
 
 def send_mail_to_subscribers_view(request):
-    send_mail_to_subscribers.delay()
+    send_mail_to_users.delay()
     return render(request, "subscriber_mail.html")

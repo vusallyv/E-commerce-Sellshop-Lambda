@@ -16,6 +16,7 @@ class SubscriberForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'placeholder': 'Enter your email...', "style": "width: 100% !important;"})
         }
 
+
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -27,6 +28,7 @@ class UserForm(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={'placeholder': 'Phone number: 0123456789'}),
             'birth': forms.DateInput(attrs={'type': 'date'})
         }
+
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -71,14 +73,28 @@ class RegisterForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            raise forms.ValidationError('The email is already in use.')
+            raise forms.ValidationError('The email is already in use')
         return email
 
-    def clean(self):
-        data = super(RegisterForm, self).clean()
-        password = data['password']
-        confirm_password = data['confirm_password']
-        if password != confirm_password:
-            raise forms.ValidationError('Password confirmation does not match.')
-        return data
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('The username is already in use')
+        return username
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if User.objects.filter(phone_number=phone_number).exists():
+            raise forms.ValidationError('The phone number is already in use')
+        return phone_number
+
+    def clean_confirm_password(self):
+        password = self.cleaned_data.get('password')
+        confirm_password = self.cleaned_data.get('confirm_password')
+        if password != confirm_password:
+            raise forms.ValidationError(
+                'Password confirmation does not match.')
+        if len(password) < 8:
+            raise forms.ValidationError(
+                'Password must be at least 8 characters long')
+        return confirm_password
