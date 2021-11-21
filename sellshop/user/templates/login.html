@@ -24,6 +24,11 @@
 <!-- login content section start -->
 <section class="pages login-page section-padding">
 	<div class="container">
+		{% if message %}
+		<div class="alert alert-danger text-center" role="alert">
+			{{message}}
+		  </div>
+		{% endif %}
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="main-input padding60">

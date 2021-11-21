@@ -41,6 +41,7 @@ def contact(request):
 
 
 def login(request):
+    message = ''
     auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
@@ -54,21 +55,8 @@ def login(request):
             user.set_password(form.cleaned_data.get('password'))
             user.is_active = False
             user.save()
-            auth.login(request, user)
-            current_site = get_current_site(request)
-            body = render_to_string('verification_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
-            to_email = form.cleaned_data.get('email')
-            msg = EmailMessage(subject='Activate your account.', body=body,
-                               from_email=EMAIL_HOST_USER,
-                               to=[to_email, ])
-            msg.content_subtype = 'html'
-            msg.send(fail_silently=True)
-            return HttpResponse('Please confirm your email address to complete the registration')
+            message = 'Your account has been created successfully. Please check your email to activate your account.'
+            verify_email(request, user=user, to_email=user.email)
     else:
         form = RegisterForm()
 
@@ -77,8 +65,13 @@ def login(request):
         user = User.objects.filter(
             username=request.POST.get('username').lower()).first()
         if user is not None and user.check_password(request.POST.get('password')):
-            auth.login(request, user)
-            return redirect('my_account')
+            if user.is_active:
+                auth.login(request, user)
+                return redirect('my_account')
+            else:
+                message = 'Please verify your email address to login'
+        else:
+            message = 'Invalid username or password'
     else:
         form1 = LoginForm()
 
@@ -86,6 +79,7 @@ def login(request):
         'title':  'Login Sellshop',
         'login':  form1,
         'register':  form,
+        'message': message,
     }
     return render(request, "login.html", context=context)
 
@@ -95,7 +89,7 @@ def logout(request):
         auth.logout(request)
         return redirect('login')
 
-def my_account(request):
+def my_account(request, verify_message=None):
     message = ''
     success = False
     if request.method == "POST" and "billing" in request.POST:
@@ -171,6 +165,21 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        # my_account(request, verify_message='Your account has been activated successfully.')
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
+
+def verify_email(request, user, to_email):
+    current_site = get_current_site(request)
+    body = render_to_string('verification_email.html', {
+        'user': user,
+        'domain': current_site.domain,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+    })
+    msg = EmailMessage(subject='Activate your account.', body=body,
+                        from_email=EMAIL_HOST_USER,
+                        to=[to_email, ])
+    msg.content_subtype = 'html'
+    msg.send(fail_silently=True)
