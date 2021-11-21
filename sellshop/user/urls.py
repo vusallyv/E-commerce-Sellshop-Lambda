@@ -20,4 +20,5 @@ urlpatterns = [
     path("password_change/",
          auth_views.PasswordChangeView.as_view(template_name='change-password.html')),
     path('password_change/done/', views.password_success, name="password_success"),
+    path('emailVerification/<uidb64>/<token>', views.activate, name='activate')
 ]

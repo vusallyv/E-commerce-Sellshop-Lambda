@@ -94,7 +94,25 @@ class RegisterForm(forms.Form):
         if password != confirm_password:
             raise forms.ValidationError(
                 'Password confirmation does not match.')
-        if len(password) < 8:
+        elif len(password) < 8:
             raise forms.ValidationError(
                 'Password must be at least 8 characters long')
+        elif password.isdigit():
+            raise forms.ValidationError(
+                'Password must contain at least one letter')
+        elif password.isalpha():
+            raise forms.ValidationError(
+                'Password must contain at least one number')
+        elif password.islower():
+            raise forms.ValidationError(
+                'Password must contain at least one upper case letter')
+        elif password.isupper():
+            raise forms.ValidationError(
+                'Password must contain at least one lower case letter')
+        elif password.isspace():
+            raise forms.ValidationError(
+                'Password must not contain any spaces')
+        elif password.isalnum():
+            raise forms.ValidationError(
+                'Password must contain at least one special character')
         return confirm_password

@@ -384,7 +384,7 @@ class CouponAPIVIew(APIView):
 
     def post(self, request, *args, **kwargs):
         code = request.data.get('code')
-        if code:
+        if code and Coupon.objects.filter(code=code).exists():
             if Cart.objects.filter(user=request.user, is_ordered=False, coupon=None).exists():
                 obj, created = Cart.objects.get_or_create(
                     user=request.user, is_ordered=False)

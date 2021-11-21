@@ -1,26 +1,23 @@
-from django.db.models.expressions import F
 from django.db.models.query_utils import Q
-from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import get_user_model
-from django.db import transaction
-
 # Create your views here.
 
 from django.urls import reverse_lazy
-from django.views.generic.base import TemplateView, View
-from order.forms import BillingForm
-from order.models import Billing, Cart, City, Country
-from user.forms import ContactForm, LoginForm, RegisterForm, SubscriberForm, UserForm
-from user.models import User, Contact, Subscriber
 from django.contrib import auth
-from django.views.generic import CreateView, DetailView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm
-import random
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from user.tasks import send_mail_to_users
+from django.utils.encoding import force_bytes, force_text
+from django.http import HttpResponse
+from .tokens import account_activation_token
 
-from datetime import datetime
+from order.forms import BillingForm
+from order.models import Billing, Cart, City, Country
+from user.forms import LoginForm, RegisterForm, UserForm
 
 User = auth.get_user_model()
 
@@ -45,6 +42,21 @@ def login(request):
     auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
+        """send verificatio mail to users"""
+        # if form.is_valid():
+        #     user = form.save(commit=False)
+        #     user.is_active = False
+        #     user.save()
+        #     current_site = get_current_site(request)
+        #     subject = 'Activate Your MySite Account'
+        #     message = render_to_string('account_activation_email.html', {
+        #         'user': user,
+        #         'domain': current_site.domain,
+        #         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        #         'token': account_activation_token.make_token(user),
+        #     })
+        #     user.email_user(subject, message)
+        #     return redirect('account_activation_sent')
         if form.is_valid():
             user = User(
                 username=form.cleaned_data.get('username'),
@@ -53,9 +65,20 @@ def login(request):
                 phone_number=form.cleaned_data.get('phone_number'),
             )
             user.set_password(form.cleaned_data.get('password'))
+            user.is_active = False
             user.save()
             auth.login(request, user)
-            return redirect('my_account')
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account.'
+            message = render_to_string('verification_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            send_mail(mail_subject, message, 'youremail', [to_email])
+            return HttpResponse('Please confirm your email address to complete the registration')
     else:
         form = RegisterForm()
 
@@ -148,3 +171,18 @@ def my_account(request):
 def send_mail_to_subscribers_view(request):
     send_mail_to_users.delay()
     return render(request, "subscriber_mail.html")
+
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')
