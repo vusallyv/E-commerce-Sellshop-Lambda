@@ -8,7 +8,7 @@
     {% autoescape off %}
     Hi ,
     Please click on the link to confirm your registration,
-    <a>
+    <a style="cursor: pointer;" href="{{ domain }}{% url 'activate' uidb64=uid token=token %}">
         {{ domain }}{% url 'activate' uidb64=uid token=token %}
     </a>
     {% endautoescape %}

@@ -14,6 +14,8 @@ from user.tasks import send_mail_to_users
 from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
 from .tokens import account_activation_token
+from django.core.mail import EmailMessage
+from sellshop.settings import EMAIL_HOST_USER
 
 from order.forms import BillingForm
 from order.models import Billing, Cart, City, Country
@@ -42,21 +44,6 @@ def login(request):
     auth.logout(request)
     if request.method == "POST" and 'register' in request.POST:
         form = RegisterForm(request.POST)
-        """send verificatio mail to users"""
-        # if form.is_valid():
-        #     user = form.save(commit=False)
-        #     user.is_active = False
-        #     user.save()
-        #     current_site = get_current_site(request)
-        #     subject = 'Activate Your MySite Account'
-        #     message = render_to_string('account_activation_email.html', {
-        #         'user': user,
-        #         'domain': current_site.domain,
-        #         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        #         'token': account_activation_token.make_token(user),
-        #     })
-        #     user.email_user(subject, message)
-        #     return redirect('account_activation_sent')
         if form.is_valid():
             user = User(
                 username=form.cleaned_data.get('username'),
@@ -69,15 +56,18 @@ def login(request):
             user.save()
             auth.login(request, user)
             current_site = get_current_site(request)
-            mail_subject = 'Activate your account.'
-            message = render_to_string('verification_email.html', {
+            body = render_to_string('verification_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
             to_email = form.cleaned_data.get('email')
-            send_mail(mail_subject, message, 'youremail', [to_email])
+            msg = EmailMessage(subject='Activate your account.', body=body,
+                               from_email=EMAIL_HOST_USER,
+                               to=[to_email, ])
+            msg.content_subtype = 'html'
+            msg.send(fail_silently=True)
             return HttpResponse('Please confirm your email address to complete the registration')
     else:
         form = RegisterForm()
@@ -104,7 +94,6 @@ def logout(request):
     if request.user.is_authenticated:
         auth.logout(request)
         return redirect('login')
-
 
 def my_account(request):
     message = ''
@@ -164,8 +153,7 @@ def my_account(request):
     }
     if request.user.is_authenticated:
         return render(request, "my-account.html", context=context)
-    else:
-        return render(request, "error-404.html", context=context)
+    return render(request, "error-404.html", context=context)
 
 
 def send_mail_to_subscribers_view(request):
