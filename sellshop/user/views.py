@@ -69,7 +69,8 @@ def login(request):
                 auth.login(request, user)
                 return redirect('my_account')
             else:
-                message = 'Please verify your email address to login'
+                verify_email(request, user=user, to_email=user.email)
+                message = 'Your account is not activated. Verification email has been sent to your email. Please check your email to activate your account.'
         else:
             message = 'Invalid username or password'
     else:
@@ -89,7 +90,8 @@ def logout(request):
         auth.logout(request)
         return redirect('login')
 
-def my_account(request, verify_message=None):
+
+def my_account(request):
     message = ''
     success = False
     if request.method == "POST" and "billing" in request.POST:
@@ -155,7 +157,6 @@ def send_mail_to_subscribers_view(request):
     return render(request, "subscriber_mail.html")
 
 
-
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
@@ -165,10 +166,10 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        # my_account(request, verify_message='Your account has been activated successfully.')
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
+
 
 def verify_email(request, user, to_email):
     current_site = get_current_site(request)
@@ -179,7 +180,7 @@ def verify_email(request, user, to_email):
         'token': account_activation_token.make_token(user),
     })
     msg = EmailMessage(subject='Activate your account.', body=body,
-                        from_email=EMAIL_HOST_USER,
-                        to=[to_email, ])
+                       from_email=EMAIL_HOST_USER,
+                       to=[to_email, ])
     msg.content_subtype = 'html'
     msg.send(fail_silently=True)

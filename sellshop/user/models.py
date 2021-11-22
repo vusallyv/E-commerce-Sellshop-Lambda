@@ -17,7 +17,7 @@ class User(AbstractUser):
     first_name = models.CharField(verbose_name='First Name', max_length=150, null=True, blank=True)
     last_name = models.CharField(verbose_name='Last Name', max_length=150, null=True, blank=True)
     email = models.EmailField(verbose_name="Email Address", blank=True, unique=True)
-    birth = models.DateField(verbose_name="Date of Birth", null=True)
+    birth = models.DateField(verbose_name="Date of Birth", null=True, blank=True)
     country = models.CharField(
         verbose_name="Country", max_length=255, null=True, blank=True)
     city = models.CharField(

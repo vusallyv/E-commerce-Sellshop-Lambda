@@ -1,3 +1,4 @@
+from django.db.models.query_utils import Q
 from user.models import Subscriber, User, Contact
 from django.forms.widgets import TextInput
 from django import forms
@@ -72,20 +73,26 @@ class RegisterForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(Q(email=email) & Q(is_active=True)).exists():
             raise forms.ValidationError('The email is already in use')
+        elif User.objects.filter(Q(email=email) & Q(is_active=False)).exists():
+            User.objects.filter(email=email).delete()
         return email
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if User.objects.filter(username=username).exists():
+        if User.objects.filter(Q(username=username) & Q(is_active=True)).exists():
             raise forms.ValidationError('The username is already in use')
+        elif User.objects.filter(Q(username=username) & Q(is_active=False)).exists():
+            User.objects.filter(username=username).delete()
         return username
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
-        if User.objects.filter(phone_number=phone_number).exists():
+        if User.objects.filter(Q(phone_number=phone_number) & Q(is_active=True)).exists():
             raise forms.ValidationError('The phone number is already in use')
+        elif User.objects.filter(Q(phone_number=phone_number) & Q(is_active=False)).exists():
+            User.objects.filter(phone_number=phone_number).delete()
         return phone_number
 
     def clean_confirm_password(self):
