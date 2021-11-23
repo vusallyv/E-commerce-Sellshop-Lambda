@@ -25,6 +25,7 @@ def card(request):
 
 
 def checkout(request):
+    message = ""
     try:
         cart = Cart_Item.objects.filter(
             cart=Cart.objects.get(user=request.user, is_ordered=False))
@@ -34,7 +35,6 @@ def checkout(request):
                 counter += 1
     except:
         counter = 0
-    message = ""
     if request.method == "POST":
         form = ShippingAddressForm(request.POST)
         if form.is_valid() and counter > 0:
@@ -47,7 +47,10 @@ def checkout(request):
             )
             shipping.save()
             arr = []
-            for i in range(len(Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False)))):
+            products = Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False))
+            for i in range(len(products)):
+                products[i].price = products[i].product.product.price
+                products[i].save()
                 arr.append(Cart_Item.objects.filter(cart=Cart.objects.get(
                     user=request.user, is_ordered=False))[i].product)
             domain = 'http://127.0.0.1:8000/en/order'
@@ -57,7 +60,7 @@ def checkout(request):
                 discount = Cart.objects.get(user=request.user, is_ordered=False).coupon.discount
                 discount = int(discount)
             except:
-                discount = int(0)   
+                discount = 0   
             for i in range(len(arr)):
                 line_items.append(
                     {

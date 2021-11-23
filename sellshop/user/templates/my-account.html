@@ -115,7 +115,7 @@
 																<td>
 																	{% for product in order.User_Cart.all %}
 																	<p style="color: white;">
-																		{{product.quantity}} * {{product.product.product.price}}
+																		{{product.quantity}} * {{product.price}}
 																	</p>
 																	{% endfor %}
 																</td>
@@ -126,12 +126,14 @@
 																	<p style="color: white;">{{ order.shipping_address.address }}</p>
 																</td>
 																<td>
-																	<p style="color: white;">{% if order.coupon %}
-																		{{order.coupon}}
-																		{{order.coupon.discount}}
-																	{% else %}
-																		No Coupon
-																		{% endif %}</p>
+																	<p style="color: white;">
+																		{% if order.coupon %}
+																			{{order.coupon}}
+																			{{order.coupon.discount}}
+																		{% else %}
+																			No Coupon
+																		{% endif %}
+																	</p>
 																</td>
 															</tr>
 															{% endfor %}

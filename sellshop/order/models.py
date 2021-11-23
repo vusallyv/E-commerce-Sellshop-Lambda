@@ -97,7 +97,8 @@ class Cart_Item(BaseModel):
         Cart, on_delete=models.CASCADE, related_name="User_Cart")
     product = models.ForeignKey(
         "product.ProductVersion", on_delete=models.CASCADE, blank=True, null=True, related_name="Product_Cart")
-    quantity = models.PositiveIntegerField("quantity", default=0)
+    price = models.FloatField(verbose_name="Price", default=0.00)
+    quantity = models.PositiveIntegerField(verbose_name="Quantity", default=0)
 
     def __str__(self) -> str:
         return f"{self.cart}"

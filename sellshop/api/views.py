@@ -243,28 +243,24 @@ class CartView(APIView):
         quantity = request.data.get('quantity')
         template = request.data.get('template')
         product = ProductVersion.objects.get(pk=product_id)
-        Cart.objects.get_or_create(user=request.user, is_ordered=False)
-        cart = Cart.objects.get(user=request.user, is_ordered=False)
+        cart, created = Cart.objects.get_or_create(
+            user=request.user, is_ordered=False)
         if product:
+            cart_item, created = Cart_Item.objects.get_or_create(
+                cart=cart, product=product)
             if template == "cart.html":
-                Cart_Item.objects.get_or_create(cart=cart, product=product)
-                cart_item = Cart_Item.objects.get(cart=cart, product=product)
                 cart_item.quantity = int(quantity)
                 Cart_Item.objects.filter(cart=cart, product=product).update(
-                    quantity=cart_item.quantity)
+                    quantity=cart_item.quantity, price=product.product.price)
                 Cart.objects.get(user=request.user,
                                  is_ordered=False).product.add(product)
             elif template == "product_list.html":
-                Cart_Item.objects.get_or_create(cart=cart, product=product)
-                cart_item = Cart_Item.objects.get(cart=cart, product=product)
                 cart_item.quantity += int(quantity)
                 Cart_Item.objects.filter(cart=cart, product=product).update(
-                    quantity=cart_item.quantity)
+                    quantity=cart_item.quantity, price=product.product.price)
                 Cart.objects.get(user=request.user,
                                  is_ordered=False).product.add(product)
             elif template == "remove_from_cart":
-                Cart_Item.objects.get_or_create(cart=cart, product=product)
-                cart_item = Cart_Item.objects.get(cart=cart, product=product)
                 Cart_Item.objects.filter(cart=cart, product=product).delete()
                 Cart.objects.get(user=request.user,
                                  is_ordered=False).product.remove(product)
@@ -393,7 +389,8 @@ class CouponAPIVIew(APIView):
                 message = {'success': True,
                            'message': 'Coupon applied.'}
                 return Response(message, status=status.HTTP_201_CREATED)
-            message = {'success': False, 'message': 'Coupon already applied to this cart.'}
+            message = {'success': False,
+                       'message': 'Coupon already applied to this cart.'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
         message = {'success': False, 'message': 'Coupon not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)

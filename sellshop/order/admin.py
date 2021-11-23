@@ -77,11 +77,11 @@ class CartAdmin(admin.ModelAdmin):
             
                     <tr>
                         <td>{item.product.product.title}</td>
-                        <td>{item.product.product.price}</td>
+                        <td>{item.price}</td>
                         <td>{item.product.color.title}</td>
                         <td>{item.product.size.title}</td>
                         <td>{item.quantity}</td>
-                        <td>{item.quantity*item.product.product.price}</td>
+                        <td>{item.quantity*item.price}</td>
                     </tr>
                 
             '''
@@ -94,7 +94,7 @@ class CartAdmin(admin.ModelAdmin):
 
 @admin.register(Cart_Item)
 class Cart_ItemAdmin(admin.ModelAdmin):
-    list_display = ('cart', 'product', 'quantity', 'get_cart_detail')
+    list_display = ('cart', 'product', 'price', 'quantity', 'get_cart_detail')
     list_editable = ('quantity',)
 
     def get_cart_detail(self, obj):
