@@ -104,7 +104,7 @@
 														<tbody>
 															{% for order in orders %}
 															<tr>
-																<td>{{ order.ordered_at | date:"d/m/Y m:h" }}</td>
+																<td>{{ order.ordered_at }}</td>
 																<td>
 																	{% for product in order.User_Cart.all %}
 																	<p style="color: white;">

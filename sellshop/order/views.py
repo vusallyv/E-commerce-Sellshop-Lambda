@@ -47,29 +47,33 @@ def checkout(request):
             )
             shipping.save()
             arr = []
-            products = Cart_Item.objects.filter(cart=Cart.objects.get(user=request.user, is_ordered=False))
+            try:
+                discount = Cart.objects.get(
+                    user=request.user, is_ordered=False).coupon.discount
+                discount = float(discount)
+            except:
+                discount = 0
+            products = Cart_Item.objects.filter(
+                cart=Cart.objects.get(user=request.user, is_ordered=False))
             for i in range(len(products)):
-                products[i].price = products[i].product.product.price
+                products[i].price = f'{(float(products[i].product.product.price) * (100-discount))/100:.2f}'
                 products[i].save()
                 arr.append(Cart_Item.objects.filter(cart=Cart.objects.get(
-                    user=request.user, is_ordered=False))[i].product)
+                    user=request.user, is_ordered=False))[i])
             domain = 'http://127.0.0.1:8000/en/order'
             stripe.api_key = 'sk_test_51JvSjvJQqk33RMYtOTXJxE01aMel2Zd6TuCmshYksdWQuzUsl9oH05xCfOI9NhkX8c1aM7MBNfuiYqTjYGy2Rdw200LrGFS4Rv'
             line_items = []
-            try:
-                discount = Cart.objects.get(user=request.user, is_ordered=False).coupon.discount
-                discount = int(discount)
-            except:
-                discount = 0   
             for i in range(len(arr)):
+                print(arr[i].product.version_images.get(
+                    is_main=True).image.url)
                 line_items.append(
                     {
                         'price_data': {
                             'currency': 'usd',
-                            'unit_amount': int(arr[i].product.price*100*(100 - discount)/100),
+                            'unit_amount': int(float(arr[i].product.product.price)*100*(100 - discount)/100),
                             'product_data': {
-                                'name': arr[i].product.title,
-                                # 'images': ['https://i.imgur.com/EHyR2nP.png'],
+                                'name': arr[i].product.product.title,
+                                'images': [arr[i].product.version_images.get(is_main=True).image],
                             },
                         },
                         'quantity': Cart_Item.objects.filter(cart=Cart.objects.get(
@@ -109,7 +113,7 @@ def checkout(request):
                     cart=user_cart)[i].product.id).update(quantity=quantity)
             Cart.objects.get_or_create(user=request.user, is_ordered=False)
             return redirect(checkout_session.url, code=303)
-        else:   
+        else:
             message = 'Product expired'
     else:
         form = ShippingAddressForm()
