@@ -66,7 +66,7 @@
 												<span>{{productversion.created_at | date:"d.m.y"}}</span>
 											</div>
 											{% for image in images %} {% if image.productversion == productversion %}
-											<a href="#"><img style="width: 263px; height: 340px;" src="{{image.image.url}}" alt="Product Title" /></a>
+											<a href="{% url 'single_product' productversion.id %}"><img style="width: 263px; height: 340px;" src="{{image.image.url}}" alt="Product Title" /></a>
 											{% endif %} {% endfor %}
 											<div class="actions-btn">
 												<a><i data="{{productversion.id}}" class="mdi mdi-cart add_to_cart "></i></a>
@@ -74,7 +74,7 @@
 											</div>
 										</div>
 										<div class="product-dsc">
-											<p><a href="#">{{ productversion.product.title }}</a></p>
+											<p><a href="{% url 'single_product' productversion.id %}">{{ productversion.product.title }}</a></p>
 											<span>{{productversion.product.price}}</span>
 										</div>
 									</div>
@@ -113,7 +113,7 @@
 						<div class="padding">
 							<div class="tab-content" >
 								<div class="single-coming tab-pane fade in active" id="text{{productversion.id}}">
-									<h4><a href="#">{{firstbestseller.product.title}}</a></h4>
+									<h4><a href="{% url 'single_product' firstbestseller.id %}">{{firstbestseller.product.title}}</a></h4>
 									<span><strong>${{firstbestseller.product.price}}</strong>   <del>${{firstbestseller.product.ex_price}}</del></span>
 									<p class="come-p">{{firstbestseller.product.description}}</p>
 									<ul class="color-size">
@@ -171,7 +171,7 @@
 											<div class="single-product">
 												<div class="product-img">
 													{% for image in images %} {% if image.productversion == productversion %}
-													<a href="#"><img src="{{image.image.url}}" alt="Product Title" /></a>
+													<a href="{% url 'single_product' productversion.id %}"><img src="{{image.image.url}}" alt="Product Title" /></a>
 													{% endif %}
 													{% endfor %}
 													<div class="actions-btn">
@@ -180,7 +180,7 @@
 													</div>
 												</div>
 												<div class="product-dsc">
-													<p><a href="#">{{ productversion.product.title }}</a></p>
+													<p><a href="{% url 'single_product' productversion.id %}">{{ productversion.product.title }}</a></p>
 													<span>${{productversion.product.price}}</span>
 												</div>
 											</div>
@@ -203,7 +203,7 @@
 											<div class="single-product">
 												<div class="product-img">
 													{% for image in images %} {% if image.productversion == productversion %}
-													<a href="#"><img src="{{image.image.url}}" alt="Product Title" /></a>
+													<a href="{% url 'single_product' productversion.id %}"><img src="{{image.image.url}}" alt="Product Title" /></a>
 													{% endif %} {% endfor %}
 													<div class="actions-btn">
 														<a><i data="{{productversion.id}}" class="mdi mdi-cart add_to_cart "></i></a>
@@ -211,7 +211,7 @@
 													</div>
 												</div>
 												<div class="product-dsc">
-													<p><a href="#">men’s Black t-shirt</a></p>
+													<p><a href="{% url 'single_product' productversion.id %}">men’s Black t-shirt</a></p>
 													<span>$57.00</span>
 												</div>
 											</div>
@@ -237,7 +237,7 @@
 														<span>{{product.created_at | date:"d.m.y"}}</span>
 													</div>
 													{% for image in images %} {% if image.productversion == product %}
-													<a href="#"><img src="{{image.image.url}}" alt="Product Title" /></a>
+													<a href="{% url 'single_product' product.id %}"><img src="{{image.image.url}}" alt="Product Title" /></a>
 													{% endif %} {% endfor %}
 													<div class="actions-btn">
 														<a><i data="{{productversion.id}}" class="mdi mdi-cart add_to_cart "></i></a>
@@ -245,7 +245,7 @@
 													</div>
 												</div>
 												<div class="product-dsc">
-													<p><a href="#">{{product.product.title}}</a></p>
+													<p><a href="{% url 'single_product' product.id %}">{{product.product.title}}</a></p>
 													<span>${{product.product.price}}</span>
 												</div>
 											</div>
@@ -282,11 +282,11 @@
 										<div class="banner"><a href="/single-blog.html"><img style="width: 265px; height: 183px;" src="{{blog.image.url}}" alt="" /></a></div>
 										<div class="s-blog-text">
 											<h4><a href="/single-blog.html">{{blog.title}}</a></h4>
-											<span>By : <a href="#">{{blog.creator}}</a> | <a href="#">{{blog.blogs_comment.count}} Comments</a></span>
+											<span>By : <a href="{% url 'single_blog' blog.id %}">{{blog.creator}}</a> | <a href="{% url 'single_blog' blog.id %}">{{blog.blogs_comment.count}} Comments</a></span>
 											<p>{{blog.description|truncatewords:17}}</p>
 										</div>
 										<div class="date-read clearfix">
-											<a href="#"><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.Y" }}</a>
+											<a href="{% url 'single_blog' blog.id %}"><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.Y" }}</a>
 											<a href="{% url 'single_blog' blog.id %}">read more</a>
 										</div>
 									</div>

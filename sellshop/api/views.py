@@ -349,13 +349,20 @@ class SubscriberAPIVIew(APIView):
     serializer_class = SubscriberSerializer
 
     def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
         email = request.data.get('email')
-        if email and Subscriber.objects.filter(email=email).exists() == False:
-            Subscriber.objects.create(email=email)
-            message = {'success': True,
-                       'message': 'Subscriber added.'}
-            return Response(message, status=status.HTTP_201_CREATED)
-        message = {'success': False, 'message': 'Subscriber already exists.'}
+        if Subscriber.objects.filter(email=email).exists() == False:
+            if serializer.is_valid():
+                Subscriber.objects.create(email=email)
+                message = {'success': True,
+                           'message': 'Subscriber added.'}
+                return Response(message, status=status.HTTP_201_CREATED)
+            else:
+                message = {'success': False,
+                           'message': 'Invalid email address.'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        message = {'success': False,
+                   'message': 'Subscriber already exists.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -363,10 +370,11 @@ class ContactAPIVIew(APIView):
     serializer_class = ContactSerializer
 
     def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
         name = request.data.get('name')
         email = request.data.get('email')
         message = request.data.get('message')
-        if email and name and message:
+        if serializer.is_valid():
             Contact.objects.create(name=name, email=email, message=message)
             message = {'success': True,
                        'message': 'Your message sent.'}
