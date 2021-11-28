@@ -389,16 +389,20 @@ class CouponAPIVIew(APIView):
     def post(self, request, *args, **kwargs):
         code = request.data.get('code')
         if code and Coupon.objects.filter(code=code).exists():
-            if Cart.objects.filter(user=request.user, is_ordered=False, coupon=None).exists():
-                obj, created = Cart.objects.get_or_create(
-                    user=request.user, is_ordered=False)
-                obj.coupon = Coupon.objects.get(code=code)
-                obj.save()
-                message = {'success': True,
-                           'message': 'Coupon applied.'}
-                return Response(message, status=status.HTTP_201_CREATED)
+            if Cart.objects.filter(user=request.user, is_ordered=True, coupon=Coupon.objects.get(code=code)).count() == 0:
+                if Cart.objects.filter(user=request.user, is_ordered=False, coupon=None).exists():
+                    obj, created = Cart.objects.get_or_create(
+                        user=request.user, is_ordered=False)
+                    obj.coupon = Coupon.objects.get(code=code)
+                    obj.save()
+                    message = {'success': True,
+                               'message': 'Coupon applied.'}
+                    return Response(message, status=status.HTTP_201_CREATED)
+                message = {'success': False,
+                           'message': 'Coupon already applied to this cart.'}
+                return Response(message, status=status.HTTP_400_BAD_REQUEST)
             message = {'success': False,
-                       'message': 'Coupon already applied to this cart.'}
+                       'message': 'You can apply coupon only once.'}
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
         message = {'success': False, 'message': 'Coupon not found.'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
