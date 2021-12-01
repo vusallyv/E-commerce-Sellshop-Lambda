@@ -48,6 +48,11 @@ def index(request):
     }
     return render(request, 'index.html', context=context)
 
+def error404(request):
+    context = {
+        'title': '404 Page Not Found',
+    }
+    return render(request, 'error-404.html', context=context)
 
 class ErrorView(TemplateView):
     template_name = 'error-404.html'
