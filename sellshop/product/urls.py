@@ -7,7 +7,6 @@ urlpatterns = [
     path('<int:pk>/', views.ProductDetailView.as_view(), name="single_product"),
     path('', views.PaginatorProductList, name="product_list"),
     path('search/', views.SearchView.as_view(), name="search"),
-
 ]
 
 
