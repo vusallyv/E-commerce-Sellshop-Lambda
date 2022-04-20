@@ -147,4 +147,7 @@ class SearchView(ListView):
             'quantity': len(qs)
         }
         return render(request, 'search.html', context=context)
+<<<<<<< HEAD
 
+=======
+>>>>>>> e8a2332683245f6a20f7467c71bbf4e804b8a5b1

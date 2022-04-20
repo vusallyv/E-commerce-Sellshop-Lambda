@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+.DS_Store
 __pycache__/
 *.py[cod]
 *$py.class
@@ -93,7 +94,12 @@ ipython_config.py
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
+<<<<<<< HEAD
 
+=======
+*/__pycache__/*
+/__pycache__/
+>>>>>>> e8a2332683245f6a20f7467c71bbf4e804b8a5b1
 # Celery stuff
 celerybeat-schedule
 celerybeat.pid
@@ -104,6 +110,10 @@ celerybeat.pid
 # Environments
 .env
 .venv
+<<<<<<< HEAD
+=======
+.venv/
+>>>>>>> e8a2332683245f6a20f7467c71bbf4e804b8a5b1
 env/
 venv/
 ENV/
@@ -127,3 +137,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+<<<<<<< HEAD
+=======
+
+*/migrations/
+postgredb/
+media/
+
+>>>>>>> e8a2332683245f6a20f7467c71bbf4e804b8a5b1

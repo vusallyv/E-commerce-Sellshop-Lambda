@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock %}
+{% block base %}
+<!-- pages-title-start -->
+<div class="pages-title section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pages-title-text text-center">
+					<h2>{{ productversion.product.title }}</h2>
+					<ul class="text-left">
+						<li><a href="{% url 'index' %}">Home </a></li>
+						<li><span> // </span><a href="#">shop </a></li>
+						<li><span> // </span>{{ productversion.product.title }}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- pages-title-end -->
+<!-- product-details-section-start -->
+<div class="product-details pages section-padding-top">
+	<div class="container">
+		<div class="row">
+			<div class="single-list-view">
+				<div class="col-xs-12 col-sm-5 col-md-4">
+					<div class="quick-image">
+						<div class="single-quick-image text-center">
+							<div class="list-img">
+								<div class="product-img tab-content">
+
+									{% for image in images %}
+									{% if image.is_main %}
+									<div class="simpleLens-container tab-pane active fade in" id="sin-{{image.id}}">
+									{% else %}
+									<div class="simpleLens-container tab-pane fade in" id="sin-{{image.id}}">
+									{% endif %}
+										<div class="pro-type">
+											<span>{{productversion.created_at | date:"d.m.y"}}</span>
+										</div>
+										<a class="simpleLens-image" data-lens-image="{{ image.image.url }}"
+											href="#"><img style="width: 360px; height: 467px;"
+												src="{{ image.image.url }}" alt="" class="simpleLens-big-image"></a>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+						<div class="quick-thumb">
+							<ul class="product-slider">
+								{% for image in images %}
+								<li><a data-toggle="tab" href="#sin-{{image.id}}"> <img
+											style="width: 85px; height: 106.75px;" src="{{ image.image.url }}"
+											alt="small image" /> </a></li>
+
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-7 col-md-8">
+					<div class="quick-right">
+						<div class="list-text">
+							<h3>{{ productversion.product.title }}</h3>
+							<span>{{ productversion.product.subtitle }}</span>
+							<div id="total_rating" class="ratting floatright">
+							</div>
+							<h5><del>${{ productversion.product.ex_price }}</del> $
+								{{ productversion.product.price }}</h5>
+							<p>{{ productversion.product.description }}</p>
+							<div class="all-choose">
+								<div class="s-shoose">
+									<h5>Color</h5>
+									<div class="color-select clearfix">
+										{% for version in product_color %}
+										{% if version.product.id == productversion.product.id and version.size == productversion.size %}
+										<a href="{% url 'single_product' version.id %}"><input type="color"
+												value="#{{version.color.hex_code}}" disabled name="" id=""></a>
+										{% endif %}
+										{% endfor %}
+									</div>
+								</div>
+								<div class="s-shoose">
+									<h5>size</h5>
+									<div class="size-drop">
+
+										<div class="btn-group">
+											<button type="button" class="btn">{{productversion.size}}</button>
+											<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+												aria-haspopup="true" aria-expanded="false">
+												<span class=""><i class="mdi mdi-chevron-down"></i></span>
+											</button>
+											<ul class="dropdown-menu">
+												{% for version in product_color %}
+												{% if version.product.id == productversion.product.id and version.color == productversion.color %}
+												<li><a href="{% url 'single_product' version.id %}">{{version.size}}</a>
+												</li>
+												{% endif %}
+												{% endfor %}
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="s-shoose">
+									<h5>qty</h5>
+									<form action="#" method="POST">
+										<div class="plus-minus">
+											<a class="dec qtybutton">-</a>
+											<input type="text" value="1" max="{{productversion.quantity}}"
+												name="qtybutton" id="quantity" class="plus-minus-box">
+											<a class="inc qtybutton">+</a>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="list-btn">
+								<a data="{{productversion.id}}" class="add_to_cart">add to cart</a>
+								<a data="{{productversion.id}}" class="add_to_wishlist">wishlist</a>
+							</div>
+							<div class="share-tag clearfix">
+								<ul class="blog-share floatleft">
+									<li>
+										<h5>share </h5>
+									</li>
+									<li><a href="#" onclick="
+										window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href), 'facebook-share-dialog', 'width=626,height=436'); 
+										return false;"><i class="mdi mdi-facebook"></i></a></li>
+									<li><a href="#"><i class="mdi mdi-twitter"></i></a></li>
+									<li><a href="#"><i class="mdi mdi-linkedin"></i></a></li>
+									<li><a href="#"><i class="mdi mdi-vimeo"></i></a></li>
+									<li><a href="#"><i class="mdi mdi-dribbble"></i></a></li>
+									<li><a href="#"><i class="mdi mdi-instagram"></i></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- single-product item end -->
+		<!-- reviews area start -->
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="reviews padding60 margin-top">
+					<ul class="reviews-tab clearfix">
+						<li><a data-toggle="tab" href="#moreinfo">more info</a></li>
+						<li class="active"><a data-toggle="tab" href="#reviews">Reviews</a></li>
+						<li><a data-toggle="tab" href="#tags">tags</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="info-reviews moreinfo tab-pane fade in" id="moreinfo">
+							<p>{{ productversion.product.description }}</p>
+						</div>
+						<div id="reviews">
+							
+						</div>
+						<div class="your-rating log-title">
+							<h3>leave your review</h3>
+							<h5>Your rating</h5>
+						</div>
+						<div class="custom-input">
+							{% if request.user.is_authenticated %}
+							<form method="post">
+								{% else %}
+								<form action="{% url 'login'%}">
+									{% endif %}
+
+									{% csrf_token %}
+									<div class="rating clearfix">
+										<ul>
+											<li class="mdi-stars">
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li class="mdi-stars">
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li class="mdi-stars">
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li class="mdi-stars">
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<span>|</span>
+											</li>
+											<li class="mdi-stars">
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+												<i class="mdi mdi-star-outline"></i>
+											</li>
+										</ul>
+									</div>
+									<div class="row">                        
+										{% if not request.user.is_authenticated %}
+										<div class="col-sm-6">
+											<div class="input-mail">
+												<input type="text" name="name" placeholder="{{user.username }}"
+												value="{{user.username }}" readonly />
+											</div>
+										</div>
+										{% endif %}
+										{% if not request.user.is_authenticated %}
+										<div class="col-sm-6">
+											<div class="input-mail">
+												<input type="text" name="email" placeholder="{{user.email}}"
+												value="{{user.email}}" readonly />
+											</div>
+										</div>
+										{% endif %}
+										<div class="col-xs-12">
+											<div class="custom-mess">
+												{{ form.review }}
+											</div>
+										</div>
+										<div class="col-xs-12">
+											<div class="submit-text">
+												{% if request.user.is_authenticated %}
+												<button type="button" data_id="{{productversion.id}}" id="submit_review">submit review</button>
+												{% else %}
+												<button type="text">submit review</button>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</form>
+						</div>
+					</div>
+					<div class="info-reviews tags tab-pane fade in" id="tags">
+						{% for tag in productversion.tag.all %}
+						<p>{{ tag }}</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- reviews area end -->
+</div>
+</div>
+<!-- product-details section end -->
+<!-- related-products section start -->
+<section class="single-products section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="section-title text-center">
+					<h2>related Products</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row text-center">
+			{% for relatedproduct in relatedproducts %}
+			<div class="col-xs-12 col-sm-6 col-md-3 r-margin-top">
+				<div class="single-product">
+					<div class="product-img">
+						<a href="#"><img src="{% static 'img/products/4.jpg' %}" alt="Product Title" /></a>
+						<div class="actions-btn">
+							<a><i data="{{relatedproduct.id}}" class="mdi mdi-cart add_to_cart "></i></a>
+							<a href="#"><i class="mdi mdi-heart"></i></a>
+						</div>
+					</div>
+					<div class="product-dsc">
+						<p><a href="#">{{ relatedproduct.product.title }}</a></p>
+						<span>${{ relatedproduct.product.price }}</span>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<!-- single product end -->
+		</div>
+	</div>
+</section>
+<!-- related-products section end -->
+<!-- all js here -->
+	{% if request.user.is_authenticated %}
+		<script src="{% static 'js/review.js' %}"></script>
+	{% endif %}
+{% endblock %}

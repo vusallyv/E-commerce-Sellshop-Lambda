@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %} {{ title }} {% endblock %}
+{% block base %}
+<!-- pages-title-start -->
+<div class="pages-title section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pages-title-text text-center">
+					<h2>Blog</h2>
+					<ul class="text-left">
+						<li><a href="{% url 'index' %}">Home </a></li>
+						<li><span> // </span>Blog</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- pages-title-end -->
+<!-- blog section start -->
+
+<section class="latest-blog section-padding">
+	<div class="container">
+		<ul class="blog-row clearfix">
+			<div class="row">
+
+				{% for blog in page_obj %}
+				<div class="col-sm-4">
+					<div class="l-blog-text">
+						<div class="banner"><a href="{% url 'single_blog' blog.id %}"><img
+									src="{{ blog.image.url }}" style="width: 370px; height: 255px;" alt="" /></a></div>
+						<div class="s-blog-text">
+							<h4><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h4>
+							<span>By : <a>{{blog.creator}}</a> | <a> {{blog.blogs_comment.count}} {% translate 'Comments' %}</a></span>
+
+							<div>
+								<p>{{ blog.description }}</p>
+							</div>
+						</div>
+						<div class="date-read clearfix">
+							<a><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.y" }}</a>
+							<a href="{% url 'single_blog' blog.id %}">{% translate 'read more' %}</a>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+
+
+			</div>
+
+		</ul>
+		<div class="pagnation-ul">
+			<ul class="clearfix">
+				<ul class="clearfix">
+					<li>
+						{% if page_obj.has_previous %}
+						<a href="?page=1"><i class="mdi mdi-menu-left"></i>First</a>
+						<a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+						{% endif %}
+					</li>
+					{% for page in page_obj.paginator.page_range %}
+					<li>
+						 
+						<a class=" btn " href="?page={{ page }}">{{page}}</a>
+			
+					</li>
+					{% endfor %}
+			
+					<li>
+						{% if page_obj.has_next %}
+						<a href="?page={{ page_obj.next_page_number }}">Next</a>
+						<a href="?page={{ page_obj.paginator.num_pages }}">Last<i class="mdi mdi-menu-right"></i></a>
+						{% endif %}
+					</li>
+				</ul>
+			</ul>
+		</div>
+	</div>
+</section>
+<!-- blog section end -->
+
+<!-- all js here -->
+{% endblock %}

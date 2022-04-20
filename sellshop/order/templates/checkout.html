@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock %}
+{% block base %}
+<!-- pages-title-start -->
+<div class="pages-title section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pages-title-text text-center">
+					<h2>Checkout</h2>
+					<ul class="text-left">
+						<li><a href="{% url 'index' %}">Home </a></li>
+						<li><span> // </span>Checkout</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- pages-title-end -->
+<!-- Checkout content section start -->
+<section class="pages checkout section-padding">
+	<div class="container">
+		{% if message %}
+		<div class="alert alert-danger text-center" role="alert">
+			{{message}}
+		  </div>
+		{% endif %}
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="main-input single-cart-form padding60">
+					<div class="log-title">
+						<h3><strong>shipping address</strong></h3>
+					</div>
+					<div class="custom-input">
+						<form id="checkoutForm" action="" method="post">
+							{% csrf_token %}
+							{{ shipping.company_name }}
+							<div class="custom-select">
+								{{ shipping.country }}
+							</div>
+							{{ shipping.state }}
+							<div class="custom-select">
+								<select name="city" required="" id="id_city" disabled>
+								</select>
+							</div>
+
+							<div class="custom-mess">
+								{{ shipping.address }}
+							</div>
+
+					</div>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div class="padding60">
+						<div class="log-title">
+							<h3><strong>Our order</strong></h3>
+						</div>
+						<div class="cart-form-text pay-details table-responsive">
+							<table id="product_table">
+
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<div style="padding: 0 60px 60px 60px; background: #fff;">
+						<div class="log-title">
+							<h3><strong>Payment method</strong></h3>
+						</div>
+						<div class="categories">
+							<ul id="accordion" class="panel-group clearfix">
+								<li class="panel">
+									<div data-toggle="collapse" data-parent="#accordion" data-target="#collapse3">
+										<div class="medium-a">
+											stripe
+										</div>
+									</div>
+									<div class="paypal-dsc panel-collapse collapse" id="collapse3">
+										<div class="normal-a">
+											<p>Stripe is a technology company that builds economic infrastructure for the internet. Businesses of every size—from new startups to public companies—use our software to accept payments and manage their businesses online..</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<div>
+								<form action="" method="POST" class="submit-text">
+									{% csrf_token %}
+									<button form="checkoutForm" type="submit" value="submit form" {% if cart_products > 0 %}
+										type="submit" {% else %} disabled {% endif %} style="background-color: black;
+										border: none; float: right;" id="checkout-button">Place Order</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- Checkout content section end -->
+
+<!-- all js here -->
+<script src="{% static 'js/checkout.js' %}"></script>
+{% endblock %}

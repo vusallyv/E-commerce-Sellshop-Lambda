@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+{% block base %}
+
+			<!-- pages-title-start -->
+			<div class="pages-title section-padding">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="pages-title-text text-center">
+								<h2>Contact Us</h2>
+								<ul class="text-left">
+								<li><a href="{% url 'index' %}">Home </a></li>
+								<li><span> // </span>Contact Us</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- pages-title-end -->
+		<!-- contact content section start -->
+		<div class="pages contact-page section-padding">
+			<div class="container text-center">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="googleMap-info">
+							<div id="googleMap"></div>
+							<div class="map-info">
+								<p><strong>Sellshop</strong></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-10 col-text-center">
+						<div class="contact-details">
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="single-contact">
+										<i class="mdi mdi-map-marker"></i>
+										<p>No 58 A, East Madison Street,</p>
+										<p>Baltimore, MD, USA 4508</p>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="single-contact">
+										<i class="mdi mdi-phone"></i>
+										<p>(+660) 803 - 080 - 3081</p>
+										<p>(+660)  803 - 080 - 3082</p>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="single-contact">
+										<i class="mdi mdi-email"></i>
+										<p>info@companyname.com</p>
+										<p>support@company.com</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- contact content section end -->
+        <!-- footer section start -->
+		<footer class="footer-two">
+			<!-- brand logo area start -->
+			<div class="brand-logo">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="barnd-bg">
+								<a href="#"><img src="{% static 'img/brand/1.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/2.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/3.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/4.png' %}" alt="Brand Logo" /></a>
+								<a href="#"><img src="{% static 'img/brand/5.png' %}" alt="Brand Logo" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- brand logo section end -->
+			<!-- social media section start -->
+			<div class="social-media section-padding">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="newsletter newsletter2">
+								<h3>newsletter</h3>
+								<form method="post" name="subscribe">
+									{% csrf_token %}
+									<p style="margin-bottom: 3%;">
+										<input type="email" name="email" placeholder="Enter your email..." style="width: 100% !important;" maxlength="254" required="" id="id_email">
+									</p>
+									<!-- <input type="submit" id="subscriber_form" name="subscribe" value="subscribe"> -->
+									<button disabled style="
+									background-color: red;
+									color: #fff;
+									font-weight: 400;
+									margin-left: 7px;
+									text-transform: uppercase;
+									width: auto;
+									border: 0 none;
+									line-height: 40px;
+									padding: 0 20px;" type="button" id="subscriber_form" name="subscribe" value="subscribe" class="btn btn-outline-danger">Subscribe</button>
+									<div id="quantityAlert" class="alert alert-success" role="alert" style="position: fixed; top: 9%; text-align: center; display: none; right: 4%;"></div>
+								</form>
+							</div>
+							<div class="social-icons">
+								<a href="#"><i class="mdi mdi-facebook"></i></a>
+								<a href="#"><i class="mdi mdi-twitter"></i></a>
+								<a href="#"><i class="mdi mdi-google-plus"></i></a>
+								<a href="#"><i class="mdi mdi-dribbble"></i></a>
+								<a href="#"><i class="mdi mdi-rss"></i></a>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-offset-1 col-md-5">
+							<div class="newsletter get-touch">
+								<h3>get in touch</h3>
+								<form method="post" name="contact">
+									{% csrf_token %}
+									<input type="text" name="name" placeholder="Enter your Name..." maxlength="50" required="" id="id_name">
+									<input type="text" name="email" placeholder="Enter your email..." id="contactEmail" maxlength="254" required="">
+									<textarea name="message" cols="40" rows="2" placeholder="Enter your message...." maxlength="1000" required="" id="id_message"></textarea>
+									<button style="
+									background-color: red;
+									color: #fff;
+									font-weight: 400;
+									margin-left: 7px;
+									text-transform: uppercase;
+									width: auto;
+									border: 0 none;
+									line-height: 40px;
+									padding: 0 20px;" type="button" id="contact_form" name="contact" value="contact" class="btn btn-outline-danger">Send your message</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- social media section end -->
+			
+        
+		<!-- all js here -->
+		<!-- jquery latest version -->
+        <script src="{% static 'js/vendorjquery-1.12.3.min.js' %}"></script>
+		<!-- Google Map JS -->
+		<script src="https://maps.googleapis.com/maps/api/js"></script>
+		<script>
+			function initialize() {
+			
+			  var mapOptions = {
+				zoom: 17,
+				hue: '#E9E5DC',
+				scrollwheel: false,
+				mapTypeId:google.maps.MapTypeId.TERRAIN,
+				center: new google.maps.LatLng(23.760772, 90.424790)
+			  };
+
+			  var map = new google.maps.Map(document.getElementById('googleMap'),
+				  mapOptions);
+
+
+			  var marker = new google.maps.Marker({
+				position: map.getCenter(),
+				icon: img/map-marker.png,
+				map: map
+			  });
+
+			}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script> 
+		<script src="{% static 'js/subscribe.js' %}"></script>
+
+		{% endblock %}
