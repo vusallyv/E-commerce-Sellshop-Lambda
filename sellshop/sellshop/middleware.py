@@ -22,13 +22,13 @@ class IPAddressMiddleware(MiddlewareMixin):
 """
 Middleware to log `*/api/*` requests and responses.
 """
-logging.basicConfig(
-    level=logging.DEBUG,
-    datefmt="%y-%m-%d %H:%M:%S",
-    filename=settings.LOGS_ROOT,
-)
-logging.getLogger().addHandler(logging.StreamHandler())
-logger = logging.getLogger(__name__)
+# logging.basicConfig(
+#     level=logging.DEBUG,
+#     datefmt="%y-%m-%d %H:%M:%S",
+#     filename=settings.LOGS_ROOT,
+# )
+# logging.getLogger().addHandler(logging.StreamHandler())
+# logger = logging.getLogger(__name__)
 
 
 class RequestLogMiddleware:

@@ -32,7 +32,7 @@ def index(request):
     bestseller = ProductVersion.objects.annotate(
         mostsold=Count('Product_Cart')).order_by('-mostsold')[1:8]
     firstbestseller = ProductVersion.objects.annotate(
-        mostsold=Count('Product_Cart')).order_by('-mostsold')[0]
+        mostsold=Count('Product_Cart')).order_by('-mostsold')[0] if ProductVersion.objects.count() > 0 else None
     latest_blog = Blog.objects.order_by("-created_at")[:3]
     images = Image.objects.filter(is_main=True)
     productversions = ProductVersion.objects.all()

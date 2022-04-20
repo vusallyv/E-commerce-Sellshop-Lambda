@@ -64,9 +64,10 @@ INSTALLED_APPS = [
     'product',
     'blog',
     'api',
-
+    'chat.apps.ChatConfig', 
 
     'django.contrib.sites',
+    'channels',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -136,6 +137,7 @@ else:
             'PASSWORD': '123456',
             'HOST': 'localhost',
             'POST': 5432,
+            
         }
     }
 
@@ -275,3 +277,13 @@ SIMPLE_JWT = {
 }
 
 STRIPE_SECRET_KEY = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+
+ASGI_APPLICATION = 'sellshop.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
