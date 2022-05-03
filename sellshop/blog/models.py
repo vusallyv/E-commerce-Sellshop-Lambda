@@ -35,5 +35,5 @@ class Comment(BaseModel):
 
     def __str__(self) -> str:
         return f"""
-            {self.user.username} commented on {self.blog.title}
+            {self.user.username} commented {self.description} on {self.blog.title}
         """

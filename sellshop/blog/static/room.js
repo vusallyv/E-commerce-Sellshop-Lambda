@@ -18,12 +18,37 @@ chatMessageInput.onkeyup = function(e) {
 
 // clear the 'chatMessageInput' and forward the message
 chatMessageSend.onclick = function() {
-    if (chatMessageInput.value.length === 0) return;
+    if (chatMessageInput.value.trim().length <= 0) return;
     chatSocket.send(JSON.stringify({
         "message": chatMessageInput.value,
     }));
-    console.log("Message sent: " + chatMessageInput.value);
     chatMessageInput.value = "";
+};
+
+deleteComment = function(comment) {
+    chatMessageInput.value = "/del " + comment.getAttribute("comment_id");
+    chatSocket.send(JSON.stringify({
+        "message": chatMessageInput.value,
+    }));
+    chatMessageInput.value = "";
+};
+
+enableEditComment = function(comment) {
+    commentInput = document.getElementById("edit" + comment.getAttribute("comment_id"));
+    commentInput.disabled = false;
+    commentInput.style.backgroundColor = "white";
+    commentInput.style.border = "1px solid #ccc";
+    commentInput.focus();
+};
+
+editComment = function(comment, event) {
+    if (event.keyCode === 13) {  // enter key
+        chatSocket.send(JSON.stringify({
+            "message": comment.value,
+            'type': 'edit_comment',
+            'comment_id': comment.getAttribute("comment_id"),
+        }));
+    }
 };
 
 let chatSocket = null;
@@ -45,23 +70,44 @@ function connect() {
     
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        console.log(data);
 
         switch (data.type) {
             case "chat_message":
+                is_request_user = request_user == data.user; 
                 chatLog.innerHTML += `
-                <div class="autohr-text">
-                    <img width="100px" src="{{message.user.image.url}}" alt="" />
-                    <div class="author-des">
+                <div class="about-author comments" id="comment${data.id}">
+                    <div class="autohr-text">
+                      <img width="100px" src="${data.image}" alt="">
+                      <div class="author-des">
                         <h4><a href="#">${data.user}</a></h4>
-                        <span class="floatright"><a comment_id="" class="replyButton">Reply</a></span>
+                        <span id="reply${data.id}" class="floatright"><a comment_id="">Reply</a></span>
+
+                        ${is_request_user ? `<span onclick="enableEditComment(this)" class="floatright" comment_id="${data.id}"><a>Edit/</a></span>
+                        <span id="delete${data.id}" onclick="deleteComment(this)" comment_id="${data.id}" class="floatright"><a >Delete/ </a></span>` : ''}
+                        
+
                         <span>${data.created_at}</span>
-                        <p>
-                        ${data.message}                                
-                        </p>
+                        <input comment_id="${data.id}" onkeyup="editComment(this, event)" id="edit${data.id}" type="text" disabled value="${data.message}" style="background-color: transparent; border: none;">
+                      </div>
                     </div>
-                </div>
+                  </div>
                 `
+                break;
+            case "error":
+                alert(data.message);
+                break;
+            case "comment_deleted":
+                const comment = document.getElementById("comment" + data.id);
+                comment.remove();
+                break;
+            case "edit_comment":
+                editedComment = document.getElementById("edit" + data.id);
+                editedComment.disabled = true;
+                editedComment.style.backgroundColor = "transparent";
+                editedComment.style.border = "none";
+                editedComment.value = data.message;
+                commentDate = document.getElementById("commentDate" + data.id)
+                commentDate.innerHTML = data.updated_at;
                 break;
             default:
                 console.error("Unknown message type!");

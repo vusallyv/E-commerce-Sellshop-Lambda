@@ -75,38 +75,41 @@
               <div class="col-12 col-md-8">
                   <div class="mb-2">
 
-                  <div class="about-author comments" id="chatLog">
-                    {% for message in blog.blogs_comment.all %}
+                  <div id="chatLog">
+                    {% for comment in blog.blogs_comment.all|dictsort:"created_at" %}
+                  <div class="about-author comments" id="comment{{comment.id}}">
                     <div class="autohr-text">
-                      <img width="100px" src="{{message.user.image.url}}" alt="" />
+                      <img width="100px" src="{{comment.user.image.url}}" alt="">
                       <div class="author-des">
-                        <h4><a href="#">{{message.user.username}}</a></h4>
-                        <span class="floatright"><a comment_id="" class="replyButton">Reply</a></span>
-                        <span>{{message.created_at|date:"Y-m-d H:i:s"}}</span>
-                        <p>
-                        {{message.description}}                                
-                        </p>
+                        <h4><a href="#">{{comment.user.username}}</a></h4>
+                        <span id="reply{{comment.id}}" class="floatright"><a comment_id="">Reply</a></span>
+                        {% if request.user == comment.user %}
+                        <span onclick="enableEditComment(this)" class="floatright" comment_id="{{comment.id}}"><a>Edit/</a></span>
+                        <span id="delete{{comment.id}}" onclick="deleteComment(this)" comment_id="{{comment.id}}" class="floatright"><a >Delete/ </a></span>
+                        {% endif %}
+                        <span id="commentDate{{comment.id}}">{{comment.updated_at|date:"Y-m-d H:i:s"}}</span>
+                        <input comment_id="{{comment.id}}" onkeyup="editComment(this, event)" id="edit{{comment.id}}" type="text" disabled value="{{comment.description}}" style="background-color: transparent; border: none;">
                       </div>
                     </div>
+                  </div>
                     {% endfor %}
                   </div>
                   </div>
-                  <div class="input-group">
-                      <!-- <input type="text" class="form-control" id="chatMessageInput" placeholder="Enter your chat message"> -->
-                      <textarea name="" class="form-control" id="chatMessageInput" cols="100" rows="5" placeholder="Comment here"></textarea>
-                      <div class="input-group-append">
-                          <button class="btn btn-success" id="chatMessageSend" type="button">Send</button>
-                      </div>
+                </div>
+              </div>
+              <div class="input-group" style="margin-top: 5rem;">
+                  <textarea name="" class="form-control" id="chatMessageInput" cols="100" rows="5" placeholder="Comment here"></textarea>
+                  <div class="input-group-append">
+                      <button class="btn btn-dark" id="chatMessageSend" type="button">Send</button>
                   </div>
               </div>
-          </div>
           {{ blog.slug|json_script:"roomName" }}
 
       </div>
 
             </div>
 
-            <div class="leave-comment">
+            <!-- <div class="leave-comment">
               <h4>leave your comment</h4>
               {% if request.user.is_authenticated %}
               <form action="" method="post">
@@ -149,7 +152,7 @@
                     </div>
                   </div>
                 </form>
-            </div>
+            </div> -->
           </div>
         </div>
         <!-- single post end -->
@@ -291,6 +294,10 @@
 <!-- related post section end -->
 
 <!-- all js here -->
+<script>
+  var request_user = '{{ request.user }}'
+  console.log(request_user);
+</script>
 <script src="{% static 'room.js' %}"></script>
 <!-- <script src="{% static 'js/comment.js' %}"></script> -->
 {% endblock %}

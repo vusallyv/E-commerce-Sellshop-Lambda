@@ -60,29 +60,50 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name,
         )
 
-        if self.user.is_authenticated:
-            # delete the user inbox for private messages
-            async_to_sync(self.channel_layer.group_add)(
-                self.user_inbox,
-                self.channel_name,
-            )
+        # if self.user.is_authenticated:
+        #     # delete the user inbox for private messages
+        #     async_to_sync(self.channel_layer.group_add)(
+        #         self.user_inbox,
+        #         self.channel_name,
+        #     )
 
-            # send the leave event to the room
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    'type': 'user_leave',
-                    'user': self.user.username,
-                }
-            )
-            self.room.online.remove(self.user)
+        #     # send the leave event to the room
+        #     async_to_sync(self.channel_layer.group_send)(
+        #         self.room_group_name,
+        #         {
+        #             'type': 'user_leave',
+        #             'user': self.user.username,
+        #         }
+        #     )
+        #     self.room.online.remove(self.user)
 
     def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        action_type = text_data_json.get('type', None)
+
+        if action_type == 'edit_comment':
+            comment_id = text_data_json['comment_id']
+            comment = Comment.objects.get(id=comment_id)
+            comment.description = message
+            updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            comment.save()
+            async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type': 'edit_comment',
+                        'id': comment_id,
+                        'message': message,
+                        'updated_at': updated_at,
+                    }
+                )
+            return
 
         if not self.user.is_authenticated:
-            return
+            return self.send(text_data=json.dumps({
+                'type': 'error',
+                'message': 'You must be logged in to send messages.',
+            }))
         if message.startswith('/pm '):
             split = message.split(' ', 2)
             target = split[1]
@@ -103,9 +124,31 @@ class ChatConsumer(WebsocketConsumer):
                 'target': target,
                 'message': target_msg,
             }))
-            return
+            return 
+        
+        # delete comment 
+        if message.startswith('/del '):
+            split = message.split(' ', 1)
+            deleted_comment_id = split[1]
+            deleted_comment = Comment.objects.get(id=deleted_comment_id)
+            if deleted_comment.user == self.user:
+                deleted_comment.delete()
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type': 'comment_deleted',
+                        'id': deleted_comment_id,
+                    }
+                )
+                return
+            else:
+                return self.send(text_data=json.dumps({
+                    'type': 'error',
+                    'message': 'You are not the author of this comment.',
+                }))
 
         # send chat message event to the room
+        created_comment = Comment.objects.create(user=self.user, blog=self.room, description=message)
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
@@ -113,11 +156,18 @@ class ChatConsumer(WebsocketConsumer):
                 'user': self.user.username,
                 'message': message,
                 'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'image': self.user.image.url,
+                'id': created_comment.id,
             }
         )
-        Comment.objects.create(user=self.user, blog=self.room, description=message)
 
     def chat_message(self, event):
+        self.send(text_data=json.dumps(event))
+
+    def edit_comment(self, event):
+        self.send(text_data=json.dumps(event))
+
+    def comment_deleted(self, event):
         self.send(text_data=json.dumps(event))
 
     def user_join(self, event):
