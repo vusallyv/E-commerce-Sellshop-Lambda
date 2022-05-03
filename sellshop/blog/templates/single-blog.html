@@ -70,8 +70,41 @@
               <div id="comments">
               </div>
 
-            </div>
+        <div class="container mt-3 p-5">
+          <div class="row">
+              <div class="col-12 col-md-8">
+                  <div class="mb-2">
 
+                  <div class="about-author comments" id="chatLog">
+                    {% for message in blog.blogs_comment.all %}
+                    <div class="autohr-text">
+                      <img width="100px" src="{{message.user.image.url}}" alt="" />
+                      <div class="author-des">
+                        <h4><a href="#">{{message.user.username}}</a></h4>
+                        <span class="floatright"><a comment_id="" class="replyButton">Reply</a></span>
+                        <span>{{message.created_at|date:"Y-m-d H:i:s"}}</span>
+                        <p>
+                        {{message.description}}                                
+                        </p>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  </div>
+                  <div class="input-group">
+                      <!-- <input type="text" class="form-control" id="chatMessageInput" placeholder="Enter your chat message"> -->
+                      <textarea name="" class="form-control" id="chatMessageInput" cols="100" rows="5" placeholder="Comment here"></textarea>
+                      <div class="input-group-append">
+                          <button class="btn btn-success" id="chatMessageSend" type="button">Send</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {{ blog.slug|json_script:"roomName" }}
+
+      </div>
+
+            </div>
 
             <div class="leave-comment">
               <h4>leave your comment</h4>
@@ -197,8 +230,8 @@
               <ul>
                 {% for blog in blogs %}
                 <li>
-                  <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/r3.jpg' %}" alt="" /></a>
-                  <h5><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h5>
+                  <a href="{% url 'single_blog' blog.slug %}"><img src="{% static 'img/blog/r3.jpg' %}" alt="" /></a>
+                  <h5><a href="{% url 'single_blog' blog.slug %}">{{ blog.title }}</a></h5>
                   <span>{{ blog.create_at }}</span>
                 </li>
                 {% endfor %}
@@ -230,21 +263,21 @@
           <div class="col-sm-12">
             <div class="l-blog-text">
               <div class="banner">
-                <a href="{% url 'single_blog' blog.id %}"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
+                <a href="{% url 'single_blog' blog.slug %}"><img src="{% static 'img/blog/4.jpg' %}" alt="" /></a>
               </div>
               <div class="s-blog-text">
                 <h4>
-                  <a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a>
+                  <a href="{% url 'single_blog' blog.slug %}">{{ blog.title }}</a>
                 </h4>
-                <span>By : <a href="{% url 'single_blog' blog.id %}">{{ blog.creator }}</a> |
-                  <a href="{% url 'single_blog' blog.id %}">{{ comments|length }} Comments</a></span>
+                <span>By : <a href="{% url 'single_blog' blog.slug %}">{{ blog.creator }}</a> |
+                  <a href="{% url 'single_blog' blog.slug %}">{{ comments|length }} Comments</a></span>
                 <p>
                   {{ blog.description }}
                 </p>
               </div>
               <div class="date-read clearfix">
-                <a href="{% url 'single_blog' blog.id %}"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
-                <a href="{% url 'single_blog' blog.id %}">read more</a>
+                <a href="{% url 'single_blog' blog.slug %}"><i class="mdi mdi-clock"></i> {{ blog.created_at }}</a>
+                <a href="{% url 'single_blog' blog.slug %}">read more</a>
               </div>
             </div>
           </div>
@@ -258,6 +291,7 @@
 <!-- related post section end -->
 
 <!-- all js here -->
-<script src="{% static 'js/comment.js' %}"></script>
+<script src="{% static 'room.js' %}"></script>
+<!-- <script src="{% static 'js/comment.js' %}"></script> -->
 {% endblock %}
 

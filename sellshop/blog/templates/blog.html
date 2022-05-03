@@ -29,10 +29,10 @@
 				{% for blog in page_obj %}
 				<div class="col-sm-4">
 					<div class="l-blog-text">
-						<div class="banner"><a href="{% url 'single_blog' blog.id %}"><img
+						<div class="banner"><a href="{% url 'single_blog' blog.slug %}"><img
 									src="{{ blog.image.url }}" style="width: 370px; height: 255px;" alt="" /></a></div>
 						<div class="s-blog-text">
-							<h4><a href="{% url 'single_blog' blog.id %}">{{ blog.title }}</a></h4>
+							<h4><a href="{% url 'single_blog' blog.slug %}">{{ blog.title }}</a></h4>
 							<span>By : <a>{{blog.creator}}</a> | <a> {{blog.blogs_comment.count}} {% translate 'Comments' %}</a></span>
 
 							<div>
@@ -41,7 +41,7 @@
 						</div>
 						<div class="date-read clearfix">
 							<a><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.y" }}</a>
-							<a href="{% url 'single_blog' blog.id %}">{% translate 'read more' %}</a>
+							<a href="{% url 'single_blog' blog.slug %}">{% translate 'read more' %}</a>
 						</div>
 					</div>
 				</div>

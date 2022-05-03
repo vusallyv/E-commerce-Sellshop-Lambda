@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from sellshop.utils.base_models import BaseModel
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import slugify
 
 
 class Blog(BaseModel):
@@ -11,9 +12,15 @@ class Blog(BaseModel):
     product = models.ForeignKey(
         "product.ProductVersion", on_delete=models.CASCADE, default="")
     image = models.ImageField(verbose_name="Image", upload_to="blogs/")
+    slug = models.SlugField(max_length=30, unique=True)
 
     def __str__(self) -> str:
         return f"{self.title}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f"{self.title}")
+        super().save(*args, **kwargs)
 
 
 class Comment(BaseModel):
@@ -27,4 +34,6 @@ class Comment(BaseModel):
     is_main = models.BooleanField(verbose_name="Is Main?", default=False)
 
     def __str__(self) -> str:
-        return f"{self.description}"
+        return f"""
+            {self.user.username} commented on {self.blog.title}
+        """

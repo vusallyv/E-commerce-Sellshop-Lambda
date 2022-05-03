@@ -284,12 +284,12 @@
 										<div class="banner"><a href="/single-blog.html"><img style="width: 265px; height: 183px;" src="{{blog.image.url}}" alt="" /></a></div>
 										<div class="s-blog-text">
 											<h4><a href="/single-blog.html">{{blog.title}}</a></h4>
-											<span>By : <a href="{% url 'single_blog' blog.id %}">{{blog.creator}}</a> | <a href="{% url 'single_blog' blog.id %}">{{blog.blogs_comment.count}} Comments</a></span>
+											<span>By : <a href="{% url 'single_blog' blog.slug %}">{{blog.creator}}</a> | <a href="{% url 'single_blog' blog.slug %}">{{blog.blogs_comment.count}} Comments</a></span>
 											<p>{{blog.description|truncatewords:17}}</p>
 										</div>
 										<div class="date-read clearfix">
-											<a href="{% url 'single_blog' blog.id %}"><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.Y" }}</a>
-											<a href="{% url 'single_blog' blog.id %}">read more</a>
+											<a href="{% url 'single_blog' blog.slug %}"><i class="mdi mdi-clock"></i> {{ blog.created_at | date:"d.m.Y" }}</a>
+											<a href="{% url 'single_blog' blog.slug %}">read more</a>
 										</div>
 									</div>
 								</div>

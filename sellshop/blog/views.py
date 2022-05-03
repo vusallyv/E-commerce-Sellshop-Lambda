@@ -33,7 +33,7 @@ class BlogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['blogs'] = Blog.objects.order_by(
-            '-created_at').exclude(pk=self.kwargs.get('pk'))[0:5]
+            '-created_at').exclude(slug=self.kwargs.get('slug'))[0:5]
         context['form'] = CommentForm
         context['title'] = 'Single-blog Sellshop'
         return context

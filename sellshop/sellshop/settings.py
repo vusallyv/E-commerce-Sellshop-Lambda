@@ -279,11 +279,15 @@ SIMPLE_JWT = {
 STRIPE_SECRET_KEY = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
 
 ASGI_APPLICATION = 'sellshop.asgi.application'
+
+
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                (os.environ.get('REDIS_HOST', 'localhost'), os.environ.get('REDIS_PORT', '6379')),
+            ],
         },
     },
 }
