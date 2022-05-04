@@ -147,6 +147,24 @@ class ChatConsumer(WebsocketConsumer):
                     'message': 'You are not the author of this comment.',
                 }))
 
+        # reply comment
+        if action_type == 'reply_message' and text_data_json.get('replyId'):
+            reply = Comment.objects.get(id=text_data_json.get('replyId'))
+            created_comment = Comment.objects.create(user=self.user, blog=self.room, description=message, reply=reply)
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'reply_message',
+                    'user': self.user.username,
+                    'message': message,
+                    'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'image': self.user.image.url,
+                    'id': created_comment.id,
+                    'replyId': reply.id
+                }
+            )
+            return 
+
         # send chat message event to the room
         created_comment = Comment.objects.create(user=self.user, blog=self.room, description=message)
         async_to_sync(self.channel_layer.group_send)(
@@ -165,6 +183,9 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(event))
 
     def edit_comment(self, event):
+        self.send(text_data=json.dumps(event))
+
+    def reply_message(self, event):
         self.send(text_data=json.dumps(event))
 
     def comment_deleted(self, event):

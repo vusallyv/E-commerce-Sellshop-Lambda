@@ -1,5 +1,6 @@
 from django.contrib import admin
 from blog.models import Comment, Blog
+from blog.forms import CommentForm
 
 
 @admin.register(Blog)
@@ -9,4 +10,7 @@ class BlogAdmin(admin.ModelAdmin):
     exclude = ('slug',)
 
 
-admin.site.register([Comment])
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    exclude = ('is_main',)
+    form = CommentForm

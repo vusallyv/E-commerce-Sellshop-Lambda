@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ValidationError
 from django.utils import timezone
 from sellshop.utils.base_models import BaseModel
 from django.utils.translation import ugettext_lazy as _
@@ -37,3 +38,7 @@ class Comment(BaseModel):
         return f"""
             {self.user.username} commented {self.description} on {self.blog.title}
         """
+
+    def clean_reply(self):
+        if self.reply == self:
+            raise ValidationError(_("Reply cannot be same as comment."))

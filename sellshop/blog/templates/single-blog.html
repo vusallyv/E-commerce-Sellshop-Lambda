@@ -77,21 +77,44 @@
 
                   <div id="chatLog">
                     {% for comment in blog.blogs_comment.all|dictsort:"created_at" %}
+                    {% if not comment.reply %}
+                    <div id="divcomment{{comment.id}}">
                   <div class="about-author comments" id="comment{{comment.id}}">
                     <div class="autohr-text">
                       <img width="100px" src="{{comment.user.image.url}}" alt="">
                       <div class="author-des">
                         <h4><a href="#">{{comment.user.username}}</a></h4>
-                        <span id="reply{{comment.id}}" class="floatright"><a comment_id="">Reply</a></span>
+                        <span id="reply{{comment.id}}" onclick="enableReplyComment(this)" class="floatright reply-button" comment_id="{{comment.id}}"><a>Reply</a></span>
                         {% if request.user == comment.user %}
-                        <span onclick="enableEditComment(this)" class="floatright" comment_id="{{comment.id}}"><a>Edit/</a></span>
-                        <span id="delete{{comment.id}}" onclick="deleteComment(this)" comment_id="{{comment.id}}" class="floatright"><a >Delete/ </a></span>
+                        <span onclick="enableEditComment(this)" class="floatright edit-button" comment_id="{{comment.id}}"><a>Edit/</a></span>
+                        <span id="delete{{comment.id}}" onclick="deleteComment(this)" comment_id="{{comment.id}}" class="floatright delete-button"><a >Delete/ </a></span>
                         {% endif %}
                         <span id="commentDate{{comment.id}}">{{comment.updated_at|date:"Y-m-d H:i:s"}}</span>
-                        <input comment_id="{{comment.id}}" onkeyup="editComment(this, event)" id="edit{{comment.id}}" type="text" disabled value="{{comment.description}}" style="background-color: transparent; border: none;">
+                        <input class="comment-input" comment_id="{{comment.id}}" onkeyup="editComment(this, event)" id="edit{{comment.id}}" type="text" disabled value="{{comment.description}}" style="background-color: transparent; border: none;">
                       </div>
                     </div>
                   </div>
+                  {% endif %}
+                  {% for reply in blog.blogs_comment.all|dictsort:"created_at" %}
+                  {% if reply.reply == comment %}
+                    <div class="about-author reply" id="comment{{reply.id}}">
+                      <div class="autohr-text">
+                        <img src="{{reply.user.image.url}}" width="100px" alt="" />
+                        <div class="author-des">
+                          <h4><a href="#">{{reply.user.username}}</a></h4>
+                        <span id="reply{{reply.id}}" onclick="enableReplyComment(this)" class="floatright reply-button" comment_id="{{reply.id}}"><a>Reply</a></span>
+                          {% if request.user == reply.user %}
+                          <span onclick="enableEditComment(this)" class="floatright edit-button" comment_id="{{reply.id}}"><a>Edit/</a></span>
+                          <span id="delete{{reply.id}}" onclick="deleteComment(this)" comment_id="{{reply.id}}" class="floatright delete-button"><a >Delete/ </a></span>
+                          {% endif %}
+                          <span id="commentDate{{reply.id}}">{{reply.updated_at|date:"Y-m-d H:i:s"}}</span>
+                          <input class="comment-input" comment_id="{{reply.id}}" onkeyup="editComment(this, event)" id="edit{{reply.id}}" type="text" disabled value="{{reply.description}}" style="background-color: transparent; border: none;">
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                  {% endfor %}
+                </div>
                     {% endfor %}
                   </div>
                   </div>
