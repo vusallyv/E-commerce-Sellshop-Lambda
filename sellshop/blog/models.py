@@ -30,15 +30,11 @@ class Comment(BaseModel):
     description = models.TextField(verbose_name="Description")
     blog = models.ForeignKey(
         Blog, on_delete=models.CASCADE, null=True, blank=True, related_name="blogs_comment")
-    reply = models.ForeignKey(
-        'self', on_delete=models.CASCADE, null=True, blank=True, default="", related_name="replies", verbose_name="Reply to")
+    parent_comment = models.ForeignKey(
+        'self', on_delete=models.CASCADE, null=True, blank=True, default="", verbose_name="Parent Comment")
     is_main = models.BooleanField(verbose_name="Is Main?", default=False)
 
     def __str__(self) -> str:
         return f"""
             {self.user.username} commented {self.description} on {self.blog.title}
         """
-
-    def clean_reply(self):
-        if self.reply == self:
-            raise ValidationError(_("Reply cannot be same as comment."))

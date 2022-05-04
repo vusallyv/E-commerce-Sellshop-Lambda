@@ -139,12 +139,9 @@ function connect() {
                         <img width="100px" src="${data.image}" alt="">
                         <div class="author-des">
                             <h4><a href="#">${data.user}</a></h4>
-                            <span id="reply${data.id}" class="floatright"><a comment_id="">Reply</a></span>
-
+                            <span id="reply${data.id}" onclick="enableReplyComment(this)" class="floatright reply-button" comment_id="${data.id}"><a>Reply</a></span>
                             ${is_request_user ? `<span onclick="enableEditComment(this)" class="floatright" comment_id="${data.id}"><a>Edit/</a></span>
                             <span id="delete${data.id}" onclick="deleteComment(this)" comment_id="${data.id}" class="floatright"><a >Delete/ </a></span>` : ''}
-                            
-
                             <span>${data.created_at}</span>
                             <input comment_id="${data.id}" onkeyup="editComment(this, event)" id="edit${data.id}" type="text" disabled value="${data.message}" style="background-color: transparent; border: none;">
                         </div>
@@ -157,7 +154,7 @@ function connect() {
                 alert(data.message);
                 break;
             case "comment_deleted":
-                const comment = document.getElementById("comment" + data.id);
+                const comment = document.getElementById("divcomment" + data.id);
                 comment.remove();
                 break;
             case "edit_comment":
@@ -179,10 +176,9 @@ function connect() {
                   <img src="${data.image}" width="100px" alt="" />
                   <div class="author-des">
                     <h4><a href="#">${data.user}</a></h4>
+                    <span id="reply${data.id}" onclick="enableReplyComment(this)" class="floatright reply-button" comment_id="${data.id}"><a>Reply</a></span>
                     ${is_request_user ? `<span onclick="enableEditComment(this)" class="floatright edit-button" comment_id="${data.id}"><a>Edit/</a></span>
                     <span id="delete${data.id}" onclick="deleteComment(this)" comment_id="${data.id}" class="floatright delete-button"><a >Delete/ </a></span>` : ''}
-                            
-                    <span id="reply${data.id}" onclick="enableReplyComment(this)" class="floatright reply-button" comment_id="${data.id}"><a>Reply</a></span>
                     <span id="commentDate${data.id}">${data.created_at}</span>
                     <input class="comment-input" comment_id="${data.id}" onkeyup="editComment(this, event)" id="edit${data.id}" type="text" disabled value="${data.message}" style="background-color: transparent; border: none;">
                   </div>

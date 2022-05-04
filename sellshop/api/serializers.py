@@ -29,10 +29,11 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ("id", "description", "user", "blog",
-                  "is_main", "created_at", "replies")
+                  "is_main", "created_at", "replies", "updated_at")
 
     def get_replies(self, obj):
-        return CommentSerializer(obj.replies.all(), many=True).data
+        qs = Comment.objects.filter(parent_comment=obj)
+        return CommentSerializer(qs, many=True).data
 
 
 class BlogSerializer(serializers.ModelSerializer):

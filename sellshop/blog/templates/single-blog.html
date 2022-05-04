@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% load static %} {% block title %} {{title}}{% endblock %} {% block base %}
 <!-- pages-title-start -->
+{{ blog.slug|json_script:"roomName" }}
 <div class="pages-title section-padding">
   <div class="container">
     <div class="row">
@@ -66,189 +67,43 @@
                   </li>
                 </ul>
               </div>
-              <h4 class="comment_length"></h4>
-              <div id="comments">
-              </div>
 
-        <div class="container mt-3 p-5">
-          <div class="row">
-              <div class="col-12 col-md-8">
-                  <div class="mb-2">
-
-                  <div id="chatLog">
-                    {% for comment in blog.blogs_comment.all|dictsort:"created_at" %}
-                    {% if not comment.reply %}
-                    <div id="divcomment{{comment.id}}">
-                  <div class="about-author comments" id="comment{{comment.id}}">
-                    <div class="autohr-text">
-                      <img width="100px" src="{{comment.user.image.url}}" alt="">
-                      <div class="author-des">
-                        <h4><a href="#">{{comment.user.username}}</a></h4>
-                        <span id="reply{{comment.id}}" onclick="enableReplyComment(this)" class="floatright reply-button" comment_id="{{comment.id}}"><a>Reply</a></span>
-                        {% if request.user == comment.user %}
-                        <span onclick="enableEditComment(this)" class="floatright edit-button" comment_id="{{comment.id}}"><a>Edit/</a></span>
-                        <span id="delete{{comment.id}}" onclick="deleteComment(this)" comment_id="{{comment.id}}" class="floatright delete-button"><a >Delete/ </a></span>
-                        {% endif %}
-                        <span id="commentDate{{comment.id}}">{{comment.updated_at|date:"Y-m-d H:i:s"}}</span>
-                        <input class="comment-input" comment_id="{{comment.id}}" onkeyup="editComment(this, event)" id="edit{{comment.id}}" type="text" disabled value="{{comment.description}}" style="background-color: transparent; border: none;">
-                      </div>
-                    </div>
-                  </div>
-                  {% endif %}
-                  {% for reply in blog.blogs_comment.all|dictsort:"created_at" %}
-                  {% if reply.reply == comment %}
-                    <div class="about-author reply" id="comment{{reply.id}}">
-                      <div class="autohr-text">
-                        <img src="{{reply.user.image.url}}" width="100px" alt="" />
-                        <div class="author-des">
-                          <h4><a href="#">{{reply.user.username}}</a></h4>
-                        <span id="reply{{reply.id}}" onclick="enableReplyComment(this)" class="floatright reply-button" comment_id="{{reply.id}}"><a>Reply</a></span>
-                          {% if request.user == reply.user %}
-                          <span onclick="enableEditComment(this)" class="floatright edit-button" comment_id="{{reply.id}}"><a>Edit/</a></span>
-                          <span id="delete{{reply.id}}" onclick="deleteComment(this)" comment_id="{{reply.id}}" class="floatright delete-button"><a >Delete/ </a></span>
-                          {% endif %}
-                          <span id="commentDate{{reply.id}}">{{reply.updated_at|date:"Y-m-d H:i:s"}}</span>
-                          <input class="comment-input" comment_id="{{reply.id}}" onkeyup="editComment(this, event)" id="edit{{reply.id}}" type="text" disabled value="{{reply.description}}" style="background-color: transparent; border: none;">
-                        </div>
-                      </div>
-                    </div>
-                  {% endif %}
-                  {% endfor %}
-                </div>
-                    {% endfor %}
-                  </div>
-                  </div>
-                </div>
-              </div>
-              <div class="input-group" style="margin-top: 5rem;">
-                  <textarea name="" class="form-control" id="chatMessageInput" cols="100" rows="5" placeholder="Comment here"></textarea>
-                  <div class="input-group-append">
-                      <button class="btn btn-dark" id="chatMessageSend" type="button">Send</button>
-                  </div>
-              </div>
-          {{ blog.slug|json_script:"roomName" }}
-
-      </div>
 
             </div>
-
-            <!-- <div class="leave-comment">
-              <h4>leave your comment</h4>
-              {% if request.user.is_authenticated %}
-              <form action="" method="post">
-                {% else %}
-                <form action="{% url 'login'%}">
-                  {% endif %}
-                  {% csrf_token %}
-                  <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                      <div class="input-text">
-                        {% if not request.user.is_authenticated %}
-                        <input type="text" name="name" placeholder="Name here" />
-                        {% endif %}
-                      </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                      <div class="input-text">
-                        {% if not request.user.is_authenticated %}
-                        <input type="text" name="name" placeholder="Name here" />
-                        {% endif %}
-                      </div>
-                    </div>
-                    <div class="col-xs-12">
-                      <div class="input-text">
-                        {{form.description}}
-                      </div>
-                    </div>
-                    <div class="col-xs-12">
-                      <div class="submit-text">
-                        {% if request.user.is_authenticated %}
-                        <button id="submit_comment" type="button" value="submit form" isMain="True" data_id="{{blog}}">
-                          submit comments
-                        </button>
-                        {% else %}
-                        <button type="text" value="submit form">
-                          submit comments
-                        </button>
-                        {% endif %}
-                      </div>
-                    </div>
-                  </div>
-                </form>
-            </div> -->
+            
+            <h4>19 comments</h4>
+            <div id="chatLog">
+  
           </div>
+            
+            
+        <div class="leave-comment">
+          <h4>leave your review</h4>
+          <form action="" method="post">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="input-text">
+                  <textarea name="comment" id="chatMessageInput" placeholder="Comment here" rows="4"></textarea>
+                </div>
+              </div>
+              <div class="col-xs-12">
+                <div class="submit-text">
+                  <button id="chatMessageSend" type="button" value="submit form">submit comments</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
         </div>
         <!-- single post end -->
-      </div>
+        
+      
+    </div>
       <div class="col-xs-12 col-sm-4 col-md-3">
         <div class="sidebar left-sidebar">
-          {% comment 'categories and brands' %}
           <div class="s-side-text">
-            <div class="sidebar-title clearfix">
-              <h4 class="floatleft">Categories</h4>
-              <h5 class="floatright"><a href="#">All</a></h5>
-            </div>
-            <div class="categories left-right-p">
-              <ul id="accordion" class="panel-group clearfix">
-
-                {% for category in categories %}
-                <li class="panel">
-                  {% if not category.parent %}
-                  <div data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{ category.id }}">
-                    <form method="GET">
-                      <div class="medium-a">
-                        <button type="submit" name="category_name" value="{{ category.title }}"
-                          style="background-color: transparent; border: none">
-                          {{ category.title }}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                  {% endif %}
-                  <div class="panel-collapse collapse" id="collapse{{ category.id }}">
-                    {% for child in category.parent_category.all %}
-                    <form method="GET">
-                      <div class="normal-a">
-                        <a href="#">
-                          <button type="submit" name="subcategory_name" value="{{ child.title }}"
-                            style="background-color: transparent; border: none">
-                            {{ child.title }}
-                          </button>
-                        </a>
-                      </div>
-                    </form>
-                    <div class="medium-a"></div>
-                    {% endfor %}
-                  </div>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-          <div class="s-side-text">
-            <div class="sidebar-title clearfix">
-              <h4 class="floatleft">brands</h4>
-              <h5 class="floatright"><a href="#">All</a></h5>
-            </div>
-            <div class="brands-select clearfix">
-              <ul>
-                {% for brand in brands %}
-                <li>
-                  <form method="GET">
-                    <a href="#">
-                      <button type="submit" name="brand" value="{{ brand.title }}"
-                      style="background-color: transparent; border: none">
-                      {{ brand.title }}
-                    </button>
-                  </a>
-                </form>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-        {% endcomment %}
-        <div class="s-side-text">
             <div class="sidebar-title clearfix">
               <h4 class="floatleft">recent post</h4>
             </div>
@@ -318,10 +173,9 @@
 
 <!-- all js here -->
 <script>
-  var request_user = '{{ request.user }}'
-  console.log(request_user);
+  var requestUser = '{{ request.user }}';
+  var blogId = '{{ blog.id }}';
 </script>
-<script src="{% static 'room.js' %}"></script>
-<!-- <script src="{% static 'js/comment.js' %}"></script> -->
+<script src="{% static 'comment.js' %}"></script>
 {% endblock %}
 

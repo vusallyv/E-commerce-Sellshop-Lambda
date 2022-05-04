@@ -12,5 +12,5 @@ class BlogAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    exclude = ('is_main',)
+    # exclude = ('is_main',)
     form = CommentForm

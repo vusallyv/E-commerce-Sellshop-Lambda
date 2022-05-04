@@ -33,26 +33,7 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name,
         )
 
-        # send the user list to the newly joined user
-        self.send(json.dumps({
-            'type': 'user_list',
-        }))
-
-        if self.user.is_authenticated:
-            # create a user inbox for private messages
-            async_to_sync(self.channel_layer.group_add)(
-                self.user_inbox,
-                self.channel_name,
-            )
-
-            # send the join event to the room
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    'type': 'user_join',
-                    'user': self.user.username,
-                }
-            )
+        
 
     def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
@@ -79,126 +60,40 @@ class ChatConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        action_type = text_data_json.get('type', None)
+        description = text_data_json.get('description')
+        action = text_data_json.get('action')
 
-        if action_type == 'edit_comment':
-            comment_id = text_data_json['comment_id']
-            comment = Comment.objects.get(id=comment_id)
-            comment.description = message
-            updated_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            comment.save()
-            async_to_sync(self.channel_layer.group_send)(
-                    self.room_group_name,
-                    {
-                        'type': 'edit_comment',
-                        'id': comment_id,
-                        'message': message,
-                        'updated_at': updated_at,
-                    }
-                )
-            return
 
-        if not self.user.is_authenticated:
-            return self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'You must be logged in to send messages.',
-            }))
-        if message.startswith('/pm '):
-            split = message.split(' ', 2)
-            target = split[1]
-            target_msg = split[2]
-
-            # send private message to the target
-            async_to_sync(self.channel_layer.group_send)(
-                f'inbox_{target}',
-                {
-                    'type': 'private_message',
-                    'user': self.user.username,
-                    'message': target_msg,
-                }
-            )
-            # send private message delivered to the user
-            self.send(json.dumps({
-                'type': 'private_message_delivered',
-                'target': target,
-                'message': target_msg,
-            }))
-            return 
-        
-        # delete comment 
-        if message.startswith('/del '):
-            split = message.split(' ', 1)
-            deleted_comment_id = split[1]
-            deleted_comment = Comment.objects.get(id=deleted_comment_id)
-            if deleted_comment.user == self.user:
-                deleted_comment.delete()
-                async_to_sync(self.channel_layer.group_send)(
-                    self.room_group_name,
-                    {
-                        'type': 'comment_deleted',
-                        'id': deleted_comment_id,
-                    }
-                )
-                return
-            else:
-                return self.send(text_data=json.dumps({
-                    'type': 'error',
-                    'message': 'You are not the author of this comment.',
-                }))
-
-        # reply comment
-        if action_type == 'reply_message' and text_data_json.get('replyId'):
-            reply = Comment.objects.get(id=text_data_json.get('replyId'))
-            created_comment = Comment.objects.create(user=self.user, blog=self.room, description=message, reply=reply)
+        # create a new main comment
+        if action == 'main_comment':
+            created_comment = Comment.objects.create(user=self.user, blog=self.room, description=description, is_main=True)
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
-                    'type': 'reply_message',
+                    'type': 'main_comment',
                     'user': self.user.username,
-                    'message': message,
+                    'description': description,
                     'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'image': self.user.image.url,
                     'id': created_comment.id,
-                    'replyId': reply.id
                 }
             )
-            return 
+        elif description.startswith('/del '):
+            print('delete comment')
+            comment_id = description.split(' ')[1]
+            comment = Comment.objects.get(id=comment_id)
+            if comment.user == self.user:
+                comment.delete()
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type': 'delete_comment',
+                        'id': comment_id,
+                    }
+                )
 
-        # send chat message event to the room
-        created_comment = Comment.objects.create(user=self.user, blog=self.room, description=message)
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'user': self.user.username,
-                'message': message,
-                'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                'image': self.user.image.url,
-                'id': created_comment.id,
-            }
-        )
-
-    def chat_message(self, event):
+    def main_comment(self, event):
         self.send(text_data=json.dumps(event))
 
-    def edit_comment(self, event):
-        self.send(text_data=json.dumps(event))
-
-    def reply_message(self, event):
-        self.send(text_data=json.dumps(event))
-
-    def comment_deleted(self, event):
-        self.send(text_data=json.dumps(event))
-
-    def user_join(self, event):
-        self.send(text_data=json.dumps(event))
-
-    def user_leave(self, event):
-        self.send(text_data=json.dumps(event))
-
-    def private_message(self, event):
-        self.send(text_data=json.dumps(event))
-
-    def private_message_delivered(self, event):
+    def delete_comment(self, event):
         self.send(text_data=json.dumps(event))
