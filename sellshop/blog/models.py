@@ -15,6 +15,7 @@ class Blog(BaseModel):
     image = models.ImageField(verbose_name="Image", upload_to="blogs/")
     slug = models.SlugField(max_length=30, unique=True)
     typing_users = models.ManyToManyField("user.User", related_name="typing_users")
+    online_users = models.ManyToManyField("user.User", related_name="online_users")
 
     def __str__(self) -> str:
         return f"{self.title}"

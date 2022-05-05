@@ -6,6 +6,7 @@ let chatLog = document.querySelector("#chatLog");
 let chatMessageInput = document.querySelector("#chatMessageInput");
 let chatMessageSend = document.querySelector("#chatMessageSend");
 let typingUsers = document.querySelector("#typing-users");
+let onlineUsers = document.querySelector("#online-users");
 // focus 'chatMessageInput' when user opens the page
 chatMessageInput.focus();
 
@@ -17,9 +18,11 @@ chatMessageInput.onkeyup = function (e) {
 };
 
 chatMessageInput.onfocus = () => {
-    chatSocket.send(JSON.stringify({
-        action: "user_typing"
-    }));
+    // if (!chatMessageInput.value == "") {
+        chatSocket.send(JSON.stringify({
+            action: "user_typing"
+        }));
+    // }
 };
 
 chatMessageInput.onfocusout = () => {
@@ -145,6 +148,26 @@ chatMessageSend.onclick = function () {
     chatMessageInput.value = "";
 };
 
+getTypingUsers = (data) => {
+    typingUsers.innerHTML = "";
+    data.users.forEach(user => {
+        if (user != requestUser) {
+            typingUsers.innerHTML += `${user} is typing...`;
+        }
+    });
+}
+
+getOnlineUsers = (data) => {
+    onlineUsers.innerHTML = `<h4>Online Users</h4>
+    <ul>`;
+    data.users.forEach(user => {
+        if (user != requestUser) {
+            onlineUsers.innerHTML += `<li>${user}</li>`;
+        }
+    });
+    onlineUsers.innerHTML += `</ul>`;
+}
+
 
 let chatSocket = null;
 
@@ -179,20 +202,16 @@ function connect() {
                 getComments();
                 break;
             case "user_typing":
-                typingUsers.innerHTML = '';
-                data.users.forEach(user => {
-                    if (user != requestUser) {
-                        typingUsers.innerHTML = `${user} is typing...`;
-                    }
-                });
+                getTypingUsers(data);
                 break;
             case "user_not_typing":
-                typingUsers.innerHTML = '';
-                data.users.forEach(user => {
-                    if (user != requestUser) {
-                        typingUsers.innerHTML = `${user} is typing...`;
-                    }
-                });
+                getTypingUsers(data);
+                break;
+            case "user_join":
+                getOnlineUsers(data);
+                break;
+            case "user_leave":
+                getOnlineUsers(data);
                 break;
             default:
                 console.error("Unknown message type!");
