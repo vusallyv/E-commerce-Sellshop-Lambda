@@ -79,7 +79,7 @@ class ChatConsumer(WebsocketConsumer):
                     'id': created_comment.id,
                 }
             )
-        elif description.startswith('/del '):
+        elif description and description.startswith('/del '):
             print('delete comment')
             comment_id = description.split(' ')[1]
             comment = Comment.objects.get(id=comment_id)
@@ -107,7 +107,27 @@ class ChatConsumer(WebsocketConsumer):
                         'description': description,
                     }
                 )
-
+        elif action == 'user_typing':
+            self.room.typing_users.add(self.user)
+            users = [user.username for user in self.room.typing_users.all() ]
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'user_typing',
+                    'users': users,
+                }
+            )
+        elif action == 'user_not_typing':
+            self.room.typing_users.remove(self.user)
+            users = [user.username for user in self.room.typing_users.all() ]
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'user_not_typing',
+                    'users': users,
+                }
+            )
+        
     def main_comment(self, event):
         self.send(text_data=json.dumps(event))
 
@@ -115,4 +135,10 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(event))
     
     def edit_comment(self, event):
+        self.send(text_data=json.dumps(event))
+
+    def user_typing(self, event):
+        self.send(text_data=json.dumps(event))
+    
+    def user_not_typing(self, event):
         self.send(text_data=json.dumps(event))

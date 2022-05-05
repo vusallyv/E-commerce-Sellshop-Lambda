@@ -14,6 +14,7 @@ class Blog(BaseModel):
         "product.ProductVersion", on_delete=models.CASCADE, default="")
     image = models.ImageField(verbose_name="Image", upload_to="blogs/")
     slug = models.SlugField(max_length=30, unique=True)
+    typing_users = models.ManyToManyField("user.User", related_name="typing_users")
 
     def __str__(self) -> str:
         return f"{self.title}"

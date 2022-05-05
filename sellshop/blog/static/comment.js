@@ -5,7 +5,7 @@ const roomName = JSON.parse(document.getElementById('roomName').textContent);
 let chatLog = document.querySelector("#chatLog");
 let chatMessageInput = document.querySelector("#chatMessageInput");
 let chatMessageSend = document.querySelector("#chatMessageSend");
-
+let typingUsers = document.querySelector("#typing-users");
 // focus 'chatMessageInput' when user opens the page
 chatMessageInput.focus();
 
@@ -15,6 +15,20 @@ chatMessageInput.onkeyup = function (e) {
         chatMessageSend.click();
     }
 };
+
+chatMessageInput.onfocus = () => {
+    chatSocket.send(JSON.stringify({
+        action: "user_typing"
+    }));
+};
+
+chatMessageInput.onfocusout = () => {
+    chatSocket.send(JSON.stringify({
+        action: "user_not_typing"
+    }));
+};
+
+
 getComments = () => {
     fetch('/api/blogs/' + blogId)
         .then(response => response.json())
@@ -153,19 +167,32 @@ function connect() {
         const data = JSON.parse(e.data);
         switch (data.type) {
             case "main_comment":
-                console.log(data);
                 getComments();
                 break;
             // case "error":
             //     alert(data.message);
             //     break;
             case "delete_comment":
-                console.log(data);
                 getComments();
                 break;
             case "edit_comment":
-                console.log(data);
                 getComments();
+                break;
+            case "user_typing":
+                typingUsers.innerHTML = '';
+                data.users.forEach(user => {
+                    if (user != requestUser) {
+                        typingUsers.innerHTML = `${user} is typing...`;
+                    }
+                });
+                break;
+            case "user_not_typing":
+                typingUsers.innerHTML = '';
+                data.users.forEach(user => {
+                    if (user != requestUser) {
+                        typingUsers.innerHTML = `${user} is typing...`;
+                    }
+                });
                 break;
             default:
                 console.error("Unknown message type!");
