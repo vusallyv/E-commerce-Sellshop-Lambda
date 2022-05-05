@@ -52,6 +52,7 @@ class ChatConsumer(WebsocketConsumer):
         if self.user.is_authenticated and self.user in self.room.online_users.all():
             # send the leave event to the room
             self.room.online_users.remove(self.user)
+            self.room.typing_users.remove(self.user)
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {

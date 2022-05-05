@@ -211,6 +211,7 @@ function connect() {
                 getOnlineUsers(data);
                 break;
             case "user_leave":
+                getTypingUsers(data);
                 getOnlineUsers(data);
                 break;
             default:
