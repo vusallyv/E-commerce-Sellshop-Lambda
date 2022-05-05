@@ -14,3 +14,4 @@ class BlogAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     # exclude = ('is_main',)
     form = CommentForm
+    list_filter = ('blog', 'user', 'is_deleted', 'is_edited')

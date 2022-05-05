@@ -33,6 +33,8 @@ class Comment(BaseModel):
     parent_comment = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, default="", verbose_name="Parent Comment")
     is_main = models.BooleanField(verbose_name="Is Main?", default=False)
+    is_edited = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"""

@@ -25,15 +25,23 @@ class CategorySerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     replies = serializers.SerializerMethodField()
     user = UserInfoSerializer()
+    created_at = serializers.SerializerMethodField()
+    updated_at = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = ("id", "description", "user", "blog",
-                  "is_main", "created_at", "replies", "updated_at")
+                  "is_main", "created_at", "replies", "updated_at", "is_deleted", "is_edited")
 
     def get_replies(self, obj):
-        qs = Comment.objects.filter(parent_comment=obj)
+        qs = Comment.objects.filter(parent_comment=obj, is_deleted=False).order_by('created_at')
         return CommentSerializer(qs, many=True).data
+    
+    def get_created_at(self, obj):
+        return obj.created_at.strftime('%Y-%m-%d %H:%M:%S')
+
+    def get_updated_at(self, obj):
+        return obj.updated_at.strftime('%Y-%m-%d %H:%M:%S')
 
 
 class BlogSerializer(serializers.ModelSerializer):
@@ -45,7 +53,7 @@ class BlogSerializer(serializers.ModelSerializer):
                   "creator", "product", "comments")
 
     def get_comments(self, obj):
-        qs = obj.blogs_comment.filter(is_main=True)
+        qs = obj.blogs_comment.filter(is_main=True, is_deleted=False).order_by('created_at')
         return CommentSerializer(qs, many=True).data
 
 

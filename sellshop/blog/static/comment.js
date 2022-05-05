@@ -10,7 +10,7 @@ let chatMessageSend = document.querySelector("#chatMessageSend");
 chatMessageInput.focus();
 
 // submit if the user presses the enter key
-chatMessageInput.onkeyup = function(e) {
+chatMessageInput.onkeyup = function (e) {
     if (e.keyCode === 13) {  // enter key
         chatMessageSend.click();
     }
@@ -20,43 +20,49 @@ getComments = () => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+            totalCommentCount = 0;
             chatLog.innerHTML = "";
             data.comments.forEach(comment => {
-                console.log(requestUser, comment.user.username);
-                isRequestUser = requestUser == comment.user.username; 
+                totalCommentCount++;
+                isRequestUser = requestUser == comment.user.username;
                 chatLog.innerHTML += `
             <div class="about-author comments">
                 <div class="autohr-text">
                     <img src="${comment.user.image}" width="100px" alt="" />
                     <div class="author-des">
-                        <h4><a href="#">${comment.user.username}</a></h4>
+                        <h4><a href="#">${comment.user.username} ${comment.is_edited ? `<span style="text-transform: lowercase; color: gray;"> (Edited at ${comment.updated_at})</span>` : ''}</a></h4>
                         <span class="floatright reply-button"><a>Reply</a></span>
-                        ${isRequestUser ? `<span class="floatright"><a>Edit/</a></span>
+                        ${isRequestUser ? `<span data-action="edit_comment" onclick="enableEditComment(this, event)" data-id="${comment.id}" class="floatright edit-button"><a>Edit/</a></span>
                         <span class="floatright" data-id="${comment.id}" onclick=deleteComment(this)><a >Delete/ </a></span>` : ''}
-                        <span>${comment.updated_at}</span>
-                        <p>${comment.description}</p>
+                        <span>${comment.created_at}</span>
+                        <textarea id="edit${comment.id}" rows="3" cols="70" style="border: none; background-color: transparent; resize: none; overflow: auto;" disabled>${comment.description}</textarea>
+                        
+                        
                     </div>
                 </div>
             </div>
                 `
                 comment.replies.forEach(reply => {
-                    isRequestUser = requestUser == reply.user.username; 
+                    totalCommentCount++;
+                    isRequestUser = requestUser == reply.user.username;
                     chatLog.innerHTML += `
                 <div class="about-author reply">
                     <div class="autohr-text">
                         <img src="${reply.user.image}" width="100px" alt="" />
                         <div class="author-des">
-                            <h4><a href="#">${reply.user.username}</a></h4>
-                            ${isRequestUser ? `<span class="floatright"><a>Edit</a></span>
-                            <span class="floatright" data-id="${comment.id}" onclick=deleteComment(this)><a >Delete/ </a></span>` : ''}
-                            <span>${reply.updated_at}</span>
-                            <p>${reply.description}</p>
+                            <h4><a href="#">${reply.user.username} ${reply.is_edited ? `<span style="text-transform: lowercase; color: gray;"> (Edited at ${reply.updated_at})</span>` : ''}</a></h4>
+                            ${isRequestUser ? `<span data-action="edit_comment" onclick="enableEditComment(this, event)" data-id="${reply.id}" class="floatright edit-button"><a>Edit</a></span>
+                            <span class="floatright" data-id="${reply.id}" onclick=deleteComment(this)><a >Delete/ </a></span>` : ''}
+                            <span>${reply.created_at}</span>
+                            <textarea id="edit${reply.id}" rows="3" cols="70" style="border: none; background-color: transparent; resize: none; overflow: auto;" disabled>${reply.description}</textarea>
                         </div>
                     </div>
                 </div>  
                 `
                 })
             });
+            commentCount = document.querySelector("#comment-count");
+            commentCount.innerHTML = totalCommentCount + " Comments";
             removeAttributes(chatMessageSend);
             removeAttributes(chatMessageInput);
         });
@@ -71,10 +77,30 @@ deleteComment = (e) => {
     chatMessageSend.click();
 };
 
+enableEditComment = (e, event) => {
+    console.log(e);
+    let id = e.getAttribute('data-id');
+    let action = e.getAttribute('data-action');
+    commentTextarea = document.querySelector(`#edit${id}`);
+    commentTextarea.removeAttribute('style');
+    commentTextarea.removeAttribute('disabled');
+    commentTextarea.focus();
+    commentTextarea.onkeyup = function (event) {
+        if (event.keyCode === 13) {  // enter key
+            console.log('edit comment');
+            chatSocket.send(JSON.stringify({
+                action: action,
+                description: commentTextarea.value,
+                id: id
+            }));
+            chatMessageInput.value = "";
+            return;
+        }
+    }
+}
+
 const removeAttributes = (element) => {
-    console.log(element.attributes);
     for (let i = 0; i < element.attributes.length; i++) {
-        console.log(element.attributes[i].name);
         if (element.attributes[i].name != 'id' && element.attributes[i].name != 'class' && element.attributes[i].name != 'type' && element.attributes[i].name != 'name' && element.attributes[i].name != 'placeholder' && element.attributes[i].name != 'rows' && element.attributes[i].name != 'value') {
             element.removeAttribute(element.attributes[i].name);
         }
@@ -82,12 +108,12 @@ const removeAttributes = (element) => {
 };
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     getComments();
 });
 
 // clear the 'chatMessageInput' and forward the message
-chatMessageSend.onclick = function() {
+chatMessageSend.onclick = function () {
     if (chatMessageInput.value.trim().length <= 0) return;
     if (chatMessageSend.getAttribute('action') == 'delete_comment') {
         console.log('chatMessageInput.value');
@@ -111,19 +137,19 @@ let chatSocket = null;
 function connect() {
     chatSocket = new WebSocket("ws://" + window.location.host + "/ws/blog/" + roomName + "/");
 
-    chatSocket.onopen = function(e) {
+    chatSocket.onopen = function (e) {
         console.log("Successfully connected to the WebSocket.");
     }
 
-    chatSocket.onclose = function(e) {
+    chatSocket.onclose = function (e) {
         console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 2s...");
-        setTimeout(function() {
+        setTimeout(function () {
             console.log("Reconnecting...");
             connect();
         }, 2000);
     };
-    
-    chatSocket.onmessage = function(e) {
+
+    chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         switch (data.type) {
             case "main_comment":
@@ -137,6 +163,10 @@ function connect() {
                 console.log(data);
                 getComments();
                 break;
+            case "edit_comment":
+                console.log(data);
+                getComments();
+                break;
             default:
                 console.error("Unknown message type!");
                 break;
@@ -146,7 +176,7 @@ function connect() {
         chatLog.scrollTop = chatLog.scrollHeight;
     };
 
-    chatSocket.onerror = function(err) {
+    chatSocket.onerror = function (err) {
         console.log("WebSocket encountered an error: " + err.message);
         console.log("Closing the socket.");
         chatSocket.close();

@@ -62,6 +62,7 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         description = text_data_json.get('description')
         action = text_data_json.get('action')
+        id = text_data_json.get('id')
 
 
         # create a new main comment
@@ -83,7 +84,8 @@ class ChatConsumer(WebsocketConsumer):
             comment_id = description.split(' ')[1]
             comment = Comment.objects.get(id=comment_id)
             if comment.user == self.user:
-                comment.delete()
+                comment.is_deleted = True
+                comment.save()
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,
                     {
@@ -91,9 +93,26 @@ class ChatConsumer(WebsocketConsumer):
                         'id': comment_id,
                     }
                 )
+        elif action == 'edit_comment' and id:
+            comment = Comment.objects.get(id=id)
+            if comment.user == self.user:
+                comment.description = description
+                comment.is_edited = True
+                comment.save()
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type': 'edit_comment',
+                        'id': id,
+                        'description': description,
+                    }
+                )
 
     def main_comment(self, event):
         self.send(text_data=json.dumps(event))
 
     def delete_comment(self, event):
+        self.send(text_data=json.dumps(event))
+    
+    def edit_comment(self, event):
         self.send(text_data=json.dumps(event))
