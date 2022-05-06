@@ -27,21 +27,27 @@ class CommentSerializer(serializers.ModelSerializer):
     user = UserInfoSerializer()
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
+    liked_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
         fields = ("id", "description", "user", "blog",
-                  "is_main", "created_at", "replies", "updated_at", "is_deleted", "is_edited")
+                  "is_main", "created_at", "replies", "updated_at", "is_deleted", "is_edited", "liked_by")
 
     def get_replies(self, obj):
-        qs = Comment.objects.filter(parent_comment=obj, is_deleted=False).order_by('created_at')
+        qs = Comment.objects.filter(
+            parent_comment=obj, is_deleted=False).order_by('created_at')
         return CommentSerializer(qs, many=True).data
-    
+
     def get_created_at(self, obj):
         return obj.created_at.strftime('%Y-%m-%d %H:%M:%S')
 
     def get_updated_at(self, obj):
         return obj.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+
+    def get_liked_by(self, obj):
+        for user in obj.liked_by.all():
+            yield {'id': user.id, 'username': user.username}
 
 
 class BlogSerializer(serializers.ModelSerializer):
@@ -53,7 +59,8 @@ class BlogSerializer(serializers.ModelSerializer):
                   "creator", "product", "comments")
 
     def get_comments(self, obj):
-        qs = obj.blogs_comment.filter(is_main=True, is_deleted=False).order_by('created_at')
+        qs = obj.blogs_comment.filter(
+            is_main=True, is_deleted=False).order_by('created_at')
         return CommentSerializer(qs, many=True).data
 
 
@@ -242,13 +249,12 @@ class CartItemSerializer(serializers.ModelSerializer):
     def get_is_ordered(self, obj):
         qs = obj.cart.is_ordered
         return qs
-    
+
     def get_coupon_discount(self, obj):
         if obj.cart.coupon:
             qs = obj.cart.coupon.discount
             return qs
         return 0
-            
 
 
 class WishlistSerializer(serializers.ModelSerializer):

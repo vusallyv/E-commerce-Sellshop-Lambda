@@ -19,9 +19,9 @@ chatMessageInput.onkeyup = function (e) {
 
 chatMessageInput.onfocus = () => {
     // if (!chatMessageInput.value == "") {
-        chatSocket.send(JSON.stringify({
-            action: "user_typing"
-        }));
+    chatSocket.send(JSON.stringify({
+        action: "user_typing"
+    }));
     // }
 };
 
@@ -47,7 +47,10 @@ getComments = () => {
                 <div class="autohr-text">
                     <img src="${comment.user.image}" width="100px" alt="" />
                     <div class="author-des">
-                        <h4><a href="#">${comment.user.username} ${comment.is_edited ? `<span style="text-transform: lowercase; color: gray;"> (Edited at ${comment.updated_at})</span>` : ''}</a></h4>
+                        <h4><a href="#">${comment.user.username} ${comment.is_edited ? `<span style="text-transform: lowercase; color: gray;"> (Edited at ${comment.updated_at})</span>` : ''}</a> 
+                        <span style="float: right; text-transform: lowercase; color: gray;">liked by ${comment.liked_by.length} people</span>
+                        </h4>
+                        <span style="margin-left: 2rem" data-id="${comment.id}" onclick=likeComment(this) class="floatright like-button">&#128077;</span>
                         <span class="floatright reply-button"><a>Reply</a></span>
                         ${isRequestUser ? `<span data-action="edit_comment" onclick="enableEditComment(this, event)" data-id="${comment.id}" class="floatright edit-button"><a>Edit/</a></span>
                         <span class="floatright" data-id="${comment.id}" onclick=deleteComment(this)><a >Delete/ </a></span>` : ''}
@@ -68,6 +71,7 @@ getComments = () => {
                         <img src="${reply.user.image}" width="100px" alt="" />
                         <div class="author-des">
                             <h4><a href="#">${reply.user.username} ${reply.is_edited ? `<span style="text-transform: lowercase; color: gray;"> (Edited at ${reply.updated_at})</span>` : ''}</a></h4>
+                            <span style="margin-left: 2rem" class="floatright like-button">&#128077;</span>
                             ${isRequestUser ? `<span data-action="edit_comment" onclick="enableEditComment(this, event)" data-id="${reply.id}" class="floatright edit-button"><a>Edit</a></span>
                             <span class="floatright" data-id="${reply.id}" onclick=deleteComment(this)><a >Delete/ </a></span>` : ''}
                             <span>${reply.created_at}</span>
@@ -93,6 +97,15 @@ deleteComment = (e) => {
     chatMessageSend.setAttribute('action', 'delete_comment');
     chatMessageSend.click();
 };
+
+likeComment = (e) => {
+    console.log(e);
+    chatMessageInput.value = "";
+    let id = e.getAttribute('data-id');
+    chatMessageInput.value = "/like " + id;
+    chatMessageSend.setAttribute('action', 'like_comment');
+    chatMessageSend.click();
+}
 
 enableEditComment = (e, event) => {
     console.log(e);
@@ -137,6 +150,14 @@ chatMessageSend.onclick = function () {
         chatSocket.send(JSON.stringify({
             action: "delete_comment",
             description: chatMessageInput.value
+        }));
+        chatMessageInput.value = "";
+        return;
+    } else if (chatMessageSend.getAttribute('action') == 'like_comment') {
+        console.log('chatMessageInput.value');
+        chatSocket.send(JSON.stringify({
+            action: "like_comment",
+            description: chatMessageInput.value,
         }));
         chatMessageInput.value = "";
         return;
@@ -213,6 +234,9 @@ function connect() {
             case "user_leave":
                 getTypingUsers(data);
                 getOnlineUsers(data);
+                break;
+            case "like_comment":
+                getComments();
                 break;
             default:
                 console.error("Unknown message type!");

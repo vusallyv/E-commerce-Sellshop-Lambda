@@ -14,8 +14,10 @@ class Blog(BaseModel):
         "product.ProductVersion", on_delete=models.CASCADE, default="")
     image = models.ImageField(verbose_name="Image", upload_to="blogs/")
     slug = models.SlugField(max_length=30, unique=True)
-    typing_users = models.ManyToManyField("user.User", related_name="typing_users")
-    online_users = models.ManyToManyField("user.User", related_name="online_users")
+    typing_users = models.ManyToManyField(
+        "user.User", related_name="typing_users", blank=True)
+    online_users = models.ManyToManyField(
+        "user.User", related_name="online_users", blank=True)
 
     def __str__(self) -> str:
         return f"{self.title}"
@@ -35,6 +37,8 @@ class Comment(BaseModel):
     parent_comment = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True, blank=True, default="", verbose_name="Parent Comment")
     is_main = models.BooleanField(verbose_name="Is Main?", default=False)
+    liked_by = models.ManyToManyField(
+        'user.User', related_name="liked_comments", blank=True)
     is_edited = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
 

@@ -130,6 +130,26 @@ class ChatConsumer(WebsocketConsumer):
                     'users': users,
                 }
             )
+        elif description and description.startswith('/like '):
+            comment_id = description.split(' ')[1]
+            comment = Comment.objects.get(id=comment_id)
+            if self.user not in comment.liked_by.all():
+                comment.liked_by.add(self.user)
+            else :
+                comment.liked_by.remove(self.user)
+            comment.save()
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'like_comment',
+                    'id': comment_id,
+                    'user': self.user.username,
+                }
+            )
+
+
+
+                        
 
     def main_comment(self, event):
         self.send(text_data=json.dumps(event))
@@ -150,4 +170,7 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(event))
 
     def user_leave(self, event):
+        self.send(text_data=json.dumps(event))
+
+    def like_comment(self, event):
         self.send(text_data=json.dumps(event))
